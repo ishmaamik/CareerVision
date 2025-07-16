@@ -27,8 +27,24 @@ public class UserController {
             return "Error: Email already in use";
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRole("user"); // default role
+        user.setRole("user"); // default
         userRepository.save(user);
         return "Signup successful";
     }
+
+    // 🔐 User Login
+    @PostMapping("/login")
+    public Object login(@RequestBody User loginRequest) {
+        return userRepository.findByEmail(loginRequest.getEmail())
+                .map(user -> {
+                    if (passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
+                        user.setPassword(null); // it wont expose tha password
+                        return user;
+                    } else {
+                        return "Error: Invalid password";
+                    }
+                })
+                .orElse("Error: User not found");
+    }
+
 }
