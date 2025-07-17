@@ -1,96 +1,117 @@
 package CareerVision.controller;
 
+import CareerVision.model.CVData;
+import CareerVision.model.User;
+import CareerVision.repository.CVDataRepository;
+import CareerVision.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+
 import java.util.*;
 
 @RestController
 @RequestMapping("/api/cv")
-@CrossOrigin(origins = "*")
 public class CVAnalysisController {
 
     @Value("${gemini.api.key}")
     private String geminiApiKey;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private CVDataRepository cvDataRepository;
+
     private final RestTemplate restTemplate = new RestTemplate();
 
-    @PostMapping("/analyze")
-    public ResponseEntity<?> analyzeCV(@RequestBody Map<String, Object> cvData) {
+    @PostMapping("/analyze/{userId}")
+    public ResponseEntity<?> analyzeCV(@PathVariable Long userId) {
+        Optional<User> userOpt = userRepository.findById(userId);
+        if (userOpt.isEmpty()) return ResponseEntity.badRequest().body("User not found");
 
-        String cvContent = cvData.toString();
+        User user = userOpt.get();
+        Optional<CVData> cvOpt = cvDataRepository.findByUser(user);
 
-        String prompt =
-                "You are an expert career coach and professional CV reviewer.\n\n" +
-                        "Please analyze the following CV data and RETURN YOUR ANALYSIS STRICTLY in the following JSON format with NO extra text:\n\n" +
-                        "{\n" +
-                        "  \"overall_impression\": \"<summary>\",\n" +
-                        "  \"content_quality\": [\n" +
-                        "    {\"section\": \"Contact Info\", \"analysis\": \"<details>\"},\n" +
-                        "    {\"section\": \"Summary\", \"analysis\": \"<details>\"},\n" +
-                        "    {\"section\": \"Education\", \"analysis\": \"<details>\"},\n" +
-                        "    {\"section\": \"Work Experience\", \"analysis\": \"<details>\"},\n" +
-                        "    {\"section\": \"Skills\", \"analysis\": \"<details>\"},\n" +
-                        "    {\"section\": \"Certifications\", \"analysis\": \"<details>\"},\n" +
-                        "    {\"section\": \"Projects\", \"analysis\": \"<details>\"}\n" +
-                        "  ],\n" +
-                        "  \"formatting_structure\": \"<summary>\",\n" +
-                        "  \"language_tone\": \"<summary>\",\n" +
-                        "  \"keyword_optimization\": [\"<keyword1>\", \"<keyword2>\", \"...\"],\n" +
-                        "  \"tailoring_suggestions\": \"<summary>\",\n" +
-                        "  \"actionable_recommendations\": [\"<recommendation1>\", \"<recommendation2>\", \"...\"]\n" +
-                        "}\n\n" +
-                        "Make sure:\n" +
-                        "- Use clear, practical, and constructive language.\n" +
-                        "- Tailor suggestions for backend/software developer positions.\n" +
-                        "- Do NOT add any text outside the JSON.\n\n" +
-                        "Here is the CV data:\n\n" +
-                        cvContent;
+        if (cvOpt.isEmpty() || cvOpt.get().getExtractedText() == null) {
+            return ResponseEntity.badRequest().body("No extracted resume found for this user.");
+        }
+
+        String cvContent = cvOpt.get().getExtractedText();
+
+        String prompt = """
+            You are an expert career coach and professional CV reviewer.
+            Please analyze the following CV data and RETURN YOUR ANALYSIS STRICTLY in the following JSON format with NO extra text:
+
+            {
+              "overall_impression": "<summary>",
+              "content_quality": [
+                {"section": "Contact Info", "analysis": "<details>"},
+                {"section": "Summary", "analysis": "<details>"},
+                {"section": "Education", "analysis": "<details>"},
+                {"section": "Work Experience", "analysis": "<details>"},
+                {"section": "Skills", "analysis": "<details>"},
+                {"section": "Certifications", "analysis": "<details>"},
+                {"section": "Projects", "analysis": "<details>"}
+              ],
+              "formatting_structure": "<summary>",
+              "language_tone": "<summary>",
+              "keyword_optimization": ["<keyword1>", "<keyword2>"],
+              "tailoring_suggestions": "<summary>",
+              "actionable_recommendations": ["<recommendation1>", "<recommendation2>"]
+            }
+
+            Here is the CV data:
+            """ + cvContent;
 
         String url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=" + geminiApiKey;
 
-        Map<String, Object> requestBody = new HashMap<>();
-        Map<String, Object> contentPart = new HashMap<>();
-        contentPart.put("text", prompt);
-
-        Map<String, Object> content = new HashMap<>();
-        content.put("parts", Collections.singletonList(contentPart));
-
-        requestBody.put("contents", Collections.singletonList(content));
+        Map<String, Object> body = Map.of(
+                "contents", List.of(Map.of(
+                        "parts", List.of(Map.of("text", prompt))
+                ))
+        );
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-
-        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(requestBody, headers);
+        HttpEntity<?> request = new HttpEntity<>(body, headers);
 
         try {
-            ResponseEntity<Map> response = restTemplate.exchange(url, HttpMethod.POST, entity, Map.class);
+            ResponseEntity<Map> response = restTemplate.postForEntity(url, request, Map.class);
 
-            // Gemini returns under "candidates[0].content.parts[0].text"
-            Map<String, Object> responseBody = response.getBody();
-            if (responseBody != null && responseBody.containsKey("candidates")) {
-                List candidates = (List) responseBody.get("candidates");
-                if (!candidates.isEmpty()) {
-                    Map candidate = (Map) candidates.get(0);
-                    Map contentMap = (Map) candidate.get("content");
-                    List parts = (List) contentMap.get("parts");
-                    if (!parts.isEmpty()) {
-                        Map part = (Map) parts.get(0);
-                        String analysisText = (String) part.get("text");
+            List candidates = (List) response.getBody().get("candidates");
+            Map candidate = (Map) candidates.get(0);
+            Map content = (Map) candidate.get("content");
+            List parts = (List) content.get("parts");
+            String analysisText = (String) ((Map) parts.get(0)).get("text");
 
-                        // Return as JSON string
-                        return ResponseEntity.ok(analysisText);
-                    }
-                }
-            }
+            // Save to DB
+            CVData cvData = cvOpt.get();
+            cvData.setAnalysisJson(analysisText);
+            cvDataRepository.save(cvData);
 
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Failed to parse Gemini response structure.");
+            return ResponseEntity.ok(Map.of(
+                    "status", "success",
+                    "analysis", analysisText
+            ));
         } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Failed to analyze CV: " + e.getMessage());
+            return ResponseEntity.internalServerError().body("Gemini analysis failed: " + e.getMessage());
         }
+    }
+
+    @GetMapping("/analysis/{userId}")
+    public ResponseEntity<?> getAnalysis(@PathVariable Long userId) {
+        return userRepository.findById(userId)
+                .flatMap(user -> cvDataRepository.findByUser(user))
+                .map(cvData -> ResponseEntity.ok(Map.of(
+                        "status", "success",
+                        "analysis", cvData.getAnalysisJson()
+                )))
+                .orElse(ResponseEntity.badRequest().body(Map.of(
+                        "status", "error",
+                        "message", "Analysis not found for this user"
+                )));
     }
 }
