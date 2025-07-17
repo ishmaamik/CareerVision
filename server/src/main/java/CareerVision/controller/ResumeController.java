@@ -81,6 +81,8 @@ public class ResumeController {
                 )));
     }
 
+
+    //text extract from cv
     @Autowired
     private PDFExtractorService pdfExtractorService;
 
