@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/blogs")
-@CrossOrigin(origins = "*") // optional: for frontend testing
+@CrossOrigin(origins = "*")
 public class BlogController {
 
     private final BlogRepository blogRepository;
