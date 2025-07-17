@@ -13,6 +13,9 @@ const Topbar = () => {
 
       {/* Right Side: Navigation */}
       <div className="space-x-4">
+      <Button disableRipple variant="text" sx={{color:'gray', ":hover":{backgroundColor:'transparent'}, ":focus-visible":{outline:'none'}}} onClick={() => navigate('/blogs')} >
+          Blogs
+        </Button>
       <Button disableRipple variant="text" sx={{color:'gray', ":hover":{backgroundColor:'transparent'}, ":focus-visible":{outline:'none'}}} onClick={() => navigate('/login')} >
                   Login
         </Button>
