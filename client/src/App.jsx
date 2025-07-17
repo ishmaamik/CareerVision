@@ -20,16 +20,16 @@ function App() {
           `,
         }}
       ></div>
-
+{}
       <div className="min-h-screen flex flex-col text-black">       
         <Topbar />
         
-        
           <Routes>
             <Route path='/' element={<Home/>}/>
-            <Route path='/login' element={<Login/>}/>
+            <Route path='/login'  element={<Login/>}/>
             <Route path='/signup' element={<Signup/>}/>
           </Routes>
+          
       </div>
     </>
   );

@@ -20,7 +20,7 @@ const Signup = () => {
     }
 
     return (
-        <div className="flex mt-2 min-h-screen items-center justify-center px-4">
+        <div className="fixed  left-1/2 transform -translate-x-1/2 flex mt-2 min-h-screen items-center justify-center px-4">
             <div className="w-full max-w-2xl rounded-lg bg-white py-6 px-20 shadow-lg">
                 {/* Logo and Heading */}
                 <div className="text-center">
