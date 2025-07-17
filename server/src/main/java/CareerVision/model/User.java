@@ -22,4 +22,6 @@ public class User {
 
     private String role;
     //registered, recruiter, admin
+
+    private String resumePath;
 }
