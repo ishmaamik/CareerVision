@@ -44,7 +44,7 @@ public class JobApplicationController {
         return ResponseEntity.ok("Application submitted successfully");
     }
 
-    // ✅ Get all applications by user
+    // Get all applications by user
     @GetMapping("/user/{userId}")
     public ResponseEntity<?> getApplicationsByUser(@PathVariable Long userId) {
         User user = userRepository.findById(userId).orElse(null);
@@ -57,7 +57,7 @@ public class JobApplicationController {
     }
 
 
-    // ✅ Get all applications for a job
+    // Get all applications for a job
     @GetMapping("/job/{jobId}")
     public ResponseEntity<?> getApplicationsByJob(@PathVariable Long jobId) {
         Job job = jobRepository.findById(jobId).orElse(null);
@@ -68,5 +68,28 @@ public class JobApplicationController {
         List<JobApplication> applications = jobApplicationRepository.findByJob(job);
         return ResponseEntity.ok(applications);
     }
+
+
+    @PutMapping("/{applicationId}/status")
+    public ResponseEntity<?> updateApplicationStatus(
+            @PathVariable Long applicationId,
+            @RequestParam String status
+    ) {
+        JobApplication application = jobApplicationRepository.findById(applicationId).orElse(null);
+        if (application == null) {
+            return ResponseEntity.badRequest().body("Application not found");
+        }
+
+        // Validate status value
+        if (!List.of("applied", "accepted", "rejected").contains(status.toLowerCase())) {
+            return ResponseEntity.badRequest().body("Invalid status");
+        }
+
+        application.setStatus(status.toLowerCase());
+        jobApplicationRepository.save(application);
+
+        return ResponseEntity.ok("Status updated to " + status);
+    }
+
 
 }
