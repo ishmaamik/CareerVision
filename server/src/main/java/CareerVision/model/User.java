@@ -21,9 +21,9 @@ public class User {
     private String password;
 
     private String role;
-    //registered, recruiter, admin
-
-    private String resumePath;
+//    //registered, recruiter, admin
+//
+//    private String resumePath;
 
 //    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
 //    private CVData cvData;
