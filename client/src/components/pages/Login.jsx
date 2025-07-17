@@ -47,8 +47,8 @@ const Login = () => {
                     </div>
 
 
-                    <div className="text-right text-sm">
-                        <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
+                    <div className=" text-sm justify-center items-center">
+                        <a href="" className="font-medium text-indigo-600 justify-center items-center hover:text-indigo-500">
                             Forgot password?
                         </a>
                     </div>
