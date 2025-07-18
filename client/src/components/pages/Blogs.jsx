@@ -43,7 +43,7 @@ const Blogs = () => {
     return (
         <>
             <div className="flex  mt-20 ml-99">
-                <Button disableRipple variant="text" sx={{ height: '4px', color: 'gray', ":hover": { backgroundColor: 'transparent' }, ":focus-visible": { outline: 'none' } }} onClick={() => navigate('/blog/:id')} >
+                <Button disableRipple variant="text" sx={{ height: '4px', color: 'gray', ":hover": { backgroundColor: 'transparent', color:'indigo' }, ":focus-visible": { outline: 'none' } }} onClick={() => navigate('/blogs/newBlog')} >
                     Create New Blog
                 </Button>
             </div>
@@ -69,7 +69,7 @@ const Blogs = () => {
                                                 <p style={{fontSize:'11px'}}>{showFullContent ? p.content : `${previewContent}...`}</p>
                                             </div>
                                             {isContentLong && (
-                                                <Button disableRipple variant="text" sx={{ height: '4px', color: 'gray', ":hover": { backgroundColor: 'transparent' }, ":focus-visible": { outline: 'none' } }} onClick={() => handleToggleContent(index)} >
+                                                <Button disableRipple variant="text" sx={{ height: '4px', fontSize:'11px',color: 'gray', ":hover": { backgroundColor: 'transparent' }, ":focus-visible": { outline: 'none' } }} onClick={() => handleToggleContent(index)} >
 
                                                     {showFullContent ? 'See Less' : 'See More'}
                                                 </Button>
