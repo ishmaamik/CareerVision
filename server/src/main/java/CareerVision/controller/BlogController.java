@@ -21,7 +21,7 @@ public class BlogController {
         this.blogRepository = blogRepository;
     }
 
-    @PostMapping
+    @PostMapping("/blog")
     public ResponseEntity<?> createBlog(@RequestBody Blog blog) {
         try {
             if (blog.getTitle() == null || blog.getTitle().isEmpty()) {
@@ -35,7 +35,7 @@ public class BlogController {
         }
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<Blog>> getAllBlogs() {
         return ResponseEntity.ok(blogRepository.findAll());
     }

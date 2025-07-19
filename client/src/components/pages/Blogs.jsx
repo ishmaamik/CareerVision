@@ -40,7 +40,7 @@ const Blogs = () => {
             </div>
 
             {loading ? 
-                 <div className=" items-center mt-24">
+                 <div className=" items-center mt-24 ml-10">
                  <div className="w-full max-w-2xl rounded-lg bg-white py-6 px-20 shadow-lg">
                      <p>Loading Blogs...</p>
                  </div>

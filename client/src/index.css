@@ -45,11 +45,14 @@ button {
   background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s;
+  outline: none;
 }
 button:hover {
   outline: none;
 }
-button:focus,
+button:focus{
+  outline: none;
+}
 button:focus-visible {
   outline: none;
 }
