@@ -4,10 +4,20 @@ import {Button} from '@mui/material'
 const Topbar = () => {
   
   const navigate= useNavigate()
+
+  const LogInOrOut=()=>{
+    if(localStorage.getItem('name')){
+      localStorage.removeItem('name')
+      navigate('/login')
+    }
+    else{
+      navigate('/login')
+    }
+  }
     return (
     <header className="fixed top-0 left-0 w-full px-6 py-4 flex items-center justify-between bg-white shadow-md z-50">
       {/* Left Side: Logo/Brand */}
-      <div className="text-2xl font-bold text-gray-800" onClick={()=>navigate('/')}>
+      <div className="text-2xl font-bold text-gray-800" style={{cursor:'pointer'}}  onClick={()=>navigate('/')}>
         CareerVision
       </div>
 
@@ -16,11 +26,11 @@ const Topbar = () => {
       <Button disableRipple variant="text" sx={{color:'gray', ":hover":{backgroundColor:'transparent'}, ":focus-visible":{outline:'none'}}} onClick={() => navigate('/blogs')} >
           Blogs
         </Button>
-      <Button disableRipple variant="text" sx={{color:'gray', ":hover":{backgroundColor:'transparent'}, ":focus-visible":{outline:'none'}}} onClick={() => navigate('/login')} >
-                  Login
+      <Button disableRipple variant="text" sx={{color:'gray', ":hover":{backgroundColor:'transparent'}, ":focus-visible":{outline:'none'}}} onClick={LogInOrOut} >
+                  {localStorage.getItem('name')? 'LOGOUT' : 'LOGIN'}
         </Button>
         <Button disableRipple variant="text" sx={{color:'gray', ":hover":{backgroundColor:'transparent'}, ":focus-visible":{outline:'none'}}} onClick={() => navigate('/signup')} >
-          Sign Up
+        {localStorage.getItem('name')? '' : 'SIGNUP'}
         </Button>
       </div>
     </header>

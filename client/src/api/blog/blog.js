@@ -24,11 +24,14 @@ export const getOneBlog=async(req, res)=>{
     }
 }
 
-export const createBlog=async(req,res)=>{
+export const createBlog=async(blogData)=>{
     try{
-        const blog= req.body;
-        const response= await axios.post(`${API_URL}/blog`, blog)
-        return {blogged: response.data}
+        const response = await axios.post(`${API_URL}/blog`, blogData, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        return response.data
     }
     catch(error){
 

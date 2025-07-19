@@ -27,27 +27,25 @@ const Blogs = () => {
         setExpandedIndex(prevState => prevState.includes(index) ? prevState.filter(expand => expand != index) : [...prevState, index]); // Toggle expand/collapse for each blog
     };
 
-    if (loading) {
-        // Show a loading state while the data is being fetched
-        return (
-            <div className="flex items-center justify-center min-h-screen">
-                <div className="w-full max-w-2xl rounded-lg bg-white py-6 px-20 shadow-lg">
-                    <p>Loading Blogs...</p>
-                </div>
-            </div>
-        );
-    }
+    
 
 
 
     return (
         <>
-            <div className="flex  mt-20 ml-99">
-                <Button disableRipple variant="text" sx={{ height: '4px', color: 'gray', ":hover": { backgroundColor: 'transparent', color:'indigo' }, ":focus-visible": { outline: 'none' } }} onClick={() => navigate('/blogs/newBlog')} >
+            <div className={`flex mt-20 ${loading? 'ml-24' :'ml-99'}`}>
+                <Button disableRipple variant="text" sx={{ height: '4px', color: 'gray', ":hover": { backgroundColor: 'transparent', color: 'indigo' }, ":focus-visible": { outline: 'none' } }} onClick={() => navigate('/blogs/newBlog')} >
                     Create New Blog
                 </Button>
             </div>
 
+            {loading ? 
+                 <div className=" items-center mt-24">
+                 <div className="w-full max-w-2xl rounded-lg bg-white py-6 px-20 shadow-lg">
+                     <p>Loading Blogs...</p>
+                 </div>
+             </div>
+            :
             <div className='flex ml-20'>
                 <div className="flex flex-wrap gap-4 items-start">
                     {
@@ -66,10 +64,10 @@ const Blogs = () => {
                                             {/*Content*/}
 
                                             <div className="mt-2">
-                                                <p style={{fontSize:'11px'}}>{showFullContent ? p.content : `${previewContent}...`}</p>
+                                                <p style={{ fontSize: '11px' }}>{showFullContent ? p.content : `${previewContent}...`}</p>
                                             </div>
                                             {isContentLong && (
-                                                <Button disableRipple variant="text" sx={{ height: '4px', fontSize:'11px',color: 'gray', ":hover": { backgroundColor: 'transparent' }, ":focus-visible": { outline: 'none' } }} onClick={() => handleToggleContent(index)} >
+                                                <Button disableRipple variant="text" sx={{ height: '4px', fontSize: '11px', color: 'gray', ":hover": { backgroundColor: 'transparent' }, ":focus-visible": { outline: 'none' } }} onClick={() => handleToggleContent(index)} >
 
                                                     {showFullContent ? 'See Less' : 'See More'}
                                                 </Button>
@@ -95,7 +93,9 @@ const Blogs = () => {
                 </div>
 
 
-            </div >
+            </div >}
+
+            
         </>
     )
 }

@@ -6,14 +6,17 @@ import App from './App.jsx'
 import { BrowserRouter } from 'react-router-dom'
 import { StyledEngineProvider } from '@mui/material/styles';
 import GlobalStyles from '@mui/material/GlobalStyles';
+import { UserProvider } from './context/UserContext.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrowserRouter>
-      {/* <StyledEngineProvider enableCssLayer>
+    <UserProvider>
+      <BrowserRouter>
+        {/* <StyledEngineProvider enableCssLayer>
         <GlobalStyles styles="@layer theme, base, mui, components, utilities;" /> */}
         <App />
-      {/* </StyledEngineProvider> */}
-    </BrowserRouter>
+        {/* </StyledEngineProvider> */}
+      </BrowserRouter>
+    </UserProvider>
   </StrictMode>,
 )

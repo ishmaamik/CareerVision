@@ -1,16 +1,19 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { login } from '../../api/user/user.js'
 import { useNavigate } from 'react-router-dom';
+import { User } from '../../context/UserContext.jsx';
 
 const Login = () => {
 
     const [credentials, setCredentials] = useState({})
+    const {setUserDetails}= useContext(User)
     const navigate = useNavigate()
 
     const SignIn = async () => {
         const response = await login(credentials)
         if (response?.user) {
             console.log("Logged in:", response.user);
+            localStorage.setItem('name', response.user.name)
             navigate('/'); // or wherever you want to go
         } else {
             alert("Login failed");
