@@ -63,7 +63,7 @@ const Blogs = () => {
 
                                 return (
                                     <>
-                                        <div key={index} className={`transform ${isMounted ? `opacity-100` : `opacity-0 translate-y-5`} transition-all duration-800 ease-in-out flex ml-3 mt-12`}>
+                                        <div key={index} className={`transform ${isMounted ? `opacity-100` : `opacity-0 translate-y-5`} cursor:pointer hover:-translate-y-2 transition-all duration-800 ease-in-out flex ml-3 mt-12`}>
                                             <div className={`break-words ${showFullContent ? 'h-auto' : 'h-40'} w-60  rounded-lg bg-white p-4 shadow-lg`}>
                                                 <b className='text-xs justify-center'>{p.title}</b>
 
