@@ -36,7 +36,7 @@ const Profile = () => {
 
 
                             <div className='relative bg-white h-35 rounded-lg whitespace-nowrap'>
-                                <p className='absolute left-2 top-5 bg-blue-100 rounded-2xl text-blue-900 w-30'>Primary Mail</p>
+                                <p className='absolute left-2 top-5 bg-blue-100 rounded-2xl text-blue-900 w-30 h-7'>Primary Mail</p>
                                 <p className='absolute left-2 top-15  '>siyam@iut-dhaka.edu</p>
                                 <p className='absolute left-2 top-23'>siyambhuiyan@gmail.com</p>
                             </div>
@@ -57,7 +57,7 @@ const Profile = () => {
 
 
                                 <div className='relative bg-white h-35 rounded-lg whitespace-nowrap'>
-                                    <p className='absolute left-2 top-5 bg-blue-100 rounded-2xl text-blue-900 w-30'>Primary Number</p>
+                                    <p className='absolute left-2 top-5 bg-blue-100 rounded-2xl text-blue-900 w-35 h-7'>Primary Number</p>
                                     <p className='absolute left-2 top-15  '>01696969420</p>
                                     <p className='absolute left-2 top-23'>01717171717</p>
                                 </div>
@@ -75,7 +75,7 @@ const Profile = () => {
 
 
                                 <div className='relative bg-white h-35 rounded-lg'>
-                                <p className='absolute left-2 top-5 bg-blue-100 rounded-2xl text-blue-900 w-30'>Primary Address</p>
+                                <p className='absolute left-2 top-5 bg-blue-100 rounded-2xl text-blue-900 w-35 h-7'>Primary Address</p>
                                     <p className='absolute left-2 top-15  '>House 14, Road 6, Dhanmondi, Dhaka-1205</p>
                                     <p className='absolute left-2 top-23'>IUT Male Residence, Board Bazar, Gazipur</p>
                                 </div>
