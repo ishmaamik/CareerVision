@@ -8,7 +8,7 @@ const Profile = () => {
         <>
             <div className='flex'>
                 <div>
-                    <div className="relative top-30 right-20 hover:-translate-y-2 ease-in-out duration-300 shadow-xl">
+                    <div className="relative top-30 right-20 hover:-translate-y-2 ease-in-out duration-300 shadow-2xl">
                         <div className="relative w-120 h-auto max-h-60  rounded-lg  bg-white " >
 
                             <div className='relative bg-gray-100 flex w-full h-15 whitespace-nowrap rounded-lg' >
