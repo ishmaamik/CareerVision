@@ -3,13 +3,15 @@ package CareerVision.controller;
 import CareerVision.model.Blog;
 import CareerVision.repository.BlogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
-
 @RestController
 @RequestMapping("/api/blogs")
-@CrossOrigin(origins = "*") // optional: for frontend testing
+@CrossOrigin(origins = "*")
 public class BlogController {
 
     private final BlogRepository blogRepository;
@@ -19,13 +21,29 @@ public class BlogController {
         this.blogRepository = blogRepository;
     }
 
-    @PostMapping
-    public Blog createBlog(@RequestBody Blog blog) {
-        return blogRepository.save(blog);
+    @PostMapping("/blog")
+    public ResponseEntity<?> createBlog(@RequestBody Blog blog) {
+        try {
+            if (blog.getTitle() == null || blog.getTitle().isEmpty()) {
+                return ResponseEntity.badRequest().body("Title is required");
+            }
+            Blog savedBlog = blogRepository.save(blog);
+            return ResponseEntity.ok(savedBlog);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError()
+                    .body("Error creating blog: " + e.getMessage());
+        }
     }
 
-    @GetMapping
-    public List<Blog> getAllBlogs() {
-        return blogRepository.findAll();
+    @GetMapping("/all")
+    public ResponseEntity<List<Blog>> getAllBlogs() {
+        return ResponseEntity.ok(blogRepository.findAll());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Blog> getBlog(@PathVariable Long id) {
+        return blogRepository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 }
