@@ -8,8 +8,8 @@ const Profile = () => {
         <>
             <div className='flex'>
                 <div>
-                    <div className="relative top-30 right-20">
-                        <div className="relative w-120 h-auto max-h-60  rounded-lg  bg-white shadow-lg">
+                    <div className="relative top-30 right-20 hover:-translate-y-2 ease-in-out duration-300 shadow-xl">
+                        <div className="relative w-120 h-auto max-h-60  rounded-lg  bg-white " >
 
                             <div className='relative bg-gray-100 flex w-full h-20 whitespace-nowrap rounded-lg' >
                                 <p className="font-semibold absolute left-4 top-2">Your Profile</p>
@@ -27,7 +27,7 @@ const Profile = () => {
                         </div>
                     </div>
 
-                    <div className="relative top-50 right-20">
+                    <div className="relative top-50 right-20 hover:-translate-y-2 ease-in-out duration-300 shadow-xl">
                         <div className="relative w-120 h-auto max-h-60  rounded-lg  bg-white shadow-lg">
 
                             <div className='relative bg-gray-100 flex w-full h-16 whitespace-nowrap rounded-lg' >
@@ -48,7 +48,7 @@ const Profile = () => {
                 <div>
                     <div>
 
-                    <div className="relative top-30 left-20">
+                    <div className="relative top-30 left-20 hover:-translate-y-2 duration-300 ease-in-out shadow-xl">
                             <div className="relative w-120 h-auto max-h-60  rounded-lg  bg-white shadow-lg">
 
                                 <div className='relative bg-gray-100 flex w-full h-16 whitespace-nowrap rounded-lg' >
@@ -65,7 +65,7 @@ const Profile = () => {
                             </div>
                         </div>
 
-                        <div className="relative top-50 left-20">
+                        <div className="relative top-50 left-20 hover:-translate-y-2 ease-in-out duration-300 shadow-xl">
                             <div className="relative w-120 h-auto max-h-60  rounded-lg  bg-white shadow-lg">
 
                                 <div className='relative bg-gray-100 flex w-full h-20 whitespace-nowrap rounded-lg' >
