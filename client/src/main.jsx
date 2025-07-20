@@ -7,6 +7,7 @@ import { BrowserRouter } from "react-router-dom";
 import { StyledEngineProvider } from "@mui/material/styles";
 import GlobalStyles from "@mui/material/GlobalStyles";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import { UserProvider } from './context/UserContext.jsx'
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
