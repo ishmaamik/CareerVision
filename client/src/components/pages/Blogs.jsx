@@ -6,6 +6,7 @@ const Blogs = () => {
 
     const [blogs, setBlogs] = useState([])
     const [loading, setLoading] = useState(true);
+    const [isMounted, setMounted] = useState(false)
     const [expandedIndex, setExpandedIndex] = useState([]);
     const navigate = useNavigate()
 
@@ -21,6 +22,11 @@ const Blogs = () => {
 
     useEffect(() => {
         getBlogs()
+        const timer = setTimeout(()=>setMounted(true), 50)
+        return () => {
+            setMounted(false)
+            clearTimeout(timer)
+        }
     }, [])
 
     const handleToggleContent = (index) => {
@@ -40,7 +46,7 @@ const Blogs = () => {
             </div>
 
             {loading ?
-                <div className=" items-center mt-24 ml-10">
+                <div className={`transform ${isMounted ? `opacity-100` : `opacity-0 translate-y-5`} transition-all duration-800 ease-in-out items-center mt-24 ml-10`}>
                     <div className="w-full max-w-2xl rounded-lg bg-white py-6 px-20 shadow-lg">
                         <p>Loading Blogs...</p>
                     </div>
@@ -57,7 +63,7 @@ const Blogs = () => {
 
                                 return (
                                     <>
-                                        <div key={index} className=" flex ml-3 mt-12">
+                                        <div key={index} className={`transform ${isMounted ? `opacity-100` : `opacity-0 translate-y-5`} transition-all duration-800 ease-in-out flex ml-3 mt-12`}>
                                             <div className={`break-words ${showFullContent ? 'h-auto' : 'h-40'} w-60  rounded-lg bg-white p-4 shadow-lg`}>
                                                 <b className='text-xs justify-center'>{p.title}</b>
 
@@ -82,7 +88,7 @@ const Blogs = () => {
 
                                 :
 
-                                <div className="fixed  left-1/2 transform -translate-x-1/2  flex items-center justify-center min-h-screen">
+                                <div className={`fixed transform ${isMounted ? `opacity-100` : `opacity-0 translate-y-5`} transition-all duration-800 ease-in-out left-1/2 transform -translate-x-1/2  flex items-center justify-center min-h-screen`}>
                                     <div className="w-full max-w-2xl rounded-lg bg-white py-6 px-20 shadow-lg">
                                         <p>No Blogs Currently Available</p>
                                     </div>

@@ -1,12 +1,23 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import ishu from '../../assets/siyam.jpg'
 import { User } from '../../context/UserContext'
+import { useLocation } from 'react-router-dom'
+
 const Profile = () => {
 
-    const { userDetails } = useContext(User)
+    const [isMounted, setMounted]= useState(false)
+
+    useEffect(() => {
+        const timer = setTimeout(() => setMounted(true), 10);
+        return () => {
+          setMounted(false);
+          clearTimeout(timer);
+        };
+      }, []);
+
     return (
         <>
-            <div className='flex'>
+            <div className={`flex transition-all duration-800 ease-in-out ${isMounted? `opacity-100 translate-y-0` : `opacity-0 translate-y-5`}`}>
                 <div>
                     <div className="relative top-30 right-20 hover:-translate-y-2 ease-in-out duration-300 shadow-2xl">
                         <div className="relative w-120 h-auto max-h-60  rounded-lg  bg-white " >
