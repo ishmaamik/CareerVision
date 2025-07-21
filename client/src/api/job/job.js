@@ -28,3 +28,16 @@ export const getJobsByRecruiter = async (email) => {
     throw error;
   }
 };
+
+export const getExternalJobs = async (keyword, location) => {
+  try {
+    const response = await axios.get(
+      `http://localhost:8080/api/jobs/external?keyword=${keyword}&location=${location}`
+    );
+    return response.data.results;
+  } catch (error) {
+    console.error("Failed to fetch external jobs", error);
+    return [];
+  }
+};
+

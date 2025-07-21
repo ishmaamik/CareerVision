@@ -1,135 +1,189 @@
-import React, { useState, useEffect, useContext } from "react";
-import { getAllJobs } from "../../api/job/job";
-import { FiSearch, FiMapPin, FiBriefcase, FiPlus } from "react-icons/fi";
-import { User } from "../../context/UserContext";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { createJob } from "../../api/job/job";
+import axios from "axios";
 
-const JobPage = () => {
-  const navigate = useNavigate();
-  const [jobs, setJobs] = useState([]);
-  const [filteredJobs, setFilteredJobs] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [locationFilter, setLocationFilter] = useState("");
-  const [companyFilter, setCompanyFilter] = useState("");
-  const { userDetails } = useContext(User);
+const Job = () => {
+  const [localJobs, setLocalJobs] = useState([]);
+  const [externalJobs, setExternalJobs] = useState([]);
+  const [keyword, setKeyword] = useState("");
+  const [location, setLocation] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [filter, setFilter] = useState("");
+  const [activeTab, setActiveTab] = useState("all"); // 'all' | 'local' | 'external'
 
   useEffect(() => {
-    loadJobs();
+    axios
+      .get("http://localhost:8080/api/jobs/all")
+      .then((res) => setLocalJobs(res.data))
+      .catch((err) => console.error("Error fetching local jobs:", err));
   }, []);
 
-  const loadJobs = async () => {
+  const handleSearch = async () => {
+    if (!keyword || !location) {
+      alert("Please enter both keyword and location");
+      return;
+    }
+    setLoading(true);
     try {
-      const data = await getAllJobs();
-      setJobs(data);
-      setFilteredJobs(data);
+      const res = await axios.get(`http://localhost:8080/api/jobs/external`, {
+        params: { keyword, location },
+      });
+      setExternalJobs(res.data);
     } catch (error) {
-      console.error("Error loading jobs:", error);
+      console.error("Error fetching external jobs:", error);
+      setExternalJobs([]);
+    } finally {
+      setLoading(false);
     }
   };
 
-  useEffect(() => {
-    const filtered = jobs.filter((job) => {
-      const matchesSearch =
-        job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        job.description.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesLocation =
-        !locationFilter ||
-        job.location.toLowerCase().includes(locationFilter.toLowerCase());
-      const matchesCompany =
-        !companyFilter ||
-        job.company.toLowerCase().includes(companyFilter.toLowerCase());
+  const filterJobs = (jobs) => {
+    return jobs.filter((job) =>
+      job.title?.toLowerCase().includes(filter.toLowerCase())
+    );
+  };
 
-      return matchesSearch && matchesLocation && matchesCompany;
-    });
-    setFilteredJobs(filtered);
-  }, [searchTerm, locationFilter, companyFilter, jobs]);
+  const renderJobs = (jobs, type = "local") => {
+    return (
+      <ul className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+        {jobs.map((job, idx) => (
+          <li
+            key={idx}
+            className="bg-white p-4 rounded-xl border shadow hover:shadow-lg transition"
+          >
+            <h3 className="text-lg font-bold mb-1">{job.title}</h3>
+            <p>
+              <strong>Company:</strong>{" "}
+              {type === "external" ? job.company.display_name : job.company}
+            </p>
+            <p>
+              <strong>Location:</strong>{" "}
+              {type === "external" ? job.location.display_name : job.location}
+            </p>
+            <p className="text-sm text-gray-600 mt-2">
+              {type === "external"
+                ? job.description?.substring(0, 150)
+                : job.description}
+              ...
+            </p>
+            {type === "external" && (
+              <a
+                href={job.redirect_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 underline mt-2 inline-block"
+              >
+                View Job
+              </a>
+            )}
+          </li>
+        ))}
+      </ul>
+    );
+  };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      {/* Header Section */}
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-800">Job Opportunities</h1>
-        {userDetails?.role === "RECRUITER" && (
+    <div className="p-6 max-w-screen-xl mx-auto">
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold">Job Listings</h1>
+        <button
+          onClick={() => (window.location.href = "/jobs/create")}
+          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+        >
+          + Create Job
+        </button>
+      </div>
+
+      {/* Tabs */}
+      <div className="flex gap-4 mb-4 border-b pb-2">
+        {["all", "local", "external"].map((tab) => (
           <button
-            onClick={() => navigate("/jobs/create")}
-            className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            key={tab}
+            className={`capitalize px-4 py-1 rounded-t ${
+              activeTab === tab ? "bg-blue-600 text-white" : "bg-gray-200"
+            }`}
+            onClick={() => setActiveTab(tab)}
           >
-            <FiPlus className="mr-2" />
-            Post a Job
+            {tab} Jobs
           </button>
-        )}
-      </div>
-
-      {/* Search and Filter Section */}
-      <div className="bg-white rounded-xl shadow-md p-6 mb-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {/* Search Input */}
-          <div className="relative">
-            <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-            <input
-              type="text"
-              placeholder="Search jobs..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-
-          {/* Location Filter */}
-          <div className="relative">
-            <FiMapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-            <input
-              type="text"
-              placeholder="Filter by location..."
-              value={locationFilter}
-              onChange={(e) => setLocationFilter(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-
-          {/* Company Filter */}
-          <div className="relative">
-            <FiBriefcase className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-            <input
-              type="text"
-              placeholder="Filter by company..."
-              value={companyFilter}
-              onChange={(e) => setCompanyFilter(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* Job Listings */}
-      <div className="grid grid-cols-1 gap-6">
-        {filteredJobs.map((job) => (
-          <div
-            key={job.id}
-            className="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow"
-          >
-            <div className="flex justify-between items-start">
-              <div>
-                <h2 className="text-xl font-semibold text-gray-800 mb-2">
-                  {job.title}
-                </h2>
-                <div className="flex items-center text-gray-600 mb-4">
-                  <FiBriefcase className="mr-2" />
-                  <span className="mr-4">{job.company}</span>
-                  <FiMapPin className="mr-2" />
-                  <span>{job.location}</span>
-                </div>
-                <p className="text-gray-600 mb-4">{job.description}</p>
-              </div>
-              <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-                Apply Now
-              </button>
-            </div>
-          </div>
         ))}
       </div>
+
+      {/* Filter */}
+      <div className="mb-6">
+        <input
+          type="text"
+          value={filter}
+          onChange={(e) => setFilter(e.target.value)}
+          placeholder="Filter by job title..."
+          className="p-2 border w-full rounded"
+        />
+      </div>
+
+      {/* External Job Search */}
+      {activeTab === "external" && (
+        <div className="mb-6 p-4 border rounded bg-gray-50">
+          <h2 className="text-xl font-semibold mb-2">Search External Jobs</h2>
+          <div className="flex gap-4 mb-2 flex-col sm:flex-row">
+            <input
+              type="text"
+              value={keyword}
+              onChange={(e) => setKeyword(e.target.value)}
+              placeholder="Keyword (e.g. developer)"
+              className="p-2 border rounded w-full sm:w-1/2"
+            />
+            <input
+              type="text"
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+              placeholder="Location (e.g. New York)"
+              className="p-2 border rounded w-full sm:w-1/2"
+            />
+          </div>
+          <button
+            onClick={handleSearch}
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          >
+            {loading ? "Searching..." : "Search"}
+          </button>
+        </div>
+      )}
+
+      {/* Job Listings by Tab */}
+      {activeTab === "all" && (
+        <>
+          <h2 className="text-2xl font-semibold mb-3">All Jobs</h2>
+          {filterJobs([...localJobs, ...externalJobs]).length === 0 ? (
+            <p>No jobs found.</p>
+          ) : (
+            renderJobs(filterJobs([...localJobs, ...externalJobs]), "mixed")
+          )}
+        </>
+      )}
+
+      {activeTab === "local" && (
+        <>
+          <h2 className="text-2xl font-semibold mb-3">Local Jobs</h2>
+          {filterJobs(localJobs).length === 0 ? (
+            <p>No local jobs found.</p>
+          ) : (
+            renderJobs(filterJobs(localJobs))
+          )}
+        </>
+      )}
+
+      {activeTab === "external" && (
+        <>
+          <h2 className="text-2xl font-semibold mb-3">External Jobs</h2>
+          {filterJobs(externalJobs).length === 0 ? (
+            <p>No external jobs to show.</p>
+          ) : (
+            renderJobs(filterJobs(externalJobs), "external")
+          )}
+        </>
+      )}
     </div>
   );
 };
 
-export default JobPage;
+export default Job;
