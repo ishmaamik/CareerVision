@@ -7,6 +7,7 @@ import Login from './components/pages/Login';
 import Signup from './components/pages/Signup';
 import Blogs from './components/pages/Blogs';
 import NewBlog from './components/pages/NewBlog';
+import Profile from './components/pages/Profile';
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
             <Route path='/signup' element={<Signup/>}/>
             <Route path='/blogs' element={<Blogs/>}/>
             <Route path='/blogs/newBlog' element={<NewBlog/>}/>
+            <Route path='/profile' element={<Profile/>}/>
           </Routes>
           
       </div>

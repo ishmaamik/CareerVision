@@ -1,0 +1,54 @@
+<div className="relative top-90 right-90">
+                <div className="relative w-120 h-auto max-h-60  rounded-lg  bg-white shadow-lg">
+
+                    <div className='relative bg-gray-100 flex w-full h-20 whitespace-nowrap rounded-lg' >
+                        <p className="font-semibold absolute left-4 top-2">Your Profile</p>
+                        <p className="   whitespace-nowrap absolute right-4">Joined 20/07/25</p>
+
+                    </div>
+
+
+                    <div className='relative bg-white h-50 rounded-lg'>
+                        <img className='absolute left-2 top-5 w-16 ' style={{ borderRadius: '50%' }} src={ishu} />
+                        <p className='absolute left-2 top-24  '>Siyam1523789</p>
+                        <p className='absolute left-2 top-32'>{localStorage.getItem('number') ? localStorage.getItem('number') : '01696969420'}</p>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div className="transform -translate-x-100 translate-y-40 ">
+                <div className="w-100 h-auto max-w-100  rounded-lg  bg-white shadow-lg">
+
+                    <div className='bg-gray-100 flex w-full h-16' >
+                        <p className="font-semibold transform translate-y-5">Email Addresses</p>
+                    </div>
+
+
+                    <div className='pb-6'>
+                        <p className='bg-blue-100 rounded-2xl ml-2 mt-6 text-blue-900 w-30'>Primary Mail</p>
+                        <p className='font-bold mr-55 whitespace-nowrap'>siyam@iut-dhaka.edu</p>
+                        <p className='mr-49.5'>siyambhuiyan@gmail.com</p>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div className="transform -translate-x-100 translate-y-50 ">
+                <div className="w-100 h-auto max-w-100  rounded-lg  bg-white shadow-lg">
+
+                    <div className='bg-gray-100 flex w-full h-16' >
+                        <p className="font-semibold transform translate-y-5">Phone Number</p>
+                    </div>
+
+
+                    <div className='pb-6'>
+                        <p className='bg-blue-100 rounded-2xl ml-2 mt-6 text-blue-900 w-30'>Primary Mail</p>
+                        <p className='font-bold mr-65 whitespace-nowrap'>01696969420</p>
+                        <p className='mr-67'>01717171717</p>
+                    </div>
+
+                </div>
+            </div>
