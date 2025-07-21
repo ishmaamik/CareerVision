@@ -1,41 +1,47 @@
-import './App.css';
-import React from 'react';
-import Topbar from './components/bars/Topbar'; // adjust path as needed
-import Home from './components/pages/Home';
-import { Route, Routes } from 'react-router-dom';
-import Login from './components/pages/Login';
-import Signup from './components/pages/Signup';
-import Blogs from './components/pages/Blogs';
-import NewBlog from './components/pages/NewBlog';
+import "./App.css";
+import React from "react";
+import Topbar from "./components/bars/Topbar"; // adjust path as needed
+import Home from "./components/pages/Home";
+import { Route, Routes } from "react-router-dom";
+import { UserProvider } from "./context/UserContext";
+import Login from "./components/pages/Login";
+import Signup from "./components/pages/Signup";
+import Blogs from "./components/pages/Blogs";
+import NewBlog from "./components/pages/NewBlog";
+import Profile from "./components/pages/Profile";
+import JobPage from "./components/pages/job";
+import CreateJob from "./components/pages/CreateJob";
 
 function App() {
   return (
-    <>
+    <UserProvider>
       {/* Fullscreen Dreamy Glow Background */}
       <div
         className="fixed inset-0 -z-10"
         style={{
-          backgroundColor: '#fefcff',
+          backgroundColor: "#fefcff",
           backgroundImage: `
             radial-gradient(circle at 30% 70%, rgba(173, 216, 230, 0.35), transparent 60%),
             radial-gradient(circle at 70% 30%, rgba(255, 182, 193, 0.4), transparent 60%)
           `,
         }}
       ></div>
-{}
-      <div className="min-h-screen flex flex-col text-black">       
+      {}
+      <div className="min-h-screen flex flex-col text-black">
         <Topbar />
-        
-          <Routes>
-            <Route path='/' element={<Home/>}/>
-            <Route path='/login'  element={<Login/>}/>
-            <Route path='/signup' element={<Signup/>}/>
-            <Route path='/blogs' element={<Blogs/>}/>
-            <Route path='/blogs/newBlog' element={<NewBlog/>}/>
-          </Routes>
-          
+
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/blogs" element={<Blogs />} />
+          <Route path="/blogs/newBlog" element={<NewBlog />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/jobs" element={<JobPage />} />
+          <Route path="/jobs/create" element={<CreateJob />} />
+        </Routes>
       </div>
-    </>
+    </UserProvider>
   );
 }
 

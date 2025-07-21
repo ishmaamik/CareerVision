@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { login } from '../../api/user/user.js'
 import { useNavigate } from 'react-router-dom';
 import { User } from '../../context/UserContext.jsx';
@@ -6,23 +6,32 @@ import { User } from '../../context/UserContext.jsx';
 const Login = () => {
 
     const [credentials, setCredentials] = useState({})
-    const {setUserDetails}= useContext(User)
+    const { setUserDetails } = useContext(User)
     const navigate = useNavigate()
+    const [isMounted, setMounted] = useState(false)
+
+    useEffect(() => {
+        const timer = setTimeout(() => setMounted(true), 10);
+        return () => {
+            setMounted(false);
+            clearTimeout(timer);
+        };
+    }, []);
 
     const SignIn = async () => {
         const response = await login(credentials)
         if (response?.user) {
             console.log("Logged in:", response.user);
             localStorage.setItem('name', response.user.name)
-            navigate('/'); // or wherever you want to go
+            navigate('/profile'); // or wherever you want to go
         } else {
             alert("Login failed");
         }
     }
 
     return (
-        <div className="fixed  left-1/2 transform -translate-x-1/2  flex items-center justify-center min-h-screen">
-           <div className="w-full max-w-2xl rounded-lg bg-white py-6 px-20 shadow-lg">
+        <div className={`fixed transition-all duration-800 ease-in-out ${isMounted ? `opacity-100 translate-y-0` : `opacity-0 translate-y-3`} left-1/2 transform -translate-x-1/2  flex items-center justify-center min-h-screen`}>
+            <div className="w-full max-w-2xl rounded-lg bg-white py-6 px-20 shadow-lg">
                 {/* Logo and Heading */}
                 <div className="text-center">
                     <h2 className="mt-4 text-xl font-bold tracking-tight text-gray-900">

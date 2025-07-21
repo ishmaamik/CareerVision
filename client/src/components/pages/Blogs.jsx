@@ -6,6 +6,7 @@ const Blogs = () => {
 
     const [blogs, setBlogs] = useState([])
     const [loading, setLoading] = useState(true);
+    const [isMounted, setMounted] = useState(false)
     const [expandedIndex, setExpandedIndex] = useState([]);
     const navigate = useNavigate()
 
@@ -21,81 +22,86 @@ const Blogs = () => {
 
     useEffect(() => {
         getBlogs()
+        const timer = setTimeout(()=>setMounted(true), 50)
+        return () => {
+            setMounted(false)
+            clearTimeout(timer)
+        }
     }, [])
 
     const handleToggleContent = (index) => {
         setExpandedIndex(prevState => prevState.includes(index) ? prevState.filter(expand => expand != index) : [...prevState, index]); // Toggle expand/collapse for each blog
     };
 
-    
+
 
 
 
     return (
         <>
-            <div className={`flex mt-20 ${loading? 'ml-24' :'ml-99'}`}>
+            <div className={`flex mt-20 ${loading ? 'ml-24' : 'ml-99'}`}>
                 <Button disableRipple variant="text" sx={{ height: '4px', color: 'gray', ":hover": { backgroundColor: 'transparent', color: 'indigo' }, ":focus-visible": { outline: 'none' } }} onClick={() => navigate('/blogs/newBlog')} >
                     Create New Blog
                 </Button>
             </div>
 
-            {loading ? 
-                 <div className=" items-center mt-24 ml-10">
-                 <div className="w-full max-w-2xl rounded-lg bg-white py-6 px-20 shadow-lg">
-                     <p>Loading Blogs...</p>
-                 </div>
-             </div>
-            :
-            <div className='flex ml-20'>
-                <div className="flex flex-wrap gap-4 items-start">
-                    {
-                        blogs.length > 0 ? blogs.map((p, index) => {
-
-                            const previewContent = p.content.substring(0, 100); // Limit content to 200 chars for preview
-                            const isContentLong = p.content.length > 100;
-                            const showFullContent = expandedIndex.includes(index);
-
-                            return (
-                                <>
-                                    <div key={index} className=" flex ml-3 mt-12">
-                                        <div className={`break-words ${showFullContent ? 'h-auto' : 'h-40'} w-60  rounded-lg bg-white p-4 shadow-lg`}>
-                                            <b className='text-xs justify-center'>{p.title}</b>
-
-                                            {/*Content*/}
-
-                                            <div className="mt-2">
-                                                <p style={{ fontSize: '11px' }}>{showFullContent ? p.content : `${previewContent}...`}</p>
-                                            </div>
-                                            {isContentLong && (
-                                                <Button disableRipple variant="text" sx={{ height: '4px', fontSize: '11px', color: 'gray', ":hover": { backgroundColor: 'transparent' }, ":focus-visible": { outline: 'none' } }} onClick={() => handleToggleContent(index)} >
-
-                                                    {showFullContent ? 'See Less' : 'See More'}
-                                                </Button>
-                                            )}
-
-                                            <i className='text-xs block mt-2 pr-1'>~{p.author}</i>
-                                        </div>
-                                    </div>
-                                </>
-                            );
-                        })
-
-                            :
-
-                            <div className="fixed  left-1/2 transform -translate-x-1/2  flex items-center justify-center min-h-screen">
-                                <div className="w-full max-w-2xl rounded-lg bg-white py-6 px-20 shadow-lg">
-                                    <p>No Blogs Currently Available</p>
-                                </div>
-                            </div>
-                    }
-
-
+            {loading ?
+                <div className={`transform ${isMounted ? `opacity-100` : `opacity-0 translate-y-5`} transition-all duration-800 ease-in-out items-center mt-24 ml-10`}>
+                    <div className="w-full max-w-2xl rounded-lg bg-white py-6 px-20 shadow-lg">
+                        <p>Loading Blogs...</p>
+                    </div>
                 </div>
+                :
+                <div className='flex ml-20'>
+                    <div className="flex flex-wrap gap-4 items-start">
+                        {
+                            blogs.length > 0 ? blogs.map((p, index) => {
+
+                                const previewContent = p.content.substring(0, 100); // Limit content to 200 chars for preview
+                                const isContentLong = p.content.length > 100;
+                                const showFullContent = expandedIndex.includes(index);
+
+                                return (
+                                    <>
+                                        <div key={index} className={`transform ${isMounted ? `opacity-100` : `opacity-0 translate-y-5`} cursor:pointer hover:-translate-y-2 transition-all duration-800 ease-in-out flex ml-3 mt-12`}>
+                                            <div className={`break-words ${showFullContent ? 'h-auto' : 'h-40'} w-60  rounded-lg bg-white p-4 shadow-lg`}>
+                                                <b className='text-xs justify-center'>{p.title}</b>
+
+                                                {/*Content*/}
+
+                                                <div className="mt-2">
+                                                    <p style={{ fontSize: '11px' }}>{showFullContent ? p.content : `${previewContent}...`}</p>
+                                                </div>
+                                                {isContentLong && (
+                                                    <Button disableRipple variant="text" sx={{ height: '4px', fontSize: '11px', color: 'gray', ":hover": { backgroundColor: 'transparent' }, ":focus-visible": { outline: 'none' } }} onClick={() => handleToggleContent(index)} >
+
+                                                        {showFullContent ? 'See Less' : 'See More'}
+                                                    </Button>
+                                                )}
+
+                                                <i className='text-xs block mt-2 pr-1'>~{p.author}</i>
+                                            </div>
+                                        </div>
+                                    </>
+                                );
+                            })
+
+                                :
+
+                                <div className={`fixed transform ${isMounted ? `opacity-100` : `opacity-0 translate-y-5`} transition-all duration-800 ease-in-out left-1/2 transform -translate-x-1/2  flex items-center justify-center min-h-screen`}>
+                                    <div className="w-full max-w-2xl rounded-lg bg-white py-6 px-20 shadow-lg">
+                                        <p>No Blogs Currently Available</p>
+                                    </div>
+                                </div>
+                        }
 
 
-            </div >}
+                    </div>
 
-            
+
+                </div >}
+
+
         </>
     )
 }
