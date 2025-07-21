@@ -17,9 +17,9 @@ public class CVData {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Lob
+    @Column(columnDefinition = "TEXT")
     private String extractedText;
 
-    @Lob
+    @Column(columnDefinition = "TEXT")
     private String analysisJson;
 }
