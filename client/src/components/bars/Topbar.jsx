@@ -91,6 +91,17 @@ const Topbar = () => {
             >
               SIGNUP
             </Button>
+            {/* <Button>
+              disableRipple
+              variant="text"
+              sx={{
+                color: "gray",
+                ":hover": { backgroundColor: "transparent" },
+                ":focus-visible": { outline: "none" },
+              }}
+              onClick={() => navigate("/jobs")}
+              JOBS
+            </Button> */}
           </>
         )}
       </div>
