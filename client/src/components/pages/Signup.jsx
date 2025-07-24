@@ -21,6 +21,8 @@ const Signup = () => {
         const response = await register(credentials)
         if (response) {
             console.log(response.data)
+            localStorage.setItem('name', response.user.name)
+            localStorage.setItem('role', response.user.role)
             navigate('/profile')
         }
         else {
