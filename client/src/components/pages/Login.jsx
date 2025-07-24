@@ -23,6 +23,7 @@ const Login = () => {
         if (response?.user) {
             console.log("Logged in:", response.user);
             localStorage.setItem('name', response.user.name)
+            localStorage.setItem('role', response.user.role)
             navigate('/profile'); // or wherever you want to go
         } else {
             alert("Login failed");

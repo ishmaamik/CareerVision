@@ -45,7 +45,7 @@ const Job = () => {
 
   const renderJobs = (jobs, type = "local") => {
     return (
-      <ul className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+      <ul style={{cursor:'pointer'}}  className="cursor:pointer grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
         {jobs.map((job, idx) => (
           <li
             key={idx}
@@ -66,16 +66,28 @@ const Job = () => {
                 : job.description}
               ...
             </p>
-            {type === "external" && (
+            {type === "external" ? (
               <a
                 href={job.redirect_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-blue-600 underline mt-2 inline-block"
+                className="text-white underline mt-2 inline-block"
               >
                 View Job
               </a>
-            )}
+            )
+          :
+          <a
+                href={`/job/${idx+1}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block mt-4 px-4 py-2  rounded hover:bg-gray-800 "
+                style={{backgroundColor:'black', color:'white'}}
+                
+              >
+                View Job
+              </a>
+          }
           </li>
         ))}
       </ul>
@@ -83,15 +95,29 @@ const Job = () => {
   };
 
   return (
-    <div className="p-6 max-w-screen-xl mx-auto">
-      <div className="flex justify-between items-center mb-6">
+    <div className="p-20 max-w-screen-xl mx-auto">
+      <div className="flex justify-between items-center mb-6 ">
         <h1 className="text-3xl font-bold">Job Listings</h1>
-        <button
-          onClick={() => (window.location.href = "/jobs/create")}
-          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-        >
-          + Create Job
-        </button>
+        {
+         localStorage.getItem('role')!=='user' ?
+          <button
+            onClick={() => (window.location.href = "/jobs/create")}
+            style={{ backgroundColor: 'black' }}
+            className=" text-white px-4 py-2 rounded"
+          >
+            + Create Job
+          </button>
+          :
+          <>
+          <button
+            onClick={() => (window.location.href = "/jobs/create")}
+            style={{ backgroundColor: 'black' }}
+            className=" text-white px-4 py-2 rounded"
+          >
+            + Apply to Job
+          </button>
+          </>
+        }
       </div>
 
       {/* Tabs */}
@@ -99,9 +125,8 @@ const Job = () => {
         {["all", "local", "external"].map((tab) => (
           <button
             key={tab}
-            className={`capitalize px-4 py-1 rounded-t ${
-              activeTab === tab ? "bg-blue-600 text-white" : "bg-gray-200"
-            }`}
+            className={`capitalize px-4 py-1 rounded-t ${activeTab === tab ? "bg-blue-600 text-black" : "bg-gray-200"
+              }`}
             onClick={() => setActiveTab(tab)}
           >
             {tab} Jobs
@@ -142,7 +167,7 @@ const Job = () => {
           </div>
           <button
             onClick={handleSearch}
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+            className="bg-blue-600 text-black px-4 py-2 rounded hover:bg-blue-700"
           >
             {loading ? "Searching..." : "Search"}
           </button>

@@ -37,6 +37,19 @@ const Topbar = () => {
         >
           Blogs
         </Button>
+
+        <Button
+          disableRipple
+          variant="text"
+          sx={{
+            color: "gray",
+            ":hover": { backgroundColor: "transparent" },
+            ":focus-visible": { outline: "none" },
+          }}
+          onClick={() => navigate("/jobs")}
+        >
+          Jobs
+        </Button>
         {localStorage.getItem("name") ? (
           <>
             <Button

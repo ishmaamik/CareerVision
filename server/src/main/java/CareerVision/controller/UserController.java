@@ -24,7 +24,7 @@ public class UserController {
 
     // 🟡 User Registration
     @PostMapping("/signup")
-    public String signup(@RequestBody User user) {
+    public Object signup(@RequestBody User user) {
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
             return "Error: Email already in use";
         }
@@ -42,7 +42,7 @@ public class UserController {
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
-        return "Signup successful";
+        return user;
     }
 
 
