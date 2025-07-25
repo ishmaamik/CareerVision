@@ -10,7 +10,10 @@ const Job = () => {
   const [loading, setLoading] = useState(false);
   const [filter, setFilter] = useState("");
   const [activeTab, setActiveTab] = useState("all"); // 'all' | 'local' | 'external'
-
+  const [jobTitle, setJobTitle]= useState('')
+  const [jobName, setJobName]= useState('')
+  const [jobLocation, setJobLocation]= useState('')
+  const [jobDescription, setjobDescription]= useState('')
   useEffect(() => {
     axios
       .get("http://localhost:8080/api/jobs/all")
@@ -78,7 +81,7 @@ const Job = () => {
             )
           :
           <a
-                href={`/job/${idx+1}`}
+                href={`/jobs/1`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-block mt-4 px-4 py-2  rounded hover:bg-gray-800 "
@@ -109,13 +112,7 @@ const Job = () => {
           </button>
           :
           <>
-          <button
-            onClick={() => (window.location.href = "/jobs/create")}
-            style={{ backgroundColor: 'black' }}
-            className=" text-white px-4 py-2 rounded"
-          >
-            + Apply to Job
-          </button>
+          
           </>
         }
       </div>

@@ -40,7 +40,7 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/jobs" element={<JobPage />} />
           <Route path="/jobs/create" element={<CreateJob />} />
-          <Route path="/jobs/apply" element={<ApplyJob />} />
+          <Route path="/jobs/:id" element={<ApplyJob />} />
         </Routes>
       </div>
     </UserProvider>
