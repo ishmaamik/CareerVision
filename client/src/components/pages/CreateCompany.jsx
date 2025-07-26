@@ -48,7 +48,7 @@ const CreateCompany = () => {
               </label>
               <input
                 type="text"
-                name="title"
+                name="name"
                 value={formData.name}
                 onChange={handleChange}
                 required
@@ -77,7 +77,7 @@ const CreateCompany = () => {
                 Company Overview
               </label>
               <textarea
-                name="description"
+                name="overview"
                 value={formData.overview}
                 onChange={handleChange}
                 required
@@ -92,7 +92,7 @@ const CreateCompany = () => {
                 Company Commitments
               </label>
               <textarea
-                name="description"
+                name="commitments"
                 value={formData.commitments}
                 onChange={handleChange}
                 required

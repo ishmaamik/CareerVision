@@ -15,6 +15,7 @@ public class Blog {
     private Long id;
 
     private String title;
+    @Column(length = 1200)
     private String content;
     private String author;
 }

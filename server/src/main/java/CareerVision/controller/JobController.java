@@ -31,10 +31,10 @@ public class JobController {
         return jobRepository.findAll();
     }
 
-    @GetMapping("/by/{email}")
-    public List<Job> getJobsByRecruiter(@PathVariable String email) {
-        return jobRepository.findByPostedBy(email);
-    }
+//    @GetMapping("/by/{email}")
+//    public List<Job> getJobsByRecruiter(@PathVariable String email) {
+//        return jobRepository.findByPostedBy(email);
+//    }
 
     // return list of DTOs from Adzuna API
     @GetMapping("/external")

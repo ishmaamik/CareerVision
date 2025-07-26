@@ -19,7 +19,7 @@ public class Company {
     private Long id;
     private String name;
     private String overview;
-    private String[] location;
+    private String location;
     private String commitment;
 
 }

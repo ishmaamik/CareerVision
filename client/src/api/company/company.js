@@ -13,7 +13,7 @@ export const createCompany = async (jobData) => {
 
 export const getAllCompany = async () => {
   try {
-    const response = await axios.get(`${BASE_URL}/getAllCompany`);
+    const response = await axios.get(`${BASE_URL}/getAllCompanies`);
     return response.data;
   } catch (error) {
     throw error;

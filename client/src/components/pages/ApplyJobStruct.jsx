@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-const ApplyJob = () => {
+const ApplyJobStruct = () => {
 
     const [tab, setTab] = useState('Description')
     const [isMounted, setMounted] = useState(false)
@@ -94,11 +94,11 @@ const ApplyJob = () => {
                 style={{ backgroundColor: 'black' }}
                 className="mt-6 ml-160 text-white  rounded w-40 h-14"
             >
-                Apply to Job
+                + Apply to Job
             </button>
 
         </>
     )
 }
 
-export default ApplyJob;
+export default ApplyJobStruct;
