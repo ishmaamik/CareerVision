@@ -1,21 +1,17 @@
-import React, { useState, useContext, useEffect } from "react";
-import { createJob } from "../../api/job/job";
-import { getAllCompany } from "../../api/company/company";
-import { User } from "../../context/UserContext";
+import React, { useState, useContext } from "react";
+import { createCompany } from "../../api/company/company";
 import { useNavigate } from "react-router-dom";
 
-const CreateJob = () => {
+const CreateCompany = () => {
   const navigate = useNavigate();
-  const { userDetails } = useContext(User);
-  const [companies, setCompanies]= useState([])
-  const [loadingCompanies, setLoadingCompanies] = useState(true);
   const [formData, setFormData] = useState({
-    title: "",
-    description: "",
-    company: "",
+    name: "",
     location: "",
-    postedBy: userDetails?.email || "",
+    overview: "",
+    commitments: "",
   });
+
+  
 
   const handleChange = (e) => {
     setFormData({
@@ -24,24 +20,10 @@ const CreateJob = () => {
     });
   };
 
-  useEffect(() => {
-    const fetchCompanies = async () => {
-      try {
-        const response = await getAllCompany();
-        setCompanies(response.data);
-        setLoadingCompanies(false);
-      } catch (error) {
-        console.error("Error fetching companies:", error);
-        setLoadingCompanies(false);
-      }
-    };
-    fetchCompanies();
-  }, []);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await createJob(formData);
+      await createCompany(formData);
       navigate("/jobs");
     } catch (error) {
       console.error("Error creating job:", error);
@@ -52,7 +34,7 @@ const CreateJob = () => {
     <div className="container mx-auto mt-6 px-4 py-8">
       <div className="max-w-2xl mx-auto">
         <h1 className="text-3xl font-bold text-gray-800 mb-8">
-          Post a New Job
+          Create a New Company
         </h1>
 
         <form
@@ -62,45 +44,17 @@ const CreateJob = () => {
           <div className="space-y-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Job Title
+                Company Name
               </label>
               <input
                 type="text"
                 name="title"
-                value={formData.title}
+                value={formData.name}
                 onChange={handleChange}
                 required
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="e.g., Senior Software Engineer"
+                placeholder="e.g., Samsung"
               />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Company
-              </label>
-              <select
-                type="text"
-                name="company"
-                value={formData.company}
-                onChange={handleChange}
-                required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="e.g., Tech Corp"
-                
-              >
-                <option>Select a company</option>
-                <option onClick={()=>navigate('/company/create')}>Create a company</option>
-                {loadingCompanies ? (
-                    <option value="" disabled>Loading companies...</option>
-                  ) : (
-                    companies.map((company) => (
-                      <option key={company.id} value={company.name}>
-                        {company.name}
-                      </option>
-                    ))
-                  )}
-                </select>
             </div>
 
             <div>
@@ -114,22 +68,37 @@ const CreateJob = () => {
                 onChange={handleChange}
                 required
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="e.g., New York, NY"
+                placeholder="e.g., Dhaka, Bangladesh"
               />
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Job Description
+                Company Overview
               </label>
               <textarea
                 name="description"
-                value={formData.description}
+                value={formData.overview}
                 onChange={handleChange}
                 required
                 rows="6"
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Enter detailed job description..."
+                placeholder="Enter detailed Company Overview..."
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Company Commitments
+              </label>
+              <textarea
+                name="description"
+                value={formData.commitments}
+                onChange={handleChange}
+                required
+                rows="6"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Enter detailed Company Commitments..."
               />
             </div>
 
@@ -146,7 +115,7 @@ const CreateJob = () => {
                 style={{backgroundColor:'black'}}
                 className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
               >
-                Post Job
+                Create
               </button>
             </div>
           </div>
@@ -156,4 +125,4 @@ const CreateJob = () => {
   );
 };
 
-export default CreateJob;
+export default CreateCompany;

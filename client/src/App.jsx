@@ -12,6 +12,7 @@ import Profile from "./components/pages/Profile";
 import JobPage from "./components/pages/job";
 import CreateJob from "./components/pages/CreateJob";
 import ApplyJob from "./components/pages/ApplyJob";
+import CreateCompany from "./components/pages/CreateCompany";
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
           <Route path="/jobs" element={<JobPage />} />
           <Route path="/jobs/create" element={<CreateJob />} />
           <Route path="/jobs/:id" element={<ApplyJob />} />
+          <Route path="/company/create" element={<CreateCompany />} />
         </Routes>
       </div>
     </UserProvider>
