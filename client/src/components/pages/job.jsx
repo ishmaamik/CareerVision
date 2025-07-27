@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { createJob } from "../../api/job/job";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Job = () => {
   const [localJobs, setLocalJobs] = useState([]);
@@ -14,6 +15,8 @@ const Job = () => {
   const [jobName, setJobName]= useState('')
   const [jobLocation, setJobLocation]= useState('')
   const [jobDescription, setjobDescription]= useState('')
+  const navigate= useNavigate()
+
   useEffect(() => {
     axios
       .get("http://localhost:8080/api/jobs/all")
@@ -70,18 +73,18 @@ const Job = () => {
               ...
             </p>
             {type === "external" ? (
-              <a
+              <button
                 href={job.redirect_url}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-white underline mt-2 inline-block"
               >
                 View Job
-              </a>
+              </button>
             )
           :
-          <a
-                href={`/jobs/1`}
+          <button
+                onClick={()=>navigate(`/jobs/${job.id}`)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-block mt-4 px-4 py-2  rounded hover:bg-gray-800 "
@@ -89,7 +92,7 @@ const Job = () => {
                 
               >
                 View Job
-              </a>
+              </button>
           }
           </li>
         ))}

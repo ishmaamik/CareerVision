@@ -214,6 +214,13 @@ const CreateJob = () => {
                   rows="4"
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="List key responsibilities..."
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      const currentValue = e.target.value;
+                      e.target.value = currentValue + '\n• '; // Add bullet on enter
+                    }
+                  }}
                 />
               </div>
 
@@ -276,6 +283,13 @@ const CreateJob = () => {
                   rows="4"
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="List required qualifications..."
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      const currentValue = e.target.value;
+                      e.target.value = currentValue + '\n• '; // Add bullet on enter
+                    }
+                  }}
                 />
               </div>
             </div>

@@ -1,23 +1,56 @@
 import React, { useState, useEffect } from 'react'
+import { useParams } from 'react-router-dom'
+import { getJobById } from '../../api/job/job'
 
 const ApplyJob = () => {
 
     const [tab, setTab] = useState('Description')
+    const [jobDetails, setJobDetails] = useState(null)
     const [isMounted, setMounted] = useState(false)
+    const [loading, setLoading] = useState(true);
+    const param = useParams()
 
     useEffect(() => {
         const timer = setTimeout(() => setMounted(true), 50)
+        console.log(param.id)
+
         return () => {
             setMounted(false)
             clearTimeout(timer)
         }
-    }, [])
+    }, [param.id])
 
     const setTabName = (tabName) => {
         setMounted(false)
         setTab(tabName)
         setTimeout(() => setMounted(true), 50)
     }
+
+    useEffect(() => {
+        const fetchJob = async () => {
+            try {
+                setLoading(true);
+                console.log("Fetching job with ID:", param.id);
+                const response = await getJobById(param.id);
+                console.log("API Response:", response);
+
+                if (response) {
+                    setJobDetails(response);
+                } else {
+                    console.error("Empty response received");
+                }
+            } catch (error) {
+                console.error("Error fetching job:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchJob();
+    }, [param.id]);
+
+    if (loading) return <div className="p-4">Loading job details...</div>;
+    if (!jobDetails) return <div className="p-4">Job not found</div>;
 
     return (
         <>
@@ -33,18 +66,29 @@ const ApplyJob = () => {
                     <div className={`transform ${isMounted ? `opacity-100` : `opacity-0 translate-y-5`} transition-all duration-800 ease-in-out items-center justify-center`}>
                         <div className="  w-200 h-auto pb-6 pr-4 rounded-lg bg-white  shadow-lg text-left ">
                             <strong className='pl-4 pt-4 inline-block'> About this Role: </strong>
-                            <p className='pl-4 pt-4'>We are looking for a talented and motivated Node.js Developer (Mid or Senior level) to join our onsite team in Dhaka. You will be responsible for designing, developing, and maintaining backend services and APIs for web and enterprise applications. As a key member of our development team, you will collaborate with frontend engineers, QA, and DevOps to deliver high-performance, scalable solutions.</p>
+                            <p className='pl-4 pt-4'>{jobDetails.description}</p>
+                            <strong className='pl-4 pt-4 inline-block '>Responsibilities:</strong>
                             <ul className='list-disc pl-8 pt-4'>
-                                <li> Design, develop, and maintain server-side logic, APIs, and microservices using Node.js. </li>
-                                <li>  Collaborate with frontend developers to integrate user-facing elements with server-side logic. </li>
-                                <li>  Build scalable and secure RESTful (and/or GraphQL) APIs. </li>
+                                {jobDetails.responsibilities
+                                    .split('\n')
+                                    .filter(line => line.trim() !== '')
+                                    .map((responsibility, index) => (
+                                        <li key={index} className="mb-2">
+                                            {responsibility.replace(/^•\s*/, '')}
+                                        </li>
+                                    ))}
                             </ul>
 
-                            <p className='pl-4 pt-4'>Qualifications</p>
+                            <strong className='pl-4 pt-4 inline-block'>Qualifications</strong>
                             <ul className='list-disc pl-8 pt-4'>
-                                <li> Bachelor’s degree in Computer Science, Engineering, or a related field (or equivalent experience). </li>
-                                <li> Mid-Level: 2+ years professional experience with Node.js. </li>
-                                <li> Senior Level: 5+ years professional experience with Node.js, with proven backend architecture and leadership experience.  </li>
+                                {jobDetails.qualifications
+                                    .split('\n')
+                                    .filter(line => line.trim() !== '')
+                                    .map((qualification, index) => (
+                                        <li key={index} className="mb-2">
+                                            {qualification.replace(/^•\s*/, '')}
+                                        </li>
+                                    ))}
                             </ul>
                         </div>
                     </div>
