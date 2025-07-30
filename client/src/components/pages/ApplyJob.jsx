@@ -122,6 +122,7 @@ const ApplyJob = () => {
                     <p className={`${tab === 'Description' ? `bg-black  text-white` : `bg-white mt-30 text-black`} cursor-pointer mt-30 px-4 py-2 rounded `} onClick={() => setTabName('Description')}>Description</p>
                     <p className={`${tab === 'Company' ? `bg-black text-white` : `bg-white mt-30 text-black`} cursor-pointer mt-30 px-4 py-2 rounded`} onClick={() => setTabName('Company')}>Company</p>
                     <p className={`${tab === 'Review' ? `bg-black text-white` : `bg-white mt-30 text-black`} cursor-pointer mt-30 px-4 py-2 rounded`} onClick={() => setTabName('Review')}>Review</p>
+                    {role === "recruiter" && <p className={`${tab === 'Applicants' ? `bg-black text-white` : `bg-white mt-30 text-black`} cursor-pointer mt-30 px-4 py-2 rounded`} onClick={() => setTabName('Applicants')}>Applicants</p>}
                 </div>
 
                 {
@@ -190,6 +191,17 @@ const ApplyJob = () => {
                             <div className="w-200 h-100 rounded-lg bg-white  shadow-lg">
 
                                 <p> Review </p>
+                            </div>
+                        </div>
+                    )
+                }
+
+                {
+                    tab === 'Applicants' && (
+                        <div className={`transform ${isMounted ? `opacity-100` : `opacity-0 translate-y-5`} transition-all duration-800 ease-in-out left-1/2  flex items-center justify-center`}>
+                            <div className="w-200 h-100 rounded-lg bg-white  shadow-lg">
+
+                                <p> Applicant </p>
                             </div>
                         </div>
                     )
