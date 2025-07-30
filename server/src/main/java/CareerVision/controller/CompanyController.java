@@ -32,8 +32,8 @@ public class CompanyController {
         }
     }
 
-    @GetMapping("/getCompany")
-    public ResponseEntity<?> getCompany (@RequestBody String name){
+    @GetMapping("/getCompany/{name}")
+    public ResponseEntity<?> getCompany (@PathVariable String name){
         try{
             if(name==null || name.isEmpty()){
                 ResponseEntity.badRequest().body("Name is required");

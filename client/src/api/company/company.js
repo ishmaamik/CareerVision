@@ -20,3 +20,8 @@ export const getAllCompany = async () => {
   }
 };
 
+export const getCompanyFromName=async(companyName)=>{
+  const response= await axios.get(`${BASE_URL}/getCompany/${companyName}`)
+  return {company: response.data}
+}
+

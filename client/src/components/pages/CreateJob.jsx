@@ -110,7 +110,7 @@ const CreateJob = () => {
   };
 
   return (
-    <div className="w-3xl mx-auto mt-6 px-40 py-8" style={{width:'1200px', height:'auto'}}>
+    <div className="w-3xl mx-auto mt-6 px-40 py-8" style={{ width: '1200px', height: 'auto' }}>
       <div className="max-w-9xl mx-auto"> {/* Increased max width */}
         <h1 className="text-3xl font-bold text-gray-800 mb-6">
           Post a New Job
@@ -156,6 +156,9 @@ const CreateJob = () => {
                   required
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
+                  {!formData.company && (
+                    <option value="">Select a company</option>
+                  )}
                   <option value="create">Create a company</option>
                   {loadingCompanies ? (
                     <option value="" disabled>Loading companies...</option>

@@ -49,3 +49,4 @@ export const getJobById = async(id)=>{
     throw error;
   }
 }
+

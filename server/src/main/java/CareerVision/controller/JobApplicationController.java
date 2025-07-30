@@ -1,11 +1,14 @@
 package CareerVision.controller;
 
+import CareerVision.dto.UserJobDTO;
 import CareerVision.model.Job;
 import CareerVision.model.JobApplication;
 import CareerVision.model.User;
 import CareerVision.repository.JobApplicationRepository;
 import CareerVision.repository.JobRepository;
 import CareerVision.repository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,8 +17,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/applications")
+@CrossOrigin(origins = "*")
 public class JobApplicationController {
 
+    private static final Logger log = LoggerFactory.getLogger(JobApplicationController.class);
     @Autowired
     private JobApplicationRepository jobApplicationRepository;
 
@@ -27,13 +32,18 @@ public class JobApplicationController {
 
     // Apply to a job
     @PostMapping("/apply")
-    public ResponseEntity<?> applyToJob(@RequestParam Long userId, @RequestParam Long jobId) {
-        User user = userRepository.findById(userId).orElse(null);
-        Job job = jobRepository.findById(jobId).orElse(null);
+    public ResponseEntity<?> applyToJob(@RequestBody UserJobDTO userJob) {
+
+        log.info("Received UserJobDTO: {}", userJob);
+
+        User user = userRepository.findById(userJob.getUserId()).orElse(null);
+        Job job = jobRepository.findById(userJob.getJobId()).orElse(null);
 
         if (user == null || job == null) {
             return ResponseEntity.badRequest().body("Invalid user ID or job ID");
         }
+
+
 
         JobApplication application = new JobApplication();
         application.setApplicant(user);
@@ -68,6 +78,7 @@ public class JobApplicationController {
         List<JobApplication> applications = jobApplicationRepository.findByJob(job);
         return ResponseEntity.ok(applications);
     }
+
 
 
     @PutMapping("/{applicationId}/status")

@@ -1,10 +1,10 @@
 @import "tailwindcss";
 #root {
   max-width: 1280px;
-  margin: 0 auto;
+  margin: 0 ; 
   padding: 2rem;
-  text-align: center;
 }
+/* {Auto margins was causing center horizontal} */
 
 .logo {
   height: 6em;

@@ -8,7 +8,7 @@ const CreateCompany = () => {
     name: "",
     location: "",
     overview: "",
-    commitments: "",
+    commitment: "",
   });
 
   
@@ -92,8 +92,8 @@ const CreateCompany = () => {
                 Company Commitments
               </label>
               <textarea
-                name="commitments"
-                value={formData.commitments}
+                name="commitment"
+                value={formData.commitment}
                 onChange={handleChange}
                 required
                 rows="6"
