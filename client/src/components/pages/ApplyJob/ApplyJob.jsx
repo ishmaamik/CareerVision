@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import { applyForJob} from '../../../api/application/apply'
+import { applyForJob, fetchApplicationStatus } from '../../../api/application/apply'
 import { TabsList } from './TabsList.js'
 import Description from './Description'
 import Company from './Company'
@@ -17,6 +17,7 @@ const ApplyJob = () => {
     const [hasApplied, setHasApplied] = useState(false);
     const [applying, setApplying] = useState(false);
     const [company, setCompany] = useState(null)
+    const [applicationStatus, setApplicationStatus] = useState(null)
     const jobId = jobDetails?.id
 
     const role = localStorage.getItem('role')
@@ -78,8 +79,12 @@ const ApplyJob = () => {
     }, [jobDetails])
 
     useEffect(() => {
-        fetchJob({param, setJobDetails, userId, setLoading, setHasApplied});
+        fetchJob({ param, setJobDetails, userId, setLoading, setHasApplied });
     }, [param.id]);
+
+    useEffect(() => {
+        fetchApplicationStatus({ userId, jobId, setApplicationStatus })
+    })
 
     if (loading) return <div className="p-4">Loading job details...</div>;
     if (!jobDetails) return <div className="p-4">Job not found</div>;
@@ -97,7 +102,7 @@ const ApplyJob = () => {
 
                 {
                     tab === 'Description' && (
-                        <Description jobDetails={jobDetails} isMounted={isMounted}/>
+                        <Description jobDetails={jobDetails} isMounted={isMounted} />
                     )
                 }
 
@@ -109,27 +114,46 @@ const ApplyJob = () => {
 
                 {
                     tab === 'Review' && (
-                        <Review isMounted={isMounted}/>
+                        <Review isMounted={isMounted} />
                     )
                 }
 
                 {
                     tab === 'Applicants' && (
-                        <Applicants jobDetails={jobDetails} isMounted={isMounted}/>
+                        <Applicants jobDetails={jobDetails} isMounted={isMounted} />
                     )
                 }
 
                 {role === 'user' && (applying ?
                     <button style={{ backgroundColor: 'black', cursor: 'default' }} disabled
-                        className="mt-6 ml-160 text-white  rounded w-40 h-14"> Applying... </button> : (hasApplied ? <button disabled style={{ backgroundColor: 'black', cursor: 'default' }}
-                            className="mt-6 ml-160 text-white  rounded w-40 h-14"> Pending... </button> :
-                            <button
-                                onClick={applyToJob}
-                                style={{ backgroundColor: 'black' }}
-                                className="mt-6 ml-160 text-white  rounded w-40 h-14"
-                            >
-                                Apply to Job
-                            </button>))
+                        className="mt-6 ml-160 text-white  rounded w-40 h-14"> Applying... </button>
+                    :
+                    (hasApplied ?
+                        (applicationStatus === 'accepted' ?
+                            <button disabled style={{ backgroundColor: 'green', cursor: 'default' }}
+                                className="mt-6 ml-160 text-white  rounded w-40 h-14"> Accepted
+                            </button>
+                            :
+                            (applicationStatus === 'rejected' ?
+                                <button disabled style={{ backgroundColor: 'red', cursor: 'default' }}
+                                    className="mt-6 ml-160 text-white  rounded w-40 h-14"> Rejected
+                                </button>
+                                :
+                                <button disabled style={{ backgroundColor: 'black', cursor: 'default' }}
+                                    className="mt-6 ml-160 text-white  rounded w-40 h-14"> Pending...
+                                </button>
+                            )
+
+                        )
+
+                        :
+                        <button
+                            onClick={applyToJob}
+                            style={{ backgroundColor: 'black' }}
+                            className="mt-6 ml-160 text-white  rounded w-40 h-14"
+                        >
+                            Apply to Job
+                        </button>))
                 }
 
             </div>

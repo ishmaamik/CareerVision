@@ -23,3 +23,17 @@ export const getApplicationsByUser = async (userId) => {
 };
 
 
+export const fetchApplicationStatus = async ({userId, jobId, setApplicationStatus}) => {
+    try {
+        const response = await axios.get(`http://localhost:8080/api/applications/user/${userId}`)
+        const userApplications = response.data
+        const currentJobApplication = userApplications.find(app => app.job?.id === jobId)
+        if (currentJobApplication) {
+            setApplicationStatus(currentJobApplication.status)
+        } else {
+            setApplicationStatus(null)
+        }
+    } catch (error) {
+        console.error('Error fetching application status:', error)
+    }
+}

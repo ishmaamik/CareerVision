@@ -58,11 +58,11 @@ const Applicants = ({ jobDetails, isMounted }) => {
                                         <td className="py-3 px-4">{application.applicant?.email}</td>
                                         <td className="py-3 px-4">
                                             <span className={`px-2 py-1 rounded-full text-xs ${
-                                                application.status === 'accepted' ? 'bg-green-100 text-green-800' :
-                                                application.status === 'rejected' ? 'bg-red-100 text-red-800' :
+                                                application.status === 'accepted' ? 'text-green-900' :
+                                                application.status === 'rejected' ? 'text-red-800' :
                                                 'bg-blue-100 text-blue-800'
                                             }`}>
-                                                {application.status}
+                                                {application.status === 'accepted' ? <p>Accepted </p> :<p>  Rejected </p> }
                                             </span>
                                         </td>
                                         <td className="py-3 px-4">

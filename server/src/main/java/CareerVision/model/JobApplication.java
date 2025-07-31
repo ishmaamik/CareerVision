@@ -21,6 +21,6 @@ public class JobApplication {
     private Job job;
 
 
-    private String status="pending";
+    private String status="Pending";
     //like accpted or rejected
 }

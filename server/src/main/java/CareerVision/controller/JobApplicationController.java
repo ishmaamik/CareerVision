@@ -92,11 +92,11 @@ public class JobApplicationController {
         }
 
         // Validate status value
-        if (!List.of("applied", "accepted", "rejected").contains(status.toLowerCase())) {
+        if (!List.of("pending", "accepted", "rejected").contains(status.toLowerCase())) {
             return ResponseEntity.badRequest().body("Invalid status");
         }
 
-        application.setStatus(status.toLowerCase());
+        application.setStatus(status);
         jobApplicationRepository.save(application);
 
         return ResponseEntity.ok("Status updated to " + status);
