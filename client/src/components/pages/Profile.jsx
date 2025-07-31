@@ -69,14 +69,14 @@ const Profile = () => {
                                                     href={resumeUrl}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
-                                                    style={{color:'white'}}
+                                                    style={{ color: 'white' }}
                                                     className="flex items-center gap-1 bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
                                                 >
                                                     <FaEye /> View
                                                 </a>
                                                 <a
                                                     href={`${resumeUrl}?download=true`}
-                                                    style={{color:'white'}}
+                                                    style={{ color: 'white' }}
                                                     className="flex items-center gap-1 bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600"
                                                 >
                                                     <FaDownload /> Download
@@ -92,7 +92,9 @@ const Profile = () => {
                                                                     userId,
                                                                     setUploading,
                                                                     setError,
-                                                                    setSuccess
+                                                                    setSuccess,
+                                                                    setHasResume,
+                                                                    setResumeUrl
                                                                 });
                                                                 await checkResumeStatus(); // Refresh status
                                                             } catch (error) {
@@ -136,7 +138,9 @@ const Profile = () => {
                                                             userId,
                                                             setUploading,
                                                             setError,
-                                                            setSuccess
+                                                            setSuccess,
+                                                            setHasResume,
+                                                            setResumeUrl
                                                         });
                                                         await checkResumeStatus(); // Refresh status
                                                     } catch (error) {
