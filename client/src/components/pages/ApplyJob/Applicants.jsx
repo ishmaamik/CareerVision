@@ -60,9 +60,10 @@ const Applicants = ({ jobDetails, isMounted }) => {
                                             <span className={`px-2 py-1 rounded-full text-xs ${
                                                 application.status === 'accepted' ? 'text-green-900' :
                                                 application.status === 'rejected' ? 'text-red-800' :
-                                                'bg-blue-100 text-blue-800'
+                                                application.status === 'pending' ? 'text-blue-800' :
+                                                ' text-blue-800'
                                             }`}>
-                                                {application.status === 'accepted' ? <p>Accepted </p> :<p>  Rejected </p> }
+                                                {application.status === 'accepted' ? <p>Accepted </p> : (application.status === 'rejected' ? <p>  Rejected </p> : <p>Pending</p>) }
                                             </span>
                                         </td>
                                         <td className="py-3 px-4">
