@@ -38,5 +38,17 @@ export const fetchJob = async ({param, setJobDetails, userId, setLoading, setHas
     }
 };
 
+export const fetchApplications = async ({setLoading, setApplications, setError, jobDetails}) => {
+    try {
+        setLoading(true);
+        const response = await axios.get(`http://localhost:8080/api/applications/job/${jobDetails.id}`);
+        setApplications(response.data);
+        setLoading(false);
+    } catch (err) {
+        setError(err.message);
+        setLoading(false);
+    }
+};
+
 
 

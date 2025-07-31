@@ -20,6 +20,7 @@ public class JobApplication {
     @ManyToOne
     private Job job;
 
-    private String status;
+
+    private String status="pending";
     //like accpted or rejected
 }

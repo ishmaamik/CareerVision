@@ -119,7 +119,7 @@ const ApplyJob = () => {
                     )
                 }
 
-                {role === 'User' && (applying ?
+                {role === 'user' && (applying ?
                     <button style={{ backgroundColor: 'black', cursor: 'default' }} disabled
                         className="mt-6 ml-160 text-white  rounded w-40 h-14"> Applying... </button> : (hasApplied ? <button disabled style={{ backgroundColor: 'black', cursor: 'default' }}
                             className="mt-6 ml-160 text-white  rounded w-40 h-14"> Pending... </button> :
