@@ -9,11 +9,12 @@ import Signup from "./components/pages/Signup";
 import Blogs from "./components/pages/Blogs";
 import NewBlog from "./components/pages/NewBlog";
 import Profile from "./components/pages/Profile";
-import JobPage from "./components/pages/job";
+import JobPage from "./components/pages/JobsList";
 import CreateJob from "./components/pages/CreateJob";
-import ApplyJob from "./components/pages/ApplyJob";
+import ApplyJob from "./components/pages/ApplyJob/ApplyJob";
 import CreateCompany from "./components/pages/CreateCompany";
 import CommunityForum from "./components/pages/CommunityForum";
+import SampleSocial from "./components/pages/SampleSocial";
 
 function App() {
   return (
@@ -45,6 +46,7 @@ function App() {
           <Route path="/jobs/:id" element={<ApplyJob />} />
           <Route path="/company/create" element={<CreateCompany />} />
           <Route path="/community" element={<CommunityForum />} />
+          <Route path="/sample" element={<SampleSocial />} />
         </Routes>
       </div>
     </UserProvider>

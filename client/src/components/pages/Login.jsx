@@ -22,6 +22,7 @@ const Login = () => {
         const response = await login(credentials)
         if (response?.user) {
             console.log("Logged in:", response.user);
+            localStorage.setItem('user', JSON.stringify(response.user))
             localStorage.setItem('name', response.user.name)
             localStorage.setItem('role', response.user.role)
             localStorage.setItem('userId', response.user.id)

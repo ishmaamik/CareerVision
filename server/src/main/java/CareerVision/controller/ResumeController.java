@@ -17,6 +17,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/resume")
+@CrossOrigin(origins = "*")
 public class ResumeController {
 
     @Autowired
@@ -164,5 +165,55 @@ public class ResumeController {
         cvData.setUser(user);
         cvData.setExtractedText(extractedText);
         cvDataRepository.save(cvData);
+    }
+
+    @DeleteMapping("/delete/{userId}")
+    public ResponseEntity<?> deleteResume(@PathVariable Long userId) {
+        return userRepository.findById(userId)
+                .map(user -> {
+                    if (user.getResumePath() == null) {
+                        return ResponseEntity.ok().body(Map.of(
+                                "status", "success",
+                                "message", "No resume to delete"
+                        ));
+                    }
+
+                    try {
+                        // Delete from Supabase
+                        String fileName = user.getResumePath()
+                                .substring(user.getResumePath().lastIndexOf("/") + 1);
+                        SupabaseStorageService.deleteFile(fileName);
+
+                        // Update user record
+                        user.setResumePath(null);
+                        userRepository.save(user);
+
+                        // Delete extracted text if exists
+                        cvDataRepository.findByUser(user).ifPresent(cvDataRepository::delete);
+
+                        return ResponseEntity.ok().body(Map.of(
+                                "status", "success",
+                                "message", "Resume deleted successfully"
+                        ));
+                    } catch (Exception e) {
+                        return ResponseEntity.internalServerError().body(Map.of(
+                                "status", "error",
+                                "message", "Failed to delete resume",
+                                "error", e.getMessage()
+                        ));
+                    }
+                })
+                .orElse(ResponseEntity.badRequest().body(Map.of(
+                        "status", "error",
+                        "message", "User not found"
+                )));
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<?> updateResume(
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("userId") Long userId) {
+        // Reuse the upload logic since update is essentially an upload that overwrites
+        return uploadResume(file, userId);
     }
 }
