@@ -1,0 +1,7 @@
+flask
+spacy
+scikit-learn
+pydantic
+numpy==1.24.3
+flask-cors
+pydantic-settings 
