@@ -7,6 +7,17 @@ from .config import settings
 api_blueprint = Blueprint('api', __name__)
 matcher = ResumeMatcher()
 
+@api_blueprint.route('/', methods=['GET'])
+def index():
+    return jsonify({
+        "service": "Resume Matcher",
+        "version": "1.0",
+        "available_endpoints": [
+            "/health - Health check endpoint",
+            "/match - Resume matching endpoint (POST)"
+        ]
+    })
+
 @api_blueprint.route('/match', methods=['POST', 'OPTIONS'])  # Note: Just '/match' here
 def match_resume():
     if request.method == 'OPTIONS':
