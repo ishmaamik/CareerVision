@@ -26,42 +26,61 @@ const PercentageBadge = ({ percentage, error }) => {
         return 'from-purple-300 to-purple-500';
     };
 
+    // Determine text and background classes for 0% case
+    const is0Percent = percentage === 0;
+
     return (
         <div 
-            className="relative w-full h-6 bg-gray-200 rounded-full overflow-hidden"
+            className={`
+                relative 
+                w-full 
+                h-6 
+                ${is0Percent ? 'bg-gray-200' : 'bg-gray-200'} 
+                rounded-full 
+                overflow-hidden
+                flex 
+                items-center 
+                justify-center
+            `}
         >
-            <div 
-                className={`
-                    absolute 
-                    left-0 
-                    top-0 
-                    bottom-0 
-                    bg-gradient-to-r 
-                    ${getGradientClass()}
-                    transition-all 
-                    duration-500 
-                    ease-out
-                `}
-                style={{ 
-                    width: `${percentage}%`,
-                    maxWidth: '100%'
-                }}
-            >
-                <span 
-                    className="
-                        absolute 
-                        right-2 
-                        top-1/2 
-                        transform 
-                        -translate-y-1/2 
-                        text-white 
-                        font-semibold 
-                        text-sm
-                    "
-                >
-                    {percentage}%
+            {is0Percent ? (
+                <span className="text-black text-sm font-medium">
+                    0%
                 </span>
-            </div>
+            ) : (
+                <div 
+                    className={`
+                        absolute 
+                        left-0 
+                        top-0 
+                        bottom-0 
+                        bg-gradient-to-r 
+                        ${getGradientClass()}
+                        transition-all 
+                        duration-500 
+                        ease-out
+                    `}
+                    style={{ 
+                        width: `${percentage}%`,
+                        maxWidth: '100%'
+                    }}
+                >
+                    <span 
+                        className="
+                            absolute 
+                            right-2 
+                            top-1/2 
+                            transform 
+                            -translate-y-1/2 
+                            text-white 
+                            font-semibold 
+                            text-sm
+                        "
+                    >
+                        {percentage}%
+                    </span>
+                </div>
+            )}
         </div>
     );
 };
