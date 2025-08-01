@@ -6,8 +6,11 @@ const Topbar = () => {
   const navigate = useNavigate();
 
   const LogInOrOut = () => {
-    if (localStorage.getItem("name")) {
+    if (localStorage.getItem("user")) {
+      localStorage.removeItem("user");
       localStorage.removeItem("name");
+      localStorage.removeItem("role");
+      localStorage.removeItem("userId");
       navigate("/login");
     } else {
       navigate("/login");
