@@ -65,7 +65,13 @@ const Applicants = ({ jobDetails, isMounted }) => {
             const percentages = {};
             const errors = {};
 
+            console.log('Total Applications:', applications.length);
+            console.log('Job Details:', jobDetails);
+
             for (const app of applications) {
+                console.log(`Processing Application ID: ${app.id}`);
+                console.log('Applicant:', app.applicant);
+
                 if (app.applicant?.resumePath) {
                     try {
                         // Get the extracted text from CVData
@@ -74,20 +80,32 @@ const Applicants = ({ jobDetails, isMounted }) => {
                         );
                         const cvText = response.data.text;
                         
+                        console.log(`CV Text for Applicant ${app.applicant.name}:`, 
+                            `Length: ${cvText.length}, 
+                            First 100 chars: ${cvText.substring(0, 100)}...`
+                        );
+                        
                         // Calculate match percentage
                         const percentage = await calculateMatch(jobDetails, cvText);
+                        
+                        console.log(`Match Percentage for ${app.applicant.name}: ${percentage}%`);
+                        
                         percentages[app.id] = percentage;
                     } catch (err) {
-                        console.error("Error calculating match:", err);
+                        console.error(`Error calculating match for ${app.applicant.name}:`, err);
                         percentages[app.id] = 0;
                         
                         // Store detailed error information
                         errors[app.id] = err.response?.data?.error || 'Failed to calculate match';
                     }
                 } else {
+                    console.log(`No resume path for Applicant ${app.applicant?.name}`);
                     percentages[app.id] = 0;
                 }
             }
+            
+            console.log('Final Match Percentages:', percentages);
+            console.log('Match Errors:', errors);
             
             setMatchPercentages(percentages);
             setMatchErrors(errors);
