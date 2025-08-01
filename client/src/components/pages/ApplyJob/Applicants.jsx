@@ -28,20 +28,40 @@ const PercentageBadge = ({ percentage, error }) => {
 
     return (
         <div 
-            className={`
-                inline-block 
-                px-3 py-1 
-                rounded-lg 
-                bg-gradient-to-r 
-                ${getGradientClass()}
-                text-white 
-                font-semibold 
-                shadow-md
-                min-w-[60px] 
-                text-center
-            `}
+            className="relative w-full h-6 bg-gray-200 rounded-full overflow-hidden"
         >
-            {percentage}%
+            <div 
+                className={`
+                    absolute 
+                    left-0 
+                    top-0 
+                    bottom-0 
+                    bg-gradient-to-r 
+                    ${getGradientClass()}
+                    transition-all 
+                    duration-500 
+                    ease-out
+                `}
+                style={{ 
+                    width: `${percentage}%`,
+                    maxWidth: '100%'
+                }}
+            >
+                <span 
+                    className="
+                        absolute 
+                        right-2 
+                        top-1/2 
+                        transform 
+                        -translate-y-1/2 
+                        text-white 
+                        font-semibold 
+                        text-sm
+                    "
+                >
+                    {percentage}%
+                </span>
+            </div>
         </div>
     );
 };
@@ -148,7 +168,7 @@ const Applicants = ({ jobDetails, isMounted }) => {
                                 <th className="py-3 px-4">Email</th>
                                 <th className="py-3 px-4">Status</th>
                                 <th className="py-3 px-4">Applicant Resume</th>
-                                <th className="py-3 px-4">Percentage Match</th>
+                                <th className="py-3 px-4 w-48">Percentage Match</th>
                                 <th className="py-3 px-4">Actions</th>
                             </tr>
                         </thead>
@@ -183,7 +203,7 @@ const Applicants = ({ jobDetails, isMounted }) => {
                                                 <span className="text-gray-500">No resume</span>
                                             )}
                                         </td>
-                                        <td className="py-3 px-4">
+                                        <td className="py-3 px-4 w-48">
                                             <PercentageBadge 
                                                 percentage={matchPercentages[application.id] || 0} 
                                                 error={matchErrors[application.id]} 
