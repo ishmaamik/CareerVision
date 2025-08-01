@@ -1,8 +1,13 @@
 from flask import Blueprint, request, jsonify
+import logging
 from .core import ResumeMatcher
 from .schema_models import JobRequirements, CVData, MatchResponse
 from pydantic import ValidationError
 from .config import settings
+
+# Configure logging
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 api_blueprint = Blueprint('api', __name__)
 matcher = ResumeMatcher()
@@ -18,7 +23,7 @@ def index():
         ]
     })
 
-@api_blueprint.route('/match', methods=['POST', 'OPTIONS'])  # Note: Just '/match' here
+@api_blueprint.route('/match', methods=['POST', 'OPTIONS'])
 def match_resume():
     if request.method == 'OPTIONS':
         # Handle preflight request
@@ -29,19 +34,43 @@ def match_resume():
         return response
     
     try:
+        # Log the raw request data for debugging
+        logger.debug(f"Received request data: {request.get_json()}")
+        
         # Validate input
         data = request.get_json()
+        
+        # Log the data before validation
+        logger.debug(f"Raw job data: {data.get('job', {})}")
+        logger.debug(f"Raw resume data: {data.get('resume', {})}")
+        
+        # Validate and create models
         job = JobRequirements(**data['job'])
         cv = CVData(**data['resume'])
         
-        # Check input size
-        if len(cv.extracted_text) > settings.MAX_INPUT_LENGTH:
+        # Log the validated models
+        logger.debug(f"Validated Job: {job.model_dump()}")
+        logger.debug(f"Validated CV: {cv.model_dump()}")
+        
+        # Check input size with more detailed logging
+        cv_text_length = len(cv.extracted_text)
+        if cv_text_length > settings.MAX_INPUT_LENGTH:
+            logger.warning(
+                f"CV text exceeds maximum length. "
+                f"Current length: {cv_text_length}, "
+                f"Maximum allowed: {settings.MAX_INPUT_LENGTH}"
+            )
             return jsonify({
-                "error": f"CV text exceeds maximum length of {settings.MAX_INPUT_LENGTH} characters"
+                "error": f"CV text exceeds maximum length of {settings.MAX_INPUT_LENGTH} characters",
+                "current_length": cv_text_length,
+                "max_length": settings.MAX_INPUT_LENGTH
             }), 400
         
         # Perform matching
         result = matcher.calculate_match(job, cv)
+        
+        # Log the result
+        logger.debug(f"Match Result: {result.dict()}")
         
         # Return structured response
         response = jsonify(result.dict())
@@ -49,9 +78,20 @@ def match_resume():
         return response
         
     except ValidationError as e:
-        return jsonify({"error": "Invalid input data", "details": str(e)}), 400
+        # Log validation errors with more detail
+        logger.error(f"Validation Error: {e}")
+        return jsonify({
+            "error": "Invalid input data", 
+            "details": str(e),
+            "validation_errors": e.errors()
+        }), 400
     except Exception as e:
-        return jsonify({"error": "Processing failed", "details": str(e)}), 500
+        # Log unexpected errors
+        logger.error(f"Unexpected Error: {e}", exc_info=True)
+        return jsonify({
+            "error": "Processing failed", 
+            "details": str(e)
+        }), 500
 
 @api_blueprint.route('/health', methods=['GET'])
 def health_check():

@@ -3,12 +3,55 @@ import axios from 'axios'
 import { FaFilePdf, FaEye } from 'react-icons/fa';
 import { fetchApplications } from '../../../api/functions.js';
 import { calculateMatch } from '../../../api/resume/resume-matcher.js'
-const Applicants = ({ jobDetails, isMounted }) => {
 
+// Percentage Badge Component
+const PercentageBadge = ({ percentage, error }) => {
+    if (error) {
+        return (
+            <span 
+                className="text-red-500 text-xs" 
+                title={error}
+            >
+                Error
+            </span>
+        );
+    }
+
+    // Determine gradient based on percentage
+    const getGradientClass = () => {
+        if (percentage >= 80) return 'from-purple-700 to-purple-900';
+        if (percentage >= 60) return 'from-purple-600 to-purple-800';
+        if (percentage >= 40) return 'from-purple-500 to-purple-700';
+        if (percentage >= 20) return 'from-purple-400 to-purple-600';
+        return 'from-purple-300 to-purple-500';
+    };
+
+    return (
+        <div 
+            className={`
+                inline-block 
+                px-3 py-1 
+                rounded-lg 
+                bg-gradient-to-r 
+                ${getGradientClass()}
+                text-white 
+                font-semibold 
+                shadow-md
+                min-w-[60px] 
+                text-center
+            `}
+        >
+            {percentage}%
+        </div>
+    );
+};
+
+const Applicants = ({ jobDetails, isMounted }) => {
     const [applications, setApplications] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [matchPercentages, setMatchPercentages] = useState({});
+    const [matchErrors, setMatchErrors] = useState({});
 
     useEffect(() => {
         if (jobDetails?.id) {
@@ -20,6 +63,8 @@ const Applicants = ({ jobDetails, isMounted }) => {
         // Calculate match percentages when applications change
         const calculateMatches = async () => {
             const percentages = {};
+            const errors = {};
+
             for (const app of applications) {
                 if (app.applicant?.resumePath) {
                     try {
@@ -35,12 +80,17 @@ const Applicants = ({ jobDetails, isMounted }) => {
                     } catch (err) {
                         console.error("Error calculating match:", err);
                         percentages[app.id] = 0;
+                        
+                        // Store detailed error information
+                        errors[app.id] = err.response?.data?.error || 'Failed to calculate match';
                     }
                 } else {
                     percentages[app.id] = 0;
                 }
             }
+            
             setMatchPercentages(percentages);
+            setMatchErrors(errors);
         };
 
         if (applications.length > 0) {
@@ -115,7 +165,12 @@ const Applicants = ({ jobDetails, isMounted }) => {
                                                 <span className="text-gray-500">No resume</span>
                                             )}
                                         </td>
-                                        <td className="py-3 px-4">{matchPercentages[application.id] || 0}%</td>
+                                        <td className="py-3 px-4">
+                                            <PercentageBadge 
+                                                percentage={matchPercentages[application.id] || 0} 
+                                                error={matchErrors[application.id]} 
+                                            />
+                                        </td>
                                         <td className="py-3 px-4 w-60">
                                             <button
                                                 onClick={() => updateApplicationStatus(application.id, 'accepted')}
