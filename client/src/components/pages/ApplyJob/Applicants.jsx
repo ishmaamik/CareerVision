@@ -1,18 +1,52 @@
 import React, {useState, useEffect} from 'react'
 import axios from 'axios'
 import { FaFilePdf, FaEye } from 'react-icons/fa';
-import { fetchApplications } from '../../../api/functions';
+import { fetchApplications } from '../../../api/functions.js';
+import { calculateMatch } from '../../../api/resume/resume-matcher.js'
 const Applicants = ({ jobDetails, isMounted }) => {
 
     const [applications, setApplications] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [matchPercentages, setMatchPercentages] = useState({});
 
     useEffect(() => {
         if (jobDetails?.id) {
             fetchApplications({setLoading, setApplications, setError, jobDetails});
         }
     }, [jobDetails]);
+
+    useEffect(() => {
+        // Calculate match percentages when applications change
+        const calculateMatches = async () => {
+            const percentages = {};
+            for (const app of applications) {
+                if (app.applicant?.resumePath) {
+                    try {
+                        // Get the extracted text from CVData
+                        const response = await axios.get(
+                            `http://localhost:8080/api/resume/extract/${app.applicant.id}`
+                        );
+                        const cvText = response.data.text;
+                        
+                        // Calculate match percentage
+                        const percentage = await calculateMatch(jobDetails, cvText);
+                        percentages[app.id] = percentage;
+                    } catch (err) {
+                        console.error("Error calculating match:", err);
+                        percentages[app.id] = 0;
+                    }
+                } else {
+                    percentages[app.id] = 0;
+                }
+            }
+            setMatchPercentages(percentages);
+        };
+
+        if (applications.length > 0) {
+            calculateMatches();
+        }
+    }, [applications, jobDetails]);
 
     const updateApplicationStatus = async (applicationId, status) => {
         try {
@@ -81,7 +115,7 @@ const Applicants = ({ jobDetails, isMounted }) => {
                                                 <span className="text-gray-500">No resume</span>
                                             )}
                                         </td>
-                                        <td className="py-3 px-4">80</td>
+                                        <td className="py-3 px-4">{matchPercentages[application.id] || 0}%</td>
                                         <td className="py-3 px-4 w-60">
                                             <button
                                                 onClick={() => updateApplicationStatus(application.id, 'accepted')}
