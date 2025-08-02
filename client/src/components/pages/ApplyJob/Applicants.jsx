@@ -3,9 +3,38 @@ import axios from 'axios'
 import { FaFilePdf, FaEye } from 'react-icons/fa';
 import { fetchApplications } from '../../../api/functions.js';
 import { calculateMatch } from '../../../api/resume/resume-matcher.js'
+import { updateMatchPercentage } from '../../../api/functions.js'
 
 // Percentage Badge Component
 const PercentageBadge = ({ percentage, error }) => {
+    const [animatedPercentage, setAnimatedPercentage] = useState(0);
+
+    useEffect(() => {
+        // Reset animation when percentage changes
+        setAnimatedPercentage(0);
+        
+        // Create a smooth animation
+        const animationDuration = 1500; // 1.5 seconds
+        const startTime = performance.now();
+
+        const animate = (currentTime) => {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / animationDuration, 1);
+            
+            // Use easing function for smoother animation
+            const easedProgress = 1 - Math.pow(1 - progress, 4);
+            const currentPercentage = Math.round(easedProgress * percentage);
+
+            setAnimatedPercentage(currentPercentage);
+
+            if (progress < 1) {
+                requestAnimationFrame(animate);
+            }
+        };
+
+        requestAnimationFrame(animate);
+    }, [percentage]);
+
     if (error) {
         return (
             <span 
@@ -19,15 +48,15 @@ const PercentageBadge = ({ percentage, error }) => {
 
     // Determine gradient based on percentage
     const getGradientClass = () => {
-        if (percentage >= 80) return 'from-purple-700 to-purple-900';
-        if (percentage >= 60) return 'from-purple-600 to-purple-800';
-        if (percentage >= 40) return 'from-purple-500 to-purple-700';
-        if (percentage >= 20) return 'from-purple-400 to-purple-600';
+        if (animatedPercentage >= 80) return 'from-purple-700 to-purple-900';
+        if (animatedPercentage >= 60) return 'from-purple-600 to-purple-800';
+        if (animatedPercentage >= 40) return 'from-purple-500 to-purple-700';
+        if (animatedPercentage >= 20) return 'from-purple-400 to-purple-600';
         return 'from-purple-300 to-purple-500';
     };
 
     // Determine text and background classes for 0% case
-    const is0Percent = percentage === 0;
+    const is0Percent = animatedPercentage === 0;
 
     return (
         <div 
@@ -61,7 +90,7 @@ const PercentageBadge = ({ percentage, error }) => {
                         ease-out
                     `}
                     style={{ 
-                        width: `${percentage}%`,
+                        width: `${animatedPercentage}%`,
                         maxWidth: '100%'
                     }}
                 >
@@ -77,7 +106,7 @@ const PercentageBadge = ({ percentage, error }) => {
                             text-sm
                         "
                     >
-                        {percentage}%
+                        {animatedPercentage}%
                     </span>
                 </div>
             )}
@@ -111,6 +140,12 @@ const Applicants = ({ jobDetails, isMounted }) => {
                 console.log(`Processing Application ID: ${app.id}`);
                 console.log('Applicant:', app.applicant);
 
+                // First, check if match percentage is already in the application
+                if (app.matchPercentage !== null && app.matchPercentage !== undefined) {
+                    percentages[app.id] = app.matchPercentage;
+                    continue;
+                }
+
                 if (app.applicant?.resumePath) {
                     try {
                         // Get the extracted text from CVData
@@ -128,6 +163,9 @@ const Applicants = ({ jobDetails, isMounted }) => {
                         const percentage = await calculateMatch(jobDetails, cvText);
                         
                         console.log(`Match Percentage for ${app.applicant.name}: ${percentage}%`);
+                        
+                        // Persist the match percentage
+                        await updateMatchPercentage(app.id, percentage);
                         
                         percentages[app.id] = percentage;
                     } catch (err) {
@@ -176,9 +214,29 @@ const Applicants = ({ jobDetails, isMounted }) => {
     }
 
     return (
-        <div className={` transform ${isMounted ? `opacity-100` : `opacity-0 translate-y-5`} transition-all duration-800 ease-in-out left-1/2 flex items-center justify-center`}>
-            <div className="mb-12 w-200 h-100 rounded-lg bg-white shadow-lg">
-                <h2 className="text-2xl font-bold mb-6 p-4">Applicants for {jobDetails?.title}</h2>
+        <div className={`
+            transform 
+            ${isMounted ? `opacity-100` : `opacity-0 translate-y-5`} 
+            transition-all 
+            duration-800 
+            ease-in-out 
+            left-1/2 
+            flex 
+            items-center 
+            justify-center 
+            pb-12
+        `}>
+            <div className="
+                w-full 
+                max-w-6xl 
+                mb-12 
+                rounded-lg 
+                bg-white 
+                shadow-lg 
+                overflow-hidden 
+                p-6
+            ">
+                <h2 className="text-2xl font-bold mb-6 px-4">Applicants for {jobDetails?.title}</h2>
                 <div className="overflow-x-auto">
                     <table className="min-w-full bg-white">
                         <thead>
@@ -224,7 +282,11 @@ const Applicants = ({ jobDetails, isMounted }) => {
                                         </td>
                                         <td className="py-3 px-4 w-48">
                                             <PercentageBadge 
-                                                percentage={matchPercentages[application.id] || 0} 
+                                                percentage={
+                                                    application.matchPercentage !== null 
+                                                    ? application.matchPercentage 
+                                                    : (matchPercentages[application.id] || 0)
+                                                } 
                                                 error={matchErrors[application.id]} 
                                             />
                                         </td>

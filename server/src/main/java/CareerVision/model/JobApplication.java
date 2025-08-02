@@ -20,7 +20,18 @@ public class JobApplication {
     @ManyToOne
     private Job job;
 
+    private String status = "Pending";
 
-    private String status="Pending";
-    //like accpted or rejected
+    // New field to store match percentage
+    @Column(name = "match_percentage")
+    private Double matchPercentage;
+
+    // Method to update match percentage
+    public void updateMatchPercentage(Double percentage) {
+        // Only update if not already set or if new percentage is different
+        if (this.matchPercentage == null || 
+            Math.abs(this.matchPercentage - percentage) > 0.01) {
+            this.matchPercentage = percentage;
+        }
+    }
 }

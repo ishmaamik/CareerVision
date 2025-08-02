@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/applications")
@@ -69,13 +70,8 @@ public class JobApplicationController {
 
     // Get all applications for a job
     @GetMapping("/job/{jobId}")
-    public ResponseEntity<?> getApplicationsByJob(@PathVariable Long jobId) {
-        Job job = jobRepository.findById(jobId).orElse(null);
-        if (job == null) {
-            return ResponseEntity.badRequest().body("Job not found");
-        }
-
-        List<JobApplication> applications = jobApplicationRepository.findByJob(job);
+    public ResponseEntity<List<JobApplication>> getApplicationsForJob(@PathVariable Long jobId) {
+        List<JobApplication> applications = jobApplicationRepository.findByJobId(jobId);
         return ResponseEntity.ok(applications);
     }
 
@@ -102,5 +98,27 @@ public class JobApplicationController {
         return ResponseEntity.ok("Status updated to " + status);
     }
 
+    @PostMapping("/{applicationId}/match-percentage")
+    public ResponseEntity<?> updateMatchPercentage(
+        @PathVariable Long applicationId, 
+        @RequestParam Double percentage
+    ) {
+        try {
+            Optional<JobApplication> optionalApplication = jobApplicationRepository.findById(applicationId);
+            
+            if (optionalApplication.isPresent()) {
+                JobApplication application = optionalApplication.get();
+                application.updateMatchPercentage(percentage);
+                
+                JobApplication updatedApplication = jobApplicationRepository.save(application);
+                
+                return ResponseEntity.ok(updatedApplication);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error updating match percentage: " + e.getMessage());
+        }
+    }
 
 }

@@ -50,5 +50,21 @@ export const fetchApplications = async ({setLoading, setApplications, setError, 
     }
 };
 
+export const updateMatchPercentage = async (applicationId, percentage) => {
+    try {
+        const response = await axios.post(
+            `http://localhost:8080/api/applications/${applicationId}/match-percentage`, 
+            null, 
+            { 
+                params: { percentage } 
+            }
+        );
+        return response.data;
+    } catch (error) {
+        console.error('Error updating match percentage:', error);
+        throw error;
+    }
+};
+
 
 
