@@ -25,7 +25,7 @@ public class User {
 
     private String resumePath;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private CVData cvData;
+//    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+//    private CVData cvData;
 
 }

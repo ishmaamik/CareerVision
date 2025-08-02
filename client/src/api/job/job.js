@@ -41,3 +41,12 @@ export const getExternalJobs = async (keyword, location) => {
   }
 };
 
+export const getJobById = async(id)=>{
+  try {
+    const response = await axios.get(`${BASE_URL}/${id}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+}
+

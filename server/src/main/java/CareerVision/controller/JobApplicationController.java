@@ -1,21 +1,27 @@
 package CareerVision.controller;
 
+import CareerVision.dto.UserJobDTO;
 import CareerVision.model.Job;
 import CareerVision.model.JobApplication;
 import CareerVision.model.User;
 import CareerVision.repository.JobApplicationRepository;
 import CareerVision.repository.JobRepository;
 import CareerVision.repository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/applications")
+@CrossOrigin(origins = "*")
 public class JobApplicationController {
 
+    private static final Logger log = LoggerFactory.getLogger(JobApplicationController.class);
     @Autowired
     private JobApplicationRepository jobApplicationRepository;
 
@@ -27,13 +33,18 @@ public class JobApplicationController {
 
     // Apply to a job
     @PostMapping("/apply")
-    public ResponseEntity<?> applyToJob(@RequestParam Long userId, @RequestParam Long jobId) {
-        User user = userRepository.findById(userId).orElse(null);
-        Job job = jobRepository.findById(jobId).orElse(null);
+    public ResponseEntity<?> applyToJob(@RequestBody UserJobDTO userJob) {
+
+        log.info("Received UserJobDTO: {}", userJob);
+
+        User user = userRepository.findById(userJob.getUserId()).orElse(null);
+        Job job = jobRepository.findById(userJob.getJobId()).orElse(null);
 
         if (user == null || job == null) {
             return ResponseEntity.badRequest().body("Invalid user ID or job ID");
         }
+
+
 
         JobApplication application = new JobApplication();
         application.setApplicant(user);
@@ -59,15 +70,11 @@ public class JobApplicationController {
 
     // Get all applications for a job
     @GetMapping("/job/{jobId}")
-    public ResponseEntity<?> getApplicationsByJob(@PathVariable Long jobId) {
-        Job job = jobRepository.findById(jobId).orElse(null);
-        if (job == null) {
-            return ResponseEntity.badRequest().body("Job not found");
-        }
-
-        List<JobApplication> applications = jobApplicationRepository.findByJob(job);
+    public ResponseEntity<List<JobApplication>> getApplicationsForJob(@PathVariable Long jobId) {
+        List<JobApplication> applications = jobApplicationRepository.findByJobId(jobId);
         return ResponseEntity.ok(applications);
     }
+
 
 
     @PutMapping("/{applicationId}/status")
@@ -81,15 +88,37 @@ public class JobApplicationController {
         }
 
         // Validate status value
-        if (!List.of("applied", "accepted", "rejected").contains(status.toLowerCase())) {
+        if (!List.of("pending", "accepted", "rejected").contains(status.toLowerCase())) {
             return ResponseEntity.badRequest().body("Invalid status");
         }
 
-        application.setStatus(status.toLowerCase());
+        application.setStatus(status);
         jobApplicationRepository.save(application);
 
         return ResponseEntity.ok("Status updated to " + status);
     }
 
+    @PostMapping("/{applicationId}/match-percentage")
+    public ResponseEntity<?> updateMatchPercentage(
+        @PathVariable Long applicationId, 
+        @RequestParam Double percentage
+    ) {
+        try {
+            Optional<JobApplication> optionalApplication = jobApplicationRepository.findById(applicationId);
+            
+            if (optionalApplication.isPresent()) {
+                JobApplication application = optionalApplication.get();
+                application.updateMatchPercentage(percentage);
+                
+                JobApplication updatedApplication = jobApplicationRepository.save(application);
+                
+                return ResponseEntity.ok(updatedApplication);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error updating match percentage: " + e.getMessage());
+        }
+    }
 
 }

@@ -5,9 +5,11 @@ import CareerVision.model.Job;
 import CareerVision.repository.JobRepository;
 import CareerVision.service.JobSearchService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/jobs")
@@ -31,10 +33,21 @@ public class JobController {
         return jobRepository.findAll();
     }
 
-    @GetMapping("/by/{email}")
-    public List<Job> getJobsByRecruiter(@PathVariable String email) {
-        return jobRepository.findByPostedBy(email);
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getJobByID(@PathVariable Long id) {
+        try {
+            Optional<Job> job = jobRepository.findById(id);
+            return ResponseEntity.ok(job);
+        }
+        catch(Exception e){
+            return ResponseEntity.internalServerError().body("Error: "+e.getMessage());
+        }
     }
+
+//    @GetMapping("/by/{email}")
+//    public List<Job> getJobsByRecruiter(@PathVariable String email) {
+//        return jobRepository.findByPostedBy(email);
+//    }
 
     // return list of DTOs from Adzuna API
     @GetMapping("/external")

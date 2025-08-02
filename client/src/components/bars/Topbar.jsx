@@ -1,12 +1,16 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
+import {PeopleAlt as People, Work as Work, Login as Login, Logout as Logout, Person as Person, AppRegistration as Signup} from "@mui/icons-material"
 const Topbar = () => {
   const navigate = useNavigate();
 
   const LogInOrOut = () => {
-    if (localStorage.getItem("name")) {
+    if (localStorage.getItem("user")) {
+      localStorage.removeItem("user");
       localStorage.removeItem("name");
+      localStorage.removeItem("role");
+      localStorage.removeItem("userId");
       navigate("/login");
     } else {
       navigate("/login");
@@ -24,9 +28,10 @@ const Topbar = () => {
       </div>
 
       {/* Right Side: Navigation */}
-      <div className="space-x-4">
+      <div className="space-x-20">
         <Button
           disableRipple
+          startIcon={<People/>}
           variant="text"
           sx={{
             color: "gray",
@@ -35,13 +40,28 @@ const Topbar = () => {
           }}
           onClick={() => navigate("/blogs")}
         >
-          Blogs
+          Community
+        </Button>
+
+        <Button
+          disableRipple
+          variant="text"
+          startIcon={<Work/>}
+          sx={{
+            color: "gray",
+            ":hover": { backgroundColor: "transparent" },
+            ":focus-visible": { outline: "none" },
+          }}
+          onClick={() => navigate("/jobs")}
+        >
+          Jobs
         </Button>
         {localStorage.getItem("name") ? (
           <>
             <Button
               disableRipple
               variant="text"
+              startIcon={<Logout/>}
               sx={{
                 color: "gray",
                 ":hover": { backgroundColor: "transparent" },
@@ -54,6 +74,7 @@ const Topbar = () => {
 
             <Button
               disableRipple
+              startIcon={<Person/>}
               variant="text"
               sx={{
                 color: "gray",
@@ -70,6 +91,7 @@ const Topbar = () => {
             <Button
               disableRipple
               variant="text"
+              startIcon={<Login/>}
               sx={{
                 color: "gray",
                 ":hover": { backgroundColor: "transparent" },
@@ -82,6 +104,7 @@ const Topbar = () => {
             <Button
               disableRipple
               variant="text"
+              startIcon={<Signup/>}
               sx={{
                 color: "gray",
                 ":hover": { backgroundColor: "transparent" },
