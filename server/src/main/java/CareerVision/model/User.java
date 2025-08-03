@@ -25,6 +25,8 @@ public class User {
 
     private String resumePath;
 
+    private String profilePictureUrl;
+
 //    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
 //    private CVData cvData;
 

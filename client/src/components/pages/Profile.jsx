@@ -1,9 +1,10 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext, useState, useEffect, useCallback } from 'react'
 import ishu from '../../assets/siyam.jpg'
 import axios from 'axios'
 import { handleFileUpload } from '../../api/resume/resume.js'
-import { FaFilePdf, FaTrash, FaSync, FaEye, FaDownload } from 'react-icons/fa';
+import { FaFilePdf, FaTrash, FaSync, FaEye, FaDownload, FaCamera } from 'react-icons/fa';
 import { deleteResume, updateResume } from '../../api/resume/resume.js'
+import { handleDeleteProfilePicture, handleProfilePictureUpload } from '../../api/profilePicture/profilePicture.js';
 const Profile = () => {
 
     const [isMounted, setMounted] = useState(false)
@@ -14,15 +15,128 @@ const Profile = () => {
     const [success, setSuccess] = useState(false);
     const [hasResume, setHasResume] = useState(false);
     const [resumeUrl, setResumeUrl] = useState('');
+    const [profilePictureUrl, setProfilePictureUrl] = useState(null);
+    const [profilePictureUploading, setProfilePictureUploading] = useState(false);
+    const [imageLoadError, setImageLoadError] = useState(false);
+
+    const checkProfilePictureStatus = useCallback(async () => {
+        try {
+            const response = await axios.get(`http://localhost:8080/api/profile-picture/user/${userId}`);
+            console.log('Profile Picture Status Response:', response.data);
+            
+            // Reset image load error
+            setImageLoadError(false);
+
+            // Check if the response indicates a profile picture exists and has a valid URL
+            if (response.data.hasProfilePicture && response.data.profilePictureUrl) {
+                const pictureUrl = response.data.profilePictureUrl.trim();
+                console.log('Setting profile picture URL:', pictureUrl);
+                
+                // Only set if the URL is not an empty string
+                setProfilePictureUrl(pictureUrl);
+            } else {
+                console.log('No profile picture found for user');
+                setProfilePictureUrl(null);
+            }
+        } catch (err) {
+            console.error("Error checking profile picture status:", err);
+            // More detailed error logging
+            if (err.response) {
+                console.error('Server responded with error:', err.response.data);
+                setError(`Failed to check profile picture: ${err.response.data.message || `Status ${err.response.status}`}`);
+            } else if (err.request) {
+                console.error('No response received:', err.request);
+                setError('No response received when checking profile picture. Check your network connection.');
+            } else {
+                console.error('Error setting up request:', err.message);
+                setError(`Error checking profile picture: ${err.message}`);
+            }
+            
+            // Ensure a default state
+            setProfilePictureUrl(null);
+        }
+    }, [userId]);
+
+    const handleImageError = () => {
+        console.error('Failed to load profile picture', {
+            currentUrl: profilePictureUrl,
+            userStoredUrl: user.profilePictureUrl,
+            localStorageUser: JSON.parse(localStorage.getItem('user'))
+        });
+        
+        // Log additional context about the image source
+        const imgElement = document.querySelector('img[alt="Profile"]');
+        if (imgElement) {
+            console.error('Image element details:', {
+                src: imgElement.src,
+                naturalWidth: imgElement.naturalWidth,
+                naturalHeight: imgElement.naturalHeight
+            });
+        }
+
+        // Attempt to validate and fix the URL
+        const storedUser = JSON.parse(localStorage.getItem('user'));
+        const potentialUrls = [
+            profilePictureUrl, 
+            storedUser?.profilePictureUrl, 
+            user.profilePictureUrl
+        ];
+
+        console.log('Potential URLs to validate:', potentialUrls);
+
+        // Find the first valid-looking URL
+        const validUrl = potentialUrls.find(url => 
+            url && 
+            typeof url === 'string' && 
+            url.trim() !== '' && 
+            (url.startsWith('http://') || url.startsWith('https://'))
+        );
+
+        if (validUrl) {
+            console.log('Attempting to use validated URL:', validUrl);
+            
+            // Try to fetch the image to verify accessibility
+            fetch(validUrl, { 
+                method: 'GET',
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'image/*'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log('Image URL is accessible');
+                    setProfilePictureUrl(validUrl);
+                } else {
+                    console.error('Image URL is not accessible', response.status);
+                    throw new Error('Image not accessible');
+                }
+            })
+            .catch(error => {
+                console.error('Error verifying image URL:', error);
+                setImageLoadError(true);
+                setProfilePictureUrl(null);
+            });
+        } else {
+            console.error('No valid profile picture URL found');
+            setImageLoadError(true);
+            setProfilePictureUrl(null);
+        }
+    };
 
     useEffect(() => {
         const timer = setTimeout(() => setMounted(true), 10);
         checkResumeStatus();
+        checkProfilePictureStatus();
         return () => {
             setMounted(false);
             clearTimeout(timer);
         };
-    }, []);
+    }, [checkProfilePictureStatus]);
+
+    useEffect(() => {
+        checkProfilePictureStatus();
+    }, [profilePictureUrl, checkProfilePictureStatus]);
 
     const checkResumeStatus = async () => {
         try {
@@ -52,7 +166,38 @@ const Profile = () => {
 
                             <div className=''>
                                 <div className='relative bg-white h-50 rounded-lg'>
-                                    <img className='absolute left-2 top-5 w-16 ' style={{ borderRadius: '50%' }} src={ishu} />
+                                    <img
+                                        className='absolute left-2 top-5 w-16 h-16 object-cover'
+                                        style={{ borderRadius: '50%' }}
+                                        src={imageLoadError || !profilePictureUrl ? '/default-profile.png' : profilePictureUrl}
+                                        alt="Profile"
+                                        onError={handleImageError}
+                                        onLoad={() => {
+                                            console.log('Profile picture loaded successfully', {
+                                                url: profilePictureUrl,
+                                                imageLoadError
+                                            });
+                                        }}
+                                    />
+                                    <label className="absolute left-12 top-14 bg-white rounded-full p-1 shadow cursor-pointer hover:bg-gray-100">
+                                        <FaCamera className="text-gray-600" size={12} />
+                                        <input
+                                            type="file"
+                                            onChange={(e)=>handleProfilePictureUpload(e, user, userId, setSuccess,  setError, setProfilePictureUrl, setProfilePictureUploading)}
+                                            accept="image/*"
+                                            className="hidden"
+                                            disabled={profilePictureUploading}
+                                        />
+                                    </label>
+                                    {profilePictureUrl && !imageLoadError && (
+                                        <button
+                                            onClick={()=>handleDeleteProfilePicture(user, userId, setSuccess,  setError, setProfilePictureUrl)}
+                                            className="absolute left-12 top-14 bg-white rounded-full p-1 shadow hover:bg-gray-100"
+                                            disabled={profilePictureUploading}
+                                        >
+                                            <FaTrash className="text-red-500" size={12} />
+                                        </button>
+                                    )}
                                     <p className='absolute left-2 top-24  '>{user.name}</p>
                                     <p className='absolute left-2 top-32'>01696969420</p>
                                 </div>
@@ -159,7 +304,7 @@ const Profile = () => {
                                     )}
                                     {success && (
                                         <p className="text-green-500 text-sm">
-                                            Resume deleted successfully!
+                                            {success === true ? 'Operation successful!' : success}
                                         </p>
                                     )}
                                 </div>

@@ -13,7 +13,7 @@ import JobPage from "./components/pages/JobsList";
 import CreateJob from "./components/pages/CreateJob";
 import ApplyJob from "./components/pages/ApplyJob/ApplyJob";
 import CreateCompany from "./components/pages/CreateCompany";
-import CommunityForum from "./components/pages/CommunityForum";
+import CommunityForum from "./components/pages/Community/CommunityForum";
 import SampleSocial from "./components/pages/SampleSocial";
 
 function App() {

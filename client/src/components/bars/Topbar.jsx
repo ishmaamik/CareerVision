@@ -38,7 +38,7 @@ const Topbar = () => {
             ":hover": { backgroundColor: "transparent" },
             ":focus-visible": { outline: "none" },
           }}
-          onClick={() => navigate("/blogs")}
+          onClick={() => navigate("/community")}
         >
           Community
         </Button>
