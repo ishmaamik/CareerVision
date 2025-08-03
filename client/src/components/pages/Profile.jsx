@@ -15,7 +15,7 @@ const Profile = () => {
     const [success, setSuccess] = useState(false);
     const [hasResume, setHasResume] = useState(false);
     const [resumeUrl, setResumeUrl] = useState('');
-    const [profilePictureUrl, setProfilePictureUrl] = useState(`https://juxybcuqphaltrnvbyvq.supabase.co/storage/v1/object/public/profile-image-uploads//profile_4_1754214332557.jpg`);
+    const [profilePictureUrl, setProfilePictureUrl] = useState(null);
     const [profilePictureUploading, setProfilePictureUploading] = useState(false);
     const [imageLoadError, setImageLoadError] = useState(false);
 
