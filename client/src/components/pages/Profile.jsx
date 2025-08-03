@@ -15,7 +15,7 @@ const Profile = () => {
     const [success, setSuccess] = useState(false);
     const [hasResume, setHasResume] = useState(false);
     const [resumeUrl, setResumeUrl] = useState('');
-    const [profilePictureUrl, setProfilePictureUrl] = useState(null);
+    const [profilePictureUrl, setProfilePictureUrl] = useState(`https://juxybcuqphaltrnvbyvq.supabase.co/storage/v1/object/public/profile-image-uploads//profile_4_1754214332557.jpg`);
     const [profilePictureUploading, setProfilePictureUploading] = useState(false);
     const [imageLoadError, setImageLoadError] = useState(false);
 
@@ -57,72 +57,7 @@ const Profile = () => {
         }
     }, [userId]);
 
-    const handleImageError = () => {
-        console.error('Failed to load profile picture', {
-            currentUrl: profilePictureUrl,
-            userStoredUrl: user.profilePictureUrl,
-            localStorageUser: JSON.parse(localStorage.getItem('user'))
-        });
-        
-        // Log additional context about the image source
-        const imgElement = document.querySelector('img[alt="Profile"]');
-        if (imgElement) {
-            console.error('Image element details:', {
-                src: imgElement.src,
-                naturalWidth: imgElement.naturalWidth,
-                naturalHeight: imgElement.naturalHeight
-            });
-        }
-
-        // Attempt to validate and fix the URL
-        const storedUser = JSON.parse(localStorage.getItem('user'));
-        const potentialUrls = [
-            profilePictureUrl, 
-            storedUser?.profilePictureUrl, 
-            user.profilePictureUrl
-        ];
-
-        console.log('Potential URLs to validate:', potentialUrls);
-
-        // Find the first valid-looking URL
-        const validUrl = potentialUrls.find(url => 
-            url && 
-            typeof url === 'string' && 
-            url.trim() !== '' && 
-            (url.startsWith('http://') || url.startsWith('https://'))
-        );
-
-        if (validUrl) {
-            console.log('Attempting to use validated URL:', validUrl);
-            
-            // Try to fetch the image to verify accessibility
-            fetch(validUrl, { 
-                method: 'GET',
-                mode: 'cors',
-                headers: {
-                    'Content-Type': 'image/*'
-                }
-            })
-            .then(response => {
-                if (response.ok) {
-                    console.log('Image URL is accessible');
-                    setProfilePictureUrl(validUrl);
-                } else {
-                    console.error('Image URL is not accessible', response.status);
-                    throw new Error('Image not accessible');
-                }
-            })
-            .catch(error => {
-                console.error('Error verifying image URL:', error);
-                setImageLoadError(true);
-                setProfilePictureUrl(null);
-            });
-        } else {
-            console.error('No valid profile picture URL found');
-            setImageLoadError(true);
-            setProfilePictureUrl(null);
-        }
-    };
+    
 
     useEffect(() => {
         const timer = setTimeout(() => setMounted(true), 10);
@@ -165,25 +100,36 @@ const Profile = () => {
                             </div>
 
                             <div className=''>
-                                <div className='relative bg-white h-50 rounded-lg'>
+                                <div className='relative bg-white h-70 rounded-lg'>
                                     <img
-                                        className='absolute left-2 top-5 w-16 h-16 object-cover'
+                                        className='absolute left-2 top-5 w-30 h-30 object-cover'
                                         style={{ borderRadius: '50%' }}
-                                        src={imageLoadError || !profilePictureUrl ? '/default-profile.png' : profilePictureUrl}
+                                        src={imageLoadError || !profilePictureUrl ? '/default-profile.jpg' : profilePictureUrl}
                                         alt="Profile"
-                                        onError={handleImageError}
+                                        
                                         onLoad={() => {
                                             console.log('Profile picture loaded successfully', {
                                                 url: profilePictureUrl,
-                                                imageLoadError
+                                                imageLoadError,
+                                                naturalWidth: document.querySelector('img[alt="Profile"]')?.naturalWidth,
+                                                naturalHeight: document.querySelector('img[alt="Profile"]')?.naturalHeight
                                             });
                                         }}
+                                        crossOrigin="anonymous"
                                     />
-                                    <label className="absolute left-12 top-14 bg-white rounded-full p-1 shadow cursor-pointer hover:bg-gray-100">
+                                    <label className="absolute left-8 top-30  bg-white rounded-full p-1 shadow cursor-pointer hover:bg-gray-100">
                                         <FaCamera className="text-gray-600" size={12} />
                                         <input
                                             type="file"
-                                            onChange={(e)=>handleProfilePictureUpload(e, user, userId, setSuccess,  setError, setProfilePictureUrl, setProfilePictureUploading)}
+                                            onChange={(e)=>handleProfilePictureUpload({
+                                                e, 
+                                                user, 
+                                                userId, 
+                                                setSuccess,  
+                                                setError, 
+                                                setProfilePictureUrl, 
+                                                setProfilePictureUploading
+                                            })}
                                             accept="image/*"
                                             className="hidden"
                                             disabled={profilePictureUploading}
@@ -191,18 +137,24 @@ const Profile = () => {
                                     </label>
                                     {profilePictureUrl && !imageLoadError && (
                                         <button
-                                            onClick={()=>handleDeleteProfilePicture(user, userId, setSuccess,  setError, setProfilePictureUrl)}
-                                            className="absolute left-12 top-14 bg-white rounded-full p-1 shadow hover:bg-gray-100"
+                                            onClick={()=>handleDeleteProfilePicture({
+                                                user, 
+                                                userId, 
+                                                setSuccess,  
+                                                setError, 
+                                                setProfilePictureUrl
+                                            })}
+                                            className="absolute left-20 top-30 bg-white rounded-full p-1 shadow hover:bg-gray-100"
                                             disabled={profilePictureUploading}
                                         >
                                             <FaTrash className="text-red-500" size={12} />
                                         </button>
                                     )}
-                                    <p className='absolute left-2 top-24  '>{user.name}</p>
-                                    <p className='absolute left-2 top-32'>01696969420</p>
+                                    <p className='absolute left-2 top-45  '>{user.name}</p>
+                                    <p className='absolute left-2 top-52'>01696969420</p>
                                 </div>
 
-                                <div className="absolute ml-60 -mt-40 flex flex-col gap-2">
+                                <div className="absolute ml-60 -mt-60 flex flex-col gap-2">
                                     {hasResume ? (
                                         <>
                                             <div className="flex items-center  gap-2 text-blue-500">

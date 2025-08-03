@@ -15,7 +15,6 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/profile-picture")
-@CrossOrigin(origins = "*")
 public class ProfilePictureController {
 
     @Autowired
@@ -28,62 +27,40 @@ public class ProfilePictureController {
     public ResponseEntity<?> uploadProfilePicture(
             @RequestParam("file") MultipartFile file,
             @RequestParam("userId") Long userId) {
-
         try {
             // Validate user
             User user = userRepository.findById(userId)
                     .orElseThrow(() -> new IllegalArgumentException("User not found"));
-
             // Validate file
-            if (file == null || file.isEmpty()) {
+            if (file.isEmpty()) {
                 return ResponseEntity.badRequest().body(Map.of(
                         "status", "error",
                         "message", "File is empty"
                 ));
             }
-
-            // Check if it's an image
-            String contentType = file.getContentType();
-            if (contentType == null || !contentType.startsWith("image/")) {
+            if (!file.getContentType().startsWith("image/")) {
                 return ResponseEntity.badRequest().body(Map.of(
                         "status", "error",
                         "message", "Only image files allowed"
                 ));
             }
-
             // Generate unique filename
-            String fileName = "profile_" + userId + "_" + System.currentTimeMillis() +
-                    getFileExtension(contentType);
-
-            // Upload to Supabase (use a different bucket)
-            String fileUrl = supabaseStorageService.uploadProfilePicture(
+            String fileName = "profile_" + userId + "_" + System.currentTimeMillis() + getFileExtension(file.getContentType());
+            // Upload to Supabase
+            String fileUrl = SupabaseStorageService.uploadProfilePicture(
                     file.getBytes(),
                     fileName,
-                    contentType
+                    file.getContentType()
             );
-
-            // Delete old profile picture if exists
-            if (user.getProfilePictureUrl() != null) {
-                try {
-                    String oldFileName = user.getProfilePictureUrl()
-                            .substring(user.getProfilePictureUrl().lastIndexOf("/") + 1);
-                    supabaseStorageService.deleteProfilePicture(oldFileName);
-                } catch (Exception e) {
-                    // Log but don't fail the operation
-                    System.err.println("Failed to delete old profile picture: " + e.getMessage());
-                }
-            }
-
             // Save URL to user profile
             user.setProfilePictureUrl(fileUrl);
             userRepository.save(user);
-
             return ResponseEntity.ok().body(Map.of(
                     "status", "success",
                     "message", "Profile picture uploaded successfully",
-                    "url", fileUrl
+                    "url", fileUrl,
+                    "fileName", fileName
             ));
-
         } catch (IOException e) {
             return ResponseEntity.internalServerError().body(Map.of(
                     "status", "error",
@@ -103,21 +80,16 @@ public class ProfilePictureController {
     public ResponseEntity<?> getProfilePictureUrl(@PathVariable Long userId) {
         return userRepository.findById(userId)
                 .map(user -> {
-                    String profilePictureUrl = user.getProfilePictureUrl();
-                    
-                    // Check if profile picture URL is null or empty
-                    if (profilePictureUrl == null || profilePictureUrl.trim().isEmpty()) {
+                    if (user.getProfilePictureUrl() == null || user.getProfilePictureUrl().isEmpty()) {
                         return ResponseEntity.ok().body(Map.of(
                                 "status", "success",
                                 "message", "No profile picture uploaded",
-                                "hasProfilePicture", false,
-                                "profilePictureUrl", null
+                                "hasProfilePicture", false
                         ));
                     }
-                    
                     return ResponseEntity.ok().body(Map.of(
                             "status", "success",
-                            "profilePictureUrl", profilePictureUrl,
+                            "profilePictureUrl", user.getProfilePictureUrl(),
                             "hasProfilePicture", true
                     ));
                 })
@@ -137,17 +109,14 @@ public class ProfilePictureController {
                                 "message", "No profile picture to delete"
                         ));
                     }
-
                     try {
                         // Delete from Supabase
                         String fileName = user.getProfilePictureUrl()
                                 .substring(user.getProfilePictureUrl().lastIndexOf("/") + 1);
-                        supabaseStorageService.deleteProfilePicture(fileName);
-
+                        SupabaseStorageService.deleteProfilePicture(fileName);
                         // Update user record
                         user.setProfilePictureUrl(null);
                         userRepository.save(user);
-
                         return ResponseEntity.ok().body(Map.of(
                                 "status", "success",
                                 "message", "Profile picture deleted successfully"

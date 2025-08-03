@@ -17,50 +17,51 @@ public class SupabaseStorageService {
 
     private static final String PROFILE_PICTURE_BUCKET = "profile-image-uploads";
 
-    public String uploadProfilePicture(byte[] fileBytes, String fileName, String contentType) throws IOException {
+    private String generatePublicUrl(String bucket, String fileName) {
+        // Ensure consistent URL formatting
+        String cleanFileName = fileName.startsWith("/") ? fileName.substring(1) : fileName;
+        String publicUrl = SUPABASE_URL + "/storage/v1/object/public/" + bucket + "/" + cleanFileName;
+        
+        System.out.println("Generated Public URL Details:");
+        System.out.println("Base URL: " + SUPABASE_URL);
+        System.out.println("Bucket: " + bucket);
+        System.out.println("Original Filename: " + fileName);
+        System.out.println("Clean Filename: " + cleanFileName);
+        System.out.println("Full Public URL: " + publicUrl);
+        
+        return publicUrl;
+    }
+
+    public static String uploadProfilePicture(byte[] fileBytes, String fileName, String contentType) throws IOException {
         // Validate file type
-        if (contentType == null || !contentType.startsWith("image/")) {
+        if (!contentType.startsWith("image/")) {
             throw new IOException("Only image files are allowed");
         }
-
         // Create request body
         RequestBody requestBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart(
                         "file",
                         fileName,
-                        RequestBody.create(fileBytes, MediaType.parse(contentType)))
+                        RequestBody.create(fileBytes, MediaType.parse(contentType))
+                )
                 .build();
-
-        // Build request to upload file
-        Request uploadRequest = new Request.Builder()
-                .url(SUPABASE_URL + "/storage/v1/object/" + PROFILE_PICTURE_BUCKET + "/" + fileName)
+        // Build request with double slash
+        String uploadUrl = SUPABASE_URL + "/storage/v1/object/" + PROFILE_PICTURE_BUCKET + "//" + fileName;
+        Request request = new Request.Builder()
+                .url(uploadUrl)
                 .header("apikey", SUPABASE_ANON_KEY)
                 .header("Authorization", "Bearer " + SUPABASE_ANON_KEY)
-                .header("Content-Type", contentType)
-                .header("x-upsert", "true")  // Allow overwriting existing files
                 .post(requestBody)
                 .build();
-
-        // Execute upload request
-        try (Response uploadResponse = client.newCall(uploadRequest).execute()) {
-            if (!uploadResponse.isSuccessful()) {
-                String errorBody = uploadResponse.body() != null ? uploadResponse.body().string() : "No error details";
-                throw new IOException("Supabase upload error: " + uploadResponse.code() + " - " + errorBody);
+        // Execute request
+        try (Response response = client.newCall(request).execute()) {
+            if (!response.isSuccessful()) {
+                String errorBody = response.body() != null ? response.body().string() : "No error details";
+                throw new IOException("Supabase error: " + response.code() + " - " + errorBody);
             }
-
-            // Construct fully qualified public URL with signed URL for direct access
-            String publicUrl = SUPABASE_URL + "/storage/v1/object/public/" + PROFILE_PICTURE_BUCKET + "/" + fileName;
-            
-            // Generate signed URL with extended expiration
-            String signedUrl = generateSignedUrl(PROFILE_PICTURE_BUCKET, fileName);
-            
-            // Log successful upload
-            System.out.println("Profile picture uploaded successfully:");
-            System.out.println("Public URL: " + publicUrl);
-            System.out.println("Signed URL: " + signedUrl);
-            
-            return signedUrl;  // Return signed URL for better accessibility
+            String publicUrl = SUPABASE_URL + "/storage/v1/object/public/" + PROFILE_PICTURE_BUCKET + "//" + fileName;
+            return publicUrl;
         }
     }
 
@@ -87,23 +88,18 @@ public class SupabaseStorageService {
         }
     }
 
-    public void deleteProfilePicture(String fileName) throws IOException {
-        // Build delete request
+    public static void deleteProfilePicture(String fileName) throws IOException {
+        String deleteUrl = SUPABASE_URL + "/storage/v1/object/" + PROFILE_PICTURE_BUCKET + "//" + fileName;
         Request request = new Request.Builder()
-                .url(SUPABASE_URL + "/storage/v1/object/" + PROFILE_PICTURE_BUCKET + "/" + fileName)
+                .url(deleteUrl)
                 .header("apikey", SUPABASE_ANON_KEY)
                 .header("Authorization", "Bearer " + SUPABASE_ANON_KEY)
                 .delete()
                 .build();
-
-        // Execute request
         try (Response response = client.newCall(request).execute()) {
             if (!response.isSuccessful()) {
-                String errorBody = response.body() != null ? response.body().string() : "No error details";
-                throw new IOException("Supabase delete error: " + response.code() + " - " + errorBody);
+                throw new IOException("Failed to delete file: " + response.message());
             }
-            
-            System.out.println("Profile picture deleted successfully: " + fileName);
         }
     }
 
@@ -113,7 +109,6 @@ public class SupabaseStorageService {
         if (!"application/pdf".equals(contentType)) {
             throw new IOException("Only PDF files are allowed");
         }
-
         // Create request body
         RequestBody requestBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
@@ -123,36 +118,36 @@ public class SupabaseStorageService {
                         RequestBody.create(fileBytes, MediaType.parse(contentType))
                 )
                 .build();
-
         // Build request
+        String uploadUrl = SUPABASE_URL + "/storage/v1/object/" + BUCKET_NAME + "/" + fileName;
+        uploadUrl = uploadUrl.replaceAll("/+/", "/").replace("https:/", "https://");
         Request request = new Request.Builder()
-                .url(SUPABASE_URL + "/storage/v1/object/" + BUCKET_NAME + "/" + fileName)
+                .url(uploadUrl)
                 .header("apikey", SUPABASE_ANON_KEY)
                 .header("Authorization", "Bearer " + SUPABASE_ANON_KEY)
                 .post(requestBody)
                 .build();
-
         // Execute request
         try (Response response = client.newCall(request).execute()) {
             if (!response.isSuccessful()) {
                 String errorBody = response.body() != null ? response.body().string() : "No error details";
                 throw new IOException("Supabase error: " + response.code() + " - " + errorBody);
             }
-
-            // Parse response
-            JSONObject jsonResponse = new JSONObject(response.body().string());
-            return SUPABASE_URL + "/storage/v1/object/public/" + BUCKET_NAME + "/" + fileName;
+            String publicUrl = SUPABASE_URL + "/storage/v1/object/public/" + BUCKET_NAME + "/" + fileName;
+            publicUrl = publicUrl.replaceAll("/+/", "/").replace("https:/", "https://");
+            return publicUrl;
         }
     }
 
     public static void deleteFile(String fileName) throws IOException {
+        String deleteUrl = SUPABASE_URL + "/storage/v1/object/" + BUCKET_NAME + "/" + fileName;
+        deleteUrl = deleteUrl.replaceAll("/+/", "/").replace("https:/", "https://");
         Request request = new Request.Builder()
-                .url(SUPABASE_URL + "/storage/v1/object/" + BUCKET_NAME + "/" + fileName)
+                .url(deleteUrl)
                 .header("apikey", SUPABASE_ANON_KEY)
                 .header("Authorization", "Bearer " + SUPABASE_ANON_KEY)
                 .delete()
                 .build();
-
         try (Response response = client.newCall(request).execute()) {
             if (!response.isSuccessful()) {
                 throw new IOException("Failed to delete file: " + response.message());
