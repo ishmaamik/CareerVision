@@ -17,7 +17,7 @@ const CommunityForum = () => {
     }
     return (
         <>
-            <div className='flex mt-30 space-x-4 justify-start ml-32'>
+            <div className='flex mt-20 space-x-4 justify-start ml-32'>
                 {
                     sections.map((section, index) =>
                         <div>

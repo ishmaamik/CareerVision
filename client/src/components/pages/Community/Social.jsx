@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Photo as Photo, PeopleAlt as People, Work as Work, Login as Login, Logout as Logout, Person as Person, AppRegistration as Signup } from "@mui/icons-material"
@@ -83,44 +82,46 @@ const Social = () => {
 
     return (
         <>
-
             <div>
-                <div className='w-260 ml-32 h-32 mt-4 bg-white rounded-lg'>
+                <div className='w-210 ml-32 h-32 mt-4 bg-white rounded-lg'>
                     <div className='flex'>
                         <img className='h-16 ml-4 w-16 mt-4' style={{ borderRadius: '50%' }} src={user?.profilePictureUrl} />
-                        <input onChange={(e) => setWriting(e.target.value)} className='mt-4 ml-4 mr-4  rounded-lg w-240 bg-neutral-100' placeholder='Start writing post...' />
-                    </div>
-                    <Button onClick={handleSubmit}>Post</Button>
-                    <label className="absolute left-8 top-30  bg-white rounded-full p-1 shadow cursor-pointer hover:bg-gray-100">
-                        <FaCamera className="text-gray-600" size={12} /> <p>Photo</p>
                         <input
-                            type="file"
-                            onChange={(e) => setImageFile(e.target.files[0])
-                            }
-                            accept="image/*"
+                            value={writing}
+                            onChange={(e) => setWriting(e.target.value)}
+                            className='mt-4 ml-4 mr-4 rounded-lg w-200 bg-neutral-100'
+                            placeholder='Start writing post...'
                         />
-                    </label>
+                    </div>
+                    <div className='flex items-center justify-between px-4'>
+                        <label className="bg-white rounded-full p-2 shadow cursor-pointer hover:bg-gray-100 flex items-center">
+                            <FaCamera className="text-gray-600 mr-2" size={12} />
+                            <span>Photo</span>
+                            <input
+                                type="file"
+                                onChange={(e) => setImageFile(e.target.files[0])}
+                                accept="image/*"
+                                className='hidden'
+                            />
+                        </label>
+                        <Button onClick={handleSubmit}>Post</Button>
+                    </div>
                 </div>
 
-                {posts?.map((p, ind) =>
-                    <>
-                        <div className={`${p.imageUrl ? `h-190` : `h-40`} w-260 ml-32 mt-4 bg-white rounded-lg`}>
-                            <div className='flex'>
-                                <img className='h-16 ml-4 w-16 mt-4' style={{ borderRadius: '50%' }} src={user.profilePictureUrl} />
-                                <div className='flex flex-col mt-4 ml-4'>
-                                    <p>{p.postedBy.name}</p>
-                                    <p>{p.postTime}</p>
-                                </div>
+                {posts?.map((p, ind) => (
+                    <div key={ind} className={`${p.imageUrl ? 'h-140' : 'h-40'} w-210 ml-32 mt-4 bg-white rounded-lg`}>
+                        <div className='flex'>
+                            <img className='h-16 ml-4 w-16 mt-4' style={{ borderRadius: '50%' }} src={user.profilePictureUrl} />
+                            <div className='flex flex-col mt-4 ml-4'>
+                                <p>{p.postedBy.name}</p>
+                                <p>{p.postTime}</p>
                             </div>
-
-                            <p className='ml-4 mt-4'>{p.post}</p>
-                            {p.imageUrl ? <img className='rounded-lg h-150 ml-4 w-250 mt-4' src={p.imageUrl} /> : <p></p>}
-
                         </div>
-                    </>)}
-
+                        <p className='ml-4 mt-4'>{p.post}</p>
+                        {p.imageUrl && <img className='rounded-lg h-100 ml-4 w-200 mt-4' src={p.imageUrl} alt="Post content" />}
+                    </div>
+                ))}
             </div>
-
         </>
     )
 }
