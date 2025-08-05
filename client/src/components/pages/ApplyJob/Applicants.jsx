@@ -220,15 +220,12 @@ const Applicants = ({ jobDetails, isMounted }) => {
             transition-all 
             duration-800 
             ease-in-out 
-            left-1/2 
-            flex 
-            items-center 
-            justify-center 
             pb-12
         `}>
             <div className="
                 w-full 
-                max-w-6xl 
+                max-w-800
+                px-0 
                 mb-12 
                 rounded-lg 
                 bg-white 
@@ -237,12 +234,13 @@ const Applicants = ({ jobDetails, isMounted }) => {
                 p-6
             ">
                 <h2 className="text-2xl font-bold mb-6 px-4">Applicants for {jobDetails?.title}</h2>
-                <div className="overflow-x-auto">
-                    <table className="min-w-full bg-white">
+                <div className="overflow-x-auto w-full ">
+                    <table className=" max-w-1000 bg-white ">
                         <thead>
                             <tr className="bg-gray-100 text-center">
                                 <th className="py-3 px-4">Name</th>
                                 <th className="py-3 px-4">Email</th>
+                                <th className="py-3 px-4">Applicant's Photo</th>
                                 <th className="py-3 px-4">Status</th>
                                 <th className="py-3 px-4">Applicant Resume</th>
                                 <th className="py-3 px-4 w-48">Percentage Match</th>
@@ -255,6 +253,7 @@ const Applicants = ({ jobDetails, isMounted }) => {
                                     <tr key={application.id} className="border-b text-center">
                                         <td className="py-3 px-4">{application.applicant?.name}</td>
                                         <td className="py-3 px-4">{application.applicant?.email}</td>
+                                        <td className="py-3 px-4"><img style={{borderRadius:'50%'}} src={application.applicant?.profilePictureUrl || '/default-profile.jpg'}/></td>
                                         <td className="py-3 px-4">
                                             <span className={`px-2 py-1 rounded-full text-xs ${
                                                 application.status === 'accepted' ? 'text-green-900' :

@@ -1,9 +1,10 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext, useState, useEffect, useCallback } from 'react'
 import ishu from '../../assets/siyam.jpg'
 import axios from 'axios'
 import { handleFileUpload } from '../../api/resume/resume.js'
-import { FaFilePdf, FaTrash, FaSync, FaEye, FaDownload } from 'react-icons/fa';
+import { FaFilePdf, FaTrash, FaSync, FaEye, FaDownload, FaCamera } from 'react-icons/fa';
 import { deleteResume, updateResume } from '../../api/resume/resume.js'
+import { handleDeleteProfilePicture, handleProfilePictureUpload } from '../../api/profilePicture/profilePicture.js';
 const Profile = () => {
 
     const [isMounted, setMounted] = useState(false)
@@ -14,15 +15,63 @@ const Profile = () => {
     const [success, setSuccess] = useState(false);
     const [hasResume, setHasResume] = useState(false);
     const [resumeUrl, setResumeUrl] = useState('');
+    const [profilePictureUrl, setProfilePictureUrl] = useState(null);
+    const [profilePictureUploading, setProfilePictureUploading] = useState(false);
+    const [imageLoadError, setImageLoadError] = useState(false);
+
+    const checkProfilePictureStatus = useCallback(async () => {
+        try {
+            const response = await axios.get(`http://localhost:8080/api/profile-picture/user/${userId}`);
+            console.log('Profile Picture Status Response:', response.data);
+            
+            // Reset image load error
+            setImageLoadError(false);
+
+            // Check if the response indicates a profile picture exists and has a valid URL
+            if (response.data.hasProfilePicture && response.data.profilePictureUrl) {
+                const pictureUrl = response.data.profilePictureUrl.trim();
+                console.log('Setting profile picture URL:', pictureUrl);
+                
+                // Only set if the URL is not an empty string
+                setProfilePictureUrl(pictureUrl);
+            } else {
+                console.log('No profile picture found for user');
+                setProfilePictureUrl(null);
+            }
+        } catch (err) {
+            console.error("Error checking profile picture status:", err);
+            // More detailed error logging
+            if (err.response) {
+                console.error('Server responded with error:', err.response.data);
+                setError(`Failed to check profile picture: ${err.response.data.message || `Status ${err.response.status}`}`);
+            } else if (err.request) {
+                console.error('No response received:', err.request);
+                setError('No response received when checking profile picture. Check your network connection.');
+            } else {
+                console.error('Error setting up request:', err.message);
+                setError(`Error checking profile picture: ${err.message}`);
+            }
+            
+            // Ensure a default state
+            setProfilePictureUrl(null);
+        }
+    }, [userId]);
+
+    
 
     useEffect(() => {
         const timer = setTimeout(() => setMounted(true), 10);
         checkResumeStatus();
+        checkProfilePictureStatus();
         return () => {
             setMounted(false);
             clearTimeout(timer);
         };
-    }, []);
+    }, [checkProfilePictureStatus]);
+
+    useEffect(() => {
+        checkProfilePictureStatus();
+    }, [profilePictureUrl, checkProfilePictureStatus]);
 
     const checkResumeStatus = async () => {
         try {
@@ -51,13 +100,61 @@ const Profile = () => {
                             </div>
 
                             <div className=''>
-                                <div className='relative bg-white h-50 rounded-lg'>
-                                    <img className='absolute left-2 top-5 w-16 ' style={{ borderRadius: '50%' }} src={ishu} />
-                                    <p className='absolute left-2 top-24  '>{user.name}</p>
-                                    <p className='absolute left-2 top-32'>01696969420</p>
+                                <div className='relative bg-white h-70 rounded-lg'>
+                                    <img
+                                        className='absolute left-2 top-5 w-30 h-30 object-cover'
+                                        style={{ borderRadius: '50%' }}
+                                        src={imageLoadError || !profilePictureUrl ? '/default-profile.jpg' : profilePictureUrl}
+                                        alt="Profile"
+                                        
+                                        onLoad={() => {
+                                            console.log('Profile picture loaded successfully', {
+                                                url: profilePictureUrl,
+                                                imageLoadError,
+                                                naturalWidth: document.querySelector('img[alt="Profile"]')?.naturalWidth,
+                                                naturalHeight: document.querySelector('img[alt="Profile"]')?.naturalHeight
+                                            });
+                                        }}
+                                        crossOrigin="anonymous"
+                                    />
+                                    <label className="absolute left-8 top-30  bg-white rounded-full p-1 shadow cursor-pointer hover:bg-gray-100">
+                                        <FaCamera className="text-gray-600" size={12} />
+                                        <input
+                                            type="file"
+                                            onChange={(e)=>handleProfilePictureUpload({
+                                                e, 
+                                                user, 
+                                                userId, 
+                                                setSuccess,  
+                                                setError, 
+                                                setProfilePictureUrl, 
+                                                setProfilePictureUploading
+                                            })}
+                                            accept="image/*"
+                                            className="hidden"
+                                            disabled={profilePictureUploading}
+                                        />
+                                    </label>
+                                    {profilePictureUrl && !imageLoadError && (
+                                        <button
+                                            onClick={()=>handleDeleteProfilePicture({
+                                                user, 
+                                                userId, 
+                                                setSuccess,  
+                                                setError, 
+                                                setProfilePictureUrl
+                                            })}
+                                            className="absolute left-20 top-30 bg-white rounded-full p-1 shadow hover:bg-gray-100"
+                                            disabled={profilePictureUploading}
+                                        >
+                                            <FaTrash className="text-red-500" size={12} />
+                                        </button>
+                                    )}
+                                    <p className='absolute left-2 top-45  '>{user.name}</p>
+                                    <p className='absolute left-2 top-52'>01696969420</p>
                                 </div>
 
-                                <div className="absolute ml-60 -mt-40 flex flex-col gap-2">
+                                <div className="absolute ml-60 -mt-60 flex flex-col gap-2">
                                     {hasResume ? (
                                         <>
                                             <div className="flex items-center  gap-2 text-blue-500">
@@ -159,7 +256,7 @@ const Profile = () => {
                                     )}
                                     {success && (
                                         <p className="text-green-500 text-sm">
-                                            Resume deleted successfully!
+                                            {success === true ? 'Operation successful!' : success}
                                         </p>
                                     )}
                                 </div>

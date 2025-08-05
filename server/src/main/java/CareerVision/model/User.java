@@ -7,6 +7,7 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Table(name = "users")
 public class User {
     @Id
@@ -24,6 +25,9 @@ public class User {
     //registered, recruiter, admin
 
     private String resumePath;
+
+    @Column(nullable = true)
+    private String profilePictureUrl;
 
 //    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
 //    private CVData cvData;
