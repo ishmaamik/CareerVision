@@ -11,56 +11,27 @@ const Social = () => {
     const [writing, setWriting] = useState('')
     const [posts, setPosts] = useState([])
     const [imageFile, setImageFile] = useState(null)
+    const BASE_URL=`http://localhost:8080/api/post`
 
     const handleSubmit = async () => {
         try {
-            // 1. First create the post (without image)
             const postData = {
-                postedBy: { id: userId }, // Only send ID
+                postedBy: { id: userId },
                 post: writing,
                 postTime: new Date().toISOString(),
-                imageUrl: null // Initially null
+                imageUrl: null
             };
-
-            // Create the post and get its ID
-            const createdPost = await handlePost(postData);
-
-            // 2. If there's an image, upload it with the post ID
-            if (imageFile) {
-                const formData = new FormData();
-                formData.append("file", imageFile);
-                formData.append("postId", createdPost.id); // Use the new post ID
-
-                const uploadResponse = await fetch("http://localhost:8080/api/post-picture/upload", {
-                    method: "POST",
-                    body: formData
-                });
-
-                const result = await uploadResponse.json();
-
-                if (result.status === "success") {
-                    // 3. Update the post with the image URL
-                    await updatePostImage(createdPost.id, result.url);
-                }
-            }
-
+    
+            // Single API call that handles both post and image
+            await handlePost(postData, imageFile);
+            
             // Refresh the posts list
-            getAllUserPosts();
+            await getAllUserPosts();
             setWriting('');
             setImageFile(null);
         } catch (error) {
             console.error("Post creation failed:", error);
-        }
-    };
-
-    // Add this function to your API service
-    const updatePostImage = async (postId, imageUrl) => {
-        try {
-            const response = await axios.patch(`${BASE_URL}/${postId}/image`, { imageUrl });
-            return response.data;
-        } catch (error) {
-            console.error("Error updating post image:", error);
-            throw error;
+            // Add user-friendly error handling here
         }
     };
 
@@ -85,7 +56,7 @@ const Social = () => {
             <div>
                 <div className='w-210 ml-32 h-32 mt-4 bg-white rounded-lg'>
                     <div className='flex'>
-                        <img className='h-16 ml-4 w-16 mt-4' style={{ borderRadius: '50%' }} src={user?.profilePictureUrl} />
+                        <img className='h-16 ml-4 w-16 mt-4' style={{ borderRadius: '50%' }} src={user?.profilePictureUrl || `/default-profile.jpg`} />
                         <input
                             value={writing}
                             onChange={(e) => setWriting(e.target.value)}
@@ -111,7 +82,7 @@ const Social = () => {
                 {posts?.map((p, ind) => (
                     <div key={ind} className={`${p.imageUrl ? 'h-140' : 'h-40'} w-210 ml-32 mt-4 bg-white rounded-lg`}>
                         <div className='flex'>
-                            <img className='h-16 ml-4 w-16 mt-4' style={{ borderRadius: '50%' }} src={user.profilePictureUrl} />
+                            <img className='h-16 ml-4 w-16 mt-4' style={{ borderRadius: '50%' }} src={user.profilePictureUrl || `/default-profile.jpg`} />
                             <div className='flex flex-col mt-4 ml-4'>
                                 <p>{p.postedBy.name}</p>
                                 <p>{p.postTime}</p>

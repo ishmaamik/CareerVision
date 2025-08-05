@@ -55,7 +55,7 @@ const Job = () => {
         {jobs.map((job, idx) => (
           <li
             key={idx}
-            className="bg-white p-4 rounded-xl border shadow hover:shadow-lg transition"
+            className="bg-white p-4 rounded-xl  shadow hover:shadow-lg transition"
           >
             <h3 className="text-lg font-bold mb-1">{job.title}</h3>
             <p>

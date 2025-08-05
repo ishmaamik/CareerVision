@@ -1,9 +1,11 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
-import {PeopleAlt as People, Work as Work, Login as Login, Logout as Logout, Person as Person, AppRegistration as Signup} from "@mui/icons-material"
+import { PeopleAlt as People, Work as Work, Login as Login, Logout as Logout, Person as Person, AppRegistration as Signup } from "@mui/icons-material"
 const Topbar = () => {
   const navigate = useNavigate();
+
+  const user = JSON.parse(localStorage.getItem(`user`))
 
   const LogInOrOut = () => {
     if (localStorage.getItem("user")) {
@@ -17,7 +19,7 @@ const Topbar = () => {
     }
   };
   return (
-    <header className="fixed top-0 left-0 w-full px-6 py-4 flex items-center justify-between bg-white shadow-md z-50">
+    <header className="z-1000 fixed top-0 left-0 w-full px-6 py-4 flex items-center justify-between bg-white shadow-md ">
       {/* Left Side: Logo/Brand */}
       <div
         className="text-2xl font-bold tracking-tight"
@@ -31,7 +33,7 @@ const Topbar = () => {
       <div className="space-x-20">
         <Button
           disableRipple
-          startIcon={<People/>}
+          startIcon={<People />}
           variant="text"
           sx={{
             color: "gray",
@@ -46,7 +48,7 @@ const Topbar = () => {
         <Button
           disableRipple
           variant="text"
-          startIcon={<Work/>}
+          startIcon={<Work />}
           sx={{
             color: "gray",
             ":hover": { backgroundColor: "transparent" },
@@ -61,7 +63,7 @@ const Topbar = () => {
             <Button
               disableRipple
               variant="text"
-              startIcon={<Logout/>}
+              startIcon={<Logout />}
               sx={{
                 color: "gray",
                 ":hover": { backgroundColor: "transparent" },
@@ -74,7 +76,7 @@ const Topbar = () => {
 
             <Button
               disableRipple
-              startIcon={<Person/>}
+              startIcon={<Person />}
               variant="text"
               sx={{
                 color: "gray",
@@ -91,7 +93,7 @@ const Topbar = () => {
             <Button
               disableRipple
               variant="text"
-              startIcon={<Login/>}
+              startIcon={<Login />}
               sx={{
                 color: "gray",
                 ":hover": { backgroundColor: "transparent" },
@@ -104,7 +106,7 @@ const Topbar = () => {
             <Button
               disableRipple
               variant="text"
-              startIcon={<Signup/>}
+              startIcon={<Signup />}
               sx={{
                 color: "gray",
                 ":hover": { backgroundColor: "transparent" },
@@ -117,7 +119,12 @@ const Topbar = () => {
           </>
         )}
       </div>
-      <div className="hidden lg:block bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10" style={{backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuANolXzfNIr_8GBUJpn3PQMyj63SVxLJuHK6vl7wI93AEZ_gm-0tlyVKqqDHU2D5IsQhtbmVZQPgbIhVGiC4439LIUWuDKjkFkY4cwpmrFPg7j0oD-9InHdUlpMACK5qQUNCg_U8CJ42Z6UKoYkyoImXZet1O28EYlAip31H1RSrw3PqmDs7Tts-Tx0BMP5eHwMYd6WZL-FRqrS_3NLpi1dq3OQ4xK8VX4GmCOKXv9nUpNRiT3nBgYHzyCZlYFmIUkIB0LRyKexKrc")'}}></div>
+      {user
+        ?
+        <div className="w-12 lg:block bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10" > <img onClick={()=>navigate('/profile')} src={user.profilePictureUrl} style={{borderRadius:'50%', cursor:'pointer'}}/></div>
+        :
+        <div className="hidden lg:block bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10" style={{ backgroundImage: `${user.profilePictureUrl}` }}></div>
+      }
     </header>
   );
 };

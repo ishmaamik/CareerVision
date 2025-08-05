@@ -15,6 +15,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/profile-picture")
+@CrossOrigin(origins = "*")
 public class ProfilePictureController {
 
     @Autowired
