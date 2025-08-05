@@ -123,7 +123,7 @@ const Topbar = () => {
         ?
         <div className="w-12 lg:block bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10" > <img onClick={()=>navigate('/profile')} src={user.profilePictureUrl} style={{borderRadius:'50%', cursor:'pointer'}}/></div>
         :
-        <div className="hidden lg:block bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10" style={{ backgroundImage: `${user.profilePictureUrl}` }}></div>
+        <div className="hidden lg:block bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10"></div>
       }
     </header>
   );
