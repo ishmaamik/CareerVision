@@ -15,6 +15,7 @@ import ApplyJob from "./components/pages/ApplyJob/ApplyJob";
 import CreateCompany from "./components/pages/CreateCompany";
 import CommunityForum from "./components/pages/Community/CommunityForum";
 import SampleSocial from "./components/pages/SampleSocial";
+import EmotionCapture from "./components/EmotionCapture";
 
 function App() {
   return (
@@ -47,6 +48,7 @@ function App() {
           <Route path="/company/create" element={<CreateCompany />} />
           <Route path="/community" element={<CommunityForum />} />
           <Route path="/sample" element={<SampleSocial />} />
+          <Route path="/emotion" element={<EmotionCapture />} />
         </Routes>
       </div>
     </UserProvider>
