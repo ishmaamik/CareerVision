@@ -1,4 +1,4 @@
-package com.example.demo.controller;
+package CareerVision.controller;
 
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
