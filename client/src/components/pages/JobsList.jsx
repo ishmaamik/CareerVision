@@ -55,7 +55,7 @@ const Job = () => {
         {jobs.map((job, idx) => (
           <li
             key={idx}
-            className="bg-white p-4 rounded-xl border shadow hover:shadow-lg transition"
+            className="bg-white p-4 rounded-xl  shadow hover:shadow-lg transition"
           >
             <h3 className="text-lg font-bold mb-1">{job.title}</h3>
             <p>
@@ -121,12 +121,12 @@ const Job = () => {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-4 mb-4 border-b pb-2">
+      <div className="flex gap-4 mb-4  pb-2">
         {["all", "local", "external"].map((tab) => (
           <button
             key={tab}
-            className={`capitalize px-4 py-1 rounded-t ${activeTab === tab ? "bg-blue-600 text-black" : "bg-gray-200"
-              }`}
+            style={{backgroundColor:`${tab === activeTab ? `black` : `white`}`, color:`${tab === activeTab ? `white` : `black`}`}}
+            className={`capitalize px-4 py-1 rounded-t`}
             onClick={() => setActiveTab(tab)}
           >
             {tab} Jobs

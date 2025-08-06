@@ -3,6 +3,8 @@ import React, { useState } from 'react'
 import { Photo as Photo, PeopleAlt as People, Work as Work, Login as Login, Logout as Logout, Person as Person, AppRegistration as Signup } from "@mui/icons-material"
 import { Button } from '@mui/material'
 import Social from './Social'
+import Articles from './Articles'
+import Videos from './Videos'
 const CommunityForum = () => {
 
     const sections = ["Social", "Articles", "Videos"]
@@ -29,6 +31,16 @@ const CommunityForum = () => {
             {
                 isSelected === "Social" &&
                 <Social />
+            }
+
+            {
+                isSelected === "Articles" &&
+                <Articles />
+            }
+
+{
+                isSelected === "Videos" &&
+                <Videos />
             }
         </>
     )
