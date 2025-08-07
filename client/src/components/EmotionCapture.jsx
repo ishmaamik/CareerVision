@@ -17,7 +17,7 @@ export default function EmotionCapture() {
 
     const imageData = canvas.toDataURL("image/jpeg");
 
-    const res = await fetch("/api/emotion/analyze", {
+    const res = await fetch("http://localhost:5001/analyze-emotion", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ image: imageData }),
