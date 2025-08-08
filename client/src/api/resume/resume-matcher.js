@@ -28,7 +28,7 @@ export const calculateMatch = async (jobData, cvText) => {
       },
       resume: {
         extracted_text: truncatedCvText,
-        skills: jobData.skills || [], // Ensure skills are passed
+        skills: [], // Ensure skills are passed
         experience_years: jobData.experience_years || null
       }
     };

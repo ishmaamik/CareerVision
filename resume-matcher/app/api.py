@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 import logging
-from .core import ResumeMatcher
+from .core import UniversalEngineeringMatcher
 from .schema_models import JobRequirements, CVData, MatchResponse
 from pydantic import ValidationError
 from .config import settings
@@ -10,7 +10,7 @@ logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
 
 api_blueprint = Blueprint('api', __name__)
-matcher = ResumeMatcher()
+matcher = UniversalEngineeringMatcher()
 
 @api_blueprint.route('/', methods=['GET'])
 def index():
@@ -67,7 +67,7 @@ def match_resume():
             }), 400
         
         # Perform matching
-        result = matcher.calculate_match(job, cv)
+        result = matcher.calculate_universal_match(job, cv)
         
         # Log the result
         logger.debug(f"Match Result: {result.dict()}")

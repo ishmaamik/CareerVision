@@ -57,7 +57,7 @@ const MapUpdater = ({ position }) => {
 const SimplifiedMap = ({
   onLocationSelect,
   height = '400px',
-  width = '100%',
+  width = '500px',
   initialViewport = { latitude: 23.8103, longitude: 90.4125, zoom: 12 },
   isProfile = false,
 }) => {

@@ -64,11 +64,11 @@ const Profile = () => {
     }, [checkProfilePictureStatus, checkResumeStatus]);
 
     return (
-        <div className={`flex transition-all ml-60 duration-500 ease-in-out ${isMounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'}`}>
+        <div className={`flex transition-all ml-10 mt-20 duration-500 ease-in-out ${isMounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'}`}>
             {/* Left Column */}
-            <div className="w-2/3 pr-6">
+            <div className="w-300 pr-6">
                 {/* Profile Card */}
-                <div className="bg-white rounded-lg shadow-xl mb-6 hover:-translate-y-1 transition-transform duration-300">
+                <div className="bg-white rounded-lg mr-12 shadow-xl mb-6 hover:-translate-y-1 transition-transform duration-300">
                     <div className="bg-gray-100 px-4 py-3 rounded-t-lg flex justify-between items-center">
                         <h2 className="font-semibold text-lg flex items-center">
                             <FaUser className="mr-2" /> Your Profile
@@ -238,7 +238,7 @@ const Profile = () => {
                 </div>
 
                 {/* Email Card */}
-                <div className="bg-white rounded-lg shadow-xl mb-6 hover:-translate-y-1 transition-transform duration-300">
+                <div className="bg-white w-100 rounded-lg shadow-xl mb-6 hover:-translate-y-1 transition-transform duration-300">
                     <div className="bg-gray-100 px-4 py-3 rounded-t-lg flex items-center">
                         <FaEnvelope className="mr-2" />
                         <h2 className="font-semibold">Email Address</h2>
@@ -260,7 +260,7 @@ const Profile = () => {
                 </div>
             </div>
 
-            <div className="bg-white rounded-lg shadow-xl hover:-translate-y-1 transition-transform duration-300">
+            <div className="bg-white mr-12 w-400 rounded-lg shadow-xl hover:-translate-y-1 transition-transform duration-300">
                 <div className="bg-gray-100 px-4 py-3 rounded-t-lg flex items-center">
                     <FaMapMarkerAlt className="mr-2" />
                     <h2 className="font-semibold">Your Current Location</h2>
@@ -294,9 +294,9 @@ const Profile = () => {
             </div>
 
             {/* Right Column */}
-            <div className="w-1/3 pl-2">
+            <div className="w-300 pl-2">
                 {/* Phone Number Card */}
-                <div className="bg-white rounded-lg shadow-xl mb-6 hover:-translate-y-1 transition-transform duration-300">
+                <div className="bg-white w-100 rounded-lg shadow-xl mb-6 hover:-translate-y-1 transition-transform duration-300">
                     <div className="bg-gray-100 px-4 py-3 rounded-t-lg flex items-center">
                         <FaPhone className="mr-2" />
                         <h2 className="font-semibold">Phone Number</h2>
@@ -318,7 +318,7 @@ const Profile = () => {
                 </div>
 
                 {/* Address Card */}
-                <div className="bg-white rounded-lg shadow-xl hover:-translate-y-1 transition-transform duration-300">
+                <div className="bg-white rounded-lg w-100 shadow-xl hover:-translate-y-1 transition-transform duration-300">
                     <div className="bg-gray-100 px-4 py-3 rounded-t-lg flex items-center">
                         <FaMapMarkerAlt className="mr-2" />
                         <h2 className="font-semibold">Address</h2>
