@@ -2,9 +2,10 @@ import React, { useContext, useState, useEffect } from 'react';
 import { login } from '../../api/user/user.js'
 import { useNavigate } from 'react-router-dom';
 import { User } from '../../context/UserContext.jsx';
-
+import {setUser} from '../../redux/userSlice.js'
+import { useDispatch } from 'react-redux';
 const Login = () => {
-
+    const dispatch= useDispatch()
     const [credentials, setCredentials] = useState({})
     const { setUserDetails } = useContext(User)
     const navigate = useNavigate()
@@ -23,6 +24,7 @@ const Login = () => {
         if (response?.user) {
             console.log("Logged in:", response.user);
             localStorage.setItem('user', JSON.stringify(response.user))
+            dispatch(setUser(response.user))
             localStorage.setItem('name', response.user.name)
             localStorage.setItem('role', response.user.role)
             localStorage.setItem('userId', response.user.id)

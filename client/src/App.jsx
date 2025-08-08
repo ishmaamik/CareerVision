@@ -8,7 +8,7 @@ import Login from "./components/pages/Login";
 import Signup from "./components/pages/Signup";
 import Blogs from "./components/pages/Blogs";
 import NewBlog from "./components/pages/NewBlog";
-import Profile from "./components/pages/Profile";
+import Profile from "./components/pages/Profile/Profile";
 import JobPage from "./components/pages/JobsList";
 import CreateJob from "./components/pages/CreateJob";
 import ApplyJob from "./components/pages/ApplyJob/ApplyJob";
