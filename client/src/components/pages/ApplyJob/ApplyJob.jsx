@@ -6,12 +6,12 @@ import axios from 'axios'
 import Description from './Description'
 import Company from './Company'
 import Review from './Review'
-import Applicants from './Applicants'
+import Applicants from '../Applicants/Applicants.jsx'
 import { fetchCompany, fetchJob, updateMatchPercentage } from '../../../api/functions.js'
 import { calculateDistance } from '../../../api/location/distance.js'
 import { useSelector } from 'react-redux'
 import { calculateMatch } from '../../../api/resume/resume-matcher.js'
-
+import { setError} from '../../../redux/successSlice.js'
 const ApplyJob = () => {
 
     const [tab, setTab] = useState('Description')
@@ -47,7 +47,7 @@ const ApplyJob = () => {
 
     const applyToJob = async () => {
         const distance = calculateDistance(company?.lat, company?.lon, user?.lat, user?.lon);
-    
+
         console.log('Sending application with:', {
             userId: userId,
             jobId: jobId,
@@ -65,35 +65,35 @@ const ApplyJob = () => {
     
         try {
             setApplying(true);
-            
+
             // 1. First create the application
             const application = await applyForJob({ userId, jobId, distance });
             console.log('Application created:', application);
-    
+
             if (!application || !application.id) {
                 throw new Error('Application creation failed - no application ID returned');
             }
-    
+
             // 2. Get the extracted text from CVData
             const cvResponse = await axios.get(
                 `http://localhost:8080/api/resume/extract/${userId}`
             );
             const cvText = cvResponse.data.text;
-    
+
             // 3. Calculate match percentage
             const percentage = await calculateMatch(jobDetails, cvText);
             console.log('Calculated match percentage:', percentage);
-    
+
             // 4. Update the application with match percentage
             await updateMatchPercentage(application.id, percentage);
-            
+
             setHasApplied(true);
             setApplying(false);
             alert('Job application submitted successfully!');
         } catch (error) {
             console.error('Error in applyToJob:', error);
             setApplying(false);
-            
+
             if (error.response?.status === 400 && error.response.data?.includes("already applied")) {
                 setHasApplied(true);
                 alert('You have already applied to this job');
@@ -121,7 +121,7 @@ const ApplyJob = () => {
     return (
         <>
             <div className='ml-92'>
-                <div className='flex mb-12 -mt-4 space-x-10 items-center justify-center'>
+                <div className='flex mb-6 -mt-4 space-x-10 items-center justify-center'>
                     {TabsList.map(tabList => (
                         <p className={`${tab === tabList.name ? `bg-black  text-white` : `bg-white mt-30 text-black`} cursor-pointer mt-30 px-4 py-2 rounded `} onClick={() => setTabName(`${tabList.name}`)}>{tabList.name}</p>
                     ))}
@@ -149,7 +149,9 @@ const ApplyJob = () => {
 
                 {
                     tab === 'Applicants' && (
-                        <Applicants jobDetails={jobDetails} isMounted={isMounted} />
+                        <>
+                            <Applicants jobDetails={jobDetails} isMounted={isMounted} />
+                        </>
                     )
                 }
 
