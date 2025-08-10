@@ -2,15 +2,18 @@ import React, { useState } from "react";
 import { createCompany } from "../../api/company/company";
 import { useNavigate } from "react-router-dom";
 import SimplifiedMap from "./SimplifiedMap";
+import { useSelector } from "react-redux";
 
 const CreateCompany = () => {
+
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     location: "",
     overview: "",
     commitment: "",
-    coordinates: null
+    lat: null,
+    lon: null
   });
 
   const handleChange = (e) => {
@@ -24,10 +27,9 @@ const CreateCompany = () => {
     setFormData({
       ...formData,
       location: location.placeName,
-      coordinates: {
-        latitude: location.latitude,
-        longitude: location.longitude
-      }
+      lat: location.latitude,
+      lon: location.longitude
+
     });
   };
 
@@ -48,8 +50,8 @@ const CreateCompany = () => {
           Create a New Company
         </h1>
 
-        <form
-          onSubmit={handleSubmit}
+        <div
+
           className="bg-white rounded-xl shadow-md p-6 space-y-6"
         >
           <div>
@@ -71,16 +73,17 @@ const CreateCompany = () => {
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Company Location
             </label>
-            <SimplifiedMap 
+            <SimplifiedMap
               onLocationSelect={handleLocationSelect}
               height="300px"
             />
-            {formData.coordinates && (
+            {formData.lat && formData.lon && (
               <p className="mt-2 text-sm text-gray-500">
-                Selected: {formData.coordinates.latitude.toFixed(4)}, {formData.coordinates.longitude.toFixed(4)}
+                Selected: {formData.lat.toFixed(4)}, {formData.lon.toFixed(4)}
               </p>
             )}
           </div>
+
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -122,12 +125,13 @@ const CreateCompany = () => {
             </button>
             <button
               type="submit"
-              className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              onClick={handleSubmit}
+              className="px-6 py-2 bg-blue-600 text-black rounded-lg hover:bg-blue-700 transition-colors"
             >
               Create Company
             </button>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   );

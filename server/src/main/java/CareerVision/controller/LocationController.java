@@ -17,6 +17,7 @@ public class LocationController {
 
     @Autowired
     UserRepository userRepository;
+    @Autowired
     CompanyRepository companyRepository;
 
     @PostMapping("/user/{userId}")
