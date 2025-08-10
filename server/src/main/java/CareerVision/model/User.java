@@ -29,6 +29,12 @@ public class User {
     @Column(nullable = true)
     private String profilePictureUrl;
 
+    private String location;
+
+    private Integer lat;
+
+    private Integer lon;
+
 //    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
 //    private CVData cvData;
 

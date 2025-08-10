@@ -1,12 +1,14 @@
 import {createSlice} from '@reduxjs/toolkit'
 
+const user= JSON.parse(localStorage.getItem('user'))
+
 const initialState={
     hasResume: false,
     resumeUrl: '',
     profilePictureUrl: null,
     profilePictureUploading: null,
     imageLoadError: false,
-    currentLocation: null
+    currentLocation: user?.location || null
 }
 
 const profileSlice= createSlice({
