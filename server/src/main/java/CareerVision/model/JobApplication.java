@@ -26,6 +26,9 @@ public class JobApplication {
     @Column(name = "match_percentage")
     private Double matchPercentage;
 
+    @Column(nullable = true)
+    private Double distance;
+
     // Method to update match percentage
     public void updateMatchPercentage(Double percentage) {
         // Only update if not already set or if new percentage is different

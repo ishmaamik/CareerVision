@@ -44,12 +44,11 @@ public class JobApplicationController {
             return ResponseEntity.badRequest().body("Invalid user ID or job ID");
         }
 
-
-
         JobApplication application = new JobApplication();
         application.setApplicant(user);
         application.setJob(job);
-//
+        application.setDistance(userJob.getDistance());
+
         jobApplicationRepository.save(application);
 
         return ResponseEntity.ok("Application submitted successfully");

@@ -63,8 +63,8 @@ const SimplifiedMap = ({ onLocationSelect, height = '400px', width = '500px', is
 
   // Viewport state - initialized with default coordinates, updated if user available
   const [viewport, setViewport] = useState({
-    latitude: 23.12345,
-    longitude: 90.4125,
+    latitude: 23.750183,
+    longitude: 90.381320,
     zoom: 12,
   });
 

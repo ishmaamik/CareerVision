@@ -7,6 +7,8 @@ import Company from './Company'
 import Review from './Review'
 import Applicants from './Applicants'
 import { fetchCompany, fetchJob } from '../../../api/functions.js'
+import { calculateDistance } from '../../../api/location/distance.js'
+import { useSelector } from 'react-redux'
 
 const ApplyJob = () => {
 
@@ -21,7 +23,7 @@ const ApplyJob = () => {
     const jobId = jobDetails?.id
 
     const role = localStorage.getItem('role')
-
+    const {user}= useSelector((state)=>state.user)
     const userId = localStorage.getItem('userId')
     const param = useParams()
 
@@ -42,9 +44,13 @@ const ApplyJob = () => {
     }
 
     const applyToJob = async () => {
+
+        const distance= calculateDistance(company?.lat, company?.lon, user?.lat, user?.lon)
+
         console.log('Sending application with:', {
             userId: userId,
-            jobId: jobId
+            jobId: jobId,
+            distance: distance
         });
 
         if (!userId || !jobId) {
@@ -58,7 +64,7 @@ const ApplyJob = () => {
 
         try {
             setApplying(true);
-            const application = await applyForJob({ userId, jobId })
+            const application = await applyForJob({ userId, jobId, distance })
             console.log(application)
 
             if (application) {
@@ -148,7 +154,7 @@ const ApplyJob = () => {
 
                         :
                         <button
-                            onClick={applyToJob}
+                            onClick={()=>applyToJob()}
                             style={{ backgroundColor: 'black' }}
                             className="mt-6 ml-160 text-white  rounded w-40 h-14"
                         >

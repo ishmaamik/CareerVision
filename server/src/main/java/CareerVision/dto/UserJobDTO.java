@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class UserJobDTO {
     Long userId;
     Long jobId;
+    Double distance;
 }

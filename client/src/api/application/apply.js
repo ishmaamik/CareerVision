@@ -3,9 +3,9 @@ import axios from 'axios'
 const BASE_URL = `http://localhost:8080/api/applications`
 
 
-export const applyForJob = async ({ userId, jobId }) => {
+export const applyForJob = async ({ userId, jobId, distance }) => {
     try {
-        const applied = axios.post(`${BASE_URL}/apply`, { userId: userId, jobId: jobId }, 
+        const applied = axios.post(`${BASE_URL}/apply`, { userId: userId, jobId: jobId, distance: distance }, 
            { headers: {
                 'Content-Type': 'application/json'
             }}
