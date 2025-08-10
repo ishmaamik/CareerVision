@@ -51,7 +51,7 @@ public class JobApplicationController {
 
         jobApplicationRepository.save(application);
 
-        return ResponseEntity.ok("Application submitted successfully");
+        return ResponseEntity.ok(application);
     }
 
     // Get all applications by user
