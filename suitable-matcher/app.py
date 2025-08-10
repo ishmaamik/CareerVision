@@ -18,8 +18,7 @@ SPRING_BOOT_API_BASE = "http://localhost:8080/api/applications/job"
 
 @app.get("/match-top-candidates")
 def get_top_candidates(
-    job_id: int,
-    top_n: Optional[int] = Query(5, description="Number of top candidates to return")
+    job_id: int
 ):
     """
     Fetch job applications for a given job_id from Spring Boot,
@@ -57,8 +56,8 @@ def get_top_candidates(
             "finalScore": round(final_score, 2)
         })
 
-    # Sort and take top_n
-    top_candidates = sorted(scored_candidates, key=lambda x: x["finalScore"], reverse=True)[:top_n]
+    
+    top_candidates = sorted(scored_candidates, key=lambda x: x["finalScore"], reverse=True)[:10]
     return {"jobId": job_id, "topCandidates": top_candidates}
 
 if __name__ == "__main__":

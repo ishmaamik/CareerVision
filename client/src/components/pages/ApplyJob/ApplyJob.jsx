@@ -111,6 +111,11 @@ const ApplyJob = () => {
         fetchJob({ param, setJobDetails, userId, setLoading, setHasApplied });
     }, [param.id]);
 
+    useEffect(()=>{
+        console.log(jobDetails)
+    }, [param.id])
+
+
     useEffect(() => {
         fetchApplicationStatus({ userId, jobId, setApplicationStatus })
     })
@@ -120,8 +125,8 @@ const ApplyJob = () => {
 
     return (
         <>
-            <div className='ml-92'>
-                <div className='flex mb-6 -mt-4 space-x-10 items-center justify-center'>
+            <div className='ml-12'>
+                <div className='flex mb-6 -mt-4 space-x-10 '>
                     {TabsList.map(tabList => (
                         <p className={`${tab === tabList.name ? `bg-black  text-white` : `bg-white mt-30 text-black`} cursor-pointer mt-30 px-4 py-2 rounded `} onClick={() => setTabName(`${tabList.name}`)}>{tabList.name}</p>
                     ))}

@@ -5,11 +5,5 @@ export const ApplicantsTabs= [{
 },
 
 {
-    name: 'Top 5'
-},
-{
-    name: 'Top 10'
-},
-{
-    name: 'Top 15'
+    name: 'Suggested Candidates'
 }]

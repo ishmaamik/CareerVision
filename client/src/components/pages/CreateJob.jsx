@@ -18,7 +18,7 @@ const CreateJob = () => {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
-    company: "",
+    company: null,
     location: "",
     skills: [],
     responsibilities: "",
@@ -144,32 +144,36 @@ const CreateJob = () => {
                 </label>
                 <select
                   name="company"
-                  value={formData.company}
+                  value={formData.company?.id || ""}
                   onChange={(e) => {
                     if (e.target.value === "create") {
                       navigate('/company/create');
                     } else {
-                      handleChange(e);
-                      setCompanyLocation(e.target.value);
+                      const selectedCompany = companies.find(c => c.id === Number(e.target.value));
+                      setFormData(prev => ({
+                        ...prev,
+                        company: selectedCompany,
+                        location: selectedCompany?.location || ""
+                      }));
+                      setLocation(selectedCompany?.location || "");
                     }
                   }}
                   required
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
-                  {!formData.company && (
-                    <option value="">Select a company</option>
-                  )}
+                  <option value="">Select a company</option>
                   <option value="create">Create a company</option>
                   {loadingCompanies ? (
                     <option value="" disabled>Loading companies...</option>
                   ) : (
-                    companies.map((company) => (
-                      <option key={company.id} value={company.name}>
+                    companies.map(company => (
+                      <option key={company.id} value={company.id}>
                         {company.name}
                       </option>
                     ))
                   )}
                 </select>
+
               </div>
 
               <div>

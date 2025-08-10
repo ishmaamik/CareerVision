@@ -49,6 +49,10 @@ const Job = () => {
     );
   };
 
+  useEffect(()=>{
+    console.log(localJobs)
+  }, [localJobs])
+
   const renderJobs = (jobs, type = "local") => {
     return (
       <ul style={{cursor:'pointer'}}  className="cursor:pointer grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
@@ -60,7 +64,7 @@ const Job = () => {
             <h3 className="text-lg font-bold mb-1">{job.title}</h3>
             <p>
               <strong>Company:</strong>{" "}
-              {type === "external" ? job.company.display_name : job.company}
+              {type === "external" ? job.company.display_name : ( job?.company?.name)}
             </p>
             <p>
               <strong>Location:</strong>{" "}

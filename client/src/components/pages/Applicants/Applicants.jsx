@@ -1,3 +1,4 @@
+// Applicants.jsx - Fixed version
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getApplications } from '../../../redux/applicationsSlice';
@@ -12,6 +13,7 @@ const Applicants = ({ jobDetails, isMounted }) => {
 
     useEffect(() => {
         if (jobDetails?.id) {
+            console.log('🟢 Applicants: Dispatching getApplications for job:', jobDetails.id);
             dispatch(getApplications(jobDetails));
         }
     }, [jobDetails, dispatch]);
@@ -34,10 +36,9 @@ const Applicants = ({ jobDetails, isMounted }) => {
             </div>
 
             <div className={`transform ${isMounted ? 'opacity-100' : 'opacity-0 translate-y-5'} transition-all duration-800 ease-in-out`}>
-                {tab === 'All Candidates' && <AllCandidates />}
-                {tab === 'Top 5' && <TopCandidates jobId={jobDetails.id} topN={5} />}
-                {tab === 'Top 10' && <TopCandidates jobId={jobDetails.id} topN={10} />}
-                {tab === 'Top 15' && <TopCandidates jobId={jobDetails.id} topN={15} />}
+                {/* FIXED: Pass jobDetails prop to AllCandidates */}
+                {tab === 'All Candidates' && <AllCandidates jobDetails={jobDetails} />}
+                {tab === 'Suggested Candidates' && <TopCandidates jobId={jobDetails.id} topN={5} />}
             </div>
         </>
     );

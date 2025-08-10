@@ -5,7 +5,7 @@ import { fetchTopCandidates } from '../../../api/candidates/candidates.js';
 import { PercentageBadge } from './PercentageBadge';
 import { FaFilePdf } from 'react-icons/fa';
 
-const TopCandidates = ({ jobId, topN }) => {
+const TopCandidates = ({ jobId}) => {
     const [candidatesData, setCandidatesData] = useState([]);
     const [loading, setLoading] = useState(true);
     const { list } = useSelector(state => state.applications); // full applications list
@@ -13,11 +13,11 @@ const TopCandidates = ({ jobId, topN }) => {
     useEffect(() => {
         (async () => {
             setLoading(true);
-            const data = await fetchTopCandidates(jobId, topN); // partial info
+            const data = await fetchTopCandidates(jobId); // partial info
             setCandidatesData(data);
             setLoading(false);
         })();
-    }, [jobId, topN]);
+    }, [jobId]);
 
     if (loading) return <p>Loading...</p>;
 
@@ -56,7 +56,7 @@ const TopCandidates = ({ jobId, topN }) => {
                             <td className="py-3 px-4">{app.applicant?.email}</td>
                             <td className="py-3 px-4">
                                 <img
-                                    style={{ borderRadius: '50%'}}
+                                    style={{ borderRadius: '50%', width:'100px'}}
                                     src={app.applicant?.profilePictureUrl || '/default-profile.jpg'}
                                     alt="profile"
                                 />
