@@ -31,9 +31,9 @@ public class User {
 
     private String location;
 
-    private Integer lat;
+    private Float lat;
 
-    private Integer lon;
+    private Float lon;
 
 //    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
 //    private CVData cvData;

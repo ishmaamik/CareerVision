@@ -19,7 +19,7 @@ const LocationCard = () => {
 
     useEffect(()=>{
         handleLocation()
-    },[,currentLocation])
+    },[currentLocation])
 
     const dispatch= useDispatch()
     return (
@@ -40,7 +40,7 @@ const LocationCard = () => {
                     />
                 </div>
                 <div className="px-4 py-3 bg-gray-50 rounded-b-lg">
-                    {currentLocation ? (
+                    {currentLocation && typeof currentLocation.latitude === 'number' && typeof currentLocation.longitude === 'number' ? (
                         <>
                             <p className="font-medium text-sm">
                                 Your Location: <span className="text-blue-600">{currentLocation.placeName}</span>

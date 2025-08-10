@@ -20,10 +20,10 @@ public class Company {
     private String location;
 
     @Column(nullable = true)
-    private Integer lat;
+    private Float lat;
 
     @Column(nullable = true)
-    private Integer lon;
+    private Float lon;
     @Column(length = 1200)
     private String commitment;
 }
