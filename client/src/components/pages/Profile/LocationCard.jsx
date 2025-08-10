@@ -1,11 +1,26 @@
 import React from 'react'
+import {useEffect} from 'react'
 import { FaMapMarkerAlt } from 'react-icons/fa'
 import SimplifiedMap from '../SimplifiedMap';
 import {setCurrentLocation} from '../../../redux/profileSlice'
 import { useDispatch, useSelector } from 'react-redux';
+import { userLocation } from '../../../api/location/location';
+
 const LocationCard = () => {
 
     const {currentLocation}= useSelector((state)=> state.profile)
+    const {user}= useSelector((state)=> state.user)
+
+    const handleLocation=()=>{
+        if(currentLocation){
+            userLocation({location: currentLocation.placeName, latitude: currentLocation.latitude, longitude: currentLocation.longitude}, user.id)
+        }
+    }
+
+    useEffect(()=>{
+        handleLocation()
+    },[currentLocation])
+
     const dispatch= useDispatch()
     return (
         <>
@@ -25,7 +40,7 @@ const LocationCard = () => {
                     />
                 </div>
                 <div className="px-4 py-3 bg-gray-50 rounded-b-lg">
-                    {currentLocation ? (
+                    {currentLocation && typeof currentLocation.latitude === 'number' && typeof currentLocation.longitude === 'number' ? (
                         <>
                             <p className="font-medium text-sm">
                                 Your Location: <span className="text-blue-600">{currentLocation.placeName}</span>

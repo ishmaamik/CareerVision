@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserJobDTO {
-    Long userId;
-    Long jobId;
-    Double distance;
+public class LocationDTO {
+    String location;
+    Float longitude;
+    Float latitude;
 }

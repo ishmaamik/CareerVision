@@ -16,7 +16,14 @@ public class Company {
     private String name;
     @Column(length = 1200)
     private String overview;
+    @Column(nullable = true)
     private String location;
+
+    @Column(nullable = true)
+    private Float lat;
+
+    @Column(nullable = true)
+    private Float lon;
     @Column(length = 1200)
     private String commitment;
 }

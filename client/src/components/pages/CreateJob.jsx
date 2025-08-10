@@ -178,6 +178,7 @@ const CreateJob = () => {
                 </label>
                 <input
                   type="text"
+                  disabled
                   name="location"
                   value={formData.location}
                   onChange={handleChange}

@@ -19,7 +19,10 @@ public class Job {
     @Column(length = 1200)
     private String description;
     private String company;
+
+    @Column(nullable = true)
     private String location;
+
     @Column(length = 1200)
     private String responsibilities;
     @Column(length = 1200)
