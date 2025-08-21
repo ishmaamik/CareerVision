@@ -17,7 +17,7 @@ export const PercentageBadge = ({ percentage, error }) => {
 
             // Use easing function for smoother animation
             const easedProgress = 1 - Math.pow(1 - progress, 4);
-            const currentPercentage = Math.round(easedProgress * percentage);
+            const currentPercentage = easedProgress * percentage;
 
             setAnimatedPercentage(currentPercentage);
 

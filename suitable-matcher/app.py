@@ -57,7 +57,7 @@ def get_top_candidates(
         })
 
     
-    top_candidates = sorted(scored_candidates, key=lambda x: x["finalScore"], reverse=True)[:10]
+    top_candidates = sorted(scored_candidates, key=lambda x: x["finalScore"], reverse=True)[:5]
     return {"jobId": job_id, "topCandidates": top_candidates}
 
 if __name__ == "__main__":

@@ -117,7 +117,6 @@ const SimplifiedMap = ({ onLocationSelect, height = '400px', width = '500px', is
 
   // Handle map clicks - do nothing if in profile mode
   const handleMapClick = async (latlng) => {
-    if (isProfile) return;
     const coords = [latlng.lat, latlng.lng];
     setPosition(coords);
     setIsUserLocation(false);
@@ -175,7 +174,7 @@ const SimplifiedMap = ({ onLocationSelect, height = '400px', width = '500px', is
   return (
     <div className="space-y-4" style={{ width }}>
       {/* Search input & button (hide if profile) */}
-      {!isProfile && (
+      
         <form className="flex items-center gap-2 mb-4" onSubmit={handleSearchSubmit}>
           <div className="relative flex-1">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -197,7 +196,7 @@ const SimplifiedMap = ({ onLocationSelect, height = '400px', width = '500px', is
             Search
           </button>
         </form>
-      )}
+      
 
       {/* Map container */}
       <div style={{ height }} className="rounded-lg overflow-hidden shadow">

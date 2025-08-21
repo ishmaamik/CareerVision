@@ -1,8 +1,8 @@
-import {createSlice} from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 
-const user= JSON.parse(localStorage.getItem('user'))
+const user = JSON.parse(localStorage.getItem('user'))
 
-const initialState={
+const initialState = {
     hasResume: false,
     resumeUrl: '',
     profilePictureUrl: null,
@@ -11,31 +11,31 @@ const initialState={
     currentLocation: user?.location || null
 }
 
-const profileSlice= createSlice({
-    name:'profile',
+const profileSlice = createSlice({
+    name: 'profile',
     initialState: initialState,
-    reducers:{
-        setHasResume: (state, action)=>{
-            state.hasResume= action.payload.hasResume
-            state.resumeUrl= action.payload.resumeUrl
+    reducers: {
+        setHasResume: (state, action) => {
+            state.hasResume = action.payload.hasResume
+            state.resumeUrl = action.payload.resumeUrl
         },
 
-        setProfilePictureUrl: (state, action)=>{
+        setProfilePictureUrl: (state, action) => {
             state.profilePictureUrl = action.payload;
-            state.profilePictureUploading= false
+            state.profilePictureUploading = false
         },
 
-        setProfilePictureUploading: (state, action)=>{
-            state.profilePictureUploading= action.payload   //since setProfilePictureUploading(true or false) and not multiple values inside an object e.g. setProfilePictureUploading({profileUploading: true})
-        },
-        
-        setImageLoadError:(state, action)=>{
-            state.imageLoadError= action.payload
+        setProfilePictureUploading: (state, action) => {
+            state.profilePictureUploading = action.payload   //since setProfilePictureUploading(true or false) and not multiple values inside an object e.g. setProfilePictureUploading({profileUploading: true})
         },
 
-        setCurrentLocation: (state, action) =>{
-            state.currentLocation= action.payload
-        }
+        setImageLoadError: (state, action) => {
+            state.imageLoadError = action.payload
+        },
+
+        setCurrentLocation: (state, action) => {
+            state.currentLocation = action.payload
+        },
     }
 })
 
@@ -44,7 +44,7 @@ export const {
     setHasResume,
     setImageLoadError,
     setProfilePictureUploading,
-    setProfilePictureUrl
+    setProfilePictureUrl,
 } = profileSlice.actions
 
 export default profileSlice.reducer

@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux'; // Added useDispatch
 import { updateApplicationStatus } from '../../../redux/applicationsSlice';
 import { fetchTopCandidates } from '../../../api/candidates/candidates.js';
 import { PercentageBadge } from './PercentageBadge';
 import { FaFilePdf } from 'react-icons/fa';
 
-const TopCandidates = ({ jobId}) => {
+const TopCandidates = ({ jobId, jobDetails }) => { // Added jobDetails prop
     const [candidatesData, setCandidatesData] = useState([]);
     const [loading, setLoading] = useState(true);
-    const { list } = useSelector(state => state.applications); // full applications list
+    const { list } = useSelector(state => state.applications);
+    const dispatch = useDispatch(); // Added dispatch
 
     useEffect(() => {
         (async () => {
             setLoading(true);
-            const data = await fetchTopCandidates(jobId); // partial info
+            const data = await fetchTopCandidates(jobId);
             setCandidatesData(data);
             setLoading(false);
         })();
@@ -29,9 +30,12 @@ const TopCandidates = ({ jobId}) => {
             return {
                 ...app,
                 matchPercentage: extraData?.matchPercentage,
-                distance: extraData?.distance
+                distance: extraData?.distance,
+                finalScore: extraData?.finalScore // Add finalScore from API
             };
-        });
+        })
+        // Sort by finalScore in descending order
+        .sort((a, b) => (b.finalScore || 0) - (a.finalScore || 0));
 
     if (!mergedCandidates.length) return <p>No candidates found.</p>;
 
@@ -40,18 +44,23 @@ const TopCandidates = ({ jobId}) => {
             <table className="max-w-1000 bg-white w-full">
                 <thead>
                     <tr className="bg-gray-100 text-center">
+                        <th className="py-3 px-4">Rank</th>
                         <th className="py-3 px-4">Name</th>
                         <th className="py-3 px-4">Email</th>
                         <th className="py-3 px-4">Applicant's Photo</th>
                         <th className="py-3 px-4">Applicant Resume</th>
                         <th className="py-3 px-4">Match %</th>
+                        <th className="py-3 px-4">Final Score</th>
                         <th className="py-3 px-4">Distance (in km)</th>
                         <th className="py-3 px-4">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {mergedCandidates.map(app => (
+                    {mergedCandidates.map((app, index) => (
                         <tr key={app.id} className="border-b text-center">
+                            <td className="py-3 px-4 font-bold">
+                                #{index + 1}
+                            </td>
                             <td className="py-3 px-4">{app.applicant?.name}</td>
                             <td className="py-3 px-4">{app.applicant?.email}</td>
                             <td className="py-3 px-4">
@@ -79,23 +88,34 @@ const TopCandidates = ({ jobId}) => {
                             <td>
                                 <PercentageBadge percentage={app.matchPercentage} />
                             </td>
-                            <td className="py-3 px-4">{app.distance.toFixed(3)}</td>
-                            <td>
-                                        <button onClick={() => dispatch(updateApplicationStatus({
+                            <td className="py-3 px-4 font-bold text-lg">
+                                {app.finalScore ? app.finalScore.toFixed(2) : 'N/A'}
+                            </td>
+                            <td className="py-3 px-4">{app.distance ? app.distance.toFixed(3) : 'N/A'}</td>
+                            <td className="py-3 px-4">
+                                <div className="flex flex-col space-y-2">
+                                    <button 
+                                        onClick={() => dispatch(updateApplicationStatus({
                                             applicationId: app.id,
                                             status: 'accepted',
                                             jobDetails
-                                        }))}>
-                                            Accept
-                                        </button>
-                                        <button onClick={() => dispatch(updateApplicationStatus({
+                                        }))}
+                                        className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded"
+                                    >
+                                        Accept
+                                    </button>
+                                    <button 
+                                        onClick={() => dispatch(updateApplicationStatus({
                                             applicationId: app.id,
                                             status: 'rejected',
                                             jobDetails
-                                        }))}>
-                                            Reject
-                                        </button>
-                                    </td>
+                                        }))}
+                                        className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
+                                    >
+                                        Reject
+                                    </button>
+                                </div>
+                            </td>
                         </tr>
                     ))}
                 </tbody>
