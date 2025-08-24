@@ -1,10 +1,17 @@
 @import "tailwindcss";
 #root {
-  max-width: 1280px;
-  margin: 0 ; 
-  padding: 2rem;
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
 }
-/* {Auto margins was causing center horizontal} */
+/* Removed max-width constraint to allow full width layout */
+
+/* Ensure all main containers use full width */
+.main-container {
+  width: 100%;
+  min-height: 100vh;
+}
 
 .logo {
   height: 6em;

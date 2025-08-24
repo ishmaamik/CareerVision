@@ -23,11 +23,11 @@ function App() {
   return (
     <AppThemeProvider>
       <UserProvider>
-        <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)]">
+        <div className="w-full min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)]">
           <Topbar />
 
           {/* Main content with proper spacing for fixed navbar */}
-          <main className="pt-20">
+          <main className="w-full pt-20">
             <Routes>
               <Route path="/" element={<CareerVisionHome />} />
               <Route path="/login" element={<Login />} />
