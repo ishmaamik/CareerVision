@@ -1,9 +1,9 @@
 import "./App.css";
 import React from "react";
-import Topbar from "./components/bars/Topbar"; // adjust path as needed
-import Home from "./components/pages/Home";
+import Topbar from "./components/bars/Topbar"; 
 import { Route, Routes } from "react-router-dom";
 import { UserProvider } from "./context/UserContext";
+import AppThemeProvider from "./components/providers/AppThemeProvider";
 import Login from "./components/pages/Login";
 import Signup from "./components/pages/Signup";
 import Blogs from "./components/pages/Blogs";
@@ -17,43 +17,34 @@ import CommunityForum from "./components/pages/Community/CommunityForum";
 import SampleSocial from "./components/pages/SampleSocial";
 import EmotionCapture from "./components/EmotionCapture";
 import Careers from "./components/pages/Careers";
+import CareerVisionHome from "./components/pages/Home";
 
 function App() {
   return (
-    <UserProvider>
-      {/* Fullscreen Dreamy Glow Background */}
-      <div
-        className="fixed inset-0 -z-10"
-        style={{
-          backgroundColor: "#fefcff",
-          backgroundImage: `
-            radial-gradient(circle at 30% 70%, rgba(173, 216, 230, 0.35), transparent 60%),
-            radial-gradient(circle at 70% 30%, rgba(255, 182, 193, 0.4), transparent 60%)
-          `,
-        }}
-      ></div>
-      {}
-      <div className="min-h-screen flex flex-col text-black">
-        <Topbar />
+    <AppThemeProvider>
+      <UserProvider>
+        <div className="min-h-screen flex flex-col theme-bg-primary theme-text-primary">
+          <Topbar />
 
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/blogs" element={<Blogs />} />
-          <Route path="/blogs/newBlog" element={<NewBlog />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/jobs" element={<JobPage />} />
-          <Route path="/jobs/create" element={<CreateJob />} />
-          <Route path="/jobs/:id" element={<ApplyJob />} />
-          <Route path="/company/create" element={<CreateCompany />} />
-          <Route path="/community" element={<CommunityForum />} />
-          <Route path="/sample" element={<SampleSocial />} />
-          <Route path="/emotion" element={<EmotionCapture />} />
-          <Route path="/careers" element={<Careers />} />
-        </Routes>
-      </div>
-    </UserProvider>
+          <Routes>
+            <Route path="/" element={<CareerVisionHome />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/blogs" element={<Blogs />} />
+            <Route path="/blogs/newBlog" element={<NewBlog />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/jobs" element={<JobPage />} />
+            <Route path="/jobs/create" element={<CreateJob />} />
+            <Route path="/jobs/:id" element={<ApplyJob />} />
+            <Route path="/company/create" element={<CreateCompany />} />
+            <Route path="/community" element={<CommunityForum />} />
+            <Route path="/sample" element={<SampleSocial />} />
+            <Route path="/emotion" element={<EmotionCapture />} />
+            <Route path="/careers" element={<Careers />} />
+          </Routes>
+        </div>
+      </UserProvider>
+    </AppThemeProvider>
   );
 }
 
