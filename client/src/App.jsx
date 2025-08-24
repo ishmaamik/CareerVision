@@ -1,6 +1,6 @@
 import "./App.css";
 import React from "react";
-import Topbar from "./components/bars/Topbar"; 
+import Topbar from "./components/bars/Topbar";
 import { Route, Routes } from "react-router-dom";
 import { UserProvider } from "./context/UserContext";
 import AppThemeProvider from "./components/providers/AppThemeProvider";
@@ -23,25 +23,28 @@ function App() {
   return (
     <AppThemeProvider>
       <UserProvider>
-        <div className="min-h-screen flex flex-col theme-bg-primary theme-text-primary">
+        <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)]">
           <Topbar />
 
-          <Routes>
-            <Route path="/" element={<CareerVisionHome />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/blogs" element={<Blogs />} />
-            <Route path="/blogs/newBlog" element={<NewBlog />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/jobs" element={<JobPage />} />
-            <Route path="/jobs/create" element={<CreateJob />} />
-            <Route path="/jobs/:id" element={<ApplyJob />} />
-            <Route path="/company/create" element={<CreateCompany />} />
-            <Route path="/community" element={<CommunityForum />} />
-            <Route path="/sample" element={<SampleSocial />} />
-            <Route path="/emotion" element={<EmotionCapture />} />
-            <Route path="/careers" element={<Careers />} />
-          </Routes>
+          {/* Main content with proper spacing for fixed navbar */}
+          <main className="pt-20">
+            <Routes>
+              <Route path="/" element={<CareerVisionHome />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
+              <Route path="/blogs" element={<Blogs />} />
+              <Route path="/blogs/newBlog" element={<NewBlog />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/jobs" element={<JobPage />} />
+              <Route path="/jobs/create" element={<CreateJob />} />
+              <Route path="/jobs/:id" element={<ApplyJob />} />
+              <Route path="/company/create" element={<CreateCompany />} />
+              <Route path="/community" element={<CommunityForum />} />
+              <Route path="/sample" element={<SampleSocial />} />
+              <Route path="/emotion" element={<EmotionCapture />} />
+              <Route path="/careers" element={<Careers />} />
+            </Routes>
+          </main>
         </div>
       </UserProvider>
     </AppThemeProvider>

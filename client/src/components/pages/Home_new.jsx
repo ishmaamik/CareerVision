@@ -107,15 +107,18 @@ const CareerVisionHome = () => {
       </section>
 
       {/* Testimonials */}
-      <section className="py-16 bg-[var(--bg-primary)]">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-[var(--text-primary)] mb-4">
+      <section className="py-12 sm:py-16 lg:py-20 bg-[var(--bg-primary)]">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-8 sm:mb-12 lg:mb-16">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[var(--text-primary)] mb-3 sm:mb-4">
               What Our Users Say
             </h2>
-            <div className="w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto rounded-full"></div>
+            <div className="w-16 sm:w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto rounded-full"></div>
+            <p className="mt-4 text-base sm:text-lg text-[var(--text-secondary)] max-w-2xl mx-auto">
+              Real stories from people who transformed their careers
+            </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 max-w-7xl mx-auto">
             {[
               {
                 name: "Sophia Carter",
@@ -142,22 +145,22 @@ const CareerVisionHome = () => {
                   "https://lh3.googleusercontent.com/aida-public/AB6AXuDZEzeDRcAwTN92TaPu-mh-rCu7MkejsDFOTrt_OAsk6hxHB8OM6gqRFUe8y2A0v9orADSWxvBIUlRnWKyVIfaCf5LvBoPOYHigQOKP7VbUV0Z-4jvlDInir4hAQ8SWiF_XzZ-khYdsv5VGxtCdJB-L0FYBu8DdNeTxaJ0oWHTMfoKgHlu9dCBFDL9GXxdxcdJl-q1pz8dMykQgQKFJD19AXTLRwUUFSBUG-klMDHEdEm2GlY9Otl22sHoMkJC4FyUVA9ZqZK_7quA",
               },
             ].map((testimonial, index) => (
-              <div key={index} className="themed-card p-6">
+              <div key={index} className="themed-card p-4 sm:p-6">
                 <div className="flex items-center mb-4">
                   <div
-                    className="w-16 h-16 bg-center bg-no-repeat aspect-square bg-cover rounded-full mr-4 shadow-lg"
+                    className="w-12 h-12 sm:w-16 sm:h-16 bg-center bg-no-repeat aspect-square bg-cover rounded-full mr-3 sm:mr-4 shadow-lg"
                     style={{ backgroundImage: `url(${testimonial.image})` }}
                   ></div>
                   <div>
-                    <h3 className="font-semibold text-lg text-[var(--text-primary)]">
+                    <h3 className="font-semibold text-base sm:text-lg text-[var(--text-primary)]">
                       {testimonial.name}
                     </h3>
-                    <p className="text-[var(--text-secondary)]">
+                    <p className="text-sm sm:text-base text-[var(--text-secondary)]">
                       {testimonial.role}
                     </p>
                   </div>
                 </div>
-                <p className="text-[var(--text-secondary)] italic">
+                <p className="text-sm sm:text-base text-[var(--text-secondary)] italic leading-relaxed">
                   "{testimonial.quote}"
                 </p>
               </div>
@@ -167,18 +170,18 @@ const CareerVisionHome = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-[var(--bg-secondary)]">
-        <div className="container mx-auto px-6 text-center">
-          <div className="themed-card p-10 md:p-16 max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold text-[var(--text-primary)] mb-4">
+      <section className="py-12 sm:py-16 lg:py-20 bg-[var(--bg-secondary)]">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div className="themed-card p-8 sm:p-12 lg:p-16 max-w-4xl mx-auto">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[var(--text-primary)] mb-4 sm:mb-6">
               Ready to start your journey?
             </h2>
-            <p className="text-[var(--text-secondary)] max-w-2xl mx-auto mb-8">
+            <p className="text-base sm:text-lg lg:text-xl text-[var(--text-secondary)] max-w-2xl mx-auto mb-6 sm:mb-8 leading-relaxed">
               Join thousands of others who have found their dream careers
               through CareerVision. Get personalized guidance and unlock your
               potential today.
             </p>
-            <button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-md px-8 py-4 font-semibold text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-200 hover:-translate-y-0.5 shadow-lg hover:shadow-xl">
+            <button className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-lg px-6 sm:px-8 py-3 sm:py-4 font-semibold text-base sm:text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-200 hover:-translate-y-0.5 shadow-lg hover:shadow-xl">
               Get Started Now
             </button>
           </div>
@@ -187,79 +190,73 @@ const CareerVisionHome = () => {
 
       {/* Footer */}
       <footer className="bg-[var(--bg-secondary)] border-t border-[var(--border-color)]">
-        <div className="container mx-auto px-6 py-8">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="flex flex-wrap justify-center md:justify-start gap-6 mb-6 md:mb-0">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+            <div className="flex flex-wrap justify-center md:justify-start gap-4 sm:gap-6">
               <a
-                className="text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors duration-200"
+                className="text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors duration-200 text-sm sm:text-base"
                 href="#"
               >
                 About Us
               </a>
               <a
-                className="text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors duration-200"
+                className="text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors duration-200 text-sm sm:text-base"
                 href="#"
               >
                 Contact
               </a>
               <a
-                className="text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors duration-200"
+                className="text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors duration-200 text-sm sm:text-base"
                 href="#"
               >
                 Privacy Policy
               </a>
               <a
-                className="text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors duration-200"
+                className="text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors duration-200 text-sm sm:text-base"
                 href="#"
               >
                 Terms of Service
               </a>
             </div>
-            <div className="flex justify-center gap-4 mb-6 md:mb-0">
+            <div className="flex justify-center gap-3 sm:gap-4">
               <a
                 className="text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors duration-200 p-2 rounded-lg hover:bg-[var(--bg-primary)]"
                 href="#"
               >
                 <svg
+                  className="w-5 h-5 sm:w-6 sm:h-6"
                   fill="currentColor"
-                  height="24"
-                  viewBox="0 0 256 256"
-                  width="24"
-                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
                 >
-                  <path d="M247.39,68.94A8,8,0,0,0,240,64H209.57A48.66,48.66,0,0,0,168.1,40a46.91,46.91,0,0,0-33.75,13.7A47.9,47.9,0,0,0,120,88v6.09C79.74,83.47,46.81,50.72,46.46,50.37a8,8,0,0,0-13.65,4.92c-4.31,47.79,9.57,79.77,22,98.18a110.93,110.93,0,0,0,21.88,24.2c-15.23,17.53-39.21,26.74-39.47,26.84a8,8,0,0,0-3.85,11.93c.75,1.12,3.75,5.05,11.08,8.72C53.51,229.7,65.48,232,80,232c70.67,0,129.72-54.42,135.75-124.44l29.91-29.9A8,8,0,0,0,247.39,68.94Zm-45,29.41a8,8,0,0,0-2.32,5.14C196,166.58,143.28,216,80,216c-10.56,0-18-1.4-23.22-3.08,11.51-6.25,27.56-17,37.88-32.48A8,8,0,0,0,92,169.08c-.47-.27-43.91-26.34-44-96,16,13,45.25,33.17,78.67,38.79A8,8,0,0,0,136,104V88a32,32,0,0,1,9.6-22.92A30.94,30.94,0,0,1,167.9,56c12.66.16,24.49,7.88,29.44,19.21A8,8,0,0,0,204.67,80h16Z"></path>
+                  <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" />
                 </svg>
               </a>
               <a
-                className="text-[var(--text-secondary)] hover:text-[var(--primary-color)] transition-colors"
+                className="text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors duration-200 p-2 rounded-lg hover:bg-[var(--bg-primary)]"
                 href="#"
               >
                 <svg
+                  className="w-5 h-5 sm:w-6 sm:h-6"
                   fill="currentColor"
-                  height="24"
-                  viewBox="0 0 256 256"
-                  width="24"
-                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
                 >
-                  <path d="M128,80a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160ZM176,24H80A56.06,56.06,0,0,0,24,80v96a56.06,56.06,0,0,0,56,56h96a56.06,56.06,0,0,0,56-56V80A56.06,56.06,0,0,0,176,24Zm40,152a40,40,0,0,1-40,40H80a40,40,0,0,1-40-40V80A40,40,0,0,1,80,40h96a40,40,0,0,1,40,40ZM192,76a12,12,0,1,1-12-12A12,12,0,0,1,192,76Z"></path>
+                  <path d="M22.46 6c-.77.35-1.6.58-2.46.69.88-.53 1.56-1.37 1.88-2.38-.83.5-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29 0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15 0 1.49.75 2.81 1.91 3.56-.71 0-1.37-.2-1.95-.5v.03c0 2.08 1.48 3.82 3.44 4.21a4.22 4.22 0 0 1-1.93.07 4.28 4.28 0 0 0 4 2.98 8.521 8.521 0 0 1-5.33 1.84c-.34 0-.68-.02-1.02-.06C3.44 20.29 5.7 21 8.12 21 16 21 20.33 14.46 20.33 8.79c0-.19 0-.37-.01-.56.84-.6 1.56-1.36 2.14-2.23z" />
                 </svg>
               </a>
               <a
-                className="text-[var(--text-secondary)] hover:text-[var(--primary-color)] transition-colors"
+                className="text-[var(--text-secondary)] hover:text-[var(--accent-primary)] transition-colors duration-200 p-2 rounded-lg hover:bg-[var(--bg-primary)]"
                 href="#"
               >
                 <svg
+                  className="w-5 h-5 sm:w-6 sm:h-6"
                   fill="currentColor"
-                  height="24"
-                  viewBox="0 0 256 256"
-                  width="24"
-                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
                 >
-                  <path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm8,191.63V152h24a8,8,0,0,0,0-16H136V112a16,16,0,0,1,16-16h16a8,8,0,0,0,0-16H152a32,32,0,0,0-32,32v24H96a8,8,0,0,0,0,16h24v63.63a88,88,0,1,1,16,0Z"></path>
+                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
                 </svg>
               </a>
             </div>
-            <p className="text-sm text-center text-[var(--text-secondary)]">
+            <p className="text-xs sm:text-sm text-center text-[var(--text-secondary)]">
               © 2024 CareerVision. All rights reserved.
             </p>
           </div>

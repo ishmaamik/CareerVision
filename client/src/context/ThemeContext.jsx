@@ -123,6 +123,25 @@ export const ThemeProvider = ({ children }) => {
         transition: var(--transition-theme);
       }
 
+      /* Responsive Design Improvements */
+      @media (max-width: 768px) {
+        .themed-card {
+          padding: 1rem;
+        }
+        
+        .container {
+          padding-left: 1rem;
+          padding-right: 1rem;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .themed-card {
+          padding: 0.75rem;
+          border-radius: 0.5rem;
+        }
+      }
+
       /* Smooth transitions for theme switching */
       * {
         transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
@@ -132,6 +151,14 @@ export const ThemeProvider = ({ children }) => {
       *::before,
       *::after {
         transition: none;
+      }
+
+      /* Focus improvements for accessibility */
+      .themed-card:focus-within,
+      input:focus,
+      button:focus {
+        outline: 2px solid var(--accent-primary);
+        outline-offset: 2px;
       }
     `;
   }, [isDarkMode]);
