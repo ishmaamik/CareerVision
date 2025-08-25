@@ -99,69 +99,11 @@ const Topbar = () => {
           Jobs
         </Button>
 
-        {/* Theme Toggle */}
-        <IconButton
-          onClick={toggleTheme}
-          sx={{
-            color: "var(--text-secondary)",
-            padding: "8px",
-            borderRadius: "8px",
-            transition: "all 0.2s ease-in-out",
-            ":hover": {
-              backgroundColor: "var(--bg-hover)",
-              color: "var(--accent-primary)",
-              transform: "rotate(180deg)",
-            },
-          }}
-        >
-          {isDarkMode ? <LightMode /> : <DarkMode />}
-        </IconButton>
+
 
         {localStorage.getItem("name") ? (
           <>
-            <Button
-              disableRipple
-              variant="text"
-              startIcon={<Logout />}
-              sx={{
-                color: "var(--text-secondary)",
-                fontWeight: 500,
-                padding: "8px 16px",
-                borderRadius: "8px",
-                transition: "all 0.2s ease-in-out",
-                ":hover": {
-                  backgroundColor: "#ef4444",
-                  color: "white",
-                  transform: "translateY(-1px)",
-                },
-                ":focus-visible": { outline: "none" },
-              }}
-              onClick={LogInOrOut}
-            >
-              LOGOUT
-            </Button>
 
-            <Button
-              disableRipple
-              startIcon={<Person />}
-              variant="text"
-              sx={{
-                color: "var(--text-secondary)",
-                fontWeight: 500,
-                padding: "8px 16px",
-                borderRadius: "8px",
-                transition: "all 0.2s ease-in-out",
-                ":hover": {
-                  backgroundColor: "var(--bg-hover)",
-                  color: "var(--accent-primary)",
-                  transform: "translateY(-1px)",
-                },
-                ":focus-visible": { outline: "none" },
-              }}
-              onClick={() => navigate("/profile")}
-            >
-              PROFILE
-            </Button>
           </>
         ) : (
           <>

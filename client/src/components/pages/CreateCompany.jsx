@@ -2,10 +2,8 @@ import React, { useState } from "react";
 import { createCompany } from "../../api/company/company";
 import { useNavigate } from "react-router-dom";
 import SimplifiedMap from "./SimplifiedMap";
-import { useSelector } from "react-redux";
 
 const CreateCompany = () => {
-
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
@@ -13,7 +11,7 @@ const CreateCompany = () => {
     overview: "",
     commitment: "",
     lat: null,
-    lon: null
+    lon: null,
   });
 
   const handleChange = (e) => {
@@ -28,8 +26,7 @@ const CreateCompany = () => {
       ...formData,
       location: location.placeName,
       lat: location.latitude,
-      lon: location.longitude
-
+      lon: location.longitude,
     });
   };
 
@@ -44,92 +41,114 @@ const CreateCompany = () => {
   };
 
   return (
-    <div className="container mx-auto mt-6 px-4 py-8">
-      <div className="max-w-2xl mx-auto">
-        <h1 className="text-3xl font-bold text-gray-800 mb-8">
-          Create a New Company
-        </h1>
-
-        <div
-
-          className="bg-white rounded-xl shadow-md p-6 space-y-6"
-        >
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Company Name
-            </label>
-            <input
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="e.g., Samsung"
-            />
+    <div className="w-full min-h-screen bg-[var(--bg-primary)] py-8">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto">
+          {/* Header */}
+          <div className="text-center mb-8">
+            <h1 className="text-3xl sm:text-4xl font-bold text-[var(--text-primary)] mb-4">
+              Create a New Company
+            </h1>
+            <p className="text-[var(--text-secondary)] text-lg">
+              Register your company to start posting job opportunities
+            </p>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Company Location
-            </label>
-            <SimplifiedMap
-              onLocationSelect={handleLocationSelect}
-              height="300px"
-            />
-            {formData.lat && formData.lon && (
-              <p className="mt-2 text-sm text-gray-500">
-                Selected: {formData.lat.toFixed(4)}, {formData.lon.toFixed(4)}
-              </p>
-            )}
-          </div>
+          {/* Form Card */}
+          <div className="themed-card p-6 sm:p-8 lg:p-10">
+            <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8">
+              {/* Company Name */}
+              <div>
+                <label className="block text-sm font-medium text-[var(--text-primary)] mb-2">
+                  Company Name *
+                </label>
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
+                  className="w-full px-4 py-3 rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] text-[var(--text-primary)] placeholder-[var(--text-secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)] focus:border-transparent transition-all duration-200"
+                  placeholder="e.g., Samsung, Google, Microsoft"
+                />
+              </div>
 
+              {/* Company Location */}
+              <div>
+                <label className="block text-sm font-medium text-[var(--text-primary)] mb-2">
+                  Company Location *
+                </label>
+                <div className="rounded-lg border border-[var(--border-color)] overflow-hidden">
+                  <SimplifiedMap
+                    onLocationSelect={handleLocationSelect}
+                    height="350px"
+                  />
+                </div>
+                {formData.lat && formData.lon && (
+                  <div className="mt-3 p-3 bg-[var(--bg-secondary)] rounded-lg">
+                    <p className="text-sm text-[var(--text-secondary)]">
+                      📍 Selected Location: {formData.location}
+                    </p>
+                    <p className="text-xs text-[var(--text-secondary)] mt-1">
+                      Coordinates: {formData.lat.toFixed(4)},{" "}
+                      {formData.lon.toFixed(4)}
+                    </p>
+                  </div>
+                )}
+              </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Company Overview
-            </label>
-            <textarea
-              name="overview"
-              value={formData.overview}
-              onChange={handleChange}
-              required
-              rows="4"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Describe what your company does..."
-            />
-          </div>
+              {/* Two Column Layout for Overview and Commitments */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Company Overview */}
+                <div>
+                  <label className="block text-sm font-medium text-[var(--text-primary)] mb-2">
+                    Company Overview *
+                  </label>
+                  <textarea
+                    name="overview"
+                    value={formData.overview}
+                    onChange={handleChange}
+                    required
+                    rows="6"
+                    className="w-full px-4 py-3 rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] text-[var(--text-primary)] placeholder-[var(--text-secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)] focus:border-transparent transition-all duration-200 resize-none"
+                    placeholder="Describe what your company does, your mission, and what makes you unique..."
+                  />
+                </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Company Commitments
-            </label>
-            <textarea
-              name="commitment"
-              value={formData.commitment}
-              onChange={handleChange}
-              required
-              rows="4"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Describe your company values and commitments..."
-            />
-          </div>
+                {/* Company Commitments */}
+                <div>
+                  <label className="block text-sm font-medium text-[var(--text-primary)] mb-2">
+                    Company Values & Commitments *
+                  </label>
+                  <textarea
+                    name="commitment"
+                    value={formData.commitment}
+                    onChange={handleChange}
+                    required
+                    rows="6"
+                    className="w-full px-4 py-3 rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] text-[var(--text-primary)] placeholder-[var(--text-secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-primary)] focus:border-transparent transition-all duration-200 resize-none"
+                    placeholder="Describe your company values, work culture, diversity commitments, and employee benefits..."
+                  />
+                </div>
+              </div>
 
-          <div className="flex justify-end space-x-4 pt-4">
-            <button
-              type="button"
-              onClick={() => navigate("/jobs")}
-              className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              onClick={handleSubmit}
-              className="px-6 py-2 bg-blue-600 text-black rounded-lg hover:bg-blue-700 transition-colors"
-            >
-              Create Company
-            </button>
+              {/* Action Buttons */}
+              <div className="flex flex-col sm:flex-row justify-end gap-4 pt-6 border-t border-[var(--border-color)]">
+                <button
+                  type="button"
+                  onClick={() => navigate("/jobs")}
+                  className="px-6 py-3 border border-[var(--border-color)] rounded-lg text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)] transition-all duration-200 font-medium"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-200 hover:-translate-y-0.5 shadow-lg hover:shadow-xl"
+                >
+                  Create Company
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
