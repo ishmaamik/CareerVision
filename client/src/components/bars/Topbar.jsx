@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
-import { PeopleAlt as People, Work as Work,Map as Map, Login as Login, Logout as Logout, Person as Person, AppRegistration as Signup } from "@mui/icons-material"
+import { Business, QuestionAnswer,PeopleAlt as People, Work as Work,Map as Map, Login as Login, Logout as Logout, Person as Person, AppRegistration as Signup } from "@mui/icons-material"
 import { Link } from "react-router-dom";
 
 const Topbar = () => {
@@ -32,7 +32,7 @@ const Topbar = () => {
       </div>
 
       {/* Right Side: Navigation */}
-      <div className="hidden md:flex space-x-6 items-center">
+      <div className="hidden md:flex space-x-12 items-center">
         <Button
           disableRipple
           startIcon={<People />}
@@ -73,18 +73,32 @@ const Topbar = () => {
         >
           Jobs
         </Button>
-        <Link 
-          to="/companies" 
-          className="text-gray-700 hover:text-amber-700 transition-colors"
+        <Button
+          disableRipple
+          variant="text"
+          startIcon={<Business />}
+          sx={{
+            color: "gray",
+            ":hover": { backgroundColor: "transparent" },
+            ":focus-visible": { outline: "none" },
+          }}
+          onClick={() => navigate("/companies")}
         >
           Companies
-        </Link>
-        <Link 
-          to="/interview-questions" 
-          className="text-gray-700 hover:text-amber-700 transition-colors"
+        </Button>
+        <Button
+          disableRipple
+          variant="text"
+          startIcon={<QuestionAnswer />}
+          sx={{
+            color: "gray",
+            ":hover": { backgroundColor: "transparent" },
+            ":focus-visible": { outline: "none" },
+          }}
+          onClick={() => navigate("/interview-questions")}
         >
           Interview Questions
-        </Link>
+        </Button>
         {localStorage.getItem("name") ? (
           <>
             <Button

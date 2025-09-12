@@ -296,7 +296,7 @@ const InterviewQuestionBank = () => {
           </Typography>
 
           <Typography variant="h5" sx={{ color: 'black', maxWidth: 600, mx: 'auto' }}>
-            Master your interviews with real questions from top tech companies
+            Master your interviews with real questions from top companies
           </Typography>
         </Box>
 
