@@ -4,3 +4,4 @@ resume-matcher/app/__pycache__
 /resume-matcher/app/__pycache__
 *.pyc
 /resume-matcher/app/__pycache__
+server/logs/application.log
