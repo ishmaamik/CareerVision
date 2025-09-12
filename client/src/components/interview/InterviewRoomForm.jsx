@@ -67,7 +67,7 @@ const InterviewRoomForm = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-white to-yellow-50 dark:from-[#2c2c2c] dark:to-black py-12 px-4 sm:px-6 lg:px-8">
+    <div className="p-20">
       <div className="max-w-md mx-auto bg-white dark:bg-yellow-400/10 rounded-xl shadow-2xl overflow-hidden">
         <div className="px-8 pt-6 pb-8">
           <div className="text-center mb-8">
