@@ -1,9 +1,9 @@
 package CareerVision.dto;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import java.util.List;
 
 @Data
@@ -18,7 +18,7 @@ public class RoadmapRequest {
     private String specificArea;
 
     // Experience
-    private List<String> selfAssessment; // Will be converted to comma-separated string
+    private List<String> selfAssessment;
     private String experienceDescription;
 
     // Time Commitment
@@ -29,13 +29,23 @@ public class RoadmapRequest {
     private String learningStyle;
     private String difficulty;
 
-    private List<LanguageDto> languages;
+    // Languages
+    private List<Language> languages;
+
+    // Tools
+    private String tools;
+
+    // Demographic Information
+    private String ageRange;
+    private String status;
+
+    // Feedback
+    private String feedback;
 
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
-    @Builder
-    public static class LanguageDto {
+    public static class Language {
         private String name;
         private Integer priority;
     }

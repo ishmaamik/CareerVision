@@ -17,6 +17,7 @@ import CommunityForum from "./components/pages/Community/CommunityForum";
 import SampleSocial from "./components/pages/SampleSocial";
 import EmotionCapture from "./components/EmotionCapture";
 import Careers from "./components/pages/Careers";
+import Roadmap from "./components/pages/Roadmap";
 
 function App() {
   return (
@@ -48,6 +49,7 @@ function App() {
           <Route path="/jobs/:id" element={<ApplyJob />} />
           <Route path="/company/create" element={<CreateCompany />} />
           <Route path="/community" element={<CommunityForum />} />
+          <Route path="/roadmap" element={<Roadmap />} />
           <Route path="/sample" element={<SampleSocial />} />
           <Route path="/emotion" element={<EmotionCapture />} />
           <Route path="/careers" element={<Careers />} />

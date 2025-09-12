@@ -2,7 +2,6 @@ package CareerVision.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -21,39 +20,54 @@ public class Roadmap {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    // Goals fields
+    // Goals
     @Column(name = "primary_goal")
     private String primaryGoal;
 
     @Column(name = "specific_area")
     private String specificArea;
 
-    // Experience fields
-    @Column(name = "self_assessment", columnDefinition = "TEXT")
-    private String selfAssessment; // Store as comma-separated string
+    // Experience
+    @ElementCollection
+    @CollectionTable(name = "roadmap_self_assessment", joinColumns = @JoinColumn(name = "roadmap_id"))
+    @Column(name = "assessment")
+    private List<String> selfAssessment;
 
     @Column(name = "experience_description", columnDefinition = "TEXT")
     private String experienceDescription;
 
-    // Time Commitment fields
+    // Time Commitment
     @Column(name = "hours_per_week")
     private String hoursPerWeek;
 
     @Column(name = "pace")
     private String pace;
 
-    // Preferences fields
+    // Preferences
     @Column(name = "learning_style")
     private String learningStyle;
 
     @Column(name = "difficulty")
     private String difficulty;
 
-    @OneToMany(mappedBy = "roadmap", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonManagedReference
+    // Languages
+    @ElementCollection
+    @CollectionTable(name = "roadmap_languages", joinColumns = @JoinColumn(name = "roadmap_id"))
     private List<Language> languages;
 
-    @Column(columnDefinition = "TEXT")
+    // Tools
+    @Column(name = "tools")
+    private String tools;
+
+    // Demographic Information
+    @Column(name = "age_range")
+    private String ageRange;
+
+    @Column(name = "status")
+    private String status;
+
+    // Generated Roadmap
+    @Column(name = "generated_roadmap", columnDefinition = "TEXT")
     private String generatedRoadmap;
 
     @Column(name = "created_at")
@@ -61,6 +75,9 @@ public class Roadmap {
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    @Column(name = "feedback")
+    private String feedback;
 
     @PrePersist
     protected void onCreate() {
@@ -71,5 +88,17 @@ public class Roadmap {
     @PreUpdate
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
+    }
+
+    @Embeddable
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Language {
+        @Column(name = "name")
+        private String name;
+
+        @Column(name = "priority")
+        private Integer priority;
     }
 }

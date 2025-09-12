@@ -10,23 +10,28 @@ import {
   Target,
   PenTool as Tool,
 } from "lucide-react";
-import { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import SideButtons from "../components/SideButtons";
 import ReactMarkdown from "react-markdown";
+import { generateRoadmap } from "../../api/roadmap/roadmap";
+import { useNavigate } from "react-router-dom";
 
 const Roadmap = () => {
-  const { currentUser } = useSelector((state) => state.user);
+  const navigate = useNavigate();
+  const { user } = useSelector((state) => state.user);
   const [isExpanded, setIsExpanded] = useState(true);
   const [step, setStep] = useState(1);
   const roadmapRef = useRef(null);
+  const [error, setError] = useState(null);
+  
+  // Ensure all nested objects and arrays are properly initialized
   const [formData, setFormData] = useState({
     goals: {
       primaryGoal: "",
       specificArea: "",
     },
     experience: {
-      quiz: [],
+      quiz: [], // Ensure this is always an array
       description: "",
     },
     timeCommitment: {
@@ -37,8 +42,8 @@ const Roadmap = () => {
       learningStyle: "interactive",
       difficulty: "fundamentals",
     },
-    languages: [],
-    tools: "",
+    languages: [], // Ensure this is always an array
+    tools: "", // Explicitly set as an empty string
     demographics: {
       ageRange: "",
       status: "",
@@ -49,23 +54,174 @@ const Roadmap = () => {
   const [generatedRoadmap, setGeneratedRoadmap] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
 
+  // Comprehensive user object logging
+  useEffect(() => {
+    console.group('User Object Inspection');
+    console.log('Raw User Object:', user);
+    console.log('User Object Type:', typeof user);
+    console.log('User Object Keys:', user ? Object.keys(user) : 'No user');
+    
+    // Attempt to find potential ID fields
+    if (user) {
+      const potentialIdFields = ['_id', 'id', 'userId', 'user_id'];
+      potentialIdFields.forEach(field => {
+        console.log(`Checking field '${field}':`, user[field]);
+      });
+    }
+    console.groupEnd();
+  }, [user]);
+
+  // Check user authentication on component mount
+  useEffect(() => {
+    if (!user) {
+      setError("You must be logged in to generate a roadmap.");
+      // Optional: Redirect to login page after a short delay
+      const timer = setTimeout(() => {
+        navigate('/login');
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [user, navigate]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Check if user is logged in
+    if (!user) {
+      setError("You must be logged in to generate a roadmap. Please log in.");
+      return;
+    }
+
+    // Validate that all required fields are filled
+    if (!formData.goals.primaryGoal) {
+      setError("Please select a primary goal before generating a roadmap.");
+      return;
+    }
+
+    // Attempt to find the correct user ID with multiple fallback options
+    const potentialIdFields = ['_id', 'id', 'userId', 'user_id'];
+    const userId = potentialIdFields.find(field => user[field]);
+
+    console.log('Potential User ID Fields:', potentialIdFields);
+    console.log('Found User ID Field:', userId);
+    console.log('User ID Value:', userId ? user[userId] : 'Not Found');
+
+    // Validate userId
+    if (!userId) {
+      setError("Cannot find a valid user ID. Please log in again.");
+      return;
+    }
+
+    // Clear any previous errors
+    setError(null);
+
     try {
-      const response = await axios.post("/api/roadmap/generate", {
-        userId: currentUser._id,
-        ...formData,
-      });
-      setGeneratedRoadmap(response.data.roadmap.generatedRoadmap);
+      const payload = {
+        userId: user[userId], // Use the found user ID
+        primaryGoal: formData.goals.primaryGoal, // Flat field
+        specificArea: formData.goals.specificArea, // Flat field
+        selfAssessment: formData.experience.quiz,
+        experienceDescription: formData.experience.description,
+        hoursPerWeek: formData.timeCommitment.hoursPerWeek,
+        pace: formData.timeCommitment.pace,
+        learningStyle: formData.preferences.learningStyle,
+        difficulty: formData.preferences.difficulty,
+        languages: formData.languages.map((lang, index) => ({
+          name: lang.name,
+          priority: index + 1
+        })),
+        tools: (() => {
+          // Handle different possible input types
+          if (typeof formData.tools === 'object') {
+            // If it's an object, try to extract the tools value
+            return formData.tools.tools || formData.tools.tool || "";
+          }
+          // Otherwise, return the string value
+          return formData.tools || "";
+        })(),
+        ageRange: formData.demographics.ageRange,
+        status: formData.demographics.status,
+        feedback: formData.feedback
+      };
+
+      console.log('Roadmap Generation Payload:', payload);
+      console.log('Payload Tools:', payload.tools);
+      console.log('Payload Tools Type:', typeof payload.tools);
+
+      const response = await generateRoadmap(payload);
+      
+      console.log('Roadmap Generation Response:', response);
+
+      // Defensive check for response structure
+      if (!response || !response.roadmap || !response.roadmap.generatedRoadmap) {
+        throw new Error('Invalid response structure from roadmap generation');
+      }
+
+      setGeneratedRoadmap(response.roadmap.generatedRoadmap);
       setSuccessMessage("Your learning roadmap has been successfully created!");
     } catch (error) {
       console.error("Submission error:", error);
+      
+      // More detailed error logging
+      if (error.response) {
+        console.error('Error Response Data:', error.response.data);
+        console.error('Error Response Status:', error.response.status);
+        console.error('Error Response Headers:', error.response.headers);
+      } else if (error.request) {
+        console.error('Error Request:', error.request);
+      } else {
+        console.error('Error Message:', error.message);
+      }
+
       const errorMessage =
         error.response?.data?.message ||
+        error.response?.data?.error ||
         error.message ||
         "Failed to submit form";
+      
+      // Set error state for user feedback
+      setError(errorMessage);
+      
+      // Optional: Show error alert
       alert(`Error: ${errorMessage}`);
     }
+  };
+
+  // Helper function to update nested form state
+  const updateFormData = (section, field, value) => {
+    setFormData(prev => ({
+      ...prev,
+      [section]: {
+        ...prev[section],
+        [field]: value
+      }
+    }));
+  };
+
+  // Helper function to handle language selection
+  const handleLanguageToggle = (lang) => {
+    setFormData(prev => {
+      const currentLanguages = prev.languages || [];
+      const isSelected = currentLanguages.some(l => l.name === lang);
+      
+      if (isSelected) {
+        // Remove language if already selected
+        return {
+          ...prev,
+          languages: currentLanguages.filter(l => l.name !== lang)
+        };
+      } else {
+        // Add language with priority based on current list
+        return {
+          ...prev,
+          languages: [
+            ...currentLanguages, 
+            { name: lang, priority: currentLanguages.length + 1 }
+          ]
+        };
+      }
+    });
   };
 
   const RoadmapContent = ({ isPDF = false }) => (
@@ -79,7 +235,7 @@ const Roadmap = () => {
             onClick={handleDownloadPDF}
             className="flex items-center gap-2 px-4 py-2 bg-amber-50  text-amber-700  rounded-lg hover:bg-amber-100  transition-colors"
           >
-            <Download className="w-4 h-4" />
+            
             Download PDF
           </button>
         </div>
@@ -120,33 +276,143 @@ const Roadmap = () => {
 
   const handleDownloadPDF = () => {
     const element = roadmapRef.current;
+    
+    if (!element) {
+      alert('Could not find element to generate PDF');
+      return;
+    }
+
+    // Create a deep clone of the element
+    const clonedElement = element.cloneNode(true);
+    
+    // Comprehensive style simplification function
+    const simplifyStyles = (el) => {
+      if (!(el instanceof Element)) return;
+
+      // Remove potentially problematic styles
+      const stylesToRemove = [
+        'background',
+        'backgroundColor',
+        'backgroundImage',
+        'color',
+        'boxShadow',
+        'borderRadius',
+        'transform',
+        'transition'
+      ];
+
+      // Remove inline styles
+      if (el.style) {
+        stylesToRemove.forEach(prop => {
+          el.style[prop] = '';
+        });
+      }
+
+      // Remove Tailwind classes that might cause rendering issues
+      const classesToRemove = [
+        'bg-gradient-to-b',
+        'dark:from-[#18181b]',
+        'dark:to-black',
+        'hover:',
+        'transition-',
+        'rounded-lg',
+        'shadow-'
+      ];
+
+      if (el.classList) {
+        classesToRemove.forEach(cls => {
+          el.classList.remove(...Array.from(el.classList).filter(c => c.includes(cls)));
+        });
+      }
+
+      // Recursively simplify child elements
+      Array.from(el.children).forEach(simplifyStyles);
+    };
+
+    // Simplify styles
+    simplifyStyles(clonedElement);
+
+    // Prepare PDF options with more robust settings
     const opt = {
-      margin: 1,
+      margin: [0.5, 0.5, 0.5, 0.5], // Reduced margins
       filename: "my-learning-roadmap.pdf",
-      image: { type: "jpeg", quality: 0.98 },
-      html2canvas: { scale: 2 },
-      jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
+      image: { 
+        type: "jpeg", 
+        quality: 0.85 // Slightly reduced quality to improve compatibility
+      },
+      html2canvas: { 
+        scale: 1, // Reduced scale to minimize rendering issues
+        useCORS: true, 
+        logging: true,
+        width: clonedElement.scrollWidth,
+        height: clonedElement.scrollHeight,
+        windowWidth: clonedElement.scrollWidth,
+        windowHeight: clonedElement.scrollHeight
+      },
+      jsPDF: { 
+        unit: "in", 
+        format: "a4", 
+        orientation: "portrait" 
+      },
+      pagebreak: { mode: 'avoid-all' }
     };
-    html2pdf().set(opt).from(element).save();
+
+    // Attempt PDF generation with multiple fallback strategies
+    const generatePDF = () => {
+      return new Promise((resolve, reject) => {
+        try {
+          html2pdf()
+            .set(opt)
+            .from(clonedElement)
+            .save()
+            .then(resolve)
+            .catch(reject);
+        } catch (error) {
+          reject(error);
+        }
+      });
+    };
+
+    // Execute PDF generation with error handling
+    generatePDF()
+      .catch((err) => {
+        console.error('First PDF Generation Attempt Failed:', err);
+        
+        // Fallback: Try with even more simplified approach
+        try {
+          const simplifiedClone = document.createElement('div');
+          simplifiedClone.innerHTML = clonedElement.innerText;
+          
+          const fallbackOpt = {
+            ...opt,
+            html2canvas: { 
+              ...opt.html2canvas, 
+              scale: 1, 
+              width: undefined, 
+              height: undefined 
+            }
+          };
+
+          html2pdf()
+            .set(fallbackOpt)
+            .from(simplifiedClone)
+            .save()
+            .catch((fallbackErr) => {
+              console.error('Fallback PDF Generation Failed:', fallbackErr);
+              alert('Failed to generate PDF. Please try manually copying the content.');
+            });
+        } catch (simplificationError) {
+          console.error('PDF Simplification Error:', simplificationError);
+          alert('Unable to generate PDF. Please try manually copying the content.');
+        }
+      });
   };
 
 
-  const StepIcon = ({ step }) => {
-    const icons = {
-      1: <Target className="w-6 h-6" />,
-      2: <BookOpen className="w-6 h-6" />,
-      3: <Clock className="w-6 h-6" />,
-      4: <Brain className="w-6 h-6" />,
-      5: <Code className="w-6 h-6" />,
-      6: <Tool className="w-6 h-6" />,
-      7: <MessageSquare className="w-6 h-6" />,
-    };
-    return icons[step] || null;
-  };
+  
 
   return (
     <div className="flex min-h-screen bg-gradient-to-b from-[#FFFDF7] to-[#FFF9E6] dark:from-[#18181b] dark:to-black">
-      <SideButtons />
       <div
         id="main-content"
         className="flex-1 transition-all duration-300"
@@ -199,23 +465,7 @@ const Roadmap = () => {
                 {/* Progress Steps */}
                 <div className="mb-8">
                   <div className="flex items-center justify-between mb-4">
-                    {[1, 2, 3, 4, 5, 6, 7].map((number) => (
-                      <div
-                        key={number}
-                        className={`flex flex-col items-center ${
-                          number <= step ? "text-amber-600" : "text-gray-400"
-                        }`}
-                      >
-                        <div
-                          className={`w-12 h-12 rounded-full flex items-center justify-center mb-2 ${
-                            number <= step ? "bg-amber-100" : "bg-gray-100"
-                          }`}
-                        >
-                          <StepIcon step={number} />
-                        </div>
-                        <span className="text-sm">Step {number}</span>
-                      </div>
-                    ))}
+                    
                   </div>
                   <div className="h-2 bg-amber-100 rounded-full">
                     <div
@@ -229,7 +479,6 @@ const Roadmap = () => {
                 {step === 1 && (
                   <div className="space-y-6 transition-all duration-300">
                     <div className="text-center mb-6">
-                      <Target className="w-12 h-12 text-amber-600 mx-auto mb-4" />
                       <h2 className="text-3xl font-bold text-amber-900">
                         Your Learning Goals
                       </h2>
@@ -243,13 +492,7 @@ const Roadmap = () => {
                         <select
                           value={formData.goals.primaryGoal}
                           onChange={(e) =>
-                            setFormData({
-                              ...formData,
-                              goals: {
-                                ...formData.goals,
-                                primaryGoal: e.target.value,
-                              },
-                            })
+                            updateFormData("goals", "primaryGoal", e.target.value)
                           }
                           className="w-full p-2 border border-amber-200 rounded mt-1 focus:ring-amber-500 focus:border-amber-500"
                           required
@@ -276,13 +519,7 @@ const Roadmap = () => {
                             type="text"
                             value={formData.goals.specificArea}
                             onChange={(e) =>
-                              setFormData({
-                                ...formData,
-                                goals: {
-                                  ...formData.goals,
-                                  specificArea: e.target.value,
-                                },
-                              })
+                              updateFormData("goals", "specificArea", e.target.value)
                             }
                             className="w-full p-2 border border-amber-200 rounded mt-1 focus:ring-amber-500 focus:border-amber-500"
                             required
@@ -297,13 +534,7 @@ const Roadmap = () => {
                             type="text"
                             value={formData.goals.specificArea}
                             onChange={(e) =>
-                              setFormData({
-                                ...formData,
-                                goals: {
-                                  ...formData.goals,
-                                  specificArea: e.target.value,
-                                },
-                              })
+                              updateFormData("goals", "specificArea", e.target.value)
                             }
                             className="w-full p-2 border border-amber-200 rounded mt-1 focus:ring-amber-500 focus:border-amber-500"
                             placeholder="e.g., AI/Data Science, Game Development"
@@ -345,15 +576,12 @@ const Roadmap = () => {
                                 question
                               )}
                               onChange={(e) => {
-                                const quiz = e.target.checked
+                                const selfAssessment = e.target.checked
                                   ? [...formData.experience.quiz, question]
                                   : formData.experience.quiz.filter(
                                       (q) => q !== question
                                     );
-                                setFormData({
-                                  ...formData,
-                                  experience: { ...formData.experience, quiz },
-                                });
+                                updateFormData("experience", "quiz", selfAssessment);
                               }}
                               className="rounded"
                             />
@@ -369,13 +597,7 @@ const Roadmap = () => {
                         <textarea
                           value={formData.experience.description}
                           onChange={(e) =>
-                            setFormData({
-                              ...formData,
-                              experience: {
-                                ...formData.experience,
-                                description: e.target.value,
-                              },
-                            })
+                            updateFormData("experience", "description", e.target.value)
                           }
                           className="w-full p-2 border rounded mt-1 h-32"
                           placeholder="Briefly describe your coding experience..."
@@ -406,13 +628,7 @@ const Roadmap = () => {
                                 formData.timeCommitment.hoursPerWeek === option
                               }
                               onChange={(e) =>
-                                setFormData({
-                                  ...formData,
-                                  timeCommitment: {
-                                    ...formData.timeCommitment,
-                                    hoursPerWeek: e.target.value,
-                                  },
-                                })
+                                updateFormData("timeCommitment", "hoursPerWeek", e.target.value)
                               }
                               className="rounded"
                             />
@@ -426,13 +642,7 @@ const Roadmap = () => {
                         <select
                           value={formData.timeCommitment.pace}
                           onChange={(e) =>
-                            setFormData({
-                              ...formData,
-                              timeCommitment: {
-                                ...formData.timeCommitment,
-                                pace: e.target.value,
-                              },
-                            })
+                            updateFormData("timeCommitment", "pace", e.target.value)
                           }
                           className="w-full p-2 border rounded mt-1"
                         >
@@ -478,13 +688,7 @@ const Roadmap = () => {
                                 option.value
                               }
                               onChange={(e) =>
-                                setFormData({
-                                  ...formData,
-                                  preferences: {
-                                    ...formData.preferences,
-                                    learningStyle: e.target.value,
-                                  },
-                                })
+                                updateFormData("preferences", "learningStyle", e.target.value)
                               }
                               className="rounded"
                             />
@@ -514,13 +718,7 @@ const Roadmap = () => {
                                 option.toLowerCase().replace(/ /g, "-")
                               }
                               onChange={(e) =>
-                                setFormData({
-                                  ...formData,
-                                  preferences: {
-                                    ...formData.preferences,
-                                    difficulty: e.target.value,
-                                  },
-                                })
+                                updateFormData("preferences", "difficulty", e.target.value)
                               }
                               className="rounded"
                             />
@@ -549,23 +747,13 @@ const Roadmap = () => {
                           >
                             <input
                               type="checkbox"
-                              checked={formData.languages.some(
-                                (l) => l.name === lang
-                              )}
-                              onChange={(e) => {
-                                const languages = e.target.checked
-                                  ? [
-                                      ...formData.languages,
-                                      {
-                                        name: lang,
-                                        priority: formData.languages.length + 1,
-                                      },
-                                    ]
-                                  : formData.languages.filter(
-                                      (l) => l.name !== lang
-                                    );
-                                setFormData({ ...formData, languages });
-                              }}
+                              checked={
+                                formData.languages && 
+                                formData.languages.some(
+                                  (l) => l.name === lang
+                                )
+                              }
+                              onChange={() => handleLanguageToggle(lang)}
                               className="rounded"
                             />
                             <span>{lang}</span>
@@ -624,10 +812,23 @@ const Roadmap = () => {
                         </span>
                         <input
                           type="text"
-                          value={formData.tools}
-                          onChange={(e) =>
-                            setFormData({ ...formData, tools: e.target.value })
-                          }
+                          value={typeof formData.tools === 'object' 
+                            ? (formData.tools.tools || "") // Extract 'tools' from object if it exists
+                            : (formData.tools || "")} // Otherwise use the string value
+                          onChange={(e) => {
+                            const toolsValue = e.target.value;
+                            console.group('Tools Input Debug');
+                            console.log('Raw Input:', toolsValue);
+                            console.log('Current formData.tools:', formData.tools);
+                            console.log('Current formData.tools type:', typeof formData.tools);
+                            
+                            // Ensure we always store a string, not an object
+                            updateFormData("tools", "tools", toolsValue);
+                            
+                            console.log('Updated formData.tools:', formData.tools);
+                            console.log('Updated formData.tools type:', typeof formData.tools);
+                            console.groupEnd();
+                          }}
                           className="w-full p-2 border rounded mt-1"
                           placeholder="e.g., Android Studio, Django, Arduino"
                         />
@@ -639,13 +840,7 @@ const Roadmap = () => {
                           <select
                             value={formData.demographics.ageRange}
                             onChange={(e) =>
-                              setFormData({
-                                ...formData,
-                                demographics: {
-                                  ...formData.demographics,
-                                  ageRange: e.target.value,
-                                },
-                              })
+                              updateFormData("demographics", "ageRange", e.target.value)
                             }
                             className="w-full p-2 border rounded mt-1"
                           >
@@ -661,13 +856,7 @@ const Roadmap = () => {
                           <select
                             value={formData.demographics.status}
                             onChange={(e) =>
-                              setFormData({
-                                ...formData,
-                                demographics: {
-                                  ...formData.demographics,
-                                  status: e.target.value,
-                                },
-                              })
+                              updateFormData("demographics", "status", e.target.value)
                             }
                             className="w-full p-2 border rounded mt-1"
                           >
@@ -696,7 +885,7 @@ const Roadmap = () => {
                       <textarea
                         value={formData.feedback}
                         onChange={(e) =>
-                          setFormData({ ...formData, feedback: e.target.value })
+                          updateFormData("feedback", "feedback", e.target.value)
                         }
                         className="w-full p-2 border rounded mt-1 h-32"
                         placeholder="Additional information to help customize your roadmap..."
