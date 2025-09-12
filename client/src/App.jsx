@@ -18,6 +18,8 @@ import SampleSocial from "./components/pages/SampleSocial";
 import EmotionCapture from "./components/EmotionCapture";
 import Careers from "./components/pages/Careers";
 import Roadmap from "./components/pages/Roadmap";
+import InterviewQuestionBank from "./components/pages/InterviewQuestionBank";
+import CompaniesPage from "./components/pages/CompaniesPage";
 
 function App() {
   return (
@@ -53,6 +55,8 @@ function App() {
           <Route path="/sample" element={<SampleSocial />} />
           <Route path="/emotion" element={<EmotionCapture />} />
           <Route path="/careers" element={<Careers />} />
+          <Route path="/companies" element={<CompaniesPage />} />
+          <Route path="/interview-questions" element={<InterviewQuestionBank />} />
         </Routes>
       </div>
     </UserProvider>

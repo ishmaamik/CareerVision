@@ -2,6 +2,8 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
 import { PeopleAlt as People, Work as Work,Map as Map, Login as Login, Logout as Logout, Person as Person, AppRegistration as Signup } from "@mui/icons-material"
+import { Link } from "react-router-dom";
+
 const Topbar = () => {
   const navigate = useNavigate();
 
@@ -30,7 +32,7 @@ const Topbar = () => {
       </div>
 
       {/* Right Side: Navigation */}
-      <div className="space-x-20">
+      <div className="hidden md:flex space-x-6 items-center">
         <Button
           disableRipple
           startIcon={<People />}
@@ -71,6 +73,18 @@ const Topbar = () => {
         >
           Jobs
         </Button>
+        <Link 
+          to="/companies" 
+          className="text-gray-700 hover:text-amber-700 transition-colors"
+        >
+          Companies
+        </Link>
+        <Link 
+          to="/interview-questions" 
+          className="text-gray-700 hover:text-amber-700 transition-colors"
+        >
+          Interview Questions
+        </Link>
         {localStorage.getItem("name") ? (
           <>
             <Button
