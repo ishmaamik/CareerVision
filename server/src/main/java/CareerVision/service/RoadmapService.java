@@ -290,6 +290,81 @@ public class RoadmapService {
         return "technology";
     }
 
+    private String determineCareerPath(RoadmapRequest request) {
+        Map<String, List<String>> skillVariants = loadSkillVariants();
+        
+        // Combine all possible context sources
+        List<String> contextSources = new ArrayList<>();
+        if (request.getSpecificArea() != null) {
+            contextSources.add(request.getSpecificArea().toLowerCase());
+        }
+        if (request.getTools() != null) {
+            contextSources.add(request.getTools().toLowerCase());
+        }
+        if (request.getPrimaryGoal() != null) {
+            contextSources.add(request.getPrimaryGoal().toLowerCase());
+        }
+        if (request.getExperienceDescription() != null) {
+            contextSources.add(request.getExperienceDescription().toLowerCase());
+        }
+        
+        // Combine context sources
+        String combinedContext = String.join(" ", contextSources);
+        
+        // Expanded keyword matching with more flexible approach
+        for (Map.Entry<String, List<String>> entry : skillVariants.entrySet()) {
+            for (String skill : entry.getValue()) {
+                // Use contains for more flexible matching
+                if (combinedContext.contains(skill.toLowerCase())) {
+                    logger.info("Matched career path '{}' with skill '{}'", entry.getKey(), skill);
+                    return entry.getKey();
+                }
+            }
+        }
+        
+        // Additional domain-specific keyword matching
+        Map<String, List<String>> additionalKeywords = new HashMap<>() {{
+            put("software", Arrays.asList("programming", "code", "developer", "software engineering", "tech", "application", "coding"));
+            put("civil", Arrays.asList("construction", "infrastructure", "building", "design", "architecture", "structural"));
+            put("mechanical", Arrays.asList("machine", "manufacturing", "robotics", "design", "engineering", "product"));
+            put("electrical", Arrays.asList("electronics", "circuit", "power", "energy", "system design", "electrical systems"));
+            put("chemical", Arrays.asList("process", "chemistry", "materials", "reaction", "engineering", "chemical process"));
+            put("industrial", Arrays.asList("optimization", "management", "efficiency", "operations", "logistics", "process improvement"));
+            put("professional", Arrays.asList("career", "skills", "leadership", "communication", "growth", "development", "soft skills"));
+        }};
+        
+        // Check additional keywords
+        for (Map.Entry<String, List<String>> entry : additionalKeywords.entrySet()) {
+            for (String keyword : entry.getValue()) {
+                if (combinedContext.contains(keyword.toLowerCase())) {
+                    logger.info("Matched career path '{}' with additional keyword '{}'", entry.getKey(), keyword);
+                    return entry.getKey();
+                }
+            }
+        }
+        
+        // Fallback to primary goal interpretation
+        if (request.getPrimaryGoal() != null) {
+            String primaryGoalLower = request.getPrimaryGoal().toLowerCase();
+            if (primaryGoalLower.contains("job")) {
+                logger.info("Fallback to 'professional' career path based on job-related goal");
+                return "professional";
+            }
+            if (primaryGoalLower.contains("project")) {
+                logger.info("Fallback to 'software' career path based on project-related goal");
+                return "software";
+            }
+            if (primaryGoalLower.contains("exam")) {
+                logger.info("Fallback to 'academic' career path based on exam-related goal");
+                return "academic";
+            }
+        }
+        
+        // Ultimate fallback
+        logger.info("No specific career path found. Defaulting to 'general'.");
+        return "general";
+    }
+
     private String generateDynamicFallbackRoadmap(RoadmapRequest request) {
         // Extract precise goal context
         String goalContext = extractPreciseGoalContext(request);
@@ -677,6 +752,105 @@ public class RoadmapService {
             logger.error("Error calling Groq API", e);
             throw new RuntimeException("Failed to generate roadmap: " + e.getMessage(), e);
         }
+    }
+
+    private Map<String, List<String>> loadSkillVariants() {
+        Map<String, List<String>> skillVariants = new HashMap<>();
+
+        // Software / Computer Engineering
+        skillVariants.put("software", Arrays.asList(
+            "javascript", "typescript", "react", "python", "java", 
+            "machine learning", "data science", "cloud", "cybersecurity",
+            "js", "java script", "ts", "type script", "reactjs", "react.js",
+            "angularjs", "angular.js", "vue", "vuejs", "nextjs", "next",
+            "html", "html5", "css", "css3", "tailwindcss", "tailwind",
+            "sass", "scss", "nodejs", "node js", "node", "py", "python3",
+            "django framework", "flask framework", "jdk", "jre", "springboot",
+            "c sharp", "dotnet core", "dot net core", "ror", "php7", "php8",
+            "laravel framework", "golang", "rustlang", "structured query language",
+            "postgres", "psql", "my sql", "mongo db", "mongo", "redis db",
+            "firebase db", "amazon dynamodb", "docker container", "k8s",
+            "amazon web services", "microsoft azure", "google cloud platform",
+            "gcp", "terraform iac", "jenkins ci", "git vcs", "ml", "tf", 
+            "torch", "nlp", "cv", "ds", "dlt", "distributed ledger technology",
+            "solidity language", "web 3", "internet of things", 
+            "augmented reality", "virtual reality", "graph ql", "restful api", 
+            "rest", "google remote procedure call", "cyber security", 
+            "penetration testing", "pentesting", "agile", "scrum framework", 
+            "jira software", "microservices"
+        ));
+
+        // Civil Engineering
+        skillVariants.put("civil", Arrays.asList(
+            "autocad", "auto cad", "cad", "computer aided design", "revit", 
+            "autodesk revit", "bim", "staad pro", "staad", "etabs", "e-tabs", 
+            "extended tabs", "sap 2000", "primavera", "p6", "microsoft project", 
+            "bentley microstation", "autocad civil 3d", "google sketchup", 
+            "structure analysis", "reinforced concrete design", 
+            "structural steel design", "footing design", "road design", 
+            "land surveying", "construction mgmt", "pm", "pmp", "qs", 
+            "bill of quantities", "boq", "site engineer", "site management", 
+            "soil mechanics", "env engineering", "hydraulic engineering", 
+            "traffic engineering"
+        ));
+
+        // Mechanical Engineering
+        skillVariants.put("mechanical", Arrays.asList(
+            "solidworks", "solid works", "sw", "autocad mechanical", "catia", 
+            "computer aided three dimensional interactive application", 
+            "creo", "pro engineer", "pro/engineer", "autodesk inventor", 
+            "fusion360", "ansys", "finite element analysis", "fea", "matlab", 
+            "matrix laboratory", "matlab simulink", "abaqus", "siemens nx", 
+            "unigraphics", "computational fluid dynamics", "cfd", "thermo", 
+            "thermal transfer", "fluids", "mechanical design", 
+            "production processes", "cnc machining", "lean", "6 sigma", 
+            "lean six sigma", "qc", "quality assurance", "qa", 
+            "materials science", "automation robotics", 
+            "heating ventilation and air conditioning", "auto engineering", 
+            "industrial design"
+        ));
+
+        // Electrical Engineering
+        skillVariants.put("electrical", Arrays.asList(
+            "matlab simulink", "lab view", "p-spice", "spice", "multi-sim", 
+            "altium", "eagle", "ki cad", "electrical transient analyzer program", 
+            "power world", "electrical cad", "eplan electric", "plc", 
+            "programmable logic controller", "scada", "human machine interface", 
+            "psa", "circuits", "dsp", "controls", "embedded dev", "mcu", 
+            "arduino board", "raspi", "fpga", "vhsic hardware description language", 
+            "verilog hdl", "pe", "motor drives", "res", "intelligent grid", 
+            "telecom", "radio frequency engineering"
+        ));
+
+        // Chemical Engineering
+        skillVariants.put("chemical", Arrays.asList(
+            "aspenplus", "hysys", "chem cad", "fluent", "comsol", 
+            "chemical process design", "chemical process simulation", 
+            "distillation column design", "chemical reactor design", 
+            "heat exchanger", "mass transport", "reaction kinetics", 
+            "chemical process control", "psm", "hazard and operability study", 
+            "petchem", "pharma manufacturing", "bioengineering", 
+            "materials science"
+        ));
+
+        // Industrial Engineering
+        skillVariants.put("industrial", Arrays.asList(
+            "or", "scm", "spc", "qm", "pp", "im", "facility planning", 
+            "time study", "tms", "human factors", "cost estimation", "erp", 
+            "mrp", "jit", "tqm", "sim modeling", "bpi"
+        ));
+
+        // Professional Skills
+        skillVariants.put("professional", Arrays.asList(
+            "tech writing", "safety eng", "team leadership", "communications", 
+            "public speaking", "negotiating", "timely delivery", 
+            "strategic mgmt", "budgeting", "stakeholder relations", 
+            "supplier management", "contracts", "bizdev", "customer service", 
+            "cross team collaboration", "change control", "coaching", 
+            "training", "performance review", "compliance", "iso certification"
+        ));
+
+        return skillVariants;
     }
 
     public java.util.List<Roadmap> getRoadmapsByUserId(Long userId) {

@@ -1,5 +1,6 @@
 import axios from "axios";
 import html2pdf from "html2pdf.js";
+import {Button} from "@mui/material"
 import {
   BookOpen,
   Brain,
@@ -15,6 +16,14 @@ import { useSelector } from "react-redux";
 import ReactMarkdown from "react-markdown";
 import { generateRoadmap } from "../../api/roadmap/roadmap";
 import { useNavigate } from "react-router-dom";
+import { 
+  determineCareerPath, 
+  fieldSkillVariants, 
+  getSkillCategories, 
+  findSpecificSkills  // Updated import
+} from '../../utils/skillVariants.js';
+import { getCareerQuestions, suggestLanguages, suggestSkillFocus } from '../../utils/careerQuestionnaires.js';
+import { skillsData } from '../../api/skills/skills.js';
 
 const Roadmap = () => {
   const navigate = useNavigate();
@@ -53,6 +62,18 @@ const Roadmap = () => {
 
   const [generatedRoadmap, setGeneratedRoadmap] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
+
+  // Skills-related state
+  const [allSkills, setAllSkills] = useState([]);
+  const [filteredSkills, setFilteredSkills] = useState([]);
+  const [showSkillDropdown, setShowSkillDropdown] = useState(false);
+  const [skillInput, setSkillInput] = useState("");
+  const [selectedSkills, setSelectedSkills] = useState([]);
+
+  // Initialize skills on component mount
+  useEffect(() => {
+    setAllSkills(skillsData);
+  }, []);
 
   // Comprehensive user object logging
   useEffect(() => {
@@ -120,7 +141,82 @@ const Roadmap = () => {
       const payload = {
         userId: user[userId], // Use the found user ID
         primaryGoal: formData.goals.primaryGoal, // Flat field
-        specificArea: formData.goals.specificArea, // Flat field
+        specificArea: (() => {
+          // If no specific area provided, try to derive from primary goal
+          if (!formData.goals.specificArea) {
+            const goalToAreaMap = {
+              // Technology & Software
+              'tech_job': 'Technology Career',
+              'software_engineering': 'Software Development',
+              'web_development': 'Web Development',
+              'mobile_development': 'Mobile App Development',
+              'data_science': 'Data Science',
+              'ai_ml': 'Artificial Intelligence',
+              'cybersecurity': 'Cybersecurity',
+              'cloud_computing': 'Cloud Computing',
+
+              // Engineering
+              'mechanical_engineering': 'Mechanical Engineering',
+              'civil_engineering': 'Civil Engineering',
+              'electrical_engineering': 'Electrical Engineering',
+              'chemical_engineering': 'Chemical Engineering',
+              'aerospace_engineering': 'Aerospace Engineering',
+              'industrial_engineering': 'Industrial Engineering',
+
+              // Business & Management
+              'business_administration': 'Business Administration',
+              'finance': 'Financial Management',
+              'marketing': 'Marketing',
+              'human_resources': 'Human Resources',
+              'project_management': 'Project Management',
+              'entrepreneurship': 'Entrepreneurship',
+
+              // Creative & Design
+              'graphic_design': 'Graphic Design',
+              'ux_ui_design': 'UX/UI Design',
+              'architecture': 'Architecture',
+              'fashion_design': 'Fashion Design',
+              'product_design': 'Product Design',
+
+              // Healthcare
+              'medicine': 'Medical Practice',
+              'nursing': 'Nursing',
+              'biotechnology': 'Biotechnology',
+              'psychology': 'Psychology',
+              'pharmacy': 'Pharmacy',
+
+              // Education & Research
+              'teaching': 'Teaching',
+              'academic_research': 'Academic Research',
+              'educational_technology': 'Educational Technology',
+
+              // Arts & Entertainment
+              'performing_arts': 'Performing Arts',
+              'film_media': 'Film & Media Production',
+              'music_production': 'Music Production',
+              'game_design': 'Game Design',
+
+              // Trades & Technical Skills
+              'construction': 'Construction',
+              'automotive_technology': 'Automotive Technology',
+              'culinary_arts': 'Culinary Arts',
+
+              // Professional Development
+              'leadership_development': 'Leadership Development',
+              'communication_skills': 'Communication Skills',
+              'personal_branding': 'Personal Branding',
+
+              // Other
+              'personal_projects': 'Personal Projects',
+              'exam_preparation': 'Professional Exam Preparation',
+              'career_transition': 'Career Transition',
+              'skill_upgrade': 'Skill Upgrade'
+            };
+
+            return goalToAreaMap[formData.goals.primaryGoal] || formData.goals.primaryGoal;
+          }
+          return formData.goals.specificArea;
+        })(),
         selfAssessment: formData.experience.quiz,
         experienceDescription: formData.experience.description,
         hoursPerWeek: formData.timeCommitment.hoursPerWeek,
@@ -131,15 +227,7 @@ const Roadmap = () => {
           name: lang.name,
           priority: index + 1
         })),
-        tools: (() => {
-          // Handle different possible input types
-          if (typeof formData.tools === 'object') {
-            // If it's an object, try to extract the tools value
-            return formData.tools.tools || formData.tools.tool || "";
-          }
-          // Otherwise, return the string value
-          return formData.tools || "";
-        })(),
+        tools: selectedSkills.map(skill => skill.name).join(', '),
         ageRange: formData.demographics.ageRange,
         status: formData.demographics.status,
         feedback: formData.feedback
@@ -188,7 +276,7 @@ const Roadmap = () => {
     }
   };
 
-  // Helper function to update nested form state
+  // Update form data helper function
   const updateFormData = (section, field, value) => {
     setFormData(prev => ({
       ...prev,
@@ -199,30 +287,102 @@ const Roadmap = () => {
     }));
   };
 
-  // Helper function to handle language selection
-  const handleLanguageToggle = (lang) => {
-    setFormData(prev => {
-      const currentLanguages = prev.languages || [];
-      const isSelected = currentLanguages.some(l => l.name === lang);
+  // Handle skill input change
+  const handleSkillInputChange = (e) => {
+    const value = e.target.value;
+    setSkillInput(value);
+
+    if (value.length > 0) {
+      const filtered = allSkills.filter(skill =>
+        skill.name.toLowerCase().includes(value.toLowerCase())
+      );
+      setFilteredSkills(filtered);
+      setShowSkillDropdown(true);
+    } else {
+      setShowSkillDropdown(false);
+    }
+  };
+
+  // Handle skill selection for this specific component
+  const handleSkillSelectRoadmap = (skill) => {
+    if (!selectedSkills.some(s => s.id === skill.id)) {
+      setSelectedSkills([...selectedSkills, skill]);
       
-      if (isSelected) {
-        // Remove language if already selected
-        return {
-          ...prev,
-          languages: currentLanguages.filter(l => l.name !== lang)
-        };
-      } else {
-        // Add language with priority based on current list
-        return {
-          ...prev,
-          languages: [
-            ...currentLanguages, 
-            { name: lang, priority: currentLanguages.length + 1 }
-          ]
-        };
-      }
+      // Update form data
+      setFormData(prev => ({
+        ...prev,
+        tools: [...(prev.tools?.split(',') || []), skill.name].filter(Boolean).join(', ')
+      }));
+    }
+    
+    // Reset input and hide dropdown
+    setSkillInput("");
+    setShowSkillDropdown(false);
+  };
+
+  // Remove a selected skill
+  const removeSkill = (skillToRemove) => {
+    // Remove from selected skills
+    setSelectedSkills(selectedSkills.filter(skill => skill.id !== skillToRemove.id));
+    
+    // Update form data
+    setFormData(prev => {
+      const currentSkills = prev.tools?.split(',') || [];
+      const updatedSkills = currentSkills.filter(skill => skill.trim() !== skillToRemove.name);
+      return {
+        ...prev,
+        tools: updatedSkills.join(', ')
+      };
     });
   };
+
+  // Placeholder for skill category matching (if needed)
+  const findMatchingSkillCategories = (input) => {
+    if (!input) return [];
+    
+    // Find skills that match the input
+    const matchedSkills = allSkills.filter(skill => 
+      skill.name.toLowerCase().includes(input.toLowerCase()) ||
+      skill.category.toLowerCase().includes(input.toLowerCase())
+    );
+
+    // Group skills by category
+    const categoryMap = matchedSkills.reduce((acc, skill) => {
+      if (!acc[skill.category]) {
+        acc[skill.category] = [];
+      }
+      acc[skill.category].push(skill.name);
+      return acc;
+    }, {});
+
+    // Convert to array of category matches
+    return Object.entries(categoryMap).map(([category, skills]) => ({
+      category,
+      matchedSkills: skills
+    }));
+  };
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      const dropdown = document.getElementById('skill-dropdown');
+      const input = document.getElementById('tools-input');
+      
+      if (dropdown && input && 
+          !dropdown.contains(event.target) && 
+          !input.contains(event.target)) {
+        setShowSkillDropdown(false);
+      }
+    };
+
+    // Add event listener
+    document.addEventListener('mousedown', handleClickOutside);
+    
+    // Cleanup
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   const RoadmapContent = ({ isPDF = false }) => (
     <div className={`${!isPDF ? "bg-white rounded-lg shadow-sm p-8" : ""}`}>
@@ -266,7 +426,7 @@ const Roadmap = () => {
             setSuccessMessage("");
             setStep(1);
           }}
-          className="mt-8 px-6 py-3 bg-amber-600 dark:bg-amber-500 text-white rounded-lg hover:bg-amber-700 dark:hover:bg-amber-600 transition-colors"
+          className="mt-8 px-6 py-3 bg-amber-600 dark:bg-amber-500 text-black rounded-lg hover:bg-amber-700 dark:hover:bg-amber-600 transition-colors"
         >
           Create New Roadmap
         </button>
@@ -408,22 +568,138 @@ const Roadmap = () => {
       });
   };
 
+  // Enhanced skill matching function
+  const findSpecificSkills = (input) => {
+    // Handle undefined, null, or object inputs
+    if (!input) return [];
 
-  
+    // Extract string value if input is an object
+    const inputValue = typeof input === 'object' 
+      ? (input.tools || input.tool || input.skills || '') 
+      : input;
+
+    // Ensure input is a string and convert to lowercase
+    const lowerCaseInput = String(inputValue).toLowerCase().trim();
+
+    // Find matching skills
+    const matchingSkills = skillsData.filter(skill => 
+      skill.name.toLowerCase().includes(lowerCaseInput) ||
+      skill.category.toLowerCase().includes(lowerCaseInput)
+    );
+
+    // Sort and limit results
+    return matchingSkills
+      .sort((a, b) => {
+        // Prioritize exact matches
+        const aExactMatch = skill.name.toLowerCase() === lowerCaseInput;
+        const bExactMatch = skill.name.toLowerCase() === lowerCaseInput;
+        
+        if (aExactMatch && !bExactMatch) return -1;
+        if (!aExactMatch && bExactMatch) return 1;
+        
+        // Then sort by category
+        return skill.category.localeCompare(b.category);
+      })
+      .slice(0, 10); // Limit to 10 results
+  };
+
+  // Handle tools/skills input change
+  const handleToolsChange = (e) => {
+    const value = e.target.value;
+    
+    // Update form data
+    setFormData(prev => ({
+      ...prev,
+      tools: value
+    }));
+
+    // Show dropdown if input is not empty
+    setShowSkillDropdown(value.trim() !== '');
+  };
+
+  // Handle skill selection
+  const handleSkillSelect = (skill) => {
+    // Update form data, appending the skill if not already present
+    setFormData(prev => {
+      const currentTools = prev.tools || '';
+      const toolsArray = currentTools.split(',').map(t => t.trim());
+      
+      // Only add if not already present
+      if (!toolsArray.includes(skill.name)) {
+        toolsArray.push(skill.name);
+      }
+      
+      return {
+        ...prev,
+        tools: toolsArray.filter(Boolean).join(', ')
+      };
+    });
+
+    // Hide dropdown
+    setShowSkillDropdown(false);
+  };
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      const dropdown = document.getElementById('skill-dropdown');
+      const input = document.getElementById('tools-input');
+      
+      if (dropdown && input && 
+          !dropdown.contains(event.target) && 
+          !input.contains(event.target)) {
+        setShowSkillDropdown(false);
+      }
+    };
+
+    // Add event listener
+    document.addEventListener('mousedown', handleClickOutside);
+    
+    // Cleanup
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  // Language selection handling
+  const handleLanguageSelection = (lang) => {
+    setFormData(prev => {
+      const currentLanguages = prev.languages || [];
+      
+      // Check if language is already selected
+      const isSelected = currentLanguages.some(l => l.name === lang);
+      
+      if (isSelected) {
+        // Remove language if already selected
+        return {
+          ...prev,
+          languages: currentLanguages.filter(l => l.name !== lang)
+        };
+      } else {
+        // Add language with priority based on current list
+        return {
+          ...prev,
+          languages: [
+            ...currentLanguages, 
+            { name: lang, priority: currentLanguages.length + 1 }
+          ]
+        };
+      }
+    });
+  };
+
 
   return (
-    <div className="flex min-h-screen bg-gradient-to-b from-[#FFFDF7] to-[#FFF9E6] dark:from-[#18181b] dark:to-black">
-      <div
+    <div
         id="main-content"
         className="flex-1 transition-all duration-300"
-        style={{ marginLeft: isExpanded ? "260px" : "80px" }}
+        style={{ marginLeft: isExpanded ? "260px" : "80px", marginTop:"50px" }}
       >
         
-        <div className="bg-gradient-to-r from-[#FFF9E6] to-[#FFFDF7] border-b border-amber-100 py-8 px-6 mb-8">
           <div className="max-w-4xl mx-auto flex items-center gap-8">
             <div className="flex-1">
-              <h1 className="text-3xl font-bold text-amber-900 mb-3">
-                Your Programming Journey Starts Here
+              <h1 className="font-bold text-amber-900 mb-3">
+                Your Career Growth Starts Here
               </h1>
               <p className="text-amber-800 leading-relaxed">
                 Tell us about your goals and preferences, and we'll create your
@@ -439,7 +715,6 @@ const Roadmap = () => {
               </div>
             </div>
           </div>
-        </div>
 
         <div className="max-w-4xl mx-auto p-6 space-y-8">
           {successMessage && (
@@ -460,7 +735,7 @@ const Roadmap = () => {
               </div>
             </>
           ) : (
-            <div className="bg-white rounded-lg shadow-lg p-8">
+            <div className="bg-white rounded-lg shadow-lg p-4">
               <form onSubmit={handleSubmit} className="space-y-8">
                 {/* Progress Steps */}
                 <div className="mb-8">
@@ -498,14 +773,91 @@ const Roadmap = () => {
                           required
                         >
                           <option value="">Select your primary goal</option>
-                          <option value="job">Land a job in tech</option>
-                          <option value="projects">
-                            Build personal projects
-                          </option>
-                          <option value="exams">
-                            Prepare for college/coding exams
-                          </option>
-                          <option value="basics">Learn coding basics</option>
+                          
+                          {/* Technology & Software Careers */}
+                          <optgroup label="Technology & Software">
+                            <option value="tech_job">Land a job in tech</option>
+                            <option value="software_engineering">Become a Software Engineer</option>
+                            <option value="web_development">Pursue Web Development</option>
+                            <option value="mobile_development">Mobile App Development</option>
+                            <option value="data_science">Enter Data Science</option>
+                            <option value="ai_ml">Explore AI/Machine Learning</option>
+                            <option value="cybersecurity">Start in Cybersecurity</option>
+                            <option value="cloud_computing">Learn Cloud Computing</option>
+                          </optgroup>
+
+                          {/* Engineering Careers */}
+                          <optgroup label="Engineering">
+                            <option value="mechanical_engineering">Mechanical Engineering</option>
+                            <option value="civil_engineering">Civil Engineering</option>
+                            <option value="electrical_engineering">Electrical Engineering</option>
+                            <option value="chemical_engineering">Chemical Engineering</option>
+                            <option value="aerospace_engineering">Aerospace Engineering</option>
+                            <option value="industrial_engineering">Industrial Engineering</option>
+                          </optgroup>
+
+                          {/* Business & Management */}
+                          <optgroup label="Business & Management">
+                            <option value="business_administration">Business Administration</option>
+                            <option value="finance">Financial Management</option>
+                            <option value="marketing">Marketing</option>
+                            <option value="human_resources">Human Resources</option>
+                            <option value="project_management">Project Management</option>
+                            <option value="entrepreneurship">Start a Business</option>
+                          </optgroup>
+
+                          {/* Creative & Design */}
+                          <optgroup label="Creative & Design">
+                            <option value="graphic_design">Graphic Design</option>
+                            <option value="ux_ui_design">UX/UI Design</option>
+                            <option value="architecture">Architecture</option>
+                            <option value="fashion_design">Fashion Design</option>
+                            <option value="product_design">Product Design</option>
+                          </optgroup>
+
+                          {/* Healthcare */}
+                          <optgroup label="Healthcare">
+                            <option value="medicine">Medical Practice</option>
+                            <option value="nursing">Nursing</option>
+                            <option value="biotechnology">Biotechnology</option>
+                            <option value="psychology">Psychology</option>
+                            <option value="pharmacy">Pharmacy</option>
+                          </optgroup>
+
+                          {/* Education & Research */}
+                          <optgroup label="Education & Research">
+                            <option value="teaching">Teaching</option>
+                            <option value="academic_research">Academic Research</option>
+                            <option value="educational_technology">Educational Technology</option>
+                          </optgroup>
+
+                          {/* Arts & Entertainment */}
+                          <optgroup label="Arts & Entertainment">
+                            <option value="performing_arts">Performing Arts</option>
+                            <option value="film_media">Film & Media Production</option>
+                            <option value="music_production">Music Production</option>
+                            <option value="game_design">Game Design</option>
+                          </optgroup>
+
+                          {/* Trades & Technical Skills */}
+                          <optgroup label="Trades & Technical Skills">
+                            <option value="construction">Construction</option>
+                            <option value="automotive_technology">Automotive Technology</option>
+                            <option value="culinary_arts">Culinary Arts</option>
+                          </optgroup>
+
+                          {/* Professional Development */}
+                          <optgroup label="Professional Development">
+                            <option value="leadership_development">Leadership Development</option>
+                            <option value="communication_skills">Communication Skills</option>
+                            <option value="personal_branding">Personal Branding</option>
+                          </optgroup>
+
+                          {/* Other Options */}
+                          <option value="personal_projects">Build Personal Projects</option>
+                          <option value="exam_preparation">Prepare for Professional Exams</option>
+                          <option value="career_transition">Career Transition</option>
+                          <option value="skill_upgrade">Skill Upgrade</option>
                           <option value="other">Other</option>
                         </select>
                       </label>
@@ -552,7 +904,15 @@ const Roadmap = () => {
                 {step === 2 && (
                   <div className="space-y-6">
                     <h2 className="text-2xl font-bold">
-                      Your Experience Level
+                      {formData.goals.primaryGoal 
+                        ? `Your Experience in ${
+                            // Convert camelCase to Title Case
+                            formData.goals.primaryGoal
+                              .replace(/([A-Z])/g, ' $1')
+                              .replace(/^./, str => str.toUpperCase())
+                          }`
+                        : "Your Experience Level"
+                      }
                     </h2>
 
                     <div className="space-y-4">
@@ -560,34 +920,32 @@ const Roadmap = () => {
                         <legend className="text-gray-700 mb-2">
                           Self-assessment:
                         </legend>
-                        {[
-                          "Do you understand variables and loops?",
-                          "Have you written code before?",
-                          "Are you familiar with object-oriented programming?",
-                          "Can you solve basic algorithmic problems?",
-                        ].map((question, index) => (
-                          <label
-                            key={index}
-                            className="flex items-center space-x-2"
-                          >
-                            <input
-                              type="checkbox"
-                              checked={formData.experience.quiz.includes(
-                                question
-                              )}
-                              onChange={(e) => {
-                                const selfAssessment = e.target.checked
-                                  ? [...formData.experience.quiz, question]
-                                  : formData.experience.quiz.filter(
-                                      (q) => q !== question
-                                    );
-                                updateFormData("experience", "quiz", selfAssessment);
-                              }}
-                              className="rounded"
-                            />
-                            <span>{question}</span>
-                          </label>
-                        ))}
+                        {(() => {
+                          // Get career-specific questions or fallback to default
+                          const careerQuestions = getCareerQuestions(formData.goals.primaryGoal);
+                          
+                          return careerQuestions.experienceQuestions.map((question, index) => (
+                            <label
+                              key={index}
+                              className="flex items-center space-x-2"
+                            >
+                              <input
+                                type="checkbox"
+                                checked={formData.experience.quiz.includes(question)}
+                                onChange={(e) => {
+                                  const selfAssessment = e.target.checked
+                                    ? [...formData.experience.quiz, question]
+                                    : formData.experience.quiz.filter(
+                                        (q) => q !== question
+                                      );
+                                  updateFormData("experience", "quiz", selfAssessment);
+                                }}
+                                className="rounded"
+                              />
+                              <span>{question}</span>
+                            </label>
+                          ));
+                        })()}
                       </fieldset>
 
                       <label className="block">
@@ -600,7 +958,13 @@ const Roadmap = () => {
                             updateFormData("experience", "description", e.target.value)
                           }
                           className="w-full p-2 border rounded mt-1 h-32"
-                          placeholder="Briefly describe your coding experience..."
+                          placeholder={`Briefly describe your experience in ${
+                            formData.goals.primaryGoal 
+                              ? formData.goals.primaryGoal
+                                .replace(/([A-Z])/g, ' $1')
+                                .replace(/^./, str => str.toUpperCase())
+                              : "your chosen field"
+                          }...`}
                         />
                       </label>
                     </div>
@@ -730,35 +1094,46 @@ const Roadmap = () => {
                   </div>
                 )}
 
-                {/* Step 5: Language Focus */}
+                {/* Step 5: Language & Skill Focus */}
                 {step === 5 && (
                   <div className="space-y-6">
-                    <h2 className="text-2xl font-bold">Language Focus</h2>
+                    <h2 className="text-2xl font-bold">Language & Skill Focus</h2>
 
                     <div className="space-y-4">
                       <fieldset className="space-y-2">
                         <legend className="text-gray-700">
-                          Select Languages:
+                          Recommended {
+                            formData.goals.primaryGoal 
+                              ? formData.goals.primaryGoal
+                                .replace(/([A-Z])/g, ' $1')
+                                .replace(/^./, str => str.toUpperCase())
+                              : "Career Path"
+                          } Skills:
                         </legend>
-                        {["C", "C++", "Java", "Python"].map((lang) => (
-                          <label
-                            key={lang}
-                            className="flex items-center space-x-2"
-                          >
-                            <input
-                              type="checkbox"
-                              checked={
-                                formData.languages && 
-                                formData.languages.some(
-                                  (l) => l.name === lang
-                                )
-                              }
-                              onChange={() => handleLanguageToggle(lang)}
-                              className="rounded"
-                            />
-                            <span>{lang}</span>
-                          </label>
-                        ))}
+                        {(() => {
+                          // Get language and skill suggestions based on career goal
+                          const languageOptions = suggestLanguages(formData.goals.primaryGoal);
+                          
+                          return languageOptions.map((skill) => (
+                            <label
+                              key={skill}
+                              className="flex items-center space-x-2"
+                            >
+                              <input
+                                type="checkbox"
+                                checked={
+                                  formData.languages && 
+                                  formData.languages.some(
+                                    (l) => l.name === skill
+                                  )
+                                }
+                                onChange={() => handleLanguageSelection(skill)}
+                                className="rounded"
+                              />
+                              <span>{skill}</span>
+                            </label>
+                          ));
+                        })()}
                       </fieldset>
 
                       {formData.languages.length > 0 && (
@@ -806,69 +1181,57 @@ const Roadmap = () => {
                     </h2>
 
                     <div className="space-y-4">
-                      <label className="block">
-                        <span className="text-gray-700">
-                          Specific Tools/Projects:
-                        </span>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Specific Tools/Projects
+                      </label>
+                      <div className="relative">
                         <input
                           type="text"
-                          value={typeof formData.tools === 'object' 
-                            ? (formData.tools.tools || "") // Extract 'tools' from object if it exists
-                            : (formData.tools || "")} // Otherwise use the string value
-                          onChange={(e) => {
-                            const toolsValue = e.target.value;
-                            console.group('Tools Input Debug');
-                            console.log('Raw Input:', toolsValue);
-                            console.log('Current formData.tools:', formData.tools);
-                            console.log('Current formData.tools type:', typeof formData.tools);
-                            
-                            // Ensure we always store a string, not an object
-                            updateFormData("tools", "tools", toolsValue);
-                            
-                            console.log('Updated formData.tools:', formData.tools);
-                            console.log('Updated formData.tools type:', typeof formData.tools);
-                            console.groupEnd();
-                          }}
-                          className="w-full p-2 border rounded mt-1"
-                          placeholder="e.g., Android Studio, Django, Arduino"
+                          value={skillInput}
+                          onChange={handleSkillInputChange}
+                          onBlur={() => setTimeout(() => setShowSkillDropdown(false), 200)}
+                          className="w-full p-2 border border-amber-200 rounded mt-1 focus:ring-amber-500 focus:border-amber-500"
+                          placeholder="Type to search skills..."
                         />
-                      </label>
-
-                      <div className="space-y-2">
-                        <label className="block">
-                          <span className="text-gray-700">Age Range:</span>
-                          <select
-                            value={formData.demographics.ageRange}
-                            onChange={(e) =>
-                              updateFormData("demographics", "ageRange", e.target.value)
-                            }
-                            className="w-full p-2 border rounded mt-1"
-                          >
-                            <option value="">Prefer not to say</option>
-                            <option value="<18">Under 18</option>
-                            <option value="18-25">18-25</option>
-                            <option value="25+">25+</option>
-                          </select>
-                        </label>
-
-                        <label className="block">
-                          <span className="text-gray-700">Status:</span>
-                          <select
-                            value={formData.demographics.status}
-                            onChange={(e) =>
-                              updateFormData("demographics", "status", e.target.value)
-                            }
-                            className="w-full p-2 border rounded mt-1"
-                          >
-                            <option value="">Prefer not to say</option>
-                            <option value="student">Student</option>
-                            <option value="professional">
-                              Working Professional
-                            </option>
-                            <option value="other">Other</option>
-                          </select>
-                        </label>
+                        {showSkillDropdown && (
+                          <div className="absolute z-10 mt-1 w-full bg-white border border-amber-200 rounded-lg shadow-lg max-h-60 overflow-auto">
+                            {filteredSkills.length > 0 ? (
+                              filteredSkills.map(skill => (
+                                <div
+                                  key={skill.id}
+                                  className="px-4 py-2 hover:bg-amber-50 cursor-pointer"
+                                  onClick={() => handleSkillSelectRoadmap(skill)}
+                                >
+                                  {skill.name} <span className="text-xs text-amber-600">({skill.category})</span>
+                                </div>
+                              ))
+                            ) : (
+                              <div className="px-4 py-2 text-amber-700">No matching skills found</div>
+                            )}
+                          </div>
+                        )}
                       </div>
+                      <div className="mt-2 flex flex-wrap gap-2">
+                        {selectedSkills.map(skill => (
+                          <div key={skill.id} className="bg-amber-100 text-amber-800 px-3 py-1 rounded-full flex items-center">
+                            {skill.name}
+                            <Button
+                              type="button"
+                              onClick={() => removeSkill(skill)}
+                              className="ml-1  hover:text-red-500 bg-transparent p-0 border-0"
+                            >
+                              ×
+                            </Button>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Skill Matching Hints */}
+                      {findMatchingSkillCategories(formData.tools).length > 0 && (
+                        <div className="mt-2 text-sm text-amber-700">
+                          🎯 We've found potential career paths based on your input!
+                        </div>
+                      )}
                     </div>
                   </div>
                 )}
@@ -910,7 +1273,7 @@ const Roadmap = () => {
                     <button
                       type="button"
                       onClick={() => setStep(step + 1)}
-                      className="flex items-center px-6 py-3 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors ml-auto"
+                      className="flex items-center px-6 py-3 bg-amber-600 text-black rounded-lg hover:bg-amber-700 transition-colors ml-auto"
                       disabled={step === 1 && !formData.goals.primaryGoal}
                     >
                       Next →
@@ -918,7 +1281,7 @@ const Roadmap = () => {
                   ) : (
                     <button
                       type="submit"
-                      className="flex items-center px-8 py-3 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors ml-auto"
+                      className="flex items-center px-8 py-3 bg-amber-600 text-black rounded-lg hover:bg-amber-700 transition-colors ml-auto"
                     >
                       Generate My Roadmap →
                     </button>
@@ -929,7 +1292,6 @@ const Roadmap = () => {
           )}
         </div>
       </div>
-    </div>
   );
 };
 

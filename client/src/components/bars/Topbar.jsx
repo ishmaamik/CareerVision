@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
-import { PeopleAlt as People, Work as Work, Login as Login, Logout as Logout, Person as Person, AppRegistration as Signup } from "@mui/icons-material"
+import { PeopleAlt as People, Work as Work,Map as Map, Login as Login, Logout as Logout, Person as Person, AppRegistration as Signup } from "@mui/icons-material"
 const Topbar = () => {
   const navigate = useNavigate();
 
@@ -44,7 +44,20 @@ const Topbar = () => {
         >
           Community
         </Button>
-
+        
+        <Button
+          disableRipple
+          startIcon={<Map />}
+          variant="text"
+          sx={{
+            color: "gray",
+            ":hover": { backgroundColor: "transparent" },
+            ":focus-visible": { outline: "none" },
+          }}
+          onClick={() => navigate("roadmap")}
+        >
+          Career Roadmap
+        </Button>
         <Button
           disableRipple
           variant="text"
