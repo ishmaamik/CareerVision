@@ -1,59 +1,35 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { 
-  FaUsers, 
-  FaCopy, 
-  FaCheck, 
-  FaEdit, 
-  FaPaintBrush, 
-  FaCode 
-} from 'react-icons/fa';
-import { motion } from 'framer-motion';
-import InterviewSocket from '../../api/socket/interviewSocket.js';
-import Whiteboard from '../pages/Whiteboard.jsx';
-import MonacoEditor from '@monaco-editor/react';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useRef, useState } from "react";
+import Quill from "quill";
+import "quill/dist/quill.snow.css";
+import io from "socket.io-client";
+import { FaUsers, FaCopy, FaCheck, FaEdit, FaPaintBrush } from "react-icons/fa";
+import Whiteboard from "../pages/Whiteboard";
+import { JitsiMeeting } from "@jitsi/react-sdk";
+import { motion } from "framer-motion";
+import Compiler from "./Compiler";
+import InterviewSocket from "../../api/socket/interviewSocket";
+
+const TOOLBAR_OPTIONS = [
+  [{ header: [1, 2, 3, 4, 5, 6, false] }],
+  [{ font: [] }],
+  [{ size: ["small", false, "large", "huge"] }],
+  ["bold", "italic", "underline", "strike"],
+  [{ color: [] }, { background: [] }],
+  [{ list: "ordered" }, { list: "bullet" }],
+  [{ align: [] }],
+  ["blockquote", "code-block"],
+  ["link", "image"],
+  ["clean"],
+];
 
 const InterviewCollabEditor = ({ roomId, username }) => {
-  const { user } = useSelector((state) => state.user);
+  const editorRef = useRef(null);
+  const socketRef = useRef(null);
+  const quillRef = useRef(null);
   const [userCount, setUserCount] = useState(1);
   const [isCopied, setIsCopied] = useState(false);
-  const [editorType, setEditorType] = useState('text');
-  const [code, setCode] = useState('# Start your interview preparation here...');
-  const [theme, setTheme] = useState('vs-dark');
-  const [language, setLanguage] = useState('python');
-
-  const languages = [
-    { id: 'python', name: 'Python', icon: '🐍' },
-    { id: 'javascript', name: 'JavaScript', icon: '✨' },
-    { id: 'java', name: 'Java', icon: '☕' },
-    { id: 'cpp', name: 'C++', icon: '⚡' }
-  ];
-
-  useEffect(() => {
-    // Connect to socket
-    const socket = InterviewSocket.connect(roomId, username);
-
-    // Setup event listeners
-    InterviewSocket.on('content-change', (delta) => {
-      setCode(delta);
-    });
-
-    // User count tracking
-    socket.on('user-count', (count) => {
-      setUserCount(count);
-    });
-
-    // Cleanup on unmount
-    return () => {
-      InterviewSocket.disconnect();
-    };
-  }, [roomId, username]);
-
-  const handleEditorChange = (value) => {
-    setCode(value);
-    // Send changes to other users
-    InterviewSocket.sendChanges(roomId, value);
-  };
+  const [saving, setSaving] = useState(false);
+  const [editorType, setEditorType] = useState("text");
 
   const copyRoomId = async () => {
     try {
@@ -65,23 +41,124 @@ const InterviewCollabEditor = ({ roomId, username }) => {
     }
   };
 
-  const handleLanguageChange = (e) => {
-    setLanguage(e.target.value);
-  };
+  useEffect(() => {
+    if (!editorRef.current) return;
+
+    editorRef.current.classList.add("custom-quill-editor");
+
+    const editor = new Quill(editorRef.current, {
+      theme: "snow",
+      modules: {
+        toolbar: TOOLBAR_OPTIONS,
+        history: {
+          userOnly: true,
+        },
+      },
+      placeholder: "Start collaborating...",
+    });
+
+    quillRef.current = editor;
+
+    // Use custom socket (InterviewSocket)
+    const socket = InterviewSocket.connect(roomId, username);
+
+    socketRef.current = socket;
+
+    socket.emit("join-room", { roomId, username });
+
+    socket.on("user-count", (count) => {
+      setUserCount(count);
+    });
+
+    socket.on("receive-changes", (delta) => {
+      if (quillRef.current) {
+        quillRef.current.updateContents(delta);
+      }
+    });
+
+    socket.on("load-document", (document) => {
+      if (quillRef.current) {
+        quillRef.current.setContents(document);
+        quillRef.current.enable();
+      }
+    });
+
+    const handleTextChange = (delta, oldDelta, source) => {
+      if (source !== "user" || !socketRef.current) return;
+      setSaving(true);
+      socketRef.current.emit("send-changes", { delta, roomId });
+      setTimeout(() => setSaving(false), 1000);
+    };
+
+    quillRef.current.on("text-change", handleTextChange);
+
+    return () => {
+      if (socketRef.current) {
+        socketRef.current.disconnect();
+      }
+      if (quillRef.current) {
+        quillRef.current.off("text-change", handleTextChange);
+      }
+    };
+  }, [roomId, username]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-yellow-100 via-white to-yellow-50 dark:from-[#18181b] dark:to-black py-8 px-6 sm:px-8 lg:px-10">
+      <>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="max-w-[95%] mx-auto"
+        className="w-380 pt-10 h-100"
       >
         <div className="flex gap-6 ml-12">
+          {/* Video Conference Section */}
+          <motion.div
+            initial={{ x: -20 }}
+            animate={{ x: 0 }}
+            className="w-1/2 bg-white dark:bg-transparent rounded-2xl shadow-[0_20px_50px_rgba(237,211,14,0.5)] overflow-hidden border border-yellow-100"
+          >
+            <div className="h-[calc(100vh-6rem)]">
+              <JitsiMeeting
+                domain="meet.jit.si"
+                roomName={`unisphere-${roomId}`}
+                userInfo={{
+                  displayName: username,
+                }}
+                configOverwrite={{
+                  startWithAudioMuted: true,
+                  startWithVideoMuted: false,
+                  toolbarButtons: [
+                    "camera",
+                    "chat",
+                    "closedcaptions",
+                    "desktop",
+                    "fullscreen",
+                    "hangup",
+                    "microphone",
+                    "participants-pane",
+                    "select-background",
+                    "settings",
+                    "toggle-camera",
+                  ],
+                }}
+                interfaceConfigOverwrite={{
+                  DISABLE_JOIN_LEAVE_NOTIFICATIONS: true,
+                  MOBILE_APP_PROMO: false,
+                  SHOW_JITSI_WATERMARK: false,
+                  SHOW_WATERMARK_FOR_GUESTS: false,
+                  SHOW_BRAND_WATERMARK: false,
+                }}
+                getIFrameRef={(iframeRef) => {
+                  iframeRef.style.height = "100%";
+                }}
+              />
+            </div>
+          </motion.div>
+
           {/* Editor Section */}
           <motion.div
             initial={{ x: 20 }}
             animate={{ x: 0 }}
-            className="w-full bg-white rounded-2xl shadow-[0_20px_50px_rgba(237,211,14,0.5)] overflow-hidden border border-yellow-100"
+            className="w-600 bg-whiterounded-2xl shadow-[0_20px_50px_rgba(8,_112,_184,_0.7)] overflow-hidden border border-yellow-100"
           >
             {/* Header Section */}
             <div className="px-8 py-6 border-b border-yellow-200 bg-gradient-to-r from-white via-yellow-50 to-white">
@@ -95,7 +172,7 @@ const InterviewCollabEditor = ({ roomId, username }) => {
                   </div>
                   <div>
                     <h2 className="text-2xl font-bold text-gray-800 tracking-tight">
-                      Interview Preparation Room
+                      Interview Collaboration Room
                     </h2>
                     <p className="text-sm text-gray-600 flex items-center gap-2">
                       <span className="inline-block w-2 h-2 bg-green-500 rounded-full"></span>
@@ -135,11 +212,11 @@ const InterviewCollabEditor = ({ roomId, username }) => {
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    onClick={() => setEditorType('text')}
+                    onClick={() => setEditorType("text")}
                     className={`px-4 py-2.5 rounded-xl transition-all duration-200 flex items-center gap-2 ${
-                      editorType === 'text'
-                        ? 'bg-gradient-to-r from-yellow-500 to-yellow-400 text-white shadow-lg'
-                        : 'bg-gray-50 hover:bg-gray-100 text-gray-700'
+                      editorType === "text"
+                        ? "bg-gradient-to-r from-yellow-500 to-yellow-400 text-white shadow-lg"
+                        : "bg-gray-50 hover:bg-gray-100 text-gray-700"
                     }`}
                   >
                     <FaEdit className="h-4 w-4" />
@@ -148,85 +225,69 @@ const InterviewCollabEditor = ({ roomId, username }) => {
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    onClick={() => setEditorType('whiteboard')}
+                    onClick={() => setEditorType("whiteboard")}
                     className={`px-4 py-2.5 rounded-xl transition-all duration-200 flex items-center gap-2 ${
-                      editorType === 'whiteboard'
-                        ? 'bg-gradient-to-r from-yellow-500 to-yellow-400 text-white shadow-lg'
-                        : 'bg-gray-50 hover:bg-gray-100 text-gray-700'
+                      editorType === "whiteboard"
+                        ? "bg-gradient-to-r from-yellow-500 to-yellow-400 text-white shadow-lg"
+                        : "bg-gray-50 hover:bg-gray-100 text-gray-700"
                     }`}
                   >
                     <FaPaintBrush className="h-4 w-4" />
                     Whiteboard
                   </motion.button>
+
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    onClick={() => setEditorType('code')}
+                    onClick={() => setEditorType("codeEditor")}
                     className={`px-4 py-2.5 rounded-xl transition-all duration-200 flex items-center gap-2 ${
-                      editorType === 'code'
-                        ? 'bg-gradient-to-r from-yellow-500 to-yellow-400 text-white shadow-lg'
-                        : 'bg-gray-50 hover:bg-gray-100 text-gray-700'
+                      editorType === "codeEditor"
+                        ? "bg-gradient-to-r from-yellow-500 to-yellow-400 text-white shadow-lg"
+                        : "bg-gray-50 hover:bg-gray-100 text-gray-700"
                     }`}
                   >
-                    <FaCode className="h-4 w-4" />
+                    <FaPaintBrush className="h-4 w-4" />
                     Code Editor
                   </motion.button>
                 </div>
               </div>
             </div>
 
-            {/* Editor Container */}
-            <div className="relative bg-white p-4 min-h-[calc(100vh-300px)]">
-              {editorType === 'text' && (
-                <textarea 
-                  className="w-full h-full min-h-[500px] p-4 border rounded"
-                  value={code}
-                  onChange={(e) => {
-                    setCode(e.target.value);
-                    InterviewSocket.sendChanges(roomId, e.target.value);
-                  }}
-                  placeholder="Start your interview preparation here..."
+             {/* Editor Container */}
+             <div className="relative bg-white p-4">
+             {editorType === "codeEditor" ? (
+                <Compiler roomId={roomId} username={username}/>
+              ) : editorType === "text" ? (
+                <div
+                  ref={editorRef}
+                  className="min-h-[calc(100vh-300px)] bg-white rounded-xl"
                 />
-              )}
-
-              {editorType === 'code' && (
-                <div>
-                  <select 
-                    value={language} 
-                    onChange={handleLanguageChange}
-                    className="mb-4 p-2 border rounded"
-                  >
-                    {languages.map(lang => (
-                      <option key={lang.id} value={lang.id}>
-                        {lang.icon} {lang.name}
-                      </option>
-                    ))}
-                  </select>
-                  <MonacoEditor
-                    height="500px"
-                    language={language}
-                    theme={theme}
-                    value={code}
-                    onChange={handleEditorChange}
-                    options={{
-                      minimap: { enabled: false },
-                      fontSize: 14,
-                    }}
-                  />
+              ) : (
+                <div className="min-h-[calc(100vh-300px)] bg-white rounded-xl">
+                  <Whiteboard socket={socketRef.current} roomId={roomId} />
                 </div>
               )}
+            </div>
 
-              {editorType === 'whiteboard' && (
-                <Whiteboard 
-                  socket={InterviewSocket.socket} 
-                  roomId={roomId} 
-                />
-              )}
+            {/* Status Footer */}
+            <div className="px-8 py-4 bg-gradient-to-r from-yellow-50 via-white to-yellow-50 border-t border-yellow-100">
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="text-sm text-gray-600 text-right flex items-center justify-end gap-2"
+              >
+                <span
+                  className={`inline-block w-2 h-2 rounded-full ${
+                    saving ? "bg-yellow-400" : "bg-green-500"
+                  }`}
+                ></span>
+                {saving ? "Saving changes..." : "All changes saved"}
+              </motion.p>
             </div>
           </motion.div>
         </div>
       </motion.div>
-    </div>
+    </>
   );
 };
 

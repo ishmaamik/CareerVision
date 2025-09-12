@@ -57,8 +57,8 @@ function App() {
           <Route path="/emotion" element={<EmotionCapture />} />
           <Route path="/careers" element={<Careers />} />
           <Route path="/companies" element={<CompaniesPage />} />
-          <Route path="/interview-room" element={<InterviewRoomForm />} />
           <Route path="/interview-questions" element={<InterviewQuestionBank />} />
+          <Route path="/interview-room" element={<InterviewRoomForm />} />
         </Routes>
       </div>
     </UserProvider>
