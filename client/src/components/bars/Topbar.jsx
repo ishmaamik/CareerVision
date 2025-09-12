@@ -1,13 +1,24 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
-import { Business, QuestionAnswer,PeopleAlt as People, Work as Work,Map as Map, Login as Login, Logout as Logout, Person as Person, AppRegistration as Signup } from "@mui/icons-material"
+import {
+  Business,
+  QuestionAnswer,
+  PeopleAlt as People,
+  Work as Work,
+  Map as Map,
+  Event as EventIcon,
+  Login as Login,
+  Logout as Logout,
+  Person as Person,
+  AppRegistration as Signup,
+} from "@mui/icons-material";
 import { Link } from "react-router-dom";
 
 const Topbar = () => {
   const navigate = useNavigate();
 
-  const user = JSON.parse(localStorage.getItem(`user`))
+  const user = JSON.parse(localStorage.getItem(`user`));
 
   const LogInOrOut = () => {
     if (localStorage.getItem("user")) {
@@ -46,7 +57,7 @@ const Topbar = () => {
         >
           Community
         </Button>
-        
+
         <Button
           disableRipple
           startIcon={<Map />}
@@ -98,6 +109,19 @@ const Topbar = () => {
           onClick={() => navigate("/interview-questions")}
         >
           Interview Questions
+        </Button>
+        <Button
+          disableRipple
+          variant="text"
+          startIcon={<EventIcon />}
+          sx={{
+            color: "gray",
+            ":hover": { backgroundColor: "transparent" },
+            ":focus-visible": { outline: "none" },
+          }}
+          onClick={() => navigate("/events")}
+        >
+          Events
         </Button>
         {localStorage.getItem("name") ? (
           <>
@@ -171,12 +195,18 @@ const Topbar = () => {
           </>
         )}
       </div>
-      {user
-        ?
-        <div className="w-12 lg:block bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10" > <img onClick={()=>navigate('/profile')} src={user.profilePictureUrl} style={{borderRadius:'50%', cursor:'pointer'}}/></div>
-        :
+      {user ? (
+        <div className="w-12 lg:block bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10">
+          {" "}
+          <img
+            onClick={() => navigate("/profile")}
+            src={user.profilePictureUrl}
+            style={{ borderRadius: "50%", cursor: "pointer" }}
+          />
+        </div>
+      ) : (
         <div className="hidden lg:block bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10"></div>
-      }
+      )}
     </header>
   );
 };
