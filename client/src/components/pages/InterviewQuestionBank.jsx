@@ -278,35 +278,16 @@ const InterviewQuestionBank = () => {
   };
 
   return (
-    <Box sx={{
-      minHeight: '100vh',
-      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-      py: 4
-    }}>
+    
       <Box sx={{ maxWidth: 1200, mx: 'auto', px: 3 }}>
         {/* Header Section */}
-        <Box sx={{ textAlign: 'center', mb: 8 }}>
-          <Avatar
-            sx={{
-              width: 80,
-              height: 80,
-              mx: 'auto',
-              mb: 3,
-              background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
-              boxShadow: '0 8px 32px rgba(254, 107, 139, 0.3)'
-            }}
-          >
-            <QuestionAnswer sx={{ fontSize: 40 }} />
-          </Avatar>
-
+        <Box sx={{ textAlign: 'center', mb: 8, 
+              pt:'50px',}}>
           <Typography
             variant="h2"
             sx={{
               fontWeight: 800,
-              background: 'linear-gradient(45deg, #ffffff 30%, #f0f0f0 90%)',
-              backgroundClip: 'text',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
+              color:'black',
               mb: 2,
               textShadow: '0 2px 4px rgba(0,0,0,0.1)'
             }}
@@ -314,7 +295,7 @@ const InterviewQuestionBank = () => {
             Interview Question Bank
           </Typography>
 
-          <Typography variant="h5" sx={{ color: 'rgba(255,255,255,0.8)', maxWidth: 600, mx: 'auto' }}>
+          <Typography variant="h5" sx={{ color: 'black', maxWidth: 600, mx: 'auto' }}>
             Master your interviews with real questions from top tech companies
           </Typography>
         </Box>
@@ -943,7 +924,6 @@ const InterviewQuestionBank = () => {
           </DialogContent>
         </Dialog>
       </Box>
-    </Box>
   );
 };
 
