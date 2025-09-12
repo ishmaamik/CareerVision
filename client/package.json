@@ -23,6 +23,7 @@
     "axios": "^1.10.0",
     "framer-motion": "^12.23.6",
     "html2pdf.js": "^0.12.0",
+    "lucide-react": "^0.544.0",
     "mapbox-gl": "^3.14.0",
     "phosphor-react": "^1.4.1",
     "postcss": "^8.5.6",
