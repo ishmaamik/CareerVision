@@ -18,7 +18,10 @@ public class Job {
     private String title;
     @Column(length = 1200)
     private String description;
-    private String company;
+
+    @ManyToOne
+    @JoinColumn(name = "company_id")
+    private Company company;
 
     @Column(nullable = true)
     private String location;
