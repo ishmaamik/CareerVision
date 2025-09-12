@@ -2,8 +2,10 @@ package CareerVision.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.ArrayList;
 
 @Entity
 @Data
@@ -21,6 +23,7 @@ public class Event {
     private LocalDateTime eventDate;
     private String location;
 
-    @ManyToMany
-    private List<User> participants;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<User> participants = new ArrayList<>();
 }
