@@ -20,6 +20,7 @@ import Careers from "./components/pages/Careers";
 import Roadmap from "./components/pages/Roadmap";
 import InterviewQuestionBank from "./components/pages/InterviewQuestionBank";
 import CompaniesPage from "./components/pages/CompaniesPage";
+import InterviewRoomForm from "./components/interview/InterviewRoomForm";
 
 function App() {
   return (
@@ -56,6 +57,7 @@ function App() {
           <Route path="/emotion" element={<EmotionCapture />} />
           <Route path="/careers" element={<Careers />} />
           <Route path="/companies" element={<CompaniesPage />} />
+          <Route path="/interview-room" element={<InterviewRoomForm />} />
           <Route path="/interview-questions" element={<InterviewQuestionBank />} />
         </Routes>
       </div>
