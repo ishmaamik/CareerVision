@@ -1,9 +1,11 @@
 import "./App.css";
-import React from "react";
-import Topbar from "./components/bars/Topbar"; // adjust path as needed
+import React, { useState } from "react";
+import Topbar from "./components/bars/Topbar";
+import Sidebar from "./components/bars/Sidebar";
 import Home from "./components/pages/Home";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import { UserProvider } from "./context/UserContext";
+import { ThemeProvider } from "./context/ThemeContext";
 import Login from "./components/pages/Login";
 import Signup from "./components/pages/Signup";
 import Blogs from "./components/pages/Blogs";
@@ -26,57 +28,154 @@ import CareerChatbot from "./components/pages/CareerChatbot";
 import ChatbotPage from "./components/pages/ChatbotPage";
 
 function App() {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const location = useLocation();
+
+  // Routes where sidebar should be hidden (e.g., login, signup, home landing)
+  const noSidebarRoutes = ["/", "/login", "/signup"];
+  const showSidebar = !noSidebarRoutes.includes(location.pathname);
+
   return (
-    <UserProvider>
-      {/* Fullscreen Dreamy Glow Background */}
-      <div
-        className="fixed inset-0 -z-10"
-        style={{
-          backgroundColor: "#fefcff",
-          backgroundImage: `
-            radial-gradient(circle at 30% 70%, rgba(173, 216, 230, 0.35), transparent 60%),
-            radial-gradient(circle at 70% 30%, rgba(255, 182, 193, 0.4), transparent 60%)
-          `,
-        }}
-      ></div>
-      {}
-      <div className="min-h-screen flex flex-col text-black">
-        <Topbar />
+    <ThemeProvider>
+      <UserProvider>
+        <div className="h-screen flex flex-col overflow-hidden">
+          {/* Topbar - Fixed height */}
+          <Topbar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/blogs" element={<Blogs />} />
-          <Route path="/blogs/newBlog" element={<NewBlog />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/jobs" element={<JobPage />} />
-          <Route path="/jobs/create" element={<CreateJob />} />
-          <Route path="/jobs/:id" element={<ApplyJob />} />
-          <Route path="/company/create" element={<CreateCompany />} />
-          <Route path="/community" element={<CommunityForum />} />
-          <Route path="/roadmap" element={<Roadmap />} />
-          <Route path="/sample" element={<SampleSocial />} />
-          <Route path="/emotion" element={<EmotionCapture />} />
-          <Route path="/careers" element={<Careers />} />
-          <Route path="/companies" element={<CompaniesPage />} />
-          <Route
-            path="/interview-questions"
-            element={<InterviewQuestionBank />}
-          />
-          <Route path="/interview-room" element={<InterviewRoomForm />} />
-          <Route
-            path="/interview-questions"
-            element={<InterviewQuestionBank />}
-          />
-          <Route path="/events" element={<DynamicEvents />} />
-          <Route path="/chatbot" element={<ChatbotPage />} />
-        </Routes>
+          {/* Main Layout - Takes remaining viewport height */}
+          <div className="flex flex-1 overflow-hidden">
+            {/* Sidebar - Only show on authenticated pages */}
+            {showSidebar && (
+              <Sidebar isOpen={sidebarOpen} setIsOpen={setSidebarOpen} />
+            )}
 
-        {/* Career Chatbot - Available on all pages */}
-        <CareerChatbot />
-      </div>
-    </UserProvider>
+            {/* Main Content - Takes remaining space with proper scrolling */}
+            <main className="flex-1 overflow-auto">
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<Signup />} />
+                <Route path="/blogs" element={<Blogs />} />
+                <Route path="/blogs/newBlog" element={<NewBlog />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/jobs" element={<JobPage />} />
+                <Route path="/jobs/create" element={<CreateJob />} />
+                <Route path="/jobs/:id" element={<ApplyJob />} />
+                <Route path="/company/create" element={<CreateCompany />} />
+                <Route path="/community" element={<CommunityForum />} />
+                <Route path="/roadmap" element={<Roadmap />} />
+                <Route path="/sample" element={<SampleSocial />} />
+                <Route path="/emotion" element={<EmotionCapture />} />
+                <Route path="/careers" element={<Careers />} />
+                <Route path="/companies" element={<CompaniesPage />} />
+                <Route
+                  path="/interview-questions"
+                  element={<InterviewQuestionBank />}
+                />
+                <Route path="/interview-room" element={<InterviewRoomForm />} />
+                <Route path="/events" element={<DynamicEvents />} />
+                <Route path="/chatbot" element={<ChatbotPage />} />
+
+                {/* New sidebar routes */}
+                <Route
+                  path="/dashboard"
+                  element={<div className="p-8">Dashboard Coming Soon</div>}
+                />
+                <Route
+                  path="/career-assessment"
+                  element={
+                    <div className="p-8">Career Assessment Coming Soon</div>
+                  }
+                />
+                <Route path="/career-paths" element={<Careers />} />
+                <Route
+                  path="/skills-analysis"
+                  element={
+                    <div className="p-8">Skills Analysis Coming Soon</div>
+                  }
+                />
+                <Route path="/roadmaps" element={<Roadmap />} />
+                <Route
+                  path="/saved-jobs"
+                  element={<div className="p-8">Saved Jobs Coming Soon</div>}
+                />
+                <Route
+                  path="/applications"
+                  element={<div className="p-8">Applications Coming Soon</div>}
+                />
+                <Route
+                  path="/job-alerts"
+                  element={<div className="p-8">Job Alerts Coming Soon</div>}
+                />
+                <Route
+                  path="/mock-interviews"
+                  element={
+                    <div className="p-8">Mock Interviews Coming Soon</div>
+                  }
+                />
+                <Route
+                  path="/interview-history"
+                  element={
+                    <div className="p-8">Interview History Coming Soon</div>
+                  }
+                />
+                <Route
+                  path="/interview-guides"
+                  element={
+                    <div className="p-8">Interview Guides Coming Soon</div>
+                  }
+                />
+                <Route path="/network" element={<CommunityForum />} />
+                <Route
+                  path="/messages"
+                  element={<div className="p-8">Messages Coming Soon</div>}
+                />
+                <Route
+                  path="/mentorship"
+                  element={<div className="p-8">Mentorship Coming Soon</div>}
+                />
+                <Route path="/forums" element={<CommunityForum />} />
+                <Route
+                  path="/company-reviews"
+                  element={
+                    <div className="p-8">Company Reviews Coming Soon</div>
+                  }
+                />
+                <Route
+                  path="/salary-insights"
+                  element={
+                    <div className="p-8">Salary Insights Coming Soon</div>
+                  }
+                />
+                <Route
+                  path="/culture-match"
+                  element={<div className="p-8">Culture Match Coming Soon</div>}
+                />
+                <Route
+                  path="/webinars"
+                  element={<div className="p-8">Webinars Coming Soon</div>}
+                />
+                <Route
+                  path="/workshops"
+                  element={<div className="p-8">Workshops Coming Soon</div>}
+                />
+                <Route
+                  path="/conferences"
+                  element={<div className="p-8">Conferences Coming Soon</div>}
+                />
+                <Route
+                  path="/settings"
+                  element={<div className="p-8">Settings Coming Soon</div>}
+                />
+              </Routes>
+            </main>
+          </div>
+
+          {/* Career Chatbot - Fixed position, doesn't affect layout */}
+          <CareerChatbot />
+        </div>
+      </UserProvider>
+    </ThemeProvider>
   );
 }
 
