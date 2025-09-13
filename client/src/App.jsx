@@ -22,6 +22,8 @@ import InterviewQuestionBank from "./components/pages/InterviewQuestionBank";
 import CompaniesPage from "./components/pages/CompaniesPage";
 import InterviewRoomForm from "./components/interview/InterviewRoomForm";
 import DynamicEvents from "./components/pages/DynamicEvents";
+import CareerChatbot from "./components/pages/CareerChatbot";
+import ChatbotPage from "./components/pages/ChatbotPage";
 
 function App() {
   return (
@@ -65,7 +67,11 @@ function App() {
             element={<InterviewQuestionBank />}
           />
           <Route path="/events" element={<DynamicEvents />} />
+          <Route path="/chatbot" element={<ChatbotPage />} />
         </Routes>
+        
+        {/* Career Chatbot - Available on all pages */}
+        <CareerChatbot />
       </div>
     </UserProvider>
   );
