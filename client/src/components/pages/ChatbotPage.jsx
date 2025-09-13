@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Container,
   Typography,
@@ -7,8 +7,8 @@ import {
   Card,
   CardContent,
   Avatar,
-  Chip
-} from '@mui/material';
+  Chip,
+} from "@mui/material";
 import {
   SmartToy,
   Psychology,
@@ -16,48 +16,54 @@ import {
   School,
   TrendingUp,
   QuestionAnswer,
-  AutoAwesome
-} from '@mui/icons-material';
-import CareerChatbot from './CareerChatbot';
+  AutoAwesome,
+} from "@mui/icons-material";
+import CareerChatbot from "./CareerChatbot";
 
 const ChatbotPage = () => {
   const features = [
     {
       icon: <Work />,
       title: "Career Guidance",
-      description: "Get personalized advice on career paths, job transitions, and professional development.",
-      color: "#667eea"
+      description:
+        "Get personalized advice on career paths, job transitions, and professional development.",
+      color: "#667eea",
     },
     {
       icon: <QuestionAnswer />,
       title: "Interview Preparation",
-      description: "Practice interview questions, get tips on body language, and boost your confidence.",
-      color: "#764ba2"
+      description:
+        "Practice interview questions, get tips on body language, and boost your confidence.",
+      color: "#764ba2",
     },
     {
       icon: <School />,
       title: "Resume Optimization",
-      description: "Improve your resume with AI-powered suggestions and industry best practices.",
-      color: "#f093fb"
+      description:
+        "Improve your resume with AI-powered suggestions and industry best practices.",
+      color: "#f093fb",
     },
     {
       icon: <TrendingUp />,
       title: "Skill Development",
-      description: "Discover trending skills in your field and create a learning roadmap.",
-      color: "#f5576c"
+      description:
+        "Discover trending skills in your field and create a learning roadmap.",
+      color: "#f5576c",
     },
     {
       icon: <Psychology />,
       title: "Career Psychology",
-      description: "Understand workplace dynamics, stress management, and work-life balance.",
-      color: "#4facfe"
+      description:
+        "Understand workplace dynamics, stress management, and work-life balance.",
+      color: "#4facfe",
     },
     {
       icon: <AutoAwesome />,
       title: "AI-Powered Insights",
-      description: "Get data-driven recommendations based on current market trends.",
-      color: "#43e97b"
-    }
+      description:
+        "Get data-driven recommendations based on current market trends.",
+      color: "#43e97b",
+    },
   ];
 
   return (
@@ -68,32 +74,32 @@ const ChatbotPage = () => {
           sx={{
             width: 100,
             height: 100,
-            mx: 'auto',
+            mx: "auto",
             mb: 3,
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+            background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
           }}
         >
           <SmartToy sx={{ fontSize: 50 }} />
         </Avatar>
-        
+
         <Typography variant="h3" component="h1" gutterBottom fontWeight="bold">
           CareerVision AI Assistant
         </Typography>
-        
+
         <Typography variant="h6" color="text.secondary" paragraph>
           Your intelligent companion for career growth and professional success
         </Typography>
-        
+
         <Chip
           label="Powered by Gemini AI"
           icon={<AutoAwesome />}
           variant="outlined"
           sx={{
-            fontSize: '1rem',
+            fontSize: "1rem",
             p: 2,
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-            color: 'white',
-            border: 'none'
+            background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+            color: "white",
+            border: "none",
           }}
         />
       </Box>
@@ -104,31 +110,31 @@ const ChatbotPage = () => {
           <Grid item xs={12} md={6} lg={4} key={index}>
             <Card
               sx={{
-                height: '100%',
-                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-                '&:hover': {
-                  transform: 'translateY(-5px)',
-                  boxShadow: '0 10px 25px rgba(0,0,0,0.1)'
-                }
+                height: "100%",
+                transition: "transform 0.3s ease, box-shadow 0.3s ease",
+                "&:hover": {
+                  transform: "translateY(-5px)",
+                  boxShadow: "0 10px 25px rgba(0,0,0,0.1)",
+                },
               }}
             >
-              <CardContent sx={{ textAlign: 'center', p: 3 }}>
+              <CardContent sx={{ textAlign: "center", p: 3 }}>
                 <Avatar
                   sx={{
                     width: 60,
                     height: 60,
-                    mx: 'auto',
+                    mx: "auto",
                     mb: 2,
-                    bgcolor: feature.color
+                    bgcolor: feature.color,
                   }}
                 >
                   {feature.icon}
                 </Avatar>
-                
+
                 <Typography variant="h6" gutterBottom fontWeight="bold">
                   {feature.title}
                 </Typography>
-                
+
                 <Typography variant="body2" color="text.secondary">
                   {feature.description}
                 </Typography>
@@ -139,39 +145,75 @@ const ChatbotPage = () => {
       </Grid>
 
       {/* How to Use Section */}
-      <Card sx={{ mb: 4, background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)' }}>
+      <Card
+        sx={{
+          mb: 4,
+          background: "linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)",
+        }}
+      >
         <CardContent sx={{ p: 4 }}>
-          <Typography variant="h5" gutterBottom fontWeight="bold" textAlign="center">
+          <Typography
+            variant="h5"
+            gutterBottom
+            fontWeight="bold"
+            textAlign="center"
+          >
             How to Get Started
           </Typography>
-          
+
           <Grid container spacing={3} mt={2}>
             <Grid item xs={12} md={4} textAlign="center">
-              <Avatar sx={{ width: 50, height: 50, mx: 'auto', mb: 2, bgcolor: '#667eea' }}>
+              <Avatar
+                sx={{
+                  width: 50,
+                  height: 50,
+                  mx: "auto",
+                  mb: 2,
+                  bgcolor: "#667eea",
+                }}
+              >
                 1
               </Avatar>
               <Typography variant="h6" gutterBottom>
                 Click the Chat Button
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                Look for the floating AI chat button in the bottom-right corner of any page.
+                Look for the floating AI chat button in the bottom-right corner
+                of any page.
               </Typography>
             </Grid>
-            
+
             <Grid item xs={12} md={4} textAlign="center">
-              <Avatar sx={{ width: 50, height: 50, mx: 'auto', mb: 2, bgcolor: '#764ba2' }}>
+              <Avatar
+                sx={{
+                  width: 50,
+                  height: 50,
+                  mx: "auto",
+                  mb: 2,
+                  bgcolor: "#764ba2",
+                }}
+              >
                 2
               </Avatar>
               <Typography variant="h6" gutterBottom>
                 Ask Your Question
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                Type your career-related question or choose from quick action buttons.
+                Type your career-related question or choose from quick action
+                buttons.
               </Typography>
             </Grid>
-            
+
             <Grid item xs={12} md={4} textAlign="center">
-              <Avatar sx={{ width: 50, height: 50, mx: 'auto', mb: 2, bgcolor: '#f093fb' }}>
+              <Avatar
+                sx={{
+                  width: 50,
+                  height: 50,
+                  mx: "auto",
+                  mb: 2,
+                  bgcolor: "#f093fb",
+                }}
+              >
                 3
               </Avatar>
               <Typography variant="h6" gutterBottom>
@@ -191,7 +233,8 @@ const ChatbotPage = () => {
           Ready to boost your career? 🚀
         </Typography>
         <Typography variant="body1" color="text.secondary" paragraph>
-          Start chatting with our AI assistant now and take the next step in your professional journey!
+          Start chatting with our AI assistant now and take the next step in
+          your professional journey!
         </Typography>
       </Box>
 
