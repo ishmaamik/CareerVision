@@ -1,343 +1,1168 @@
-import React from "react";
+import React, { useRef, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useTheme } from "../../context/ThemeContext";
+import { getThemeClasses } from "../../styles/themes";
+import * as THREE from "three";
 
-const CareerVisionHome = () => {
+const Home = () => {
+  const navigate = useNavigate();
+  const { isDarkMode } = useTheme();
+  const themeClasses = getThemeClasses(isDarkMode);
+  const mountRef = useRef(null);
+  const sceneRef = useRef(null);
+  const rendererRef = useRef(null);
+  const animationIdRef = useRef(null);
+  const objectsRef = useRef([]);
+  const mouseRef = useRef({ x: 0, y: 0 });
+  const particlesRef = useRef(null);
+
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [stats, setStats] = useState({
+    jobs: 0,
+    companies: 0,
+    candidates: 0,
+    success: 0,
+  });
+
+  // Enhanced features with human-centered descriptions
+  const features = [
+    {
+      icon: "🧭",
+      title: "Personal Career Navigation",
+      description:
+        "Like a GPS for your career journey. Our AI understands your unique strengths, interests, and goals to guide you toward fulfilling opportunities that align with who you are.",
+      benefits: [
+        "Personalized career mapping",
+        "Skills assessment & growth",
+        "Market opportunity insights",
+      ],
+      color: isDarkMode ? "#22C55E" : "#D4A574",
+    },
+    {
+      icon: "🌟",
+      title: "Skill-Centric Job Matching",
+      description:
+        "Connect with opportunities that value what you bring to the table. Our platform showcases your skills to employers who are looking for exactly what you offer.",
+      benefits: [
+        "Skill-based matching",
+        "Portfolio showcase",
+        "Direct employer connections",
+      ],
+      color: isDarkMode ? "#4ADE80" : "#F59E0B",
+    },
+    {
+      icon: "💬",
+      title: "Interactive Interview Mastery",
+      description:
+        "Build confidence through practice with real-world scenarios. Our AI coaching adapts to your communication style and helps you present your best authentic self.",
+      benefits: [
+        "Personalized feedback",
+        "Confidence building",
+        "Real-time improvement",
+      ],
+      color: isDarkMode ? "#16A34A" : "#EAB308",
+    },
+    {
+      icon: "🎯",
+      title: "Purpose-Driven Growth Paths",
+      description:
+        "Every professional journey is unique. Create learning roadmaps that evolve with your ambitions, keeping you motivated and on track toward your ideal career.",
+      benefits: [
+        "Adaptive learning paths",
+        "Goal-oriented milestones",
+        "Progress celebration",
+      ],
+      color: isDarkMode ? "#10B981" : "#C17817",
+    },
+  ];
+
+  // Enhanced counter animation
+  useEffect(() => {
+    const targetStats = {
+      jobs: 25000,
+      companies: 5000,
+      candidates: 150000,
+      success: 98,
+    };
+
+    const duration = 3000;
+    const startTime = Date.now();
+
+    const animateCounters = () => {
+      const elapsed = Date.now() - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+
+      // Smooth easing function
+      const easeOutCubic = 1 - Math.pow(1 - progress, 3);
+
+      setStats({
+        jobs: Math.floor(targetStats.jobs * easeOutCubic),
+        companies: Math.floor(targetStats.companies * easeOutCubic),
+        candidates: Math.floor(targetStats.candidates * easeOutCubic),
+        success: Math.floor(targetStats.success * easeOutCubic),
+      });
+
+      if (progress < 1) {
+        requestAnimationFrame(animateCounters);
+      }
+    };
+
+    const timer = setTimeout(animateCounters, 1000);
+    return () => clearTimeout(timer);
+  }, []); // Empty dependency array is correct here
+
+  // Enhanced Three.js setup with Interactive 3D Globe
+  useEffect(() => {
+    if (!mountRef.current) return;
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({
+      antialias: true,
+      alpha: true,
+      powerPreference: "high-performance",
+    });
+
+    const container = mountRef.current;
+    const width = container.clientWidth;
+    const height = container.clientHeight;
+
+    renderer.setSize(width, height);
+    renderer.setClearColor(0x000000, 0);
+    container.appendChild(renderer.domElement);
+
+    sceneRef.current = scene;
+    rendererRef.current = renderer;
+
+    camera.position.set(0, 0, 6);
+
+    // Lighting for the globe
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+    scene.add(ambientLight);
+
+    const directionalLight = new THREE.DirectionalLight(
+      isDarkMode ? 0x22c55e : 0xd4a574,
+      1.0
+    );
+    directionalLight.position.set(3, 3, 5);
+    scene.add(directionalLight);
+
+    const pointLight = new THREE.PointLight(
+      isDarkMode ? 0x4ade80 : 0xf59e0b,
+      0.8,
+      10
+    );
+    pointLight.position.set(-3, 2, 3);
+    scene.add(pointLight);
+
+    // Create Interactive 3D Globe
+    const createGlobe = () => {
+      const globeGroup = new THREE.Group();
+
+      // Main Globe Sphere
+      const globeGeometry = new THREE.SphereGeometry(2, 64, 64);
+
+      // Globe wireframe
+      const wireframeMaterial = new THREE.MeshBasicMaterial({
+        color: isDarkMode ? 0x22c55e : 0xd4a574,
+        wireframe: true,
+        transparent: true,
+        opacity: 0.3,
+      });
+      const wireframeGlobe = new THREE.Mesh(globeGeometry, wireframeMaterial);
+
+      // Globe surface with gradient effect
+      const surfaceMaterial = new THREE.MeshPhysicalMaterial({
+        color: isDarkMode ? 0x1a4d3a : 0xe8ddd0,
+        transparent: true,
+        opacity: 0.1,
+        roughness: 0.1,
+        metalness: 0.2,
+        side: THREE.DoubleSide,
+      });
+      const surfaceGlobe = new THREE.Mesh(globeGeometry, surfaceMaterial);
+
+      globeGroup.add(wireframeGlobe);
+      globeGroup.add(surfaceGlobe);
+
+      // Add glowing rings around the globe
+      const ringGeometry = new THREE.TorusGeometry(2.3, 0.02, 16, 100);
+
+      // Horizontal ring
+      const horizontalRing = new THREE.Mesh(
+        ringGeometry,
+        new THREE.MeshBasicMaterial({
+          color: isDarkMode ? 0x4ade80 : 0xf59e0b,
+          transparent: true,
+          opacity: 0.8,
+        })
+      );
+      horizontalRing.rotation.x = Math.PI / 2;
+
+      // Vertical ring
+      const verticalRing = new THREE.Mesh(
+        ringGeometry,
+        new THREE.MeshBasicMaterial({
+          color: isDarkMode ? 0x22c55e : 0xd4a574,
+          transparent: true,
+          opacity: 0.6,
+        })
+      );
+
+      // Diagonal ring
+      const diagonalRing = new THREE.Mesh(
+        ringGeometry,
+        new THREE.MeshBasicMaterial({
+          color: isDarkMode ? 0x16a34a : 0xeab308,
+          transparent: true,
+          opacity: 0.4,
+        })
+      );
+      diagonalRing.rotation.z = Math.PI / 4;
+      diagonalRing.rotation.x = Math.PI / 4;
+
+      globeGroup.add(horizontalRing);
+      globeGroup.add(verticalRing);
+      globeGroup.add(diagonalRing);
+
+      // Store references for animation
+      globeGroup.userData = {
+        wireframe: wireframeGlobe,
+        surface: surfaceGlobe,
+        rings: [horizontalRing, verticalRing, diagonalRing],
+        isInteracting: false,
+        targetRotation: { x: 0, y: 0 },
+        currentRotation: { x: 0, y: 0 },
+      };
+
+      scene.add(globeGroup);
+      return globeGroup;
+    };
+
+    const globe = createGlobe();
+    objectsRef.current = [globe];
+
+    // Create floating connection points around the globe with career keywords
+    const createConnectionPoints = () => {
+      const points = [];
+      const careerKeywords = [
+        "Software Engineer",
+        "Data Scientist",
+        "Product Manager",
+        "UX Designer",
+        "Marketing Manager",
+        "Sales Director",
+        "Finance Analyst",
+        "HR Specialist",
+        "DevOps Engineer",
+        "Business Analyst",
+        "Project Manager",
+        "Consultant",
+        "Research Scientist",
+        "Digital Marketer",
+        "Operations Manager",
+        "AI Engineer",
+        "Cybersecurity Expert",
+        "Cloud Architect",
+        "Full Stack Developer",
+        "Strategy Lead",
+      ];
+
+      const pointCount = careerKeywords.length;
+
+      for (let i = 0; i < pointCount; i++) {
+        // Distribute points evenly on sphere surface
+        const phi = Math.acos(-1 + (2 * i) / pointCount);
+        const theta = Math.sqrt(pointCount * Math.PI) * phi;
+
+        const x = 2.4 * Math.cos(theta) * Math.sin(phi);
+        const y = 2.4 * Math.cos(phi);
+        const z = 2.4 * Math.sin(theta) * Math.sin(phi);
+
+        // Create point geometry
+        const pointGeometry = new THREE.SphereGeometry(0.06, 8, 8);
+        const pointMaterial = new THREE.MeshBasicMaterial({
+          color: isDarkMode ? 0x22c55e : 0xd4a574,
+          transparent: true,
+          opacity: 0.9,
+        });
+
+        const point = new THREE.Mesh(pointGeometry, pointMaterial);
+        point.position.set(x, y, z);
+
+        // Create text label for career keyword
+        const canvas = document.createElement("canvas");
+        const context = canvas.getContext("2d");
+        canvas.width = 256;
+        canvas.height = 64;
+
+        // Style the text
+        context.fillStyle = isDarkMode ? "#22C55E" : "#D4A574";
+        context.font = "bold 16px Arial";
+        context.textAlign = "center";
+        context.fillText(careerKeywords[i], 128, 35);
+
+        const texture = new THREE.CanvasTexture(canvas);
+        const labelMaterial = new THREE.SpriteMaterial({
+          map: texture,
+          transparent: true,
+          opacity: 0.8,
+        });
+
+        const label = new THREE.Sprite(labelMaterial);
+        label.scale.set(1, 0.25, 1);
+        label.position.set(x * 1.15, y * 1.15, z * 1.15);
+
+        // Add pulsing effect and career data
+        point.userData = {
+          originalScale: 1,
+          pulseSpeed: 1 + Math.random() * 2,
+          pulsePhase: Math.random() * Math.PI * 2,
+          careerTitle: careerKeywords[i],
+          label: label,
+        };
+
+        scene.add(point);
+        scene.add(label);
+        points.push(point);
+      }
+
+      return points;
+    };
+
+    const connectionPoints = createConnectionPoints();
+
+    // Mouse interaction for globe rotation
+    let isMouseDown = false;
+    let mouseX = 0;
+    let mouseY = 0;
+    let targetRotationX = 0;
+    let targetRotationY = 0;
+
+    const handleMouseDown = (event) => {
+      isMouseDown = true;
+      globe.userData.isInteracting = true;
+      mouseX = event.clientX;
+      mouseY = event.clientY;
+    };
+
+    const handleMouseMove = (event) => {
+      const rect = container.getBoundingClientRect();
+      mouseRef.current.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+      mouseRef.current.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+      if (isMouseDown) {
+        const deltaX = event.clientX - mouseX;
+        const deltaY = event.clientY - mouseY;
+
+        targetRotationY += deltaX * 0.01;
+        targetRotationX += deltaY * 0.01;
+
+        mouseX = event.clientX;
+        mouseY = event.clientY;
+      }
+    };
+
+    const handleMouseUp = () => {
+      isMouseDown = false;
+      setTimeout(() => {
+        globe.userData.isInteracting = false;
+      }, 1000);
+    };
+
+    container.addEventListener("mousedown", handleMouseDown);
+    container.addEventListener("mousemove", handleMouseMove);
+    container.addEventListener("mouseup", handleMouseUp);
+
+    // Create background particles
+    const createParticles = () => {
+      const particleCount = 150;
+      const geometry = new THREE.BufferGeometry();
+      const positions = new Float32Array(particleCount * 3);
+      const colors = new Float32Array(particleCount * 3);
+
+      for (let i = 0; i < particleCount * 3; i += 3) {
+        positions[i] = (Math.random() - 0.5) * 20;
+        positions[i + 1] = (Math.random() - 0.5) * 20;
+        positions[i + 2] = (Math.random() - 0.5) * 20;
+
+        const color = new THREE.Color();
+        color.setHSL(
+          isDarkMode ? 0.3 + Math.random() * 0.2 : 0.1 + Math.random() * 0.1,
+          0.7,
+          0.6 + Math.random() * 0.4
+        );
+
+        colors[i] = color.r;
+        colors[i + 1] = color.g;
+        colors[i + 2] = color.b;
+      }
+
+      geometry.setAttribute(
+        "position",
+        new THREE.BufferAttribute(positions, 3)
+      );
+      geometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
+
+      const material = new THREE.PointsMaterial({
+        size: 0.02,
+        transparent: true,
+        opacity: 0.6,
+        blending: THREE.AdditiveBlending,
+        vertexColors: true,
+      });
+
+      const particles = new THREE.Points(geometry, material);
+      scene.add(particles);
+      return particles;
+    };
+
+    particlesRef.current = createParticles();
+
+    // Animation loop
+    let animationId;
+    const animate = () => {
+      animationId = requestAnimationFrame(animate);
+
+      const time = Date.now() * 0.001;
+
+      // Animate globe
+      if (globe) {
+        // Auto-rotation when not interacting
+        if (!globe.userData.isInteracting) {
+          targetRotationY += 0.005;
+        }
+
+        // Smooth rotation interpolation
+        globe.userData.currentRotation.x +=
+          (targetRotationX - globe.userData.currentRotation.x) * 0.05;
+        globe.userData.currentRotation.y +=
+          (targetRotationY - globe.userData.currentRotation.y) * 0.05;
+
+        globe.rotation.x = globe.userData.currentRotation.x;
+        globe.rotation.y = globe.userData.currentRotation.y;
+
+        // Animate rings
+        globe.userData.rings[0].rotation.z += 0.01; // Horizontal ring
+        globe.userData.rings[1].rotation.y += 0.008; // Vertical ring
+        globe.userData.rings[2].rotation.x += 0.012; // Diagonal ring
+
+        // Breathing effect for the globe
+        const breathScale = 1 + Math.sin(time * 1.2) * 0.02;
+        globe.scale.setScalar(breathScale);
+      }
+
+      // Animate connection points and labels
+      connectionPoints.forEach((point, index) => {
+        // Pulsing effect
+        const pulse =
+          1 +
+          Math.sin(
+            time * point.userData.pulseSpeed + point.userData.pulsePhase
+          ) *
+            0.3;
+        point.scale.setScalar(pulse);
+
+        // Gentle floating
+        const float = Math.sin(time * 0.5 + index) * 0.05;
+        point.position.y += float * 0.01;
+
+        // Rotate labels to always face camera
+        if (point.userData.label) {
+          point.userData.label.lookAt(camera.position);
+          // Gentle floating for labels too
+          point.userData.label.position.y += float * 0.01;
+        }
+      });
+
+      // Animate particles
+      if (particlesRef.current) {
+        particlesRef.current.rotation.y += 0.0003;
+        particlesRef.current.rotation.x += 0.0001;
+      }
+
+      // Camera movement based on mouse (subtle)
+      camera.position.x +=
+        (mouseRef.current.x * 0.2 - camera.position.x) * 0.02;
+      camera.position.y +=
+        (mouseRef.current.y * 0.2 - camera.position.y) * 0.02;
+      camera.lookAt(0, 0, 0);
+
+      renderer.render(scene, camera);
+    };
+
+    animate();
+    animationIdRef.current = animationId;
+    setIsLoaded(true);
+
+    // Handle resize
+    const handleResize = () => {
+      const newWidth = container.clientWidth;
+      const newHeight = container.clientHeight;
+
+      camera.aspect = newWidth / newHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(newWidth, newHeight);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    // Cleanup
+    return () => {
+      container.removeEventListener("mousedown", handleMouseDown);
+      container.removeEventListener("mousemove", handleMouseMove);
+      container.removeEventListener("mouseup", handleMouseUp);
+      window.removeEventListener("resize", handleResize);
+
+      if (animationIdRef.current) {
+        cancelAnimationFrame(animationIdRef.current);
+      }
+
+      if (container && renderer.domElement) {
+        container.removeChild(renderer.domElement);
+      }
+
+      // Dispose of Three.js objects
+      scene.traverse((object) => {
+        if (object.geometry) object.geometry.dispose();
+        if (object.material) object.material.dispose();
+      });
+
+      renderer.dispose();
+    };
+  }, [isDarkMode]);
+
   return (
-    <div className="relative flex size-full min-h-screen flex-col group/design-root overflow-x-hidden bg-[#f8fafc]">
-      <style>
-        {`
-          :root {
-            --primary-color: #0c7ff2;
-            --secondary-color: #e0f2fe;
-            --background-color: #f8fafc;
-            --text-primary: #1e293b;
-            --text-secondary: #64748b;
-            --accent-color: #bfdbfe;
-          }
-          body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--background-color);
-            color: var(--text-primary);
-          }
-          .main_container {
-            max-width: 1280px;
-            margin-left: auto;
-            margin-right: auto;
-            padding-left: 1rem;
-            padding-right: 1rem;
-            padding-top: 2rem;
-            padding-bottom: 2rem;
-          }
-          .card {
-            background-color: white;
-            border-radius: 0.5rem;
-            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-            padding: 1.5rem;
-            transition: all 300ms ease-in-out;
-          }
-          .card:hover {
-            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-            transform: translateY(-0.25rem);
-          }
-          .button_primary {
-            background-color: var(--primary-color);
-            color: white;
-            border-radius: 0.375rem;
-            padding-left: 1.5rem;
-            padding-right: 1.5rem;
-            padding-top: 0.75rem;
-            padding-bottom: 0.75rem;
-            font-weight: 600;
-            font-size: 1rem;
-          }
-          .button_primary:hover {
-            background-color: #2563eb;
-          }
-          .button_secondary {
-            background-color: var(--secondary-color);
-            color: var(--primary-color);
-            border-radius: 0.375rem;
-            padding-left: 1rem;
-            padding-right: 1rem;
-            padding-top: 0.5rem;
-            padding-bottom: 0.5rem;
-            font-weight: 500;
-          }
-          .button_secondary:hover {
-            background-color: #bfdbfe;
-          }
-          .input {
-            background-color: white;
-            border: 1px solid #cbd5e1;
-            border-radius: 0.375rem;
-            padding: 0.75rem 1rem;
-            width: 100%;
-          }
-          .input:focus {
-            outline: none;
-            ring: 2px solid var(--primary-color);
-            border-color: transparent;
-          }
-        `}
-      </style>
-
-      {/* Main Content */}
-      <main className="flex-1 px-22">
-        {/* Hero Section - Fixed */}
-        <section
-          className="relative py-24 md:py-32 flex items-center justify-center text-center bg-cover bg-center"
-          style={{
-            backgroundImage:
-              'linear-gradient(rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.7) 100%), url("https://lh3.googleusercontent.com/aida-public/AB6AXuBfzq10pfpwpskDYJBKsH2QpZUHvJ9LQaz1Vi017MvzING3yE_e6owsAbD52XSKjfletP0vs8iV6zEXuorLBkJB94Da3hk2fG7OPlx0Gfc1b5qAyXbcdEA5oD27qS6wIQFj7mzsjbO4lub1Cuf1dVosGDRuW4sMZ2IUUoR1LuqZ6dfrZTmD5qnWutmZevzrAVM8ZZ2PCXXckztCEcMvjGdJ74NRYHXzdT0PIeAAiJfi_SWArkL0jxTBujJXD3RINz6U5rFi9buHRpQ")',
-          }}
-        >
-          <div className="container mx-auto px-6">
-            <div className="max-w-3xl mx-auto">
-              <h1 className="text-4xl md:text-5xl font-extrabold text-white mb-6">
-                Find Your Path to Success
-              </h1>
-              <p className="mt-4 text-lg md:text-xl text-slate-200">
-                Explore career options, connect with mentors, and discover
-                opportunities that match your skills and interests.
-              </p>
-              <div className="mt-8 flex flex-col sm:flex-row gap-4 max-w-xl mx-auto">
-                <input
-                  className="bg-white border border-slate-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full"
-                  placeholder="Search for skills or interests"
-                  type="search"
-                />
-                <button className="bg-blue-600 hover:bg-blue-700 text-white rounded-md px-6 py-3 font-semibold text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors">
-                  Search
-                </button>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Trending Career Paths */}
-        <section className="main_container">
-          <div className="relative mb-8">
+    <div
+      className={`min-h-screen ${themeClasses.bg.primary} transition-all duration-500 overflow-hidden relative`}
+    >
+      {/* Hero Section with Clean Layout */}
+      <section className="min-h-screen flex items-center">
+        {/* Left Content - Simplified */}
+        <div className="w-1/2 px-6 lg:px-12 z-10">
+          <div className="space-y-8 max-w-xl">
+            {/* Hero Badge */}
             <div
-              className="absolute inset-0 flex items-center"
-              aria-hidden="true"
+              className={`inline-flex items-center space-x-2 px-4 py-2 rounded-full ${themeClasses.bg.surface} ${themeClasses.border.primary} border shadow-lg backdrop-blur-sm`}
             >
-              <div className="w-full border-t border-gray-300"></div>
+              <span className="text-2xl">🌍</span>
+              <span
+                className={`text-sm font-medium ${themeClasses.text.secondary}`}
+              >
+                Global Career Opportunities
+              </span>
             </div>
-            <div className="relative flex justify-center">
-              <h2 className="text-2xl font-bold text-[var(--text-primary)] relative inline-block">
-                Trending Career Paths
-              </h2>
-            </div>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-            {[
-              {
-                title: "Software Engineering",
-                description: "Develop innovative software",
-                image:
-                  "https://lh3.googleusercontent.com/aida-public/AB6AXuAaQhRgTr8e7O_DaZTme6ZjWi7zCad3CeWkh5lyB5yQUS6JAFYewV1g48CREqJezegO3nW8klX4WU_drpCCfiqTD1qr2Q7y33fY9IyjvottAq_9GGHFB94H12Kbpm66X03b4N4mYo9Qyo-oyg0sCMizjkR0kpda-s9Q57uJjlEOEGwMi5WDxECnRd1HUH4iwThAEJRfc0Rt_Q16vdLHeDg_0baEetEEa0vFw_qHkBwseJEiaiWZmkoGTZjtGA5C8CIdZ8AVAWzBBg4",
-              },
-              {
-                title: "Data Science",
-                description: "Analyze data to drive decisions",
-                image:
-                  "https://lh3.googleusercontent.com/aida-public/AB6AXuD0XhEWa00Vonx0kGcRRHAAP3cbI9TOU33hSIxruo3DET0l-HtB3kCmwWwZrAPuSrB6ffoNxDARn9CtbDTMAladHhSbvrCj-k_MET8oTwsUAupWRTFYeJR_Q0_IOUyBD4F8hUgClRGPN3EF7wLInASRHb5ee_310nRkgx_uoihKMwFKokCkpOpbs-OC_6IQ5uEfYDB36Db30VCiw1kT-zOPvGg_9ow9XwVW9_vMh_oqVEtQhK-z8dFqhvSywe0MIdtEzD013zgncJI",
-              },
-              {
-                title: "Product Management",
-                description: "Lead product strategy",
-                image:
-                  "https://lh3.googleusercontent.com/aida-public/AB6AXuCisJIGaZ6JFkLX1eLHzeGfS6cvAnKgxpXatTw8LtE43Ss-w0rTU8JPSIO941oi2cTSrDLDYx4ifIe2e0gjAgvLkiG6AiRXVujpVvcWOnnrZCs8I_kIAcX_0XXwQdt237RdOVSo13--oyZhwu-WLoz77_lCYa1ulhmSeUvwDNJ-5vZEfrFIBXVBxErTdx_Xd92Jx6UdoeqJhORQPBPUo9I5CfOUXCQUjj-_-ACv1aRwhF0Nf8DTtWTAVrOKGa1DnxePG-aFUyR463M",
-              },
-              {
-                title: "Marketing",
-                description: "Create compelling campaigns",
-                image:
-                  "https://lh3.googleusercontent.com/aida-public/AB6AXuCScf2DcEcIuqQarxnmUs2UKI7Rv0uOiwG7xhTZX0FKaxU6IbLAkZDULweidR1pKqmpFGN1S5WwCerz0qevmfw3s3gCI8zYZrHDzoY2lWvWMkR5GqCT9_aH7cWfZpPoN5R7U6ggHrz_m8N5HayTNBe5s1YhQkx46XO12_EugbOoJo2LRfBupNjzYpmMBb7GShABueUXevD9Gnv3lT_own-glA1SEQb-H-O5cIAHuf2IN4f6rDF5dK4KxD74r_iBGns7EBqIkt6LjGA",
-              },
-              {
-                title: "Finance",
-                description: "Manage financial resources",
-                image:
-                  "https://lh3.googleusercontent.com/aida-public/AB6AXuCwwKPnQe0q9NyZiSbgg2K00JU0JckOqr-8-0t0EVp5hKWI0q22Ol9OS9By5LUeGxVLqRj73fY0fscPAMOGu8nx3Ncbb8S6Ao9PI4cEZNrlBUv41Zp1cf_W9cysKQV_Ji-3JNNr9jvWVewOC6jDSJQaKyvqdp3uwGN1ZcNAwoPm6pkunn2pmadvde0exruFL4jQVhYkhgkiVp61aCCCnmMo_SHY3En-BJWfCOSmSniKhUsjZAFxUY9V-jgNlJldmW6XY5uCd7Yzj2I",
-              },
-              {
-                title: "Design",
-                description: "Design user-centered products",
-                image:
-                  "https://lh3.googleusercontent.com/aida-public/AB6AXuCMCZUegPXjiV8PBQUQvuX2POJt8MpaFNvyQJIFskdH48AmMU0NSxFl9anB7IWFrbCAtxWoFR7eY5xCP9b6iJwG2owmzkFHZpqZLaABDnXI0pH1fvrKhtnnbOvq_xbmbAL-j94Vn3QiaG4XaZEdeSN1HZ1Sf78Wjne2stzxu_gPxwWhJ4J5HodbtNHmkhyOESsykKwNHrnVyExK-7OuIS3KC-EWEhs0H8I0SvTaC6GJAHP7oX099t5hIOKTqVpctvKVGAO6T3trWNg",
-              },
-            ].map((career, index) => (
-              <div key={index} className="group text-center">
-                <div
-                  className="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-lg mb-4 shadow-md transition-transform duration-300 group-hover:scale-105"
-                  style={{ backgroundImage: `url(${career.image})` }}
-                ></div>
-                <h3 className="font-semibold text-lg text-[var(--text-primary)]">
-                  {career.title}
-                </h3>
-                <p className="typography_body">{career.description}</p>
-              </div>
-            ))}
-          </div>
-        </section>
 
-        {/* Testimonials */}
-        <section className="bg-white py-8">
-          <div className="main_container">
-            <div className="text-center mb-12">
-              <h2 className="text-2xl font-bold text-[var(--text-primary)] inline-block relative pb-2">
-                What Our Users Say
-              </h2>
+            {/* Main Heading */}
+            <div className="space-y-6">
+              <h1
+                className={`text-4xl lg:text-6xl font-bold ${themeClasses.text.primary} leading-tight`}
+              >
+                <span className="block">Discover</span>
+                <span
+                  className={`block bg-gradient-to-r ${themeClasses.brand.gradient} bg-clip-text text-transparent`}
+                >
+                  Global Careers
+                </span>
+              </h1>
+
+              <p
+                className={`text-lg lg:text-xl ${themeClasses.text.secondary} leading-relaxed`}
+              >
+                Connect with opportunities worldwide. AI-powered matching,
+                global network, endless possibilities.
+              </p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4">
+              <button
+                onClick={() => navigate("/register")}
+                className={`px-8 py-4 ${themeClasses.brand.bg} text-white rounded-xl font-semibold text-lg hover:scale-105 transform transition-all duration-300 shadow-xl hover:shadow-2xl`}
+              >
+                Explore Opportunities
+              </button>
+
+              <button
+                onClick={() => navigate("/discover")}
+                className={`px-8 py-4 ${themeClasses.bg.surface} ${themeClasses.text.primary} border-2 ${themeClasses.border.primary} rounded-xl font-semibold text-lg hover:scale-105 transform transition-all duration-300 shadow-lg hover:shadow-xl`}
+              >
+                Learn More
+              </button>
+            </div>
+
+            {/* Simplified Stats */}
+            <div className="grid grid-cols-3 gap-6 pt-8">
               {[
                 {
-                  name: "Sophia Carter",
-                  role: "Software Engineer",
-                  quote:
-                    "CareerVision helped me find my dream job in tech. The mentorship and resources were invaluable.",
-                  image:
-                    "https://lh3.googleusercontent.com/aida-public/AB6AXuChDgnKyL3q_5aqDnJW6AzB4RTMTTUF58ld0PzRy2e6nj1T4PQswFMlV5EFgz2ayvGaQ5FS699ciexgPRxFzoFZbPL8OEk9pnsslpZmXChCkmzbeKVlbamf4dWRQTPP-tcYk2ZIaYQCeFM5zcXow7CJUSG6fWQJ7tfyTIkp5KhB0WbPs5vUerTFYw0nYRKurMmNy1eMJagKuhkPBXG0YDEdF9fLpKM13rUSSK0M4eXcFUOfux-6UODPY-Agvp2GjV9EgopJ-KNchTI",
+                  number: stats.jobs.toLocaleString() + "+",
+                  label: "Global Jobs",
                 },
                 {
-                  name: "Ethan Walker",
-                  role: "Data Scientist",
-                  quote:
-                    "I was able to transition to a new career path thanks to the guidance and support I received.",
-                  image:
-                    "https://lh3.googleusercontent.com/aida-public/AB6AXuD1wKP3oqFOBRL3WJldWyCP2KM02rfjqIzlW-dDjyHVlDfgb_J4WeQoGr6xAtoIhF9zvWsbvu7Re2tdOilRxPpPSACikOaloCkEDGi72MlQT4JkRALylaRgcK2XmrJz8vyglqdaKIdpyuSWDRVTnVZc5O1BSQiWZzBOWJi7hKQSbv8TxmtK9qFszkKEQjmSlPRgpAHQEeVmsEKeggSba1Nr0duz5KuhIMBZGXue_SNscTB34hEeIKlYep-DLN9odzsQEKXaCaDtd-E",
+                  number: stats.companies.toLocaleString() + "+",
+                  label: "Companies",
                 },
-                {
-                  name: "Olivia Bennett",
-                  role: "Product Manager",
-                  quote:
-                    "The platform connected me with opportunities I wouldn't have found otherwise.",
-                  image:
-                    "https://lh3.googleusercontent.com/aida-public/AB6AXuDZEzeDRcAwTN92TaPu-mh-rCu7MkejsDFOTrt_OAsk6hxHB8OM6gqRFUe8y2A0v9orADSWxvBIUlRnWKyVIfaCf5LvBoPOYHigQOKP7VbUV0Z-4jvlDInir4hAQ8SWiF_XzZ-khYdsv5VGxtCdJB-L0FYBu8DdNeTxaJ0oWHTMfoKgHlu9dCBFDL9GXxdxcdJl-q1pz8dMykQgQKFJD19AXTLRwUUFSBUG-klMDHEdEm2GlY9Otl22sHoMkJC4FyUVA9ZqZK_7quA",
-                },
-              ].map((testimonial, index) => (
-                <div key={index} className="card">
-                  <div className="flex items-center mb-4">
-                    <div
-                      className="w-16 h-16 bg-center bg-no-repeat aspect-square bg-cover rounded-full mr-4"
-                      style={{ backgroundImage: `url(${testimonial.image})` }}
-                    ></div>
-                    <div>
-                      <h3 className="font-semibold text-lg text-[var(--text-primary)]">
-                        {testimonial.name}
-                      </h3>
-                      <p className="typography_body">{testimonial.role}</p>
-                    </div>
+                { number: stats.success + "%", label: "Success Rate" },
+              ].map((stat, index) => (
+                <div key={index} className="text-center">
+                  <div
+                    className={`text-2xl lg:text-3xl font-bold ${themeClasses.brand.primary} mb-1`}
+                  >
+                    {stat.number}
                   </div>
-                  <p className="typography_body italic">
-                    "{testimonial.quote}"
-                  </p>
+                  <div
+                    className={`text-sm ${themeClasses.text.muted} font-medium`}
+                  >
+                    {stat.label}
+                  </div>
                 </div>
               ))}
             </div>
           </div>
-        </section>
+        </div>
 
-        {/* CTA Section - Fixed */}
-        <section className="container mx-auto px-4 py-8 text-center">
-          <div className="bg-white rounded-lg p-10 md:p-16 shadow-lg">
-            <h2 className="text-3xl font-bold text-slate-800 mb-4">
-              Ready to start your journey?
+        {/* Right Side - 3D Globe (Takes More Space) */}
+        <div className="w-1/2 h-screen relative">
+          <div
+            ref={mountRef}
+            className="w-full h-full cursor-grab active:cursor-grabbing"
+            style={{ opacity: isLoaded ? 1 : 0 }}
+          />
+        </div>
+      </section>
+
+      {/* Simplified Features Section */}
+      <section className={`py-16 px-6 lg:px-12 ${themeClasses.bg.secondary}`}>
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <h2
+              className={`text-3xl lg:text-4xl font-bold ${themeClasses.text.primary} mb-4`}
+            >
+              Why{" "}
+              <span
+                className={`bg-gradient-to-r ${themeClasses.brand.gradient} bg-clip-text text-transparent`}
+              >
+                CareerVision
+              </span>
             </h2>
-            <p className="text-base text-slate-500 max-w-2xl mx-auto mb-8">
-              Join thousands of others who have found their dream careers
-              through CareerVision. Get personalized guidance and unlock your
-              potential today.
+            <p
+              className={`text-lg ${themeClasses.text.secondary} max-w-2xl mx-auto`}
+            >
+              Professional platform designed for global career growth
             </p>
-            <button className="bg-blue-600 hover:bg-blue-700 text-white rounded-md px-6 py-3 font-semibold text-base focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors">
-              Get Started Now
-            </button>
           </div>
-        </section>
-      </main>
 
-      {/* Footer */}
-      <footer className="bg-slate-100 border-t border-slate-200">
-        <div className="container mx-auto px-6 py-8">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="flex flex-wrap justify-center md:justify-start gap-6 mb-6 md:mb-0">
-              <a
-                className="text-[var(--text-secondary)] hover:text-[var(--primary-color)] transition-colors"
-                href="#"
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {features.map((feature, index) => (
+              <div
+                key={index}
+                className={`group p-6 ${themeClasses.bg.surface} rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 ${themeClasses.border.primary} border`}
               >
-                About Us
-              </a>
-              <a
-                className="text-[var(--text-secondary)] hover:text-[var(--primary-color)] transition-colors"
-                href="#"
-              >
-                Contact
-              </a>
-              <a
-                className="text-[var(--text-secondary)] hover:text-[var(--primary-color)] transition-colors"
-                href="#"
-              >
-                Privacy Policy
-              </a>
-              <a
-                className="text-[var(--text-secondary)] hover:text-[var(--primary-color)] transition-colors"
-                href="#"
-              >
-                Terms of Service
-              </a>
-            </div>
-            <div className="flex justify-center gap-4 mb-6 md:mb-0">
-              <a
-                className="text-[var(--text-secondary)] hover:text-[var(--primary-color)] transition-colors"
-                href="#"
-              >
-                <svg
-                  fill="currentColor"
-                  height="24"
-                  viewBox="0 0 256 256"
-                  width="24"
-                  xmlns="http://www.w3.org/2000/svg"
+                <div className="text-3xl mb-4 group-hover:scale-110 transition-transform duration-300">
+                  {feature.icon}
+                </div>
+
+                <h3
+                  className={`text-lg font-bold ${themeClasses.text.primary} mb-3`}
                 >
-                  <path d="M247.39,68.94A8,8,0,0,0,240,64H209.57A48.66,48.66,0,0,0,168.1,40a46.91,46.91,0,0,0-33.75,13.7A47.9,47.9,0,0,0,120,88v6.09C79.74,83.47,46.81,50.72,46.46,50.37a8,8,0,0,0-13.65,4.92c-4.31,47.79,9.57,79.77,22,98.18a110.93,110.93,0,0,0,21.88,24.2c-15.23,17.53-39.21,26.74-39.47,26.84a8,8,0,0,0-3.85,11.93c.75,1.12,3.75,5.05,11.08,8.72C53.51,229.7,65.48,232,80,232c70.67,0,129.72-54.42,135.75-124.44l29.91-29.9A8,8,0,0,0,247.39,68.94Zm-45,29.41a8,8,0,0,0-2.32,5.14C196,166.58,143.28,216,80,216c-10.56,0-18-1.4-23.22-3.08,11.51-6.25,27.56-17,37.88-32.48A8,8,0,0,0,92,169.08c-.47-.27-43.91-26.34-44-96,16,13,45.25,33.17,78.67,38.79A8,8,0,0,0,136,104V88a32,32,0,0,1,9.6-22.92A30.94,30.94,0,0,1,167.9,56c12.66.16,24.49,7.88,29.44,19.21A8,8,0,0,0,204.67,80h16Z"></path>
-                </svg>
-              </a>
-              <a
-                className="text-[var(--text-secondary)] hover:text-[var(--primary-color)] transition-colors"
-                href="#"
-              >
-                <svg
-                  fill="currentColor"
-                  height="24"
-                  viewBox="0 0 256 256"
-                  width="24"
-                  xmlns="http://www.w3.org/2000/svg"
+                  {feature.title}
+                </h3>
+
+                <p
+                  className={`${themeClasses.text.secondary} text-sm leading-relaxed mb-4`}
                 >
-                  <path d="M128,80a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160ZM176,24H80A56.06,56.06,0,0,0,24,80v96a56.06,56.06,0,0,0,56,56h96a56.06,56.06,0,0,0,56-56V80A56.06,56.06,0,0,0,176,24Zm40,152a40,40,0,0,1-40,40H80a40,40,0,0,1-40-40V80A40,40,0,0,1,80,40h96a40,40,0,0,1,40,40ZM192,76a12,12,0,1,1-12-12A12,12,0,0,1,192,76Z"></path>
-                </svg>
-              </a>
-              <a
-                className="text-[var(--text-secondary)] hover:text-[var(--primary-color)] transition-colors"
-                href="#"
-              >
-                <svg
-                  fill="currentColor"
-                  height="24"
-                  viewBox="0 0 256 256"
-                  width="24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm8,191.63V152h24a8,8,0,0,0,0-16H136V112a16,16,0,0,1,16-16h16a8,8,0,0,0,0-16H152a32,32,0,0,0-32,32v24H96a8,8,0,0,0,0,16h24v63.63a88,88,0,1,1,16,0Z"></path>
-                </svg>
-              </a>
-            </div>
-            <p className="text-sm text-center text-[var(--text-secondary)]">
-              © 2024 CareerVision. All rights reserved.
-            </p>
+                  {feature.description.split(".")[0]}.
+                </p>
+
+                <div className="space-y-1">
+                  {feature.benefits.slice(0, 2).map((benefit, idx) => (
+                    <div key={idx} className="flex items-center space-x-2">
+                      <div
+                        className={`w-1.5 h-1.5 ${themeClasses.brand.bg} rounded-full`}
+                      />
+                      <span className={`text-xs ${themeClasses.text.muted}`}>
+                        {benefit}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
-      </footer>
+      </section>
+
+      {/* Global Opportunities Section */}
+      <section className={`py-20 px-6 lg:px-12 ${themeClasses.bg.primary}`}>
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2
+              className={`text-4xl lg:text-5xl font-bold ${themeClasses.text.primary} mb-6`}
+            >
+              <span
+                className={`bg-gradient-to-r ${themeClasses.brand.gradient} bg-clip-text text-transparent`}
+              >
+                Global
+              </span>{" "}
+              Career Network
+            </h2>
+            <p
+              className={`text-xl ${themeClasses.text.secondary} max-w-3xl mx-auto`}
+            >
+              Connect with opportunities across continents. Our platform bridges
+              talent with global employers, creating pathways to international
+              career success.
+            </p>
+          </div>
+
+          <div className="grid lg:grid-cols-3 gap-8">
+            {/* International Companies */}
+            <div
+              className={`${themeClasses.bg.surface} rounded-2xl p-8 shadow-xl`}
+            >
+              <div className="flex items-center mb-6">
+                <div
+                  className={`w-12 h-12 ${themeClasses.brand.bg} rounded-xl flex items-center justify-center text-white text-2xl font-bold mr-4`}
+                >
+                  🏢
+                </div>
+                <div>
+                  <h3
+                    className={`text-xl font-bold ${themeClasses.text.primary}`}
+                  >
+                    Global Companies
+                  </h3>
+                  <p className={`${themeClasses.text.muted} text-sm`}>
+                    Fortune 500 & Startups
+                  </p>
+                </div>
+              </div>
+              <div className="space-y-4">
+                {[
+                  "Remote-First Organizations",
+                  "Multinational Corporations",
+                  "Tech Unicorns",
+                  "Innovation Labs",
+                  "Government Agencies",
+                ].map((item, idx) => (
+                  <div key={idx} className="flex items-center space-x-3">
+                    <div
+                      className={`w-2 h-2 ${themeClasses.brand.bg} rounded-full`}
+                    />
+                    <span className={`${themeClasses.text.secondary} text-sm`}>
+                      {item}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Career Paths */}
+            <div
+              className={`${themeClasses.bg.surface} rounded-2xl p-8 shadow-xl`}
+            >
+              <div className="flex items-center mb-6">
+                <div
+                  className={`w-12 h-12 ${themeClasses.brand.bg} rounded-xl flex items-center justify-center text-white text-2xl font-bold mr-4`}
+                >
+                  🚀
+                </div>
+                <div>
+                  <h3
+                    className={`text-xl font-bold ${themeClasses.text.primary}`}
+                  >
+                    Career Paths
+                  </h3>
+                  <p className={`${themeClasses.text.muted} text-sm`}>
+                    Diverse Opportunities
+                  </p>
+                </div>
+              </div>
+              <div className="space-y-4">
+                {[
+                  "Technology & Engineering",
+                  "Business & Strategy",
+                  "Creative & Design",
+                  "Healthcare & Research",
+                  "Finance & Analytics",
+                ].map((item, idx) => (
+                  <div key={idx} className="flex items-center space-x-3">
+                    <div
+                      className={`w-2 h-2 ${themeClasses.brand.bg} rounded-full`}
+                    />
+                    <span className={`${themeClasses.text.secondary} text-sm`}>
+                      {item}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Success Stories */}
+            <div
+              className={`${themeClasses.bg.surface} rounded-2xl p-8 shadow-xl`}
+            >
+              <div className="flex items-center mb-6">
+                <div
+                  className={`w-12 h-12 ${themeClasses.brand.bg} rounded-xl flex items-center justify-center text-white text-2xl font-bold mr-4`}
+                >
+                  ⭐
+                </div>
+                <div>
+                  <h3
+                    className={`text-xl font-bold ${themeClasses.text.primary}`}
+                  >
+                    Success Stories
+                  </h3>
+                  <p className={`${themeClasses.text.muted} text-sm`}>
+                    Real Career Growth
+                  </p>
+                </div>
+              </div>
+              <div className="space-y-4">
+                {[
+                  "150K+ Successful Placements",
+                  "98% Interview Success Rate",
+                  "85% Salary Increase Average",
+                  "60+ Countries Reached",
+                  "24/7 Career Support",
+                ].map((item, idx) => (
+                  <div key={idx} className="flex items-center space-x-3">
+                    <div
+                      className={`w-2 h-2 ${themeClasses.brand.bg} rounded-full`}
+                    />
+                    <span className={`${themeClasses.text.secondary} text-sm`}>
+                      {item}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* AI-Powered Features Section */}
+      <section className={`py-20 px-6 lg:px-12 ${themeClasses.bg.secondary}`}>
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <h2
+              className={`text-4xl lg:text-5xl font-bold ${themeClasses.text.primary} mb-6`}
+            >
+              AI-Powered{" "}
+              <span
+                className={`bg-gradient-to-r ${themeClasses.brand.gradient} bg-clip-text text-transparent`}
+              >
+                Career Intelligence
+              </span>
+            </h2>
+            <p
+              className={`text-xl ${themeClasses.text.secondary} max-w-3xl mx-auto`}
+            >
+              Advanced algorithms and machine learning drive personalized career
+              recommendations, skill gap analysis, and market trend insights.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div className="space-y-8">
+              <div
+                className={`${themeClasses.bg.surface} p-6 rounded-xl shadow-lg`}
+              >
+                <div className="flex items-center mb-4">
+                  <div className="text-3xl mr-4">🤖</div>
+                  <h3
+                    className={`text-xl font-bold ${themeClasses.text.primary}`}
+                  >
+                    Smart Matching Algorithm
+                  </h3>
+                </div>
+                <p className={`${themeClasses.text.secondary} mb-4`}>
+                  Our AI analyzes your skills, experience, and career goals to
+                  match you with opportunities that align perfectly with your
+                  professional aspirations.
+                </p>
+                <div className="flex items-center space-x-2">
+                  <div
+                    className={`px-3 py-1 ${themeClasses.brand.bg} text-white text-xs rounded-full`}
+                  >
+                    95% Accuracy
+                  </div>
+                  <div
+                    className={`px-3 py-1 ${themeClasses.bg.accent} ${themeClasses.text.primary} text-xs rounded-full`}
+                  >
+                    Real-time Updates
+                  </div>
+                </div>
+              </div>
+
+              <div
+                className={`${themeClasses.bg.surface} p-6 rounded-xl shadow-lg`}
+              >
+                <div className="flex items-center mb-4">
+                  <div className="text-3xl mr-4">📊</div>
+                  <h3
+                    className={`text-xl font-bold ${themeClasses.text.primary}`}
+                  >
+                    Market Intelligence
+                  </h3>
+                </div>
+                <p className={`${themeClasses.text.secondary} mb-4`}>
+                  Stay ahead with real-time salary data, skill demand trends,
+                  and industry insights from over 60 countries worldwide.
+                </p>
+                <div className="flex items-center space-x-2">
+                  <div
+                    className={`px-3 py-1 ${themeClasses.brand.bg} text-white text-xs rounded-full`}
+                  >
+                    Live Data
+                  </div>
+                  <div
+                    className={`px-3 py-1 ${themeClasses.bg.accent} ${themeClasses.text.primary} text-xs rounded-full`}
+                  >
+                    Global Insights
+                  </div>
+                </div>
+              </div>
+
+              <div
+                className={`${themeClasses.bg.surface} p-6 rounded-xl shadow-lg`}
+              >
+                <div className="flex items-center mb-4">
+                  <div className="text-3xl mr-4">🎯</div>
+                  <h3
+                    className={`text-xl font-bold ${themeClasses.text.primary}`}
+                  >
+                    Personalized Roadmaps
+                  </h3>
+                </div>
+                <p className={`${themeClasses.text.secondary} mb-4`}>
+                  AI-generated learning paths and skill development plans
+                  tailored to your target roles and career timeline.
+                </p>
+                <div className="flex items-center space-x-2">
+                  <div
+                    className={`px-3 py-1 ${themeClasses.brand.bg} text-white text-xs rounded-full`}
+                  >
+                    Adaptive Learning
+                  </div>
+                  <div
+                    className={`px-3 py-1 ${themeClasses.bg.accent} ${themeClasses.text.primary} text-xs rounded-full`}
+                  >
+                    Goal-Oriented
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div
+              className={`${themeClasses.bg.surface} p-8 rounded-2xl shadow-xl`}
+            >
+              <h3
+                className={`text-2xl font-bold ${themeClasses.text.primary} mb-6 text-center`}
+              >
+                Platform Statistics
+              </h3>
+              <div className="grid grid-cols-2 gap-6">
+                <div className="text-center">
+                  <div
+                    className={`text-3xl font-bold ${themeClasses.brand.primary} mb-2`}
+                  >
+                    5M+
+                  </div>
+                  <div className={`text-sm ${themeClasses.text.muted}`}>
+                    AI Matches Made
+                  </div>
+                </div>
+                <div className="text-center">
+                  <div
+                    className={`text-3xl font-bold ${themeClasses.brand.primary} mb-2`}
+                  >
+                    99.7%
+                  </div>
+                  <div className={`text-sm ${themeClasses.text.muted}`}>
+                    Platform Uptime
+                  </div>
+                </div>
+                <div className="text-center">
+                  <div
+                    className={`text-3xl font-bold ${themeClasses.brand.primary} mb-2`}
+                  >
+                    2.3s
+                  </div>
+                  <div className={`text-sm ${themeClasses.text.muted}`}>
+                    Avg Response Time
+                  </div>
+                </div>
+                <div className="text-center">
+                  <div
+                    className={`text-3xl font-bold ${themeClasses.brand.primary} mb-2`}
+                  >
+                    24/7
+                  </div>
+                  <div className={`text-sm ${themeClasses.text.muted}`}>
+                    AI Support
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-8 pt-6 border-t border-opacity-20">
+                <div className="text-center">
+                  <p className={`${themeClasses.text.secondary} text-sm mb-4`}>
+                    Join the thousands of professionals who trust our AI to
+                    accelerate their careers
+                  </p>
+                  <button
+                    onClick={() => navigate("/demo")}
+                    className={`px-6 py-3 ${themeClasses.brand.bg} text-white rounded-xl font-semibold hover:scale-105 transform transition-all duration-300`}
+                  >
+                    Try AI Demo
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section className={`py-20 px-6 lg:px-12 ${themeClasses.bg.primary}`}>
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <h2
+              className={`text-4xl lg:text-5xl font-bold ${themeClasses.text.primary} mb-6`}
+            >
+              Success{" "}
+              <span
+                className={`bg-gradient-to-r ${themeClasses.brand.gradient} bg-clip-text text-transparent`}
+              >
+                Stories
+              </span>
+            </h2>
+            <p
+              className={`text-xl ${themeClasses.text.secondary} max-w-2xl mx-auto`}
+            >
+              Real professionals, real career transformations, real global
+              opportunities.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              {
+                name: "Sarah Chen",
+                role: "Senior Data Scientist",
+                company: "Google",
+                location: "Singapore → Mountain View",
+                image: "👩‍💻",
+                quote:
+                  "CareerVision's AI matching connected me with my dream role at Google. The personalized roadmap helped me upskill strategically.",
+                outcome: "300% salary increase",
+              },
+              {
+                name: "Marcus Johnson",
+                role: "Product Manager",
+                company: "Spotify",
+                location: "Lagos → Stockholm",
+                image: "👨‍💼",
+                quote:
+                  "From Nigeria to Sweden, CareerVision made my international career transition seamless. The global network is incredible.",
+                outcome: "Lead PM role in 6 months",
+              },
+              {
+                name: "Priya Sharma",
+                role: "UX Design Lead",
+                company: "Airbnb",
+                location: "Mumbai → San Francisco",
+                image: "👩‍🎨",
+                quote:
+                  "The interview coaching and skill assessments were game-changers. I felt confident and well-prepared for every opportunity.",
+                outcome: "Design Lead at 28",
+              },
+            ].map((testimonial, index) => (
+              <div
+                key={index}
+                className={`${themeClasses.bg.surface} rounded-2xl p-8 shadow-xl transform hover:scale-105 transition-all duration-300`}
+              >
+                <div className="flex items-center mb-6">
+                  <div className="text-4xl mr-4">{testimonial.image}</div>
+                  <div>
+                    <h3
+                      className={`text-lg font-bold ${themeClasses.text.primary}`}
+                    >
+                      {testimonial.name}
+                    </h3>
+                    <p
+                      className={`${themeClasses.brand.primary} font-semibold text-sm`}
+                    >
+                      {testimonial.role}
+                    </p>
+                    <p className={`${themeClasses.text.muted} text-xs`}>
+                      {testimonial.company} • {testimonial.location}
+                    </p>
+                  </div>
+                </div>
+
+                <blockquote
+                  className={`${themeClasses.text.secondary} italic mb-6 leading-relaxed`}
+                >
+                  "{testimonial.quote}"
+                </blockquote>
+
+                <div
+                  className={`px-4 py-2 ${themeClasses.brand.bg} text-white rounded-lg text-center font-semibold text-sm`}
+                >
+                  {testimonial.outcome}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Simplified CTA Section */}
+      <section
+        className={`py-16 px-6 lg:px-12 ${themeClasses.bg.primary} relative overflow-hidden`}
+      >
+        <div className="max-w-3xl mx-auto text-center relative z-10">
+          <h2
+            className={`text-3xl lg:text-4xl font-bold ${themeClasses.text.primary} mb-6`}
+          >
+            Ready to Go Global?
+          </h2>
+          <p
+            className={`text-lg ${themeClasses.text.secondary} mb-8 max-w-xl mx-auto`}
+          >
+            Join professionals worldwide who are building international careers
+            with CareerVision.
+          </p>
+
+          <button
+            onClick={() => navigate("/register")}
+            className={`px-10 py-4 ${themeClasses.brand.bg} text-white rounded-xl font-bold text-xl hover:scale-105 transform transition-all duration-300 shadow-2xl`}
+          >
+            Start Your Global Journey
+          </button>
+        </div>
+
+        {/* Background Effects */}
+        <div className="absolute inset-0 opacity-5">
+          {[...Array(5)].map((_, i) => (
+            <div
+              key={i}
+              className={`absolute w-32 h-32 ${themeClasses.brand.bg} rounded-full blur-3xl animate-pulse`}
+              style={{
+                top: `${Math.random() * 100}%`,
+                left: `${Math.random() * 100}%`,
+                animationDelay: `${i * 2}s`,
+                animationDuration: `${8 + i * 2}s`,
+              }}
+            />
+          ))}
+        </div>
+      </section>
     </div>
   );
 };
 
-export default CareerVisionHome;
+export default Home;
