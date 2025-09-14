@@ -1,55 +1,73 @@
-import React, { useState, useEffect } from 'react';
-import UserHeader from './UserHeader.jsx';
-import ProfilePicture from './ProfilePicture.jsx';
-import UserInfo from './UserInfo.jsx';
-import EmailCard from './EmailCard.jsx';
-import LocationCard from './LocationCard.jsx';
-import PhoneCard from './PhoneCard.jsx';
-import AddressCard from './AddressCard.jsx';
+import React, { useState, useEffect } from "react";
+import { useTheme } from "../../../context/ThemeContext";
+import { getThemeClasses } from "../../../styles/themes";
+import UserHeader from "./UserHeader.jsx";
+import ProfilePicture from "./ProfilePicture.jsx";
+import UserInfo from "./UserInfo.jsx";
+import EmailCard from "./EmailCard.jsx";
+import LocationCard from "./LocationCard.jsx";
+import PhoneCard from "./PhoneCard.jsx";
+import AddressCard from "./AddressCard.jsx";
 
 const Profile = () => {
-    const [isMounted, setMounted] = useState(false);
-    const [user, setUser]=useState()
-    useEffect(() => {
-        const timer = setTimeout(() => setMounted(true), 10);
-        return () => {
-            setMounted(false);
-            clearTimeout(timer);
-        };
-    }, []);
+  const [isMounted, setMounted] = useState(false);
+  const { isDarkMode } = useTheme();
+  const themeClasses = getThemeClasses(isDarkMode);
 
-    return (
-        <div className={`flex transition-all ml-10 mt-20 duration-500 ease-in-out ${isMounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'}`}>
+  useEffect(() => {
+    const timer = setTimeout(() => setMounted(true), 10);
+    return () => {
+      setMounted(false);
+      clearTimeout(timer);
+    };
+  }, []);
 
-            {/* Left Column */}
-            <div className="w-300 pr-6">
-
-                {/* Profile Card */}
-                <div className="bg-white rounded-lg mr-12 shadow-xl mb-6 hover:-translate-y-1 transition-transform duration-300">
-                    <UserHeader />
-                    <div className="p-6 flex">
-                        <ProfilePicture />
-                        <UserInfo />
-                    </div>
+  return (
+    <div
+      className={`min-h-screen ${
+        themeClasses.bg.primary
+      } transition-all duration-500 ease-in-out ${
+        isMounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
+      }`}
+    >
+      <div className="w-full max-w-full px-6 py-8">
+        {/* Enhanced Grid Layout for Map Focus */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          {/* Left Column - Profile & Contact Info */}
+          <div className="lg:col-span-4 space-y-6">
+            {/* Main Profile Card */}
+            <div
+              className={`w-full ${themeClasses.bg.surface} rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 ${themeClasses.border.primary} border`}
+            >
+              <UserHeader />
+              <div className="p-6">
+                <div className="flex flex-col lg:flex-row items-center lg:items-start space-y-6 lg:space-y-0 lg:space-x-6">
+                  <div className="flex-shrink-0">
+                    <ProfilePicture />
+                  </div>
+                  <div className="flex-1 w-full">
+                    <UserInfo />
+                  </div>
                 </div>
-
-                {/* Email Card */}
-                <EmailCard />
+              </div>
             </div>
 
-            {/*Middle Column */}
+            {/* Compact Contact Cards */}
+            <div className="grid grid-cols-1 gap-4">
+              <EmailCard />
+              <PhoneCard />
+              <AddressCard />
+            </div>
+          </div>
+
+          {/* Right Column - Expanded Location */}
+          <div className="lg:col-span-8">
             <LocationCard />
-
-            {/* Right Column */}
-            <div className="w-300 pl-2">
-                {/* Phone Number Card */}
-                <PhoneCard />
-                {/* Address Card */}
-                <AddressCard />
-            </div>
-
+          </div>
         </div>
-    );
+      </div>
+    </div>
+  );
 };
 
 export default Profile;
