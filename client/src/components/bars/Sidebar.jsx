@@ -70,7 +70,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
         },
         {
           title: "Career Paths",
-          path: "/career-paths",
+          path: "/careers",
           icon: <Map className="w-4 h-4" />,
         },
         {
@@ -80,7 +80,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
         },
         {
           title: "Learning Roadmaps",
-          path: "/roadmaps",
+          path: "/roadmap",
           icon: <Timeline className="w-4 h-4" />,
         },
       ],
@@ -95,6 +95,11 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
         {
           title: "Browse Jobs",
           path: "/jobs",
+          icon: <WorkOutline className="w-4 h-4" />,
+        },
+        {
+          title: "Create Job",
+          path: "/jobs/create",
           icon: <WorkOutline className="w-4 h-4" />,
         },
         {
@@ -127,6 +132,11 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
           icon: <QuestionAnswer className="w-4 h-4" />,
         },
         {
+          title: "Interview Room",
+          path: "/interview-room",
+          icon: <VideoCall className="w-4 h-4" />,
+        },
+        {
           title: "Mock Interviews",
           path: "/mock-interviews",
           icon: <VideoCall className="w-4 h-4" />,
@@ -151,9 +161,29 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
       bgColor: "bg-indigo-50",
       subItems: [
         {
+          title: "Community Forum",
+          path: "/community",
+          icon: <PeopleOutline className="w-4 h-4" />,
+        },
+        {
           title: "Network",
           path: "/network",
           icon: <PeopleOutline className="w-4 h-4" />,
+        },
+        {
+          title: "Forums",
+          path: "/forums",
+          icon: <People className="w-4 h-4" />,
+        },
+        {
+          title: "Blogs",
+          path: "/blogs",
+          icon: <ArticleOutlined className="w-4 h-4" />,
+        },
+        {
+          title: "Create Blog",
+          path: "/blogs/newBlog",
+          icon: <ArticleOutlined className="w-4 h-4" />,
         },
         {
           title: "Messages",
@@ -164,11 +194,6 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
           title: "Mentorship",
           path: "/mentorship",
           icon: <School className="w-4 h-4" />,
-        },
-        {
-          title: "Forums",
-          path: "/forums",
-          icon: <People className="w-4 h-4" />,
         },
       ],
     },
@@ -183,6 +208,11 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
           title: "Company Explorer",
           path: "/companies",
           icon: <Business className="w-4 h-4" />,
+        },
+        {
+          title: "Create Company",
+          path: "/company/create",
+          icon: <WorkOutline className="w-4 h-4" />,
         },
         {
           title: "Company Reviews",
@@ -227,6 +257,30 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
           title: "Conferences",
           path: "/conferences",
           icon: <LocationOn className="w-4 h-4" />,
+        },
+      ],
+    },
+    {
+      id: "tools",
+      title: "Tools & Features",
+      icon: <CameraAlt className="w-5 h-5" />,
+      color: "text-cyan-600",
+      bgColor: "bg-cyan-50",
+      subItems: [
+        {
+          title: "Emotion Capture",
+          path: "/emotion",
+          icon: <CameraAlt className="w-4 h-4" />,
+        },
+        {
+          title: "Career Chatbot",
+          path: "/chatbot",
+          icon: <Chat className="w-4 h-4" />,
+        },
+        {
+          title: "Sample Social",
+          path: "/sample",
+          icon: <PeopleOutline className="w-4 h-4" />,
         },
       ],
     },
@@ -294,8 +348,6 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
         <div
           className={`flex items-center justify-between p-5 border-b ${themeClasses.border.primary} flex-shrink-0`}
         >
-          
-
           {/* Beautiful Collapse/Expand Button */}
           <div className="flex items-center gap-2">
             {!isCollapsed && (
