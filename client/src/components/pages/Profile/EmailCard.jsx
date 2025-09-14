@@ -1,34 +1,77 @@
-import React from 'react'
-import { FaEnvelope } from 'react-icons/fa'
-import { useSelector } from 'react-redux'
+import React from "react";
+import { FaEnvelope, FaStar, FaShieldAlt } from "react-icons/fa";
+import { useSelector } from "react-redux";
+import { useTheme } from "../../../context/ThemeContext";
+import { getThemeClasses } from "../../../styles/themes";
 
 const EmailCard = () => {
-    const {user} = useSelector((state)=>state.user)
-    return (
-        <>
-            <div className="bg-white w-100 rounded-lg shadow-xl mb-6 hover:-translate-y-1 transition-transform duration-300">
-                <div className="bg-gray-100 px-4 py-3 rounded-t-lg flex items-center">
-                    <FaEnvelope className="mr-2" />
-                    <h2 className="font-semibold">Email Address</h2>
-                </div>
-                <div className="p-6">
-                    <div className="mb-4">
-                        <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">
-                            Primary Mail
-                        </span>
-                        <p className="mt-1 text-lg">{user?.email}</p>
-                    </div>
-                    <div>
-                        <span className="bg-gray-100 text-gray-800 text-xs font-medium px-2.5 py-0.5 rounded">
-                            Secondary Mail
-                        </span>
-                        <p className="mt-1 text-lg">siyambhuiyan@gmail.com</p>
-                    </div>
-                </div>
-            </div>
-        </>
-    )
-}
+  const { user } = useSelector((state) => state.user);
+  const { isDarkMode } = useTheme();
+  const themeClasses = getThemeClasses(isDarkMode);
+
+  return (
+    <div
+      className={`w-full ${themeClasses.bg.surface} rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 ${themeClasses.border.primary} border`}
+    >
+      {/* Compact Header */}
+      <div
+        className={`${themeClasses.bg.accent} px-4 py-3 rounded-t-xl flex items-center ${themeClasses.border.divider} border-b`}
+      >
+        <div
+          className={`${themeClasses.brand.bg} p-2 rounded-lg mr-3 shadow-md`}
+        >
+          <FaEnvelope className="text-white text-sm" />
+        </div>
+        <h2 className={`${themeClasses.text.primary} font-bold text-lg`}>
+          Email Addresses
+        </h2>
+      </div>
+
+      {/* Compact Content */}
+      <div className="p-4 space-y-3">
+        {/* Primary Email */}
+        <div
+          className={`${themeClasses.bg.accent} p-3 rounded-lg ${themeClasses.border.primary} border`}
+        >
+          <div className="flex items-center justify-between mb-2">
+            <span
+              className={`${themeClasses.status.info} ${themeClasses.bg.surface} text-xs font-semibold px-2 py-1 rounded-full flex items-center`}
+            >
+              <FaStar className="mr-1 text-xs" />
+              Primary
+            </span>
+            <FaShieldAlt
+              className={`${themeClasses.status.success} text-sm`}
+              title="Verified"
+            />
+          </div>
+          <p
+            className={`${themeClasses.text.primary} text-sm font-medium break-all`}
+          >
+            {user?.email}
+          </p>
+        </div>
+
+        {/* Secondary Email */}
+        <div
+          className={`${themeClasses.bg.accent} p-3 rounded-lg ${themeClasses.border.primary} border`}
+        >
+          <div className="flex items-center justify-between mb-2">
+            <span
+              className={`${themeClasses.text.muted} ${themeClasses.bg.surface} text-xs font-semibold px-2 py-1 rounded-full`}
+            >
+              Secondary
+            </span>
+          </div>
+          <p
+            className={`${themeClasses.text.secondary} text-sm font-medium break-all`}
+          >
+            siyambhuiyan@gmail.com
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default EmailCard;
-

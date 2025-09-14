@@ -1,11 +1,9 @@
 import React, { useState } from "react";
 import { createCompany } from "../../api/company/company";
 import { useNavigate } from "react-router-dom";
-import SimplifiedMap from "./SimplifiedMap";
-import { useSelector } from "react-redux";
+import LocationMap from "./LocationMap";
 
 const CreateCompany = () => {
-
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
@@ -13,7 +11,7 @@ const CreateCompany = () => {
     overview: "",
     commitment: "",
     lat: null,
-    lon: null
+    lon: null,
   });
 
   const handleChange = (e) => {
@@ -28,8 +26,7 @@ const CreateCompany = () => {
       ...formData,
       location: location.placeName,
       lat: location.latitude,
-      lon: location.longitude
-
+      lon: location.longitude,
     });
   };
 
@@ -50,10 +47,7 @@ const CreateCompany = () => {
           Create a New Company
         </h1>
 
-        <div
-
-          className="bg-white rounded-xl shadow-md p-6 space-y-6"
-        >
+        <div className="bg-white rounded-xl shadow-md p-6 space-y-6">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Company Name
@@ -73,9 +67,10 @@ const CreateCompany = () => {
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Company Location
             </label>
-            <SimplifiedMap
+            <LocationMap
               onLocationSelect={handleLocationSelect}
               height="300px"
+              showLocationButton={false}
             />
             {formData.lat && formData.lon && (
               <p className="mt-2 text-sm text-gray-500">
@@ -83,7 +78,6 @@ const CreateCompany = () => {
               </p>
             )}
           </div>
-
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
