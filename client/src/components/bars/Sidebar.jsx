@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
-  Dashboard,
   Work,
   School,
   QuestionAnswer,
   People,
   Event,
-  Business,
   Assignment,
   Psychology,
   Map,
@@ -18,20 +16,16 @@ import {
   Close,
   ChevronRight,
   Star,
-  Notifications,
   AccountCircle,
   Chat,
-  EventNote,
+  VideoCall,
   Assessment,
   BookmarkBorder,
   WorkOutline,
   PeopleOutline,
-  BarChart,
   Timeline,
   LocationOn,
-  ArticleOutlined,
   CameraAlt,
-  VideoCall,
   KeyboardDoubleArrowLeft,
   KeyboardDoubleArrowRight,
   ExpandMore,
@@ -49,14 +43,6 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
 
   const menuSections = [
     {
-      id: "dashboard",
-      title: "Dashboard",
-      icon: <Dashboard className="w-5 h-5" />,
-      path: "/dashboard",
-      color: "text-blue-600",
-      bgColor: "bg-blue-50",
-    },
-    {
       id: "career",
       title: "Career Discovery",
       icon: <Psychology className="w-5 h-5" />,
@@ -72,11 +58,6 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
           title: "Career Paths",
           path: "/careers",
           icon: <Map className="w-4 h-4" />,
-        },
-        {
-          title: "Skills Analysis",
-          path: "/skills-analysis",
-          icon: <BarChart className="w-4 h-4" />,
         },
         {
           title: "Learning Roadmaps",
@@ -112,11 +93,6 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
           path: "/applications",
           icon: <Assignment className="w-4 h-4" />,
         },
-        {
-          title: "Job Alerts",
-          path: "/job-alerts",
-          icon: <Notifications className="w-4 h-4" />,
-        },
       ],
     },
     {
@@ -141,16 +117,6 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
           path: "/mock-interviews",
           icon: <VideoCall className="w-4 h-4" />,
         },
-        {
-          title: "Interview History",
-          path: "/interview-history",
-          icon: <EventNote className="w-4 h-4" />,
-        },
-        {
-          title: "Tips & Guides",
-          path: "/interview-guides",
-          icon: <ArticleOutlined className="w-4 h-4" />,
-        },
       ],
     },
     {
@@ -164,70 +130,6 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
           title: "Community Forum",
           path: "/community",
           icon: <PeopleOutline className="w-4 h-4" />,
-        },
-        {
-          title: "Network",
-          path: "/network",
-          icon: <PeopleOutline className="w-4 h-4" />,
-        },
-        {
-          title: "Forums",
-          path: "/forums",
-          icon: <People className="w-4 h-4" />,
-        },
-        {
-          title: "Blogs",
-          path: "/blogs",
-          icon: <ArticleOutlined className="w-4 h-4" />,
-        },
-        {
-          title: "Create Blog",
-          path: "/blogs/newBlog",
-          icon: <ArticleOutlined className="w-4 h-4" />,
-        },
-        {
-          title: "Messages",
-          path: "/messages",
-          icon: <Chat className="w-4 h-4" />,
-        },
-        {
-          title: "Mentorship",
-          path: "/mentorship",
-          icon: <School className="w-4 h-4" />,
-        },
-      ],
-    },
-    {
-      id: "companies",
-      title: "Companies",
-      icon: <Business className="w-5 h-5" />,
-      color: "text-teal-600",
-      bgColor: "bg-teal-50",
-      subItems: [
-        {
-          title: "Company Explorer",
-          path: "/companies",
-          icon: <Business className="w-4 h-4" />,
-        },
-        {
-          title: "Create Company",
-          path: "/company/create",
-          icon: <WorkOutline className="w-4 h-4" />,
-        },
-        {
-          title: "Company Reviews",
-          path: "/company-reviews",
-          icon: <Star className="w-4 h-4" />,
-        },
-        {
-          title: "Salary Insights",
-          path: "/salary-insights",
-          icon: <TrendingUp className="w-4 h-4" />,
-        },
-        {
-          title: "Culture Match",
-          path: "/culture-match",
-          icon: <Psychology className="w-4 h-4" />,
         },
       ],
     },
