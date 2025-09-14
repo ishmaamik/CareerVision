@@ -1,74 +1,74 @@
-// Light Theme Configuration (Elegant Warm Cream & Gold Theme)
+// Light Theme Configuration (Modern Blue & White Professional Theme)
 export const lightTheme = {
   colors: {
     // Backgrounds
-    primary: "#FEFBF3", // Soft warm ivory
-    secondary: "#FDF8EE", // Light warm cream
-    accent: "#F8F2E4", // Warm beige
+    primary: "#FFFFFF", // Pure white
+    secondary: "#F8FAFC", // Light gray-blue
+    accent: "#F1F5F9", // Soft blue-gray
     surface: "#FFFFFF", // Pure white for cards
 
     // Text Colors
     text: {
-      primary: "#2A1810", // Rich dark coffee
-      secondary: "#483828", // Warm brown
-      muted: "#6B5B47", // Coffee brown
-      accent: "#8B5A2B", // Caramel brown
+      primary: "#1E293B", // Dark slate
+      secondary: "#475569", // Medium slate
+      muted: "#64748B", // Light slate
+      accent: "#3B82F6", // Blue accent
     },
 
     // Brand Colors
     brand: {
-      primary: "#D4A574", // Warm gold
-      secondary: "#E6C79C", // Light gold
-      accent: "#F4E4BC", // Pale gold
-      gradient: "from-amber-400 via-yellow-500 to-orange-500",
+      primary: "#3B82F6", // Professional blue
+      secondary: "#6366F1", // Indigo
+      accent: "#8B5CF6", // Purple
+      gradient: "from-blue-500 via-indigo-500 to-purple-500",
     },
 
     // Status Colors
-    success: "#16A085", // Elegant teal
-    warning: "#F39C12", // Warm orange
-    error: "#E74C3C", // Soft red
-    info: "#3498DB", // Clear blue
+    success: "#10B981", // Emerald green
+    warning: "#F59E0B", // Amber
+    error: "#EF4444", // Red
+    info: "#06B6D4", // Cyan
 
     // Borders & Dividers
-    border: "#E8DDD0", // Light cream border
-    divider: "#F0E6D8", // Very light cream
+    border: "#E2E8F0", // Light blue-gray
+    divider: "#F1F5F9", // Very light blue-gray
   },
 };
 
-// Dark Theme Configuration (Deep Emerald Forest Theme)
+// Dark Theme Configuration (Soft Dark Professional Theme)
 export const darkTheme = {
   colors: {
     // Backgrounds
-    primary: "#0A1F1A", // Deep emerald forest
-    secondary: "#0E2B23", // Rich forest green
-    accent: "#14362C", // Medium forest green
-    surface: "#1A4136", // Lighter forest for cards
+    primary: "#0F172A", // Dark slate
+    secondary: "#1E293B", // Medium dark slate
+    accent: "#334155", // Light dark slate
+    surface: "#1E293B", // Medium dark for cards
 
     // Text Colors
     text: {
-      primary: "#F0FDF4", // Soft mint white
-      secondary: "#D1FAE5", // Light sage
-      muted: "#86EFAC", // Bright mint
-      accent: "#BBF7D0", // Light green
+      primary: "#F8FAFC", // Light gray-blue
+      secondary: "#E2E8F0", // Medium light
+      muted: "#94A3B8", // Muted light
+      accent: "#60A5FA", // Light blue
     },
 
     // Brand Colors
     brand: {
-      primary: "#22C55E", // Vibrant emerald
-      secondary: "#16A34A", // Rich green
-      accent: "#4ADE80", // Light emerald
-      gradient: "from-emerald-400 via-green-500 to-teal-500",
+      primary: "#60A5FA", // Light blue
+      secondary: "#818CF8", // Light indigo
+      accent: "#A78BFA", // Light purple
+      gradient: "from-blue-400 via-indigo-400 to-purple-400",
     },
 
     // Status Colors
-    success: "#22C55E", // Success emerald
-    warning: "#F59E0B", // Warm amber
-    error: "#EF4444", // Soft coral
-    info: "#3B82F6", // Soft blue
+    success: "#34D399", // Light emerald
+    warning: "#FBBF24", // Light amber
+    error: "#F87171", // Light red
+    info: "#22D3EE", // Light cyan
 
     // Borders & Dividers
-    border: "#1F4A3A", // Medium green border
-    divider: "#16362B", // Dark green divider
+    border: "#334155", // Medium dark slate
+    divider: "#475569", // Dark slate
   },
 };
 
@@ -78,105 +78,104 @@ export const getTheme = (isDarkMode) => (isDarkMode ? darkTheme : lightTheme);
 export const getThemeClasses = (isDarkMode) => ({
   // Background classes
   bg: {
-    primary: isDarkMode ? "bg-[#0A1F1A]" : "bg-[#FEFBF3]",
-    secondary: isDarkMode ? "bg-[#0E2B23]" : "bg-[#FDF8EE]",
-    accent: isDarkMode ? "bg-[#14362C]" : "bg-[#F8F2E4]",
-    surface: isDarkMode ? "bg-[#1A4136]" : "bg-white",
+    primary: isDarkMode ? "bg-slate-900" : "bg-white",
+    secondary: isDarkMode ? "bg-slate-800" : "bg-slate-50",
+    accent: isDarkMode ? "bg-slate-700" : "bg-slate-100",
+    surface: isDarkMode ? "bg-slate-800" : "bg-white",
   },
 
   // Text classes
   text: {
-    primary: isDarkMode ? "text-[#F0FDF4]" : "text-[#2A1810]",
-    secondary: isDarkMode ? "text-[#D1FAE5]" : "text-[#483828]",
-    muted: isDarkMode ? "text-[#86EFAC]" : "text-[#6B5B47]",
-    accent: isDarkMode ? "text-[#BBF7D0]" : "text-[#8B5A2B]",
+    primary: isDarkMode ? "text-slate-50" : "text-slate-800",
+    secondary: isDarkMode ? "text-slate-200" : "text-slate-600",
+    muted: isDarkMode ? "text-slate-400" : "text-slate-500",
+    accent: isDarkMode ? "text-blue-400" : "text-blue-600",
   },
 
   // Brand classes
   brand: {
-    primary: isDarkMode ? "text-[#22C55E]" : "text-[#D4A574]",
-    bg: isDarkMode ? "bg-[#22C55E]" : "bg-[#D4A574]",
+    primary: isDarkMode ? "text-blue-400" : "text-blue-600",
+    bg: isDarkMode ? "bg-blue-400" : "bg-blue-600",
     gradient: isDarkMode
-      ? "from-emerald-400 via-green-500 to-teal-500"
-      : "from-amber-400 via-yellow-500 to-orange-500",
-    hover: isDarkMode ? "hover:bg-[#16A34A]" : "hover:bg-[#C17817]",
+      ? "from-blue-400 via-indigo-400 to-purple-400"
+      : "from-blue-500 via-indigo-500 to-purple-500",
+    hover: isDarkMode ? "hover:bg-blue-500" : "hover:bg-blue-700",
   },
 
   // Status classes
   status: {
-    success: isDarkMode ? "text-emerald-500" : "text-green-700",
-    warning: isDarkMode ? "text-amber-500" : "text-orange-700",
-    error: isDarkMode ? "text-red-500" : "text-red-700",
-    info: isDarkMode ? "text-blue-500" : "text-blue-700",
+    success: isDarkMode ? "text-emerald-400" : "text-emerald-600",
+    warning: isDarkMode ? "text-amber-400" : "text-amber-600",
+    error: isDarkMode ? "text-red-400" : "text-red-600",
+    info: isDarkMode ? "text-cyan-400" : "text-cyan-600",
   },
 
   // Border classes
   border: {
-    primary: isDarkMode ? "border-[#1F4A3A]" : "border-[#E8DDD0]",
-    divider: isDarkMode ? "border-[#16362B]" : "border-[#F0E6D8]",
+    primary: isDarkMode ? "border-slate-700" : "border-slate-200",
+    divider: isDarkMode ? "border-slate-600" : "border-slate-100",
   },
 
   // Gradient classes
   gradient: {
     primary: isDarkMode
-      ? "from-emerald-900 to-green-900"
-      : "from-amber-50 to-orange-50",
+      ? "from-slate-800 to-slate-900"
+      : "from-slate-50 to-white",
     secondary: isDarkMode
-      ? "from-green-800 to-emerald-800"
-      : "from-orange-50 to-yellow-50",
+      ? "from-slate-700 to-slate-800"
+      : "from-white to-slate-50",
     hero: isDarkMode
-      ? "from-emerald-950 via-green-950 to-teal-900"
-      : "from-amber-100 via-orange-50 to-yellow-100",
+      ? "from-slate-900 via-blue-900 to-indigo-900"
+      : "from-blue-50 via-indigo-50 to-purple-50",
     accent: isDarkMode
-      ? "from-emerald-400 via-green-500 to-teal-500"
-      : "from-amber-400 via-yellow-500 to-orange-500",
+      ? "from-blue-400 via-indigo-400 to-purple-400"
+      : "from-blue-500 via-indigo-500 to-purple-500",
   },
 
   // Interactive states
   interactive: {
-    hover: isDarkMode ? "hover:bg-[#1F4A3A]" : "hover:bg-[#F0E6D8]",
-    active: isDarkMode ? "active:bg-[#2A5B4A]" : "active:bg-[#E8DDD0]",
+    hover: isDarkMode ? "hover:bg-slate-700" : "hover:bg-slate-50",
+    active: isDarkMode ? "active:bg-slate-600" : "active:bg-slate-100",
     focus: isDarkMode
-      ? "focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:ring-offset-[#0A1F1A]"
-      : "focus:ring-2 focus:ring-amber-500 focus:ring-offset-2",
+      ? "focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-900"
+      : "focus:ring-2 focus:ring-blue-500 focus:ring-offset-2",
     disabled: isDarkMode
-      ? "disabled:bg-[#0E2B23] disabled:text-[#86EFAC]"
-      : "disabled:bg-[#F8F2E4] disabled:text-[#6B5B47]",
+      ? "disabled:bg-slate-800 disabled:text-slate-500"
+      : "disabled:bg-slate-100 disabled:text-slate-400",
   },
 });
 
-// Component-specific styling with enhanced colors
 export const getComponentStyles = (isDarkMode) => ({
   // Card styles
   card: isDarkMode
-    ? "bg-[#1A4136] border-[#1F4A3A] border rounded-xl shadow-xl shadow-emerald-900/20"
-    : "bg-white border-[#E8DDD0] border rounded-xl shadow-lg shadow-amber-900/10",
+    ? "bg-slate-800 border-slate-700 border rounded-xl shadow-xl shadow-slate-900/50"
+    : "bg-white border-slate-200 border rounded-xl shadow-lg shadow-slate-900/10",
 
   // Button styles
   button: {
     primary: isDarkMode
-      ? "bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
-      : "bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105",
+      ? "bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+      : "bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105",
     secondary: isDarkMode
-      ? "bg-[#14362C] hover:bg-[#1F4A3A] text-[#D1FAE5] border-2 border-[#1F4A3A] hover:border-[#22C55E] px-6 py-3 rounded-xl font-semibold transition-all duration-300"
-      : "bg-[#F8F2E4] hover:bg-[#E8DDD0] text-[#483828] border-2 border-[#E8DDD0] hover:border-[#D4A574] px-6 py-3 rounded-xl font-semibold transition-all duration-300",
+      ? "bg-slate-700 hover:bg-slate-600 text-slate-200 border-2 border-slate-600 hover:border-blue-500 px-6 py-3 rounded-xl font-semibold transition-all duration-300"
+      : "bg-slate-100 hover:bg-slate-200 text-slate-700 border-2 border-slate-200 hover:border-blue-500 px-6 py-3 rounded-xl font-semibold transition-all duration-300",
     ghost: isDarkMode
-      ? "hover:bg-[#14362C] text-[#86EFAC] hover:text-[#D1FAE5] px-6 py-3 rounded-xl font-semibold transition-all duration-300"
-      : "hover:bg-[#F8F2E4] text-[#6B5B47] hover:text-[#483828] px-6 py-3 rounded-xl font-semibold transition-all duration-300",
+      ? "hover:bg-slate-700 text-slate-400 hover:text-slate-200 px-6 py-3 rounded-xl font-semibold transition-all duration-300"
+      : "hover:bg-slate-100 text-slate-600 hover:text-slate-800 px-6 py-3 rounded-xl font-semibold transition-all duration-300",
   },
 
   // Input styles
   input: isDarkMode
-    ? "bg-[#0E2B23] border-[#1F4A3A] text-[#F0FDF4] placeholder-[#86EFAC] border-2 rounded-xl px-4 py-3 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-300"
-    : "bg-white border-[#E8DDD0] text-[#2A1810] placeholder-[#6B5B47] border-2 rounded-xl px-4 py-3 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all duration-300",
+    ? "bg-slate-800 border-slate-600 text-slate-100 placeholder-slate-400 border-2 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300"
+    : "bg-white border-slate-300 text-slate-800 placeholder-slate-500 border-2 rounded-xl px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-300",
 
   // Navigation styles
   nav: {
     item: isDarkMode
-      ? "text-[#86EFAC] hover:text-[#F0FDF4] hover:bg-[#14362C] px-4 py-2 rounded-lg transition-all duration-300"
-      : "text-[#6B5B47] hover:text-[#2A1810] hover:bg-[#F8F2E4] px-4 py-2 rounded-lg transition-all duration-300",
+      ? "text-slate-400 hover:text-slate-100 hover:bg-slate-700 px-4 py-2 rounded-lg transition-all duration-300"
+      : "text-slate-600 hover:text-slate-900 hover:bg-slate-100 px-4 py-2 rounded-lg transition-all duration-300",
     active: isDarkMode
-      ? "text-[#F0FDF4] bg-gradient-to-r from-emerald-600 to-green-700 px-4 py-2 rounded-lg shadow-lg"
-      : "text-[#2A1810] bg-gradient-to-r from-amber-500 to-orange-600 text-white px-4 py-2 rounded-lg shadow-lg",
+      ? "text-slate-100 bg-gradient-to-r from-blue-600 to-indigo-700 px-4 py-2 rounded-lg shadow-lg"
+      : "text-white bg-gradient-to-r from-blue-600 to-indigo-700 px-4 py-2 rounded-lg shadow-lg",
   },
 });
