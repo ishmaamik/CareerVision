@@ -18,8 +18,9 @@ import CreateCompany from "./components/pages/CreateCompany";
 import CommunityForum from "./components/pages/Community/CommunityForum";
 import SampleSocial from "./components/pages/SampleSocial";
 import EmotionCapture from "./components/EmotionCapture";
-import Careers from "./components/pages/Careers";
-import Roadmap from "./components/pages/Roadmap";
+import CareerExplorer from "./components/pages/pre-university/CareerExplorer";
+import Roadmap from "./components/pages/pre-university/Roadmap";
+import Careers from "./components/pages/pre-university/Careers";
 import InterviewQuestionBank from "./components/pages/InterviewQuestionBank";
 import CompaniesPage from "./components/pages/CompaniesPage";
 import InterviewRoomForm from "./components/interview/InterviewRoomForm";
@@ -63,10 +64,14 @@ function App() {
                 <Route path="/jobs/:id" element={<ApplyJob />} />
                 <Route path="/company/create" element={<CreateCompany />} />
                 <Route path="/community" element={<CommunityForum />} />
+
+                {/* Pre-University Career Guidance */}
+                <Route path="/career-explorer" element={<CareerExplorer />} />
                 <Route path="/roadmap" element={<Roadmap />} />
+                <Route path="/careers" element={<Careers />} />
+
                 <Route path="/sample" element={<SampleSocial />} />
                 <Route path="/emotion" element={<EmotionCapture />} />
-                <Route path="/careers" element={<Careers />} />
                 <Route path="/companies" element={<CompaniesPage />} />
                 <Route
                   path="/interview-questions"
@@ -87,14 +92,12 @@ function App() {
                     <div className="p-8">Career Assessment Coming Soon</div>
                   }
                 />
-                <Route path="/career-paths" element={<Careers />} />
                 <Route
                   path="/skills-analysis"
                   element={
                     <div className="p-8">Skills Analysis Coming Soon</div>
                   }
                 />
-                <Route path="/roadmaps" element={<Roadmap />} />
                 <Route
                   path="/saved-jobs"
                   element={<div className="p-8">Saved Jobs Coming Soon</div>}

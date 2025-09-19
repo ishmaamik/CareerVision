@@ -1,8 +1,8 @@
 // src/pages/Careers.jsx
 import React, { useEffect, useState } from "react";
-import CareerCard from "../cards/CareerCard";
-import CareerModal from "../modals/CareerModal";
-import { getAllCareers } from "../../api/career/careerApi";
+import CareerCard from "../../cards/CareerCard";
+import CareerModal from "../../modals/CareerModal";
+import { getAllCareers } from "../../../api/career/careerApi";
 
 const Careers = () => {
   const [careers, setCareers] = useState([]);
