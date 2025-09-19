@@ -160,7 +160,7 @@ const Job = () => {
                     href={job.redirect_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white text-sm font-semibold rounded-xl hover:from-green-600 hover:to-green-700 transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                    className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 text-black text-sm font-semibold rounded-xl hover:from-green-600 hover:to-green-700 transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl"
                   >
                     View Job
                     <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -170,7 +170,7 @@ const Job = () => {
                 ) : (
                   <button
                     onClick={() => navigate(`/jobs/${job.id}`)}
-                    className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white text-sm font-semibold rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                    className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-black text-sm font-semibold rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl"
                   >
                     View Details
                     <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -240,9 +240,10 @@ const Job = () => {
               {["all", "local", "external"].map((tab) => (
                 <button
                   key={tab}
-                  className={`capitalize px-6 py-3 rounded-xl font-semibold transition-all duration-200 ${
+                  style={{marginLeft:"50px"}}
+                  className={`capitalize px-20 py-3 rounded-xl font-semibold transition-all duration-200 ${
                     tab === activeTab
-                      ? "bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg"
+                      ? "bg-gradient-to-r from-blue-500 to-purple-500 text-black shadow-lg"
                       : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
                   }`}
                   onClick={() => setActiveTab(tab)}
@@ -264,7 +265,7 @@ const Job = () => {
           {localStorage.getItem('role') !== 'user' && (
             <button
               onClick={() => navigate("/jobs/create")}
-              className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white font-semibold rounded-2xl hover:from-green-600 hover:to-green-700 transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl"
+              className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-black font-semibold rounded-2xl hover:from-green-600 hover:to-green-700 transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl"
             >
               <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -328,7 +329,7 @@ const Job = () => {
               <button
                 onClick={handleSearch}
                 disabled={loading}
-                className="inline-flex items-center px-8 py-3 bg-gradient-to-r from-green-500 to-blue-500 text-white font-semibold rounded-xl hover:from-green-600 hover:to-blue-600 transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+                className="inline-flex items-center px-8 py-3 bg-gradient-to-r from-green-500 to-blue-500 text-black font-semibold rounded-xl hover:from-green-600 hover:to-blue-600 transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? (
                   <>
@@ -367,7 +368,7 @@ const Job = () => {
 
           {activeTab === "local" && (
             <div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-6 flex items-center">
+              <h2 className="text-3xl font-bold text-gray-900 mb-6 ml-20 flex items-center">
                 <svg className="w-8 h-8 mr-3 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                 </svg>
