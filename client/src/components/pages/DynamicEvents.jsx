@@ -43,14 +43,7 @@ import {
 } from "@mui/icons-material";
 import { styled } from "@mui/material/styles";
 import { useSelector } from "react-redux";
-import {
-  getAllEvents,
-  createEvent,
-  registerForEvent,
-  getEventParticipants,
-  formatEventDate,
-  getEventStatus,
-} from "../../api/events/events";
+import axios from '../../api/axiosConfig'; // Import the configured axios instance
 
 // Styled components
 const StyledCard = styled(Card)(({ theme, status }) => ({
@@ -119,181 +112,146 @@ const DynamicEvents = () => {
     organizerEmail: user?.email || "",
     eventDate: "",
     location: "",
+    eventType: "WORKSHOP", // Default event type
   });
 
-  useEffect(() => {
-    const timer = setTimeout(() => setMounted(true), 100);
-    const initializeEvents = async () => {
-      try {
-        setLoading(true);
-
-        // Try to fetch events from backend
-        const eventsData = await getAllEvents();
-        setEvents(eventsData);
-        setBackendConnected(true);
-        console.log("✅ Backend connected, fetched events:", eventsData);
-      } catch (error) {
-        console.error(
-          "❌ Backend connection failed during initialization:",
-          error
-        );
-        setBackendConnected(false);
-
-        // Load sample events only if it's a network connectivity issue
-        if (
-          error.code === "NETWORK_ERROR" ||
-          error.message.includes("Network Error") ||
-          error.message.includes("ERR_CONNECTION_REFUSED")
-        ) {
-          loadSampleEvents();
-        } else {
-          // For other errors, show empty state with retry option
-          setEvents([]);
-          showSnackbar(
-            "Unable to connect to server. Please try refreshing.",
-            "warning"
-          );
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    initializeEvents();
-    return () => clearTimeout(timer);
-  }, []);
-
-  const refreshEvents = async () => {
+  // Fetch events from backend
+  const fetchEvents = async () => {
     try {
-      setLoading(true);
+      const response = await axios.get("/events");
+      
+      console.log("Raw events response:", response);
+      console.log("Response data type:", typeof response.data);
+      console.log("Response data:", response.data);
 
-      // Always try backend first
-      const eventsData = await getAllEvents();
+      // Ensure we have an array
+      let eventsData = [];
+      if (Array.isArray(response.data)) {
+        eventsData = response.data;
+      } else if (response.data && Array.isArray(response.data.content)) {
+        eventsData = response.data.content;
+      } else if (response.data && response.data.data && Array.isArray(response.data.data)) {
+        eventsData = response.data.data;
+      } else {
+        console.warn("Unexpected events response format:", response.data);
+        eventsData = [];
+      }
+
+      // Validate each event has required properties
+      eventsData = eventsData.filter(event => 
+        event && 
+        event.id && 
+        event.title && 
+        event.eventDate
+      );
+
+      // Ensure participants is an array
+      eventsData = eventsData.map(event => ({
+        ...event,
+        participants: Array.isArray(event.participants) ? event.participants : []
+      }));
+
       setEvents(eventsData);
       setBackendConnected(true);
-      console.log("✅ Backend connected, fetched events:", eventsData);
-    } catch (error) {
-      console.error("❌ Failed to refresh events from backend:", error);
-      setBackendConnected(false);
-
-      // Only load sample events if it's a network error
-      if (
-        error.code === "NETWORK_ERROR" ||
-        error.message.includes("Network Error")
-      ) {
-        loadSampleEvents();
-      } else {
-        showSnackbar("Failed to fetch events from server", "error");
-      }
-    } finally {
       setLoading(false);
+    } catch (error) {
+      console.error("Failed to fetch events:", error);
+      
+      // Log detailed error information
+      if (error.response) {
+        console.error("Error response data:", error.response.data);
+        console.error("Error response status:", error.response.status);
+        console.error("Error response headers:", error.response.headers);
+      } else if (error.request) {
+        console.error("Error request:", error.request);
+      } else {
+        console.error("Error message:", error.message);
+      }
+
+      setBackendConnected(false);
+      setLoading(false);
+      showSnackbar("Unable to fetch events. Please check your connection.", "error");
+      
+      // Fallback to sample events
+      const sampleEvents = [
+        {
+          id: 1,
+          title: "Career Workshop: Resume Building",
+          description: "Learn how to create a compelling resume that stands out to employers.",
+          eventDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+          location: "Online via Zoom",
+          organizerEmail: "workshop@careervision.com",
+          eventType: "WORKSHOP",
+          participants: []
+        },
+        {
+          id: 2,
+          title: "Tech Interview Preparation",
+          description: "Intensive preparation for technical interviews.",
+          eventDate: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString(),
+          location: "Online Conference",
+          organizerEmail: "interviews@careervision.com",
+          eventType: "CONFERENCE",
+          participants: []
+        }
+      ];
+      setEvents(sampleEvents);
     }
   };
 
-  const loadSampleEvents = () => {
-    const sampleEvents = [
-      {
-        id: 1,
-        title: "Career Workshop: Resume Building",
-        description:
-          "Learn how to create a compelling resume that stands out to employers. This hands-on workshop will cover formatting, content optimization, and ATS-friendly techniques.",
-        organizerEmail: "workshop@careervision.com",
-        eventDate: "2025-09-20T10:00:00",
-        location: "Conference Room A, CareerVision HQ",
-        participants: [],
-      },
-      {
-        id: 2,
-        title: "Tech Interview Preparation Bootcamp",
-        description:
-          "Intensive 3-day bootcamp covering technical interview questions, coding challenges, and behavioral interviews for software engineering positions.",
-        organizerEmail: "tech@careervision.com",
-        eventDate: "2025-09-25T09:00:00",
-        location: "Online via Zoom",
-        participants: [],
-      },
-      {
-        id: 3,
-        title: "Networking Night: Connect with Industry Professionals",
-        description:
-          "Join us for an evening of networking with professionals from various industries. Perfect opportunity to expand your professional network and learn about career opportunities.",
-        organizerEmail: "networking@careervision.com",
-        eventDate: "2025-09-30T18:00:00",
-        location: "Grand Ballroom, City Convention Center",
-        participants: [],
-      },
-    ];
-    setEvents(sampleEvents);
-    console.log("📝 Loaded sample events (backend not available)");
-  };
+  useEffect(() => {
+    fetchEvents();
+    const timer = setTimeout(() => setMounted(true), 100);
+    return () => clearTimeout(timer);
+  }, []);
 
+  // Create a new event
   const handleCreateEvent = async () => {
     try {
-      if (
-        !newEvent.title ||
-        !newEvent.description ||
-        !newEvent.eventDate ||
-        !newEvent.location
-      ) {
+      // Validate required fields
+      if (!newEvent.title || !newEvent.description || !newEvent.eventDate) {
         showSnackbar("Please fill in all required fields", "error");
         return;
       }
 
-      setLoading(true);
+      const eventData = {
+        ...newEvent,
+        eventDate: new Date(newEvent.eventDate).toISOString(),
+        organizerEmail: user?.email || newEvent.organizerEmail,
+      };
 
-      // Always try backend first
-      try {
-        const eventData = {
-          ...newEvent,
-          organizerEmail: user?.email || newEvent.organizerEmail,
-        };
+      const response = await axios.post("/events", eventData);
+      
+      console.log("Event creation response:", response);
 
-        await createEvent(eventData);
-        setBackendConnected(true);
-        showSnackbar("Event created successfully!", "success");
-
-        // Refresh events from backend to show the new event
-        await refreshEvents();
-      } catch (backendError) {
-        console.error("❌ Backend event creation failed:", backendError);
-        setBackendConnected(false);
-
-        // Only fall back to local if backend is truly unavailable
-        if (
-          backendError.code === "NETWORK_ERROR" ||
-          backendError.message.includes("Network Error")
-        ) {
-          const newEventData = {
-            ...newEvent,
-            id: Date.now(),
-            participants: [],
-            organizerEmail: user?.email || newEvent.organizerEmail,
-          };
-          setEvents((prev) => [...prev, newEventData]);
-          showSnackbar(
-            "Event created locally (backend not connected)",
-            "warning"
-          );
-        } else {
-          showSnackbar("Failed to create event. Please try again.", "error");
-          return;
-        }
-      }
-
+      // Ensure the response contains the created event
+      const createdEvent = response.data;
+      
+      // Update events list
+      setEvents(prev => [...prev, createdEvent]);
+      
+      // Close dialog and show success message
       setOpenCreateDialog(false);
-      setNewEvent({
-        title: "",
-        description: "",
-        organizerEmail: user?.email || "",
-        eventDate: "",
-        location: "",
-      });
+      showSnackbar("Event created successfully!", "success");
     } catch (error) {
       console.error("Error creating event:", error);
-      showSnackbar("Error creating event. Please try again.", "error");
+      
+      // Log detailed error information
+      if (error.response) {
+        console.error("Error response data:", error.response.data);
+        console.error("Error response status:", error.response.status);
+        console.error("Error response headers:", error.response.headers);
+      } else if (error.request) {
+        console.error("Error request:", error.request);
+      } else {
+        console.error("Error message:", error.message);
+      }
+
+      showSnackbar("Failed to create event. Please try again.", "error");
     }
   };
 
+  // Register for an event
   const handleRegisterForEvent = async (eventId) => {
     try {
       if (!user?.id) {
@@ -301,24 +259,12 @@ const DynamicEvents = () => {
         return;
       }
 
-      if (backendConnected) {
-        await registerForEvent(user.id, eventId);
-        showSnackbar("Successfully registered for the event!", "success");
-        refreshEvents();
-      } else {
-        // Update local state if backend not available
-        setEvents((prev) =>
-          prev.map((event) =>
-            event.id === eventId
-              ? {
-                  ...event,
-                  participants: [...(event.participants || []), user],
-                }
-              : event
-          )
-        );
-        showSnackbar("Registered locally (backend not connected)", "warning");
-      }
+      await axios.post(`/api/events/${eventId}/register/${user.id}`);
+      
+      // Refresh events to get updated participant list
+      fetchEvents();
+      
+      showSnackbar("Successfully registered for the event!", "success");
     } catch (error) {
       console.error("Error registering for event:", error);
       showSnackbar(
@@ -328,28 +274,83 @@ const DynamicEvents = () => {
     }
   };
 
+  // Get event participants
   const handleEventDetails = async (event) => {
     try {
+      const response = await axios.get(`/api/events/${event.id}/participants`);
+      setParticipants(response.data);
       setSelectedEvent(event);
-      if (backendConnected) {
-        const participantsList = await getEventParticipants(event.id);
-        setParticipants(participantsList);
-      } else {
-        setParticipants(event.participants || []);
-      }
       setOpenDetailsDialog(true);
     } catch (error) {
       console.error("Error fetching event details:", error);
-      setParticipants(event.participants || []);
-      setOpenDetailsDialog(true);
+      showSnackbar("Failed to load event details", "error");
     }
   };
 
-  const showSnackbar = (message, severity = "success") => {
-    setSnackbar({ open: true, message, severity });
+  // Utility functions
+  const getEventStatus = (eventDate) => {
+    const now = new Date();
+    const eventDateTime = new Date(eventDate);
+    
+    if (eventDateTime.toDateString() === now.toDateString()) {
+      return "today";
+    } else if (eventDateTime > now) {
+      return "upcoming";
+    } else {
+      return "past";
+    }
   };
 
+  const formatEventDate = (dateString) => {
+    const date = new Date(dateString);
+    return {
+      date: date.toLocaleDateString(),
+      time: date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    };
+  };
+
+  const getEventTypeIcon = (eventType) => {
+    const typeMap = {
+      WORKSHOP: <SchoolIcon />,
+      CONFERENCE: <BusinessIcon />,
+      NETWORKING_EVENT: <PeopleIcon />,
+      CAREER_TALK: <PersonIcon />,
+      WEBINAR: <EventIcon />
+    };
+    return typeMap[eventType] || <EventIcon />;
+  };
+
+  const isUserRegistered = (event) => {
+    return event.participants?.some(
+      (participant) => participant.user.id === user?.id
+    );
+  };
+
+  // Safely calculate total participants
+  const calculateTotalParticipants = () => {
+    // Ensure events is an array before calling reduce
+    if (!Array.isArray(events)) {
+      console.warn("events is not an array:", events);
+      return 0;
+    }
+
+    return events.reduce((sum, event) => {
+      // Ensure participants is an array
+      const participantsCount = Array.isArray(event.participants) 
+        ? event.participants.length 
+        : 0;
+      return sum + participantsCount;
+    }, 0);
+  };
+
+  // Update getFilteredEvents method to be more robust
   const getFilteredEvents = () => {
+    // Ensure events is an array
+    if (!Array.isArray(events)) {
+      console.warn("events is not an array:", events);
+      return [];
+    }
+
     let filtered = events.filter(
       (event) =>
         event.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -375,20 +376,8 @@ const DynamicEvents = () => {
     }
   };
 
-  const getEventTypeIcon = (title) => {
-    const titleLower = title.toLowerCase();
-    if (titleLower.includes("interview") || titleLower.includes("career"))
-      return <BusinessIcon />;
-    if (titleLower.includes("workshop") || titleLower.includes("bootcamp"))
-      return <SchoolIcon />;
-    if (titleLower.includes("networking")) return <PeopleIcon />;
-    return <EventIcon />;
-  };
-
-  const isUserRegistered = (event) => {
-    return event.participants?.some(
-      (participant) => participant.id === user?.id
-    );
+  const showSnackbar = (message, severity = "success") => {
+    setSnackbar({ open: true, message, severity });
   };
 
   if (loading) {
@@ -423,7 +412,7 @@ const DynamicEvents = () => {
               aria-label="refresh"
               color="inherit"
               size="small"
-              onClick={refreshEvents}
+              onClick={fetchEvents}
             >
               <RefreshIcon />
             </IconButton>
@@ -470,10 +459,7 @@ const DynamicEvents = () => {
               </Box>
               <Box textAlign="center">
                 <Typography variant="h3" fontWeight="bold">
-                  {events.reduce(
-                    (sum, e) => sum + (e.participants?.length || 0),
-                    0
-                  )}
+                  {calculateTotalParticipants()}
                 </Typography>
                 <Typography variant="body2">Total Participants</Typography>
               </Box>
@@ -498,7 +484,7 @@ const DynamicEvents = () => {
               }}
             />
             <Tooltip title="Refresh Events">
-              <IconButton color="primary" onClick={refreshEvents}>
+              <IconButton color="primary" onClick={fetchEvents}>
                 <RefreshIcon />
               </IconButton>
             </Tooltip>
@@ -554,7 +540,7 @@ const DynamicEvents = () => {
                     {/* Event Icon and Title */}
                     <Box display="flex" alignItems="center" gap={2} mb={2}>
                       <Avatar sx={{ bgcolor: "primary.main" }}>
-                        {getEventTypeIcon(event.title)}
+                        {getEventTypeIcon(event.eventType)}
                       </Avatar>
                       <Typography variant="h6" component="h3" fontWeight="bold">
                         {event.title}
@@ -693,6 +679,20 @@ const DynamicEvents = () => {
           <DialogContent>
             <Box display="flex" flexDirection="column" gap={3} pt={1}>
               <TextField
+                select
+                label="Event Type"
+                fullWidth
+                value={newEvent.eventType}
+                onChange={(e) => setNewEvent({ ...newEvent, eventType: e.target.value })}
+                SelectProps={{ native: true }}
+              >
+                {["WORKSHOP", "CONFERENCE", "NETWORKING_EVENT", "CAREER_TALK", "WEBINAR"].map((type) => (
+                  <option key={type} value={type}>
+                    {type.replace(/_/g, " ")}
+                  </option>
+                ))}
+              </TextField>
+              <TextField
                 label="Event Title *"
                 fullWidth
                 value={newEvent.title}
@@ -768,7 +768,7 @@ const DynamicEvents = () => {
         >
           <DialogTitle>
             <Box display="flex" alignItems="center" gap={2}>
-              {selectedEvent && getEventTypeIcon(selectedEvent.title)}
+              {selectedEvent && getEventTypeIcon(selectedEvent.eventType)}
               {selectedEvent?.title}
             </Box>
           </DialogTitle>
@@ -814,20 +814,20 @@ const DynamicEvents = () => {
                   {participants.length > 0 ? (
                     <Grid container spacing={2}>
                       {participants.map((participant, index) => (
-                        <Grid item xs={12} sm={6} key={participant.id || index}>
+                        <Grid item xs={12} sm={6} key={participant.user.id || index}>
                           <Box display="flex" alignItems="center" gap={2} p={1}>
                             <Avatar sx={{ bgcolor: "secondary.main" }}>
-                              {participant.name?.[0]?.toUpperCase() || "U"}
+                              {participant.user.name?.[0]?.toUpperCase() || "U"}
                             </Avatar>
                             <Box>
                               <Typography variant="body2" fontWeight="bold">
-                                {participant.name || "User"}
+                                {participant.user.name || "User"}
                               </Typography>
                               <Typography
                                 variant="caption"
                                 color="text.secondary"
                               >
-                                {participant.email}
+                                {participant.user.email}
                               </Typography>
                             </Box>
                           </Box>

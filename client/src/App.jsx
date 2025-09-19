@@ -24,6 +24,9 @@ import InterviewQuestionBank from "./components/pages/InterviewQuestionBank";
 import CompaniesPage from "./components/pages/CompaniesPage";
 import InterviewRoomForm from "./components/interview/InterviewRoomForm";
 import DynamicEvents from "./components/pages/DynamicEvents";
+import Webinars from "./components/pages/Webinars";
+import Conferences from "./components/pages/Conferences";
+import Workshops from "./components/pages/Workshops";
 import CareerChatbot from "./components/pages/CareerChatbot";
 import ChatbotPage from "./components/pages/ChatbotPage";
 
@@ -75,6 +78,11 @@ function App() {
                 <Route path="/interview-room" element={<InterviewRoomForm />} />
                 <Route path="/events" element={<DynamicEvents />} />
                 <Route path="/chatbot" element={<ChatbotPage />} />
+
+                {/* New Event-specific Routes */}
+                <Route path="/webinars" element={<Webinars />} />
+                <Route path="/conferences" element={<Conferences />} />
+                <Route path="/workshops" element={<Workshops />} />
 
                 {/* New sidebar routes */}
                 <Route
