@@ -34,7 +34,7 @@ const Profile = () => {
         {/* Enhanced Grid Layout for Map Focus */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Left Column - Profile & Contact Info */}
-          <div className="lg:col-span-4 space-y-6">
+          <div className="lg:col-span-5 space-y-6">
             {/* Main Profile Card */}
             <div
               className={`w-full ${themeClasses.bg.surface} rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 ${themeClasses.border.primary} border`}
@@ -61,7 +61,7 @@ const Profile = () => {
           </div>
 
           {/* Right Column - Expanded Location */}
-          <div className="lg:col-span-8">
+          <div className="lg:col-span-6">
             <LocationCard />
           </div>
         </div>

@@ -72,6 +72,7 @@ const LocationCard = () => {
         >
           <LocationMap
             height="580px"
+            width="800px"
             showSearch={false}
             showLocationButton={true}
             isProfile={true}

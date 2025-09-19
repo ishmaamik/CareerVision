@@ -294,7 +294,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                         ${
                           isActiveSectionRoute(section.subItems) ||
                           expandedSections[section.id]
-                            ? `${themeClasses.brand.bg} text-white shadow-lg`
+                            ? `${themeClasses.text.secondary} text-black shadow-lg`
                             : `${themeClasses.interactive.hover} ${themeClasses.text.secondary}`
                         }
                         ${isCollapsed ? "justify-center" : "justify-between"}
@@ -321,7 +321,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                             className: `w-5 h-5 ${
                               isActiveSectionRoute(section.subItems) ||
                               expandedSections[section.id]
-                                ? "text-white"
+                                ? ""
                                 : section.color
                             }`,
                           })}
@@ -340,7 +340,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                           ${
                             isActiveSectionRoute(section.subItems) ||
                             expandedSections[section.id]
-                              ? "text-white"
+                              ? ""
                               : themeClasses.text.muted
                           }
                         `}
@@ -372,7 +372,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                                 w-full flex items-center gap-3 p-2.5 rounded-lg transition-all duration-200 group
                                 ${
                                   isActiveRoute(item.path)
-                                    ? `${themeClasses.brand.bg} text-white shadow-md`
+                                    ? `${themeClasses.text.secondary}  shadow-md`
                                     : `${themeClasses.interactive.hover} ${themeClasses.text.secondary} hover:translate-x-1`
                                 }
                               `}
@@ -390,7 +390,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                                 {React.cloneElement(item.icon, {
                                   className: `w-4 h-4 ${
                                     isActiveRoute(item.path)
-                                      ? "text-white"
+                                      ? ""
                                       : themeClasses.text.muted
                                   }`,
                                 })}
@@ -412,7 +412,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                       w-full flex items-center p-3 rounded-xl transition-all duration-200 group
                       ${
                         isActiveRoute(section.path)
-                          ? `${themeClasses.brand.bg} text-white shadow-lg`
+                          ? `${themeClasses.brand.bg} shadow-lg`
                           : `${themeClasses.interactive.hover} ${themeClasses.text.secondary}`
                       }
                       ${isCollapsed ? "justify-center" : "gap-3"}
@@ -432,7 +432,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                       {React.cloneElement(section.icon, {
                         className: `w-5 h-5 ${
                           isActiveRoute(section.path)
-                            ? "text-white"
+                            ? ""
                             : section.color
                         }`,
                       })}
@@ -461,7 +461,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                 w-full flex items-center p-3 rounded-xl transition-all duration-200 group
                 ${
                   isActiveRoute(item.path)
-                    ? `${themeClasses.brand.bg} text-white shadow-lg`
+                    ? `${themeClasses.brand.bg}  shadow-lg`
                     : `${themeClasses.interactive.hover} ${themeClasses.text.secondary}`
                 }
                 ${isCollapsed ? "justify-center" : "gap-3"}
@@ -481,7 +481,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                 {React.cloneElement(item.icon, {
                   className: `w-5 h-5 ${
                     isActiveRoute(item.path)
-                      ? "text-white"
+                      ? ""
                       : themeClasses.text.muted
                   }`,
                 })}
