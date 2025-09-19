@@ -125,7 +125,7 @@ const ApplyJob = () => {
 
     return (
         <>
-            <div className='ml-12'>
+            <div className='ml-12 mt-8'>
                 <div className='flex mb-6 -mt-4 space-x-10 '>
                     {TabsList.map(tabList => (
                         <p className={`${tab === tabList.name ? `bg-black  text-white` : `bg-white mt-30 text-black`} cursor-pointer mt-30 px-4 py-2 rounded `} onClick={() => setTabName(`${tabList.name}`)}>{tabList.name}</p>
@@ -162,7 +162,7 @@ const ApplyJob = () => {
 
                 {role === 'user' && (applying ?
                     <button style={{ backgroundColor: 'black', cursor: 'default' }} disabled
-                        className="mt-6 ml-160 text-white  rounded w-40 h-14"> Applying... </button>
+                        className="mt-60 ml-160 text-white  rounded w-40 h-14 mt-20"> Applying... </button>
                     :
                     (hasApplied ?
                         (applicationStatus === 'accepted' ?
@@ -175,8 +175,8 @@ const ApplyJob = () => {
                                     className="mt-6 ml-160 text-white  rounded w-40 h-14"> Rejected
                                 </button>
                                 :
-                                <button disabled style={{ backgroundColor: 'black', cursor: 'default' }}
-                                    className="mt-6 ml-160 text-white  rounded w-40 h-14"> Pending...
+                                <button disabled style={{ backgroundColor: 'black', cursor: 'default', marginTop:"20px", marginBottom:"20px", display:"flex" ,justifyContent:"center", alignItems:"center"}}
+                                    className="pt-60 mb-20 ml-160 text-white  rounded w-40 h-14"> Pending...
                                 </button>
                             )
 

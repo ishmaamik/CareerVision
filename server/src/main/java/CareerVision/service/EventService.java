@@ -6,7 +6,7 @@ import CareerVision.model.User;
 import CareerVision.repository.EventRepository;
 import CareerVision.repository.ParticipantRepository;
 import CareerVision.repository.UserRepository;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -124,6 +124,7 @@ public class EventService {
     }
 
     // Get all upcoming events
+    @Transactional(readOnly = true)
     public List<Event> getUpcomingEvents() {
         LocalDateTime now = LocalDateTime.now();
         logger.info("Fetching upcoming events from current time: {}", now);
@@ -140,6 +141,7 @@ public class EventService {
     }
 
     // Get event participants
+    @Transactional(readOnly = true)
     public List<Participant> getEventParticipants(Long eventId) {
         return participantRepository.findByEventId(eventId);
     }

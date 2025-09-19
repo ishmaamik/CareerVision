@@ -1,53 +1,46 @@
 import axios from 'axios';
 
-// Base URL for all API calls
-const BASE_URL = 'http://localhost:8080/api';
+// Base URL for API calls
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api';
 
-// Create an axios instance with default configuration
+// Create axios instance with default configuration
 const axiosInstance = axios.create({
-  baseURL: BASE_URL,
-  timeout: 10000, // 10 seconds
-  headers: {
-    'Content-Type': 'application/json',
-    'Accept': 'application/json'
-  }
+    baseURL: BASE_URL,
+    timeout: 10000, // 10 seconds timeout
+    headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+    }
 });
 
-// Request interceptor for adding auth token
+// Request interceptor for logging and potential token injection
 axiosInstance.interceptors.request.use(
-  config => {
-    // You can add authentication token here if needed
-    // const token = localStorage.getItem('token');
-    // if (token) {
-    //   config.headers['Authorization'] = `Bearer ${token}`;
-    // }
-    return config;
-  },
-  error => {
-    return Promise.reject(error);
-  }
+    config => {
+        console.log(`Sending request to: ${config.url}`);
+        return config;
+    },
+    error => {
+        console.error('Request error:', error);
+        return Promise.reject(error);
+    }
 );
 
-// Response interceptor for error handling
+// Response interceptor for global error handling
 axiosInstance.interceptors.response.use(
-  response => response,
-  error => {
-    // Log detailed error information
-    if (error.response) {
-      console.error("API Error Response:", {
-        data: error.response.data,
-        status: error.response.status,
-        headers: error.response.headers
-      });
-    } else if (error.request) {
-      console.error("API Error Request:", error.request);
-    } else {
-      console.error("API Error Message:", error.message);
+    response => response,
+    error => {
+        console.error('Comprehensive Response Error:', {
+            message: error.message,
+            url: error.config?.url,
+            method: error.config?.method,
+            response: error.response ? {
+                status: error.response.status,
+                data: error.response.data
+            } : 'No response'
+        });
+        
+        return Promise.reject(error);
     }
-
-    // You can add global error handling logic here
-    return Promise.reject(error);
-  }
 );
 
 export default axiosInstance;
