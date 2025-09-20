@@ -32,12 +32,9 @@ const Login = () => {
       localStorage.setItem("role", response.user.role);
       localStorage.setItem("userId", response.user.id);
 
-      // Navigate to appropriate dashboard based on role
-      if (response.user.role === "recruiter") {
-        navigate("/recruiter/dashboard");
-      } else {
+      
         navigate("/profile");
-      }
+      
     } else {
       alert("Login failed");
     }

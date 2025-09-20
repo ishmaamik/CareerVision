@@ -80,7 +80,7 @@ const SidebarWrapper = ({ isOpen, setIsOpen }) => {
     case "recruiter":
     case "hiring_manager":
       console.log("Rendering Recruiter Sidebar for role:", user.role);
-      return <RecruiterSidebar isOpen={isOpen} setIsOpen={setIsOpen} />;
+      return <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />;
     case "student":
     case "job_seeker":
     case "user":
@@ -227,11 +227,7 @@ function AppContent() {
               element={<div className="p-8">Settings Coming Soon</div>}
             />
 
-            {/* Recruiter Routes */}
-            <Route
-              path="/recruiter/dashboard"
-              element={<RecruiterDashboard />}
-            />
+            
             <Route path="/recruiter/jobs" element={<JobManagement />} />
             <Route path="/recruiter/jobs/create" element={<CreateJob />} />
             <Route
