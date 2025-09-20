@@ -1,0 +1,291 @@
+// Mock data for job applications
+export const mockApplications = [
+  {
+    id: 1,
+    jobTitle: "Senior Software Engineer",
+    company: "Google",
+    companyLogo: "https://via.placeholder.com/60x60/4285F4/ffffff?text=G",
+    applicationDate: "2024-01-15",
+    status: "interview_scheduled",
+    stage: "technical_interview",
+    location: "Mountain View, CA",
+    salary: "$160,000 - $250,000",
+    jobType: "Full-time",
+    applicationMethod: "Company Website",
+    referral: "John Smith (Software Engineer)",
+    timeline: [
+      { stage: "applied", date: "2024-01-15", completed: true },
+      { stage: "application_review", date: "2024-01-18", completed: true },
+      { stage: "phone_screening", date: "2024-01-22", completed: true },
+      { stage: "technical_interview", date: "2024-01-28", completed: false, scheduled: true },
+      { stage: "final_interview", date: null, completed: false },
+      { stage: "offer", date: null, completed: false }
+    ],
+    interviewDetails: {
+      date: "2024-01-28",
+      time: "2:00 PM PST",
+      type: "Technical Interview",
+      interviewer: "Sarah Johnson",
+      duration: "90 minutes",
+      location: "Google Campus, Building 40",
+      notes: "Prepare system design questions, coding challenges in Python/Java"
+    },
+    documents: [
+      { name: "Resume.pdf", uploadDate: "2024-01-15", size: "245 KB" },
+      { name: "Cover Letter.pdf", uploadDate: "2024-01-15", size: "156 KB" },
+      { name: "Portfolio.pdf", uploadDate: "2024-01-15", size: "2.1 MB" }
+    ],
+    notes: "Very excited about this opportunity. Team seems innovative and the culture fits well.",
+    priority: "high",
+    matchScore: 92
+  },
+  {
+    id: 2,
+    jobTitle: "Product Manager",
+    company: "Meta",
+    companyLogo: "https://via.placeholder.com/60x60/1877F2/ffffff?text=M",
+    applicationDate: "2024-01-10",
+    status: "under_review",
+    stage: "application_review",
+    location: "Menlo Park, CA",
+    salary: "$140,000 - $200,000",
+    jobType: "Full-time",
+    applicationMethod: "LinkedIn",
+    referral: null,
+    timeline: [
+      { stage: "applied", date: "2024-01-10", completed: true },
+      { stage: "application_review", date: "2024-01-12", completed: false },
+      { stage: "phone_screening", date: null, completed: false },
+      { stage: "technical_interview", date: null, completed: false },
+      { stage: "final_interview", date: null, completed: false },
+      { stage: "offer", date: null, completed: false }
+    ],
+    interviewDetails: null,
+    documents: [
+      { name: "Resume.pdf", uploadDate: "2024-01-10", size: "245 KB" },
+      { name: "Cover Letter.pdf", uploadDate: "2024-01-10", size: "156 KB" }
+    ],
+    notes: "Applied through LinkedIn. Waiting for response from HR.",
+    priority: "medium",
+    matchScore: 88
+  },
+  {
+    id: 3,
+    jobTitle: "UX Designer",
+    company: "Netflix",
+    companyLogo: "https://via.placeholder.com/60x60/E50914/ffffff?text=N",
+    applicationDate: "2024-01-12",
+    status: "rejected",
+    stage: "application_review",
+    location: "Los Gatos, CA",
+    salary: "$120,000 - $160,000",
+    jobType: "Full-time",
+    applicationMethod: "Company Website",
+    referral: null,
+    timeline: [
+      { stage: "applied", date: "2024-01-12", completed: true },
+      { stage: "application_review", date: "2024-01-16", completed: true },
+      { stage: "rejected", date: "2024-01-16", completed: true }
+    ],
+    interviewDetails: null,
+    documents: [
+      { name: "Resume.pdf", uploadDate: "2024-01-12", size: "245 KB" },
+      { name: "Portfolio.pdf", uploadDate: "2024-01-12", size: "3.2 MB" }
+    ],
+    notes: "Portfolio didn't match their specific requirements. Good learning experience.",
+    priority: "low",
+    matchScore: 85,
+    rejectionReason: "Portfolio did not demonstrate sufficient experience with streaming platform design patterns."
+  },
+  {
+    id: 4,
+    jobTitle: "Data Scientist",
+    company: "Airbnb",
+    companyLogo: "https://via.placeholder.com/60x60/FF5A5F/ffffff?text=A",
+    applicationDate: "2024-01-08",
+    status: "offer_received",
+    stage: "offer",
+    location: "San Francisco, CA",
+    salary: "$130,000 - $180,000",
+    jobType: "Full-time",
+    applicationMethod: "Referral",
+    referral: "Emily Chen (Data Scientist)",
+    timeline: [
+      { stage: "applied", date: "2024-01-08", completed: true },
+      { stage: "application_review", date: "2024-01-10", completed: true },
+      { stage: "phone_screening", date: "2024-01-15", completed: true },
+      { stage: "technical_interview", date: "2024-01-20", completed: true },
+      { stage: "final_interview", date: "2024-01-25", completed: true },
+      { stage: "offer", date: "2024-01-26", completed: true }
+    ],
+    interviewDetails: null,
+    offerDetails: {
+      salary: "$155,000",
+      bonus: "$15,000 signing bonus",
+      equity: "0.15% equity",
+      benefits: "Full health, dental, vision, 401k matching, unlimited PTO",
+      startDate: "2024-02-15",
+      deadline: "2024-02-05"
+    },
+    documents: [
+      { name: "Resume.pdf", uploadDate: "2024-01-08", size: "245 KB" },
+      { name: "Cover Letter.pdf", uploadDate: "2024-01-08", size: "156 KB" },
+      { name: "Offer Letter.pdf", uploadDate: "2024-01-26", size: "890 KB" }
+    ],
+    notes: "Excellent opportunity! Great team and challenging problems. Need to decide by Feb 5th.",
+    priority: "high",
+    matchScore: 78
+  },
+  {
+    id: 5,
+    jobTitle: "Frontend Developer",
+    company: "Shopify",
+    companyLogo: "https://via.placeholder.com/60x60/96BF48/ffffff?text=S",
+    applicationDate: "2024-01-13",
+    status: "phone_screening",
+    stage: "phone_screening",
+    location: "Ottawa, Canada",
+    salary: "$80,000 - $110,000 CAD",
+    jobType: "Full-time",
+    applicationMethod: "Company Website",
+    referral: null,
+    timeline: [
+      { stage: "applied", date: "2024-01-13", completed: true },
+      { stage: "application_review", date: "2024-01-16", completed: true },
+      { stage: "phone_screening", date: "2024-01-30", completed: false, scheduled: true },
+      { stage: "technical_interview", date: null, completed: false },
+      { stage: "final_interview", date: null, completed: false },
+      { stage: "offer", date: null, completed: false }
+    ],
+    interviewDetails: {
+      date: "2024-01-30",
+      time: "11:00 AM EST",
+      type: "Phone Screening",
+      interviewer: "Michael Rodriguez",
+      duration: "30 minutes",
+      location: "Phone Call",
+      notes: "Prepare to discuss React experience, e-commerce projects, and interest in Shopify"
+    },
+    documents: [
+      { name: "Resume.pdf", uploadDate: "2024-01-13", size: "245 KB" },
+      { name: "Cover Letter.pdf", uploadDate: "2024-01-13", size: "156 KB" }
+    ],
+    notes: "Looking forward to the phone screening. Research Shopify's tech stack more.",
+    priority: "medium",
+    matchScore: 87
+  },
+  {
+    id: 6,
+    jobTitle: "Marketing Manager",
+    company: "Spotify",
+    companyLogo: "https://via.placeholder.com/60x60/1DB954/ffffff?text=S",
+    applicationDate: "2024-01-05",
+    status: "withdrawn",
+    stage: "phone_screening",
+    location: "New York, NY",
+    salary: "$90,000 - $130,000",
+    jobType: "Full-time",
+    applicationMethod: "Recruiter",
+    referral: null,
+    timeline: [
+      { stage: "applied", date: "2024-01-05", completed: true },
+      { stage: "application_review", date: "2024-01-08", completed: true },
+      { stage: "phone_screening", date: "2024-01-12", completed: true },
+      { stage: "withdrawn", date: "2024-01-18", completed: true }
+    ],
+    interviewDetails: null,
+    documents: [
+      { name: "Resume.pdf", uploadDate: "2024-01-05", size: "245 KB" }
+    ],
+    notes: "Withdrew application due to better offer from another company.",
+    priority: "low",
+    matchScore: 90,
+    withdrawalReason: "Accepted offer from another company"
+  }
+];
+
+export const applicationStatuses = [
+  { 
+    id: "all", 
+    name: "All Applications", 
+    count: 6, 
+    color: "#6B7280",
+    icon: "📋"
+  },
+  { 
+    id: "under_review", 
+    name: "Under Review", 
+    count: 1, 
+    color: "#F59E0B",
+    icon: "⏳"
+  },
+  { 
+    id: "phone_screening", 
+    name: "Phone Screening", 
+    count: 1, 
+    color: "#3B82F6",
+    icon: "📞"
+  },
+  { 
+    id: "interview_scheduled", 
+    name: "Interview Scheduled", 
+    count: 1, 
+    color: "#8B5CF6",
+    icon: "📅"
+  },
+  { 
+    id: "offer_received", 
+    name: "Offer Received", 
+    count: 1, 
+    color: "#10B981",
+    icon: "🎉"
+  },
+  { 
+    id: "rejected", 
+    name: "Rejected", 
+    count: 1, 
+    color: "#EF4444",
+    icon: "❌"
+  },
+  { 
+    id: "withdrawn", 
+    name: "Withdrawn", 
+    count: 1, 
+    color: "#6B7280",
+    icon: "↩️"
+  }
+];
+
+export const applicationStages = [
+  { id: "applied", name: "Applied", icon: "📝" },
+  { id: "application_review", name: "Application Review", icon: "👀" },
+  { id: "phone_screening", name: "Phone Screening", icon: "📞" },
+  { id: "technical_interview", name: "Technical Interview", icon: "💻" },
+  { id: "final_interview", name: "Final Interview", icon: "🤝" },
+  { id: "offer", name: "Offer", icon: "🎉" },
+  { id: "rejected", name: "Rejected", icon: "❌" },
+  { id: "withdrawn", name: "Withdrawn", icon: "↩️" }
+];
+
+export const interviewTypes = [
+  { id: "phone_screening", name: "Phone Screening", duration: "30-45 min", color: "#3B82F6" },
+  { id: "technical_interview", name: "Technical Interview", duration: "60-90 min", color: "#8B5CF6" },
+  { id: "behavioral_interview", name: "Behavioral Interview", duration: "45-60 min", color: "#10B981" },
+  { id: "final_interview", name: "Final Interview", duration: "60-90 min", color: "#F59E0B" },
+  { id: "panel_interview", name: "Panel Interview", duration: "90-120 min", color: "#EF4444" }
+];
+
+export const priorityLevels = [
+  { id: "high", name: "High Priority", color: "#EF4444", count: 2 },
+  { id: "medium", name: "Medium Priority", color: "#F59E0B", count: 2 },
+  { id: "low", name: "Low Priority", color: "#6B7280", count: 2 }
+];
+
+export const applicationMetrics = {
+  totalApplications: 6,
+  activeApplications: 4,
+  averageResponseTime: "3-5 days",
+  successRate: "67%",
+  averageTimeToOffer: "18 days",
+  interviewConversionRate: "75%"
+};
