@@ -137,34 +137,6 @@ const Topbar = ({ sidebarOpen, setSidebarOpen }) => {
               </button>
             </div>
 
-            {/* Center Section - Navigation (Only show on non-sidebar pages) */}
-            {!showSidebar && (
-              <div className="hidden lg:flex items-center space-x-2">
-                {navigation.map((item) => (
-                  <button
-                    key={item.name}
-                    onClick={() => navigate(item.href)}
-                    className={`group relative flex items-center space-x-3 px-5 py-3 rounded-xl transition-all duration-200 ${themeClasses.interactive.hover} ${themeClasses.text.secondary} hover:scale-105`}
-                  >
-                    <item.icon className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                    <span className="font-medium">{item.name}</span>
-
-                    {/* Hover tooltip */}
-                    <div className="absolute -bottom-14 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50">
-                      <div
-                        className={`px-3 py-2 ${themeClasses.bg.surface} ${themeClasses.border.primary} border rounded-lg shadow-lg backdrop-blur-sm`}
-                      >
-                        <p
-                          className={`text-xs ${themeClasses.text.muted} whitespace-nowrap`}
-                        >
-                          {item.description}
-                        </p>
-                      </div>
-                    </div>
-                  </button>
-                ))}
-              </div>
-            )}
 
             {/* Right Section - Search + User Actions + Theme */}
             <div className="flex items-center space-x-4">

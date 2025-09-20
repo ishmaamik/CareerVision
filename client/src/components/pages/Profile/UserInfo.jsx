@@ -111,12 +111,12 @@ const UserInfo = () => {
               <label
                 className={`${
                   themeClasses.status.warning
-                } hover:bg-yellow-600 text-white px-4 py-3 rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 cursor-pointer flex items-center justify-center group ${
+                } hover:bg-yellow-600 text-black px-4 py-3 rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 cursor-pointer flex items-center justify-center group ${
                   uploading ? "opacity-50 cursor-not-allowed" : ""
                 }`}
               >
                 <FaSync
-                  className={`mr-2 group-hover:scale-110 transition-transform ${
+                  className={`mr-2 group-hover:scale-110 text-black transition-transform ${
                     uploading ? "animate-spin" : ""
                   }`}
                 />
@@ -148,7 +148,7 @@ const UserInfo = () => {
                 }}
                 className={`${
                   themeClasses.status.error
-                } hover:bg-red-600 text-white px-4 py-3 rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center justify-center group ${
+                } hover:bg-red-600 text-black px-4 py-3 rounded-xl font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center justify-center group ${
                   uploading ? "opacity-50 cursor-not-allowed" : ""
                 }`}
                 disabled={uploading}

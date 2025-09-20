@@ -9,6 +9,7 @@ import { UserProvider, User } from "./context/UserContext";
 import { ThemeProvider } from "./context/ThemeContext";
 import Login from "./components/pages/Login";
 import Signup from "./components/pages/Signup";
+import Social from "./components/pages/Community/Social";
 import Blogs from "./components/pages/Blogs";
 import NewBlog from "./components/pages/NewBlog";
 import Profile from "./components/pages/Profile/Profile";
@@ -29,6 +30,9 @@ import InterviewQuestionBank from "./components/pages/InterviewQuestionBank";
 import CompaniesPage from "./components/pages/CompaniesPage";
 import InterviewRoomForm from "./components/interview/InterviewRoomForm";
 import DynamicEvents from "./components/pages/DynamicEvents";
+import Webinars from "./components/pages/Webinars";
+import Conferences from "./components/pages/Conferences";
+import Workshops from "./components/pages/Workshops";
 import CareerChatbot from "./components/pages/CareerChatbot";
 import ChatbotPage from "./components/pages/ChatbotPage";
 import CareerAssessment from "./components/pages/CareerAssessment";
@@ -76,7 +80,7 @@ const SidebarWrapper = ({ isOpen, setIsOpen }) => {
     case "recruiter":
     case "hiring_manager":
       console.log("Rendering Recruiter Sidebar for role:", user.role);
-      return <RecruiterSidebar isOpen={isOpen} setIsOpen={setIsOpen} />;
+      return <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />;
     case "student":
     case "job_seeker":
     case "user":
@@ -223,11 +227,7 @@ function AppContent() {
               element={<div className="p-8">Settings Coming Soon</div>}
             />
 
-            {/* Recruiter Routes */}
-            <Route
-              path="/recruiter/dashboard"
-              element={<RecruiterDashboard />}
-            />
+            
             <Route path="/recruiter/jobs" element={<JobManagement />} />
             <Route path="/recruiter/jobs/create" element={<CreateJob />} />
             <Route
