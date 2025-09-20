@@ -47,6 +47,16 @@ function App() {
       <UserProvider>
         <div className="h-screen flex flex-col overflow-hidden">
           {/* Topbar - Fixed height */}
+          <div
+        className="fixed inset-0 -z-10"
+        style={{
+          backgroundColor: "#fefcff",
+          backgroundImage: `
+            radial-gradient(circle at 30% 70%, rgba(173, 216, 230, 0.35), transparent 60%),
+            radial-gradient(circle at 70% 30%, rgba(255, 182, 193, 0.4), transparent 60%)
+          `,
+        }}
+      ></div>
           <Topbar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
           {/* Main Layout - Takes remaining viewport height */}
