@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Box,
   Typography,
@@ -25,8 +25,8 @@ import {
   TableCell,
   TableContainer,
   TableHead,
-  TableRow
-} from '@mui/material';
+  TableRow,
+} from "@mui/material";
 import {
   TrendingUp as TrendingUpIcon,
   TrendingDown as TrendingDownIcon,
@@ -41,45 +41,77 @@ import {
   AccessTime as TimeIcon,
   Cancel as CancelIcon,
   Group as GroupIcon,
-  DateRange as DateRangeIcon
-} from '@mui/icons-material';
-import { useTheme } from '../../../context/ThemeContext';
-import { getThemeClasses, getComponentStyles } from '../../../styles/themes';
+  DateRange as DateRangeIcon,
+} from "@mui/icons-material";
+import { useTheme } from "../../../context/ThemeContext";
+import { getThemeClasses, getComponentStyles } from "../../../styles/themes";
 
 const AnalyticsDashboard = () => {
   const { theme } = useTheme();
   const themeClasses = getThemeClasses(theme);
   const componentStyles = getComponentStyles(theme);
-  
-  const [timeRange, setTimeRange] = useState('30d');
+
+  const [timeRange, setTimeRange] = useState("30d");
 
   // Mock analytics data
   const metrics = {
-    totalApplications: { value: 1247, change: 12.5, trend: 'up' },
-    activeJobs: { value: 23, change: -8.3, trend: 'down' },
-    scheduledInterviews: { value: 156, change: 23.1, trend: 'up' },
-    hireRate: { value: 18.4, change: 5.2, trend: 'up' },
-    avgTimeToHire: { value: 14, change: -2.1, trend: 'down' },
-    costPerHire: { value: 3250, change: -12.8, trend: 'down' }
+    totalApplications: { value: 1247, change: 12.5, trend: "up" },
+    activeJobs: { value: 23, change: -8.3, trend: "down" },
+    scheduledInterviews: { value: 156, change: 23.1, trend: "up" },
+    hireRate: { value: 18.4, change: 5.2, trend: "up" },
+    avgTimeToHire: { value: 14, change: -2.1, trend: "down" },
+    costPerHire: { value: 3250, change: -12.8, trend: "down" },
   };
 
-
   const topPerformingJobs = [
-    { id: 1, title: 'Senior React Developer', applications: 87, qualified: 23, interviews: 12, hires: 3 },
-    { id: 2, title: 'Product Manager', applications: 65, qualified: 18, interviews: 8, hires: 2 },
-    { id: 3, title: 'UX Designer', applications: 54, qualified: 15, interviews: 7, hires: 2 },
-    { id: 4, title: 'DevOps Engineer', applications: 43, qualified: 12, interviews: 5, hires: 1 },
-    { id: 5, title: 'Data Scientist', applications: 76, qualified: 20, interviews: 9, hires: 3 }
+    {
+      id: 1,
+      title: "Senior React Developer",
+      applications: 87,
+      qualified: 23,
+      interviews: 12,
+      hires: 3,
+    },
+    {
+      id: 2,
+      title: "Product Manager",
+      applications: 65,
+      qualified: 18,
+      interviews: 8,
+      hires: 2,
+    },
+    {
+      id: 3,
+      title: "UX Designer",
+      applications: 54,
+      qualified: 15,
+      interviews: 7,
+      hires: 2,
+    },
+    {
+      id: 4,
+      title: "DevOps Engineer",
+      applications: 43,
+      qualified: 12,
+      interviews: 5,
+      hires: 1,
+    },
+    {
+      id: 5,
+      title: "Data Scientist",
+      applications: 76,
+      qualified: 20,
+      interviews: 9,
+      hires: 3,
+    },
   ];
 
   const interviewPerformance = [
-    { stage: 'Phone Screen', scheduled: 156, completed: 145, pass_rate: 78 },
-    { stage: 'Technical', scheduled: 113, completed: 108, pass_rate: 65 },
-    { stage: 'Final', scheduled: 70, completed: 68, pass_rate: 85 },
-    { stage: 'Reference', scheduled: 58, completed: 55, pass_rate: 95 }
+    { stage: "Phone Screen", scheduled: 156, completed: 145, pass_rate: 78 },
+    { stage: "Technical", scheduled: 113, completed: 108, pass_rate: 65 },
+    { stage: "Final", scheduled: 70, completed: 68, pass_rate: 85 },
+    { stage: "Reference", scheduled: 58, completed: 55, pass_rate: 95 },
   ];
-
-
 
   const MetricCard = ({ title, value, unit, change, trend, icon }) => (
     <Card className={themeClasses.surface}>
@@ -87,30 +119,50 @@ const AnalyticsDashboard = () => {
         <Box display="flex" justifyContent="between" alignItems="start" mb={2}>
           <Box>
             <Typography variant="h4" className={themeClasses.text} mb={0.5}>
-              {typeof value === 'number' && value > 1000 ? `${(value/1000).toFixed(1)}k` : value}
-              {unit && <Typography component="span" variant="h6" className={themeClasses.textSecondary}>{unit}</Typography>}
+              {typeof value === "number" && value > 1000
+                ? `${(value / 1000).toFixed(1)}k`
+                : value}
+              {unit && (
+                <Typography
+                  component="span"
+                  variant="h6"
+                  className={themeClasses.textSecondary}
+                >
+                  {unit}
+                </Typography>
+              )}
             </Typography>
             <Typography variant="body2" className={themeClasses.textSecondary}>
               {title}
             </Typography>
           </Box>
-          <Box display="flex" alignItems="center" color={trend === 'up' ? '#10B981' : '#EF4444'}>
+          <Box
+            display="flex"
+            alignItems="center"
+            color={trend === "up" ? "#10B981" : "#EF4444"}
+          >
             {icon}
           </Box>
         </Box>
         <Box display="flex" alignItems="center">
-          {trend === 'up' ? (
-            <TrendingUpIcon sx={{ color: '#10B981', fontSize: 16, mr: 0.5 }} />
+          {trend === "up" ? (
+            <TrendingUpIcon sx={{ color: "#10B981", fontSize: 16, mr: 0.5 }} />
           ) : (
-            <TrendingDownIcon sx={{ color: '#EF4444', fontSize: 16, mr: 0.5 }} />
+            <TrendingDownIcon
+              sx={{ color: "#EF4444", fontSize: 16, mr: 0.5 }}
+            />
           )}
-          <Typography 
-            variant="body2" 
-            sx={{ color: trend === 'up' ? '#10B981' : '#EF4444' }}
+          <Typography
+            variant="body2"
+            sx={{ color: trend === "up" ? "#10B981" : "#EF4444" }}
           >
             {Math.abs(change)}%
           </Typography>
-          <Typography variant="body2" className={themeClasses.textSecondary} ml={0.5}>
+          <Typography
+            variant="body2"
+            className={themeClasses.textSecondary}
+            ml={0.5}
+          >
             vs last period
           </Typography>
         </Box>
@@ -124,9 +176,7 @@ const AnalyticsDashboard = () => {
         <Typography variant="h6" className={themeClasses.text} mb={3}>
           {title}
         </Typography>
-        <Box height={height}>
-          {children}
-        </Box>
+        <Box height={height}>{children}</Box>
       </CardContent>
     </Card>
   );
@@ -136,7 +186,12 @@ const AnalyticsDashboard = () => {
       <Typography variant="body2" className={themeClasses.textSecondary} mb={2}>
         {title}
       </Typography>
-      <Box height="200px" display="flex" alignItems="center" justifyContent="center">
+      <Box
+        height="200px"
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+      >
         <Typography variant="body1" className={themeClasses.textSecondary}>
           Chart visualization coming soon
         </Typography>
@@ -150,7 +205,12 @@ const AnalyticsDashboard = () => {
       <Box mb={4}>
         <Box display="flex" justifyContent="between" alignItems="center" mb={2}>
           <Box>
-            <Typography variant="h4" component="h1" className={themeClasses.text} mb={1}>
+            <Typography
+              variant="h4"
+              component="h1"
+              className={themeClasses.text}
+              mb={1}
+            >
               Analytics Dashboard
             </Typography>
             <Typography variant="body1" className={themeClasses.textSecondary}>
@@ -181,7 +241,7 @@ const AnalyticsDashboard = () => {
             value={metrics.totalApplications.value}
             change={metrics.totalApplications.change}
             trend={metrics.totalApplications.trend}
-            icon={<PeopleIcon sx={{ color: '#3B82F6' }} />}
+            icon={<PeopleIcon sx={{ color: "#3B82F6" }} />}
           />
         </Grid>
         <Grid item xs={12} md={6} lg={2}>
@@ -190,7 +250,7 @@ const AnalyticsDashboard = () => {
             value={metrics.activeJobs.value}
             change={metrics.activeJobs.change}
             trend={metrics.activeJobs.trend}
-            icon={<WorkIcon sx={{ color: '#10B981' }} />}
+            icon={<WorkIcon sx={{ color: "#10B981" }} />}
           />
         </Grid>
         <Grid item xs={12} md={6} lg={2}>
@@ -199,7 +259,7 @@ const AnalyticsDashboard = () => {
             value={metrics.scheduledInterviews.value}
             change={metrics.scheduledInterviews.change}
             trend={metrics.scheduledInterviews.trend}
-            icon={<ScheduleIcon sx={{ color: '#F59E0B' }} />}
+            icon={<ScheduleIcon sx={{ color: "#F59E0B" }} />}
           />
         </Grid>
         <Grid item xs={12} md={6} lg={2}>
@@ -209,7 +269,7 @@ const AnalyticsDashboard = () => {
             unit="%"
             change={metrics.hireRate.change}
             trend={metrics.hireRate.trend}
-            icon={<CheckCircleIcon sx={{ color: '#10B981' }} />}
+            icon={<CheckCircleIcon sx={{ color: "#10B981" }} />}
           />
         </Grid>
         <Grid item xs={12} md={6} lg={2}>
@@ -219,7 +279,7 @@ const AnalyticsDashboard = () => {
             unit=" days"
             change={metrics.avgTimeToHire.change}
             trend={metrics.avgTimeToHire.trend}
-            icon={<TimeIcon sx={{ color: '#8B5CF6' }} />}
+            icon={<TimeIcon sx={{ color: "#8B5CF6" }} />}
           />
         </Grid>
         <Grid item xs={12} md={6} lg={2}>
@@ -228,7 +288,7 @@ const AnalyticsDashboard = () => {
             value={`$${metrics.costPerHire.value}`}
             change={metrics.costPerHire.change}
             trend={metrics.costPerHire.trend}
-            icon={<MoneyIcon sx={{ color: '#EF4444' }} />}
+            icon={<MoneyIcon sx={{ color: "#EF4444" }} />}
           />
         </Grid>
       </Grid>
@@ -265,17 +325,23 @@ const AnalyticsDashboard = () => {
                   <React.Fragment key={stage.stage}>
                     <ListItem>
                       <ListItemIcon>
-                        <CheckCircleIcon sx={{ color: '#3B82F6' }} />
+                        <CheckCircleIcon sx={{ color: "#3B82F6" }} />
                       </ListItemIcon>
                       <ListItemText
                         primary={stage.stage}
                         secondary={
                           <Box>
                             <Box display="flex" justifyContent="between" mb={1}>
-                              <Typography variant="body2" className={themeClasses.textSecondary}>
+                              <Typography
+                                variant="body2"
+                                className={themeClasses.textSecondary}
+                              >
                                 {stage.completed}/{stage.scheduled} completed
                               </Typography>
-                              <Typography variant="body2" className={themeClasses.text}>
+                              <Typography
+                                variant="body2"
+                                className={themeClasses.text}
+                              >
                                 {stage.pass_rate}% pass rate
                               </Typography>
                             </Box>
@@ -285,10 +351,11 @@ const AnalyticsDashboard = () => {
                               sx={{
                                 height: 6,
                                 borderRadius: 3,
-                                backgroundColor: theme === 'dark' ? '#374151' : '#F3F4F6',
-                                '& .MuiLinearProgress-bar': {
-                                  backgroundColor: '#10B981'
-                                }
+                                backgroundColor:
+                                  theme === "dark" ? "#374151" : "#F3F4F6",
+                                "& .MuiLinearProgress-bar": {
+                                  backgroundColor: "#10B981",
+                                },
                               }}
                             />
                           </Box>
@@ -326,41 +393,52 @@ const AnalyticsDashboard = () => {
                 {topPerformingJobs.map((job) => (
                   <TableRow key={job.id} hover>
                     <TableCell>
-                      <Typography variant="subtitle2" className={themeClasses.text}>
+                      <Typography
+                        variant="subtitle2"
+                        className={themeClasses.text}
+                      >
                         {job.title}
                       </Typography>
                     </TableCell>
                     <TableCell align="right">
-                      <Chip 
-                        label={job.applications} 
-                        size="small" 
-                        sx={{ bgcolor: '#EBF8FF', color: '#1E40AF' }}
+                      <Chip
+                        label={job.applications}
+                        size="small"
+                        sx={{ bgcolor: "#EBF8FF", color: "#1E40AF" }}
                       />
                     </TableCell>
                     <TableCell align="right">
-                      <Chip 
-                        label={job.qualified} 
-                        size="small" 
-                        sx={{ bgcolor: '#F0FDF4', color: '#166534' }}
+                      <Chip
+                        label={job.qualified}
+                        size="small"
+                        sx={{ bgcolor: "#F0FDF4", color: "#166534" }}
                       />
                     </TableCell>
                     <TableCell align="right">
-                      <Chip 
-                        label={job.interviews} 
-                        size="small" 
-                        sx={{ bgcolor: '#FFFBEB', color: '#92400E' }}
+                      <Chip
+                        label={job.interviews}
+                        size="small"
+                        sx={{ bgcolor: "#FFFBEB", color: "#92400E" }}
                       />
                     </TableCell>
                     <TableCell align="right">
-                      <Chip 
-                        label={job.hires} 
-                        size="small" 
-                        sx={{ bgcolor: '#FDF2F8', color: '#BE185D' }}
+                      <Chip
+                        label={job.hires}
+                        size="small"
+                        sx={{ bgcolor: "#FDF2F8", color: "#BE185D" }}
                       />
                     </TableCell>
                     <TableCell align="right">
-                      <Box display="flex" alignItems="center" justifyContent="flex-end">
-                        <Typography variant="body2" className={themeClasses.text} mr={1}>
+                      <Box
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="flex-end"
+                      >
+                        <Typography
+                          variant="body2"
+                          className={themeClasses.text}
+                          mr={1}
+                        >
                           {((job.hires / job.applications) * 100).toFixed(1)}%
                         </Typography>
                         <LinearProgress
@@ -370,10 +448,11 @@ const AnalyticsDashboard = () => {
                             width: 60,
                             height: 6,
                             borderRadius: 3,
-                            backgroundColor: theme === 'dark' ? '#374151' : '#F3F4F6',
-                            '& .MuiLinearProgress-bar': {
-                              backgroundColor: '#10B981'
-                            }
+                            backgroundColor:
+                              theme === "dark" ? "#374151" : "#F3F4F6",
+                            "& .MuiLinearProgress-bar": {
+                              backgroundColor: "#10B981",
+                            },
                           }}
                         />
                       </Box>

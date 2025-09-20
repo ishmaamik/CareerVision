@@ -51,35 +51,37 @@ import CompanyProfile from "./components/pages/recruiter/CompanyProfile";
 // Sidebar Wrapper Component
 const SidebarWrapper = ({ isOpen, setIsOpen }) => {
   const { userDetails } = React.useContext(User);
-  
+
   // Also check localStorage as backup
-  const storedUser = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null;
+  const storedUser = localStorage.getItem("user")
+    ? JSON.parse(localStorage.getItem("user"))
+    : null;
   const user = userDetails || storedUser;
-  
+
   // Debug logging
-  console.log('SidebarWrapper Debug:', {
+  console.log("SidebarWrapper Debug:", {
     userDetails,
     storedUser,
     finalUser: user,
-    userRole: user?.role
+    userRole: user?.role,
   });
-  
+
   // Determine which sidebar to render based on user role
   if (!user || !user.role) {
-    console.log('Rendering Student Sidebar - No user or role');
+    console.log("Rendering Student Sidebar - No user or role");
     return <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />;
   }
-  
+
   switch (user.role.toLowerCase()) {
-    case 'recruiter':
-    case 'hiring_manager':
-      console.log('Rendering Recruiter Sidebar for role:', user.role);
+    case "recruiter":
+    case "hiring_manager":
+      console.log("Rendering Recruiter Sidebar for role:", user.role);
       return <RecruiterSidebar isOpen={isOpen} setIsOpen={setIsOpen} />;
-    case 'student':
-    case 'job_seeker':
-    case 'user':
+    case "student":
+    case "job_seeker":
+    case "user":
     default:
-      console.log('Rendering Student Sidebar for role:', user.role);
+      console.log("Rendering Student Sidebar for role:", user.role);
       return <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />;
   }
 };
@@ -93,13 +95,13 @@ function AppContent() {
   // Initialize user from localStorage on app load
   React.useEffect(() => {
     if (!userDetails) {
-      const storedUser = localStorage.getItem('user');
+      const storedUser = localStorage.getItem("user");
       if (storedUser) {
         try {
           const parsedUser = JSON.parse(storedUser);
           setUserDetails(parsedUser);
         } catch (error) {
-          console.error('Error parsing stored user:', error);
+          console.error("Error parsing stored user:", error);
         }
       }
     }
@@ -123,210 +125,184 @@ function AppContent() {
 
         {/* Main Content - Takes remaining space with proper scrolling */}
         <main className="flex-1 overflow-auto">
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/signup" element={<Signup />} />
-                <Route path="/blogs" element={<Blogs />} />
-                <Route path="/blogs/newBlog" element={<NewBlog />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/jobs" element={<JobPage />} />
-                <Route path="/jobs/create" element={<CreateJob />} />
-                <Route path="/jobs/:id" element={<ApplyJob />} />
-                <Route path="/company/create" element={<CreateCompany />} />
-                <Route path="/community" element={<CommunityForum />} />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/blogs" element={<Blogs />} />
+            <Route path="/blogs/newBlog" element={<NewBlog />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/jobs" element={<JobPage />} />
+            <Route path="/jobs/create" element={<CreateJob />} />
+            <Route path="/jobs/:id" element={<ApplyJob />} />
+            <Route path="/company/create" element={<CreateCompany />} />
+            <Route path="/community" element={<CommunityForum />} />
 
-                {/* Pre-University Career Guidance */}
-                <Route path="/pre-university" element={<PreUniversity />} />
-                <Route
-                  path="/pre-university/career-choice"
-                  element={<CareerChoice />}
-                />
-                <Route
-                  path="/pre-university/career/:careerTitle"
-                  element={<CareerDetails />}
-                />
-                <Route
-                  path="/pre-university/roadmap/:careerTitle"
-                  element={<Roadmap />}
-                />
-                <Route
-                  path="/pre-university/university-choice"
-                  element={<UniversityChoice />}
-                />
+            {/* Pre-University Career Guidance */}
+            <Route path="/pre-university" element={<PreUniversity />} />
+            <Route
+              path="/pre-university/career-choice"
+              element={<CareerChoice />}
+            />
+            <Route
+              path="/pre-university/career/:careerTitle"
+              element={<CareerDetails />}
+            />
+            <Route
+              path="/pre-university/roadmap/:careerTitle"
+              element={<Roadmap />}
+            />
+            <Route
+              path="/pre-university/university-choice"
+              element={<UniversityChoice />}
+            />
 
-                <Route path="/roadmap" element={<Roadmap />} />
-                <Route path="/careers" element={<Careers />} />
+            <Route path="/roadmap" element={<Roadmap />} />
+            <Route path="/careers" element={<Careers />} />
 
-                <Route path="/sample" element={<SampleSocial />} />
-                <Route path="/emotion" element={<EmotionCapture />} />
-                <Route path="/companies" element={<CompaniesPage />} />
-                <Route
-                  path="/interview-questions"
-                  element={<InterviewQuestionBank />}
-                />
-                <Route path="/interview-room" element={<InterviewRoomForm />} />
-                <Route path="/events" element={<DynamicEvents />} />
-                <Route path="/chatbot" element={<ChatbotPage />} />
+            <Route path="/sample" element={<SampleSocial />} />
+            <Route path="/emotion" element={<EmotionCapture />} />
+            <Route path="/companies" element={<CompaniesPage />} />
+            <Route
+              path="/interview-questions"
+              element={<InterviewQuestionBank />}
+            />
+            <Route path="/interview-room" element={<InterviewRoomForm />} />
+            <Route path="/events" element={<DynamicEvents />} />
+            <Route path="/chatbot" element={<ChatbotPage />} />
 
-                {/* New sidebar routes */}
-                <Route
-                  path="/dashboard"
-                  element={<div className="p-8">Dashboard Coming Soon</div>}
-                />
-                <Route
-                  path="/career-assessment"
-                  element={<CareerAssessment />}
-                />
-                <Route
-                  path="/skills-analysis"
-                  element={<SkillsAnalysis />}
-                />
-                <Route
-                  path="/saved-jobs"
-                  element={<SavedJobs />}
-                />
-                <Route
-                  path="/applications"
-                  element={<Applications />}
-                />
-                <Route
-                  path="/job-alerts"
-                  element={<JobAlerts />}
-                />
-                <Route
-                  path="/mock-interviews"
-                  element={<MockInterviews />}
-                />
-                <Route
-                  path="/interview-history"
-                  element={<InterviewHistory />}
-                />
-                <Route
-                  path="/interview-guides"
-                  element={<InterviewGuides />}
-                />
-                <Route path="/network" element={<CommunityForum />} />
-                <Route
-                  path="/messages"
-                  element={<div className="p-8">Messages Coming Soon</div>}
-                />
-                <Route
-                  path="/mentorship"
-                  element={<div className="p-8">Mentorship Coming Soon</div>}
-                />
-                <Route path="/forums" element={<CommunityForum />} />
-                <Route
-                  path="/company-reviews"
-                  element={
-                    <div className="p-8">Company Reviews Coming Soon</div>
-                  }
-                />
-                <Route
-                  path="/salary-insights"
-                  element={
-                    <div className="p-8">Salary Insights Coming Soon</div>
-                  }
-                />
-                <Route
-                  path="/culture-match"
-                  element={<div className="p-8">Culture Match Coming Soon</div>}
-                />
-                <Route
-                  path="/webinars"
-                  element={<div className="p-8">Webinars Coming Soon</div>}
-                />
-                <Route
-                  path="/workshops"
-                  element={<div className="p-8">Workshops Coming Soon</div>}
-                />
-                <Route
-                  path="/conferences"
-                  element={<div className="p-8">Conferences Coming Soon</div>}
-                />
-                <Route
-                  path="/settings"
-                  element={<div className="p-8">Settings Coming Soon</div>}
-                />
+            {/* New sidebar routes */}
+            <Route
+              path="/dashboard"
+              element={<div className="p-8">Dashboard Coming Soon</div>}
+            />
+            <Route path="/career-assessment" element={<CareerAssessment />} />
+            <Route path="/skills-analysis" element={<SkillsAnalysis />} />
+            <Route path="/saved-jobs" element={<SavedJobs />} />
+            <Route path="/applications" element={<Applications />} />
+            <Route path="/job-alerts" element={<JobAlerts />} />
+            <Route path="/mock-interviews" element={<MockInterviews />} />
+            <Route path="/interview-history" element={<InterviewHistory />} />
+            <Route path="/interview-guides" element={<InterviewGuides />} />
+            <Route path="/network" element={<CommunityForum />} />
+            <Route
+              path="/messages"
+              element={<div className="p-8">Messages Coming Soon</div>}
+            />
+            <Route
+              path="/mentorship"
+              element={<div className="p-8">Mentorship Coming Soon</div>}
+            />
+            <Route path="/forums" element={<CommunityForum />} />
+            <Route
+              path="/company-reviews"
+              element={<div className="p-8">Company Reviews Coming Soon</div>}
+            />
+            <Route
+              path="/salary-insights"
+              element={<div className="p-8">Salary Insights Coming Soon</div>}
+            />
+            <Route
+              path="/culture-match"
+              element={<div className="p-8">Culture Match Coming Soon</div>}
+            />
+            <Route
+              path="/webinars"
+              element={<div className="p-8">Webinars Coming Soon</div>}
+            />
+            <Route
+              path="/workshops"
+              element={<div className="p-8">Workshops Coming Soon</div>}
+            />
+            <Route
+              path="/conferences"
+              element={<div className="p-8">Conferences Coming Soon</div>}
+            />
+            <Route
+              path="/settings"
+              element={<div className="p-8">Settings Coming Soon</div>}
+            />
 
-                {/* Recruiter Routes */}
-                <Route
-                  path="/recruiter/dashboard"
-                  element={<RecruiterDashboard />}
-                />
-                <Route
-                  path="/recruiter/jobs"
-                  element={<JobManagement />}
-                />
-                <Route
-                  path="/recruiter/jobs/create"
-                  element={<CreateJob />}
-                />
-                <Route
-                  path="/recruiter/job-templates"
-                  element={<div className="p-8">Job Templates Coming Soon</div>}
-                />
-                <Route
-                  path="/recruiter/candidates"
-                  element={<CandidateManagement />}
-                />
-                <Route
-                  path="/recruiter/candidates/shortlisted"
-                  element={<CandidateManagement />}
-                />
-                <Route
-                  path="/recruiter/pipeline"
-                  element={<div className="p-8">Candidate Pipeline Coming Soon</div>}
-                />
-                <Route
-                  path="/recruiter/interviews"
-                  element={<InterviewScheduling />}
-                />
-                <Route
-                  path="/recruiter/interviews/calendar"
-                  element={<div className="p-8">Interview Calendar Coming Soon</div>}
-                />
-                <Route
-                  path="/recruiter/interviews/feedback"
-                  element={<div className="p-8">Interview Feedback Coming Soon</div>}
-                />
-                <Route
-                  path="/recruiter/analytics"
-                  element={<AnalyticsDashboard />}
-                />
-                <Route
-                  path="/recruiter/reports"
-                  element={<div className="p-8">Reports Coming Soon</div>}
-                />
-                <Route
-                  path="/recruiter/performance"
-                  element={<div className="p-8">Performance Coming Soon</div>}
-                />
-                <Route
-                  path="/recruiter/company-profile"
-                  element={<CompanyProfile />}
-                />
-                <Route
-                  path="/recruiter/team"
-                  element={<div className="p-8">Team Management Coming Soon</div>}
-                />
-                <Route
-                  path="/recruiter/branding"
-                  element={<div className="p-8">Employer Branding Coming Soon</div>}
-                />
-                <Route
-                  path="/recruiter/settings"
-                  element={<div className="p-8">Recruiter Settings Coming Soon</div>}
-                />
-              </Routes>
-            </main>
-          </div>
+            {/* Recruiter Routes */}
+            <Route
+              path="/recruiter/dashboard"
+              element={<RecruiterDashboard />}
+            />
+            <Route path="/recruiter/jobs" element={<JobManagement />} />
+            <Route path="/recruiter/jobs/create" element={<CreateJob />} />
+            <Route
+              path="/recruiter/job-templates"
+              element={<div className="p-8">Job Templates Coming Soon</div>}
+            />
+            <Route
+              path="/recruiter/candidates"
+              element={<CandidateManagement />}
+            />
+            <Route
+              path="/recruiter/candidates/shortlisted"
+              element={<CandidateManagement />}
+            />
+            <Route
+              path="/recruiter/pipeline"
+              element={
+                <div className="p-8">Candidate Pipeline Coming Soon</div>
+              }
+            />
+            <Route
+              path="/recruiter/interviews"
+              element={<InterviewScheduling />}
+            />
+            <Route
+              path="/recruiter/interviews/calendar"
+              element={
+                <div className="p-8">Interview Calendar Coming Soon</div>
+              }
+            />
+            <Route
+              path="/recruiter/interviews/feedback"
+              element={
+                <div className="p-8">Interview Feedback Coming Soon</div>
+              }
+            />
+            <Route
+              path="/recruiter/analytics"
+              element={<AnalyticsDashboard />}
+            />
+            <Route
+              path="/recruiter/reports"
+              element={<div className="p-8">Reports Coming Soon</div>}
+            />
+            <Route
+              path="/recruiter/performance"
+              element={<div className="p-8">Performance Coming Soon</div>}
+            />
+            <Route
+              path="/recruiter/company-profile"
+              element={<CompanyProfile />}
+            />
+            <Route
+              path="/recruiter/team"
+              element={<div className="p-8">Team Management Coming Soon</div>}
+            />
+            <Route
+              path="/recruiter/branding"
+              element={<div className="p-8">Employer Branding Coming Soon</div>}
+            />
+            <Route
+              path="/recruiter/settings"
+              element={
+                <div className="p-8">Recruiter Settings Coming Soon</div>
+              }
+            />
+          </Routes>
+        </main>
+      </div>
 
-          {/* Career Chatbot - Fixed position, doesn't affect layout */}
-          <CareerChatbot />
-        </div>
-      );
-    }
+      {/* Career Chatbot - Fixed position, doesn't affect layout */}
+      <CareerChatbot />
+    </div>
+  );
+}
 
 function App() {
   return (

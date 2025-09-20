@@ -71,9 +71,14 @@ const SkillsAnalysis = () => {
   const [currentTab, setCurrentTab] = useState(0);
   const [userSkills, setUserSkills] = useState({});
   const [targetRole, setTargetRole] = useState("Software Engineer");
-  const [skillGaps, setSkillGaps] = useState({ gaps: [], strengths: [], required: [] });
+  const [skillGaps, setSkillGaps] = useState({
+    gaps: [],
+    strengths: [],
+    required: [],
+  });
   const [savedSkills, setSavedSkills] = useState(new Set());
-  const [selectedSkillForLearning, setSelectedSkillForLearning] = useState(null);
+  const [selectedSkillForLearning, setSelectedSkillForLearning] =
+    useState(null);
 
   // Initialize with mock user skills
   useEffect(() => {
@@ -100,15 +105,15 @@ const SkillsAnalysis = () => {
 
   // Handle skill level change
   const handleSkillChange = (skillId, value) => {
-    setUserSkills(prev => ({
+    setUserSkills((prev) => ({
       ...prev,
-      [skillId]: value
+      [skillId]: value,
     }));
   };
 
   // Toggle saved skills
   const toggleSavedSkill = (skillId) => {
-    setSavedSkills(prev => {
+    setSavedSkills((prev) => {
       const newSet = new Set(prev);
       if (newSet.has(skillId)) {
         newSet.delete(skillId);
@@ -121,20 +126,20 @@ const SkillsAnalysis = () => {
 
   // Get skill level info
   const getSkillLevelInfo = (level) => {
-    return skillLevels.find(l => l.value === level) || skillLevels[0];
+    return skillLevels.find((l) => l.value === level) || skillLevels[0];
   };
 
   // Get all skills with categories
   const getAllSkills = () => {
     const allSkills = [];
     Object.entries(skillCategories).forEach(([categoryKey, category]) => {
-      category.skills.forEach(skill => {
+      category.skills.forEach((skill) => {
         allSkills.push({
           ...skill,
           category: categoryKey,
           categoryName: category.name,
           categoryColor: category.color,
-          userLevel: userSkills[skill.id] || 0
+          userLevel: userSkills[skill.id] || 0,
         });
       });
     });
@@ -145,13 +150,15 @@ const SkillsAnalysis = () => {
   const renderSkillsOverview = () => {
     const allSkills = getAllSkills();
     const topSkills = allSkills
-      .filter(skill => skill.userLevel > 0)
+      .filter((skill) => skill.userLevel > 0)
       .sort((a, b) => b.userLevel - a.userLevel)
       .slice(0, 8);
 
-    const averageLevel = topSkills.length > 0 
-      ? topSkills.reduce((sum, skill) => sum + skill.userLevel, 0) / topSkills.length 
-      : 0;
+    const averageLevel =
+      topSkills.length > 0
+        ? topSkills.reduce((sum, skill) => sum + skill.userLevel, 0) /
+          topSkills.length
+        : 0;
 
     return (
       <Fade in={currentTab === 0}>
@@ -215,7 +222,10 @@ const SkillsAnalysis = () => {
           {/* Top Skills */}
           <Card className={componentStyles.card}>
             <CardContent className="p-6">
-              <Typography variant="h5" className="font-bold mb-6 flex items-center">
+              <Typography
+                variant="h5"
+                className="font-bold mb-6 flex items-center"
+              >
                 <Star className="w-6 h-6 mr-2 text-yellow-500" />
                 Your Top Skills
               </Typography>
@@ -224,29 +234,39 @@ const SkillsAnalysis = () => {
                   const levelInfo = getSkillLevelInfo(skill.userLevel);
                   return (
                     <Grid item xs={12} md={6} key={skill.id}>
-                      <Paper className="p-4" style={{ backgroundColor: isDarkMode ? '#1e293b' : '#f8fafc' }}>
+                      <Paper
+                        className="p-4"
+                        style={{
+                          backgroundColor: isDarkMode ? "#1e293b" : "#f8fafc",
+                        }}
+                      >
                         <Box className="flex justify-between items-center mb-2">
                           <Typography variant="h6" className="font-medium">
                             {skill.name}
                           </Typography>
-                          <Chip 
+                          <Chip
                             label={levelInfo.label}
-                            style={{ backgroundColor: levelInfo.color, color: 'white' }}
+                            style={{
+                              backgroundColor: levelInfo.color,
+                              color: "white",
+                            }}
                             size="small"
                           />
                         </Box>
-                        <LinearProgress 
-                          variant="determinate" 
+                        <LinearProgress
+                          variant="determinate"
                           value={(skill.userLevel / 5) * 100}
                           className="rounded-full h-2 mb-2"
-                          style={{ backgroundColor: isDarkMode ? '#334155' : '#e2e8f0' }}
+                          style={{
+                            backgroundColor: isDarkMode ? "#334155" : "#e2e8f0",
+                          }}
                         />
                         <Box className="flex justify-between items-center">
                           <Typography variant="body2" className="opacity-70">
                             {skill.categoryName}
                           </Typography>
                           {skill.inDemand && (
-                            <Chip 
+                            <Chip
                               label={`${skill.growth} demand`}
                               color="success"
                               size="small"
@@ -273,12 +293,14 @@ const SkillsAnalysis = () => {
         <Typography variant="h4" className="font-bold mb-6 text-center">
           Skill Assessment by Category
         </Typography>
-        
+
         {Object.entries(skillCategories).map(([categoryKey, category]) => (
           <Accordion key={categoryKey} className="mb-4">
             <AccordionSummary expandIcon={<ExpandMore />}>
               <Box className="flex items-center">
-                <Typography variant="h2" className="mr-3">{category.icon}</Typography>
+                <Typography variant="h2" className="mr-3">
+                  {category.icon}
+                </Typography>
                 <Box>
                   <Typography variant="h6" className="font-bold">
                     {category.name}
@@ -301,7 +323,7 @@ const SkillsAnalysis = () => {
                           </Typography>
                           <Box className="flex items-center gap-2">
                             {skill.inDemand && (
-                              <Chip 
+                              <Chip
                                 label="High Demand"
                                 color="success"
                                 size="small"
@@ -320,30 +342,37 @@ const SkillsAnalysis = () => {
                             </IconButton>
                           </Box>
                         </Box>
-                        
+
                         <Typography variant="body2" className="mb-3">
-                          Current Level: {getSkillLevelInfo(userSkills[skill.id] || 0).label}
+                          Current Level:{" "}
+                          {getSkillLevelInfo(userSkills[skill.id] || 0).label}
                         </Typography>
-                        
+
                         <Slider
                           value={userSkills[skill.id] || 0}
-                          onChange={(e, value) => handleSkillChange(skill.id, value)}
+                          onChange={(e, value) =>
+                            handleSkillChange(skill.id, value)
+                          }
                           min={0}
                           max={5}
                           step={1}
                           marks
                           valueLabelDisplay="auto"
-                          valueLabelFormat={(value) => getSkillLevelInfo(value).label}
+                          valueLabelFormat={(value) =>
+                            getSkillLevelInfo(value).label
+                          }
                           color="primary"
                         />
-                        
+
                         <Box className="flex justify-between items-center mt-3">
                           <Typography variant="body2" className="opacity-60">
                             Market Growth: {skill.growth}
                           </Typography>
                           <Button
                             size="small"
-                            onClick={() => setSelectedSkillForLearning(skill.id)}
+                            onClick={() =>
+                              setSelectedSkillForLearning(skill.id)
+                            }
                             startIcon={<School />}
                           >
                             Learn
@@ -397,27 +426,37 @@ const SkillsAnalysis = () => {
           <Grid item xs={12} md={6}>
             <Card className={componentStyles.card}>
               <CardContent className="p-6">
-                <Typography variant="h6" className="font-bold mb-4 flex items-center">
+                <Typography
+                  variant="h6"
+                  className="font-bold mb-4 flex items-center"
+                >
                   <CheckCircle className="w-6 h-6 mr-2 text-green-500" />
                   Your Strengths ({skillGaps.strengths.length})
                 </Typography>
-                
+
                 {skillGaps.strengths.length === 0 ? (
-                  <Typography variant="body2" className="opacity-70 text-center py-8">
+                  <Typography
+                    variant="body2"
+                    className="opacity-70 text-center py-8"
+                  >
                     No strong skills identified for this role yet
                   </Typography>
                 ) : (
                   <List>
                     {skillGaps.strengths.map((skillId) => {
-                      const skill = getAllSkills().find(s => s.id === skillId);
+                      const skill = getAllSkills().find(
+                        (s) => s.id === skillId
+                      );
                       return (
                         <ListItem key={skillId} className="px-0">
                           <ListItemIcon>
                             <CheckCircle className="text-green-500" />
                           </ListItemIcon>
-                          <ListItemText 
+                          <ListItemText
                             primary={skill?.name || skillId}
-                            secondary={`Level: ${getSkillLevelInfo(userSkills[skillId] || 0).label}`}
+                            secondary={`Level: ${
+                              getSkillLevelInfo(userSkills[skillId] || 0).label
+                            }`}
                           />
                         </ListItem>
                       );
@@ -432,11 +471,14 @@ const SkillsAnalysis = () => {
           <Grid item xs={12} md={6}>
             <Card className={componentStyles.card}>
               <CardContent className="p-6">
-                <Typography variant="h6" className="font-bold mb-4 flex items-center">
+                <Typography
+                  variant="h6"
+                  className="font-bold mb-4 flex items-center"
+                >
                   <Warning className="w-6 h-6 mr-2 text-orange-500" />
                   Skills to Develop ({skillGaps.gaps.length})
                 </Typography>
-                
+
                 {skillGaps.gaps.length === 0 ? (
                   <Box className="text-center py-8">
                     <CheckCircle className="w-16 h-16 mx-auto mb-4 text-green-500" />
@@ -450,19 +492,23 @@ const SkillsAnalysis = () => {
                 ) : (
                   <List>
                     {skillGaps.gaps.map((skillId) => {
-                      const skill = getAllSkills().find(s => s.id === skillId);
+                      const skill = getAllSkills().find(
+                        (s) => s.id === skillId
+                      );
                       const currentLevel = userSkills[skillId] || 0;
                       return (
                         <ListItem key={skillId} className="px-0">
                           <ListItemIcon>
                             <Warning className="text-orange-500" />
                           </ListItemIcon>
-                          <ListItemText 
+                          <ListItemText
                             primary={skill?.name || skillId}
                             secondary={
-                              currentLevel === 0 
-                                ? "Not assessed yet" 
-                                : `Current: ${getSkillLevelInfo(currentLevel).label}`
+                              currentLevel === 0
+                                ? "Not assessed yet"
+                                : `Current: ${
+                                    getSkillLevelInfo(currentLevel).label
+                                  }`
                             }
                           />
                           <Button
@@ -486,48 +532,77 @@ const SkillsAnalysis = () => {
         {careerPathRecommendations[targetRole] && (
           <Card className={`${componentStyles.card} mt-6`}>
             <CardContent className="p-6">
-              <Typography variant="h6" className="font-bold mb-4 flex items-center">
+              <Typography
+                variant="h6"
+                className="font-bold mb-4 flex items-center"
+              >
                 <Timeline className="w-6 h-6 mr-2 text-blue-500" />
                 Career Development Path for {targetRole}
               </Typography>
-              
+
               <Grid container spacing={4}>
                 <Grid item xs={12} md={4}>
                   <Box className="text-center">
                     <CheckCircle className="w-12 h-12 mx-auto mb-3 text-green-500" />
-                    <Typography variant="h6" className="font-bold mb-2">Current Skills</Typography>
+                    <Typography variant="h6" className="font-bold mb-2">
+                      Current Skills
+                    </Typography>
                     <Box className="flex flex-wrap gap-1 justify-center">
-                      {careerPathRecommendations[targetRole].currentSkills.map((skill) => (
-                        <Chip key={skill} label={skill} size="small" color="success" />
-                      ))}
+                      {careerPathRecommendations[targetRole].currentSkills.map(
+                        (skill) => (
+                          <Chip
+                            key={skill}
+                            label={skill}
+                            size="small"
+                            color="success"
+                          />
+                        )
+                      )}
                     </Box>
                   </Box>
                 </Grid>
-                
+
                 <Grid item xs={12} md={4}>
                   <Box className="text-center">
                     <TrendingUp className="w-12 h-12 mx-auto mb-3 text-blue-500" />
-                    <Typography variant="h6" className="font-bold mb-2">Next Skills</Typography>
+                    <Typography variant="h6" className="font-bold mb-2">
+                      Next Skills
+                    </Typography>
                     <Box className="flex flex-wrap gap-1 justify-center">
-                      {careerPathRecommendations[targetRole].nextSkills.map((skill) => (
-                        <Chip key={skill} label={skill} size="small" color="primary" variant="outlined" />
-                      ))}
+                      {careerPathRecommendations[targetRole].nextSkills.map(
+                        (skill) => (
+                          <Chip
+                            key={skill}
+                            label={skill}
+                            size="small"
+                            color="primary"
+                            variant="outlined"
+                          />
+                        )
+                      )}
                     </Box>
                   </Box>
                 </Grid>
-                
+
                 <Grid item xs={12} md={4}>
                   <Box className="text-center">
                     <Speed className="w-12 h-12 mx-auto mb-3 text-purple-500" />
-                    <Typography variant="h6" className="font-bold mb-2">Timeline</Typography>
+                    <Typography variant="h6" className="font-bold mb-2">
+                      Timeline
+                    </Typography>
                     <Typography variant="body1" className="mb-2">
                       {careerPathRecommendations[targetRole].timeframe}
                     </Typography>
-                    <Chip 
+                    <Chip
                       label={`${careerPathRecommendations[targetRole].difficulty} Difficulty`}
                       color={
-                        careerPathRecommendations[targetRole].difficulty === 'High' ? 'error' :
-                        careerPathRecommendations[targetRole].difficulty === 'Medium' ? 'warning' : 'success'
+                        careerPathRecommendations[targetRole].difficulty ===
+                        "High"
+                          ? "error"
+                          : careerPathRecommendations[targetRole].difficulty ===
+                            "Medium"
+                          ? "warning"
+                          : "success"
                       }
                       size="small"
                     />
@@ -552,32 +627,33 @@ const SkillsAnalysis = () => {
         {/* Recommended Skills to Learn */}
         <Card className={`${componentStyles.card} mb-6`}>
           <CardContent className="p-6">
-            <Typography variant="h6" className="font-bold mb-4 flex items-center">
+            <Typography
+              variant="h6"
+              className="font-bold mb-4 flex items-center"
+            >
               <TrendingUp className="w-6 h-6 mr-2 text-green-500" />
               Skills You Should Focus On
             </Typography>
-            
+
             <Grid container spacing={3}>
               {skillGaps.gaps.slice(0, 6).map((skillId) => {
-                const skill = getAllSkills().find(s => s.id === skillId);
+                const skill = getAllSkills().find((s) => s.id === skillId);
                 return (
                   <Grid item xs={12} sm={6} md={4} key={skillId}>
-                    <Paper 
+                    <Paper
                       className="p-4 cursor-pointer transition-all duration-300 hover:shadow-lg"
                       onClick={() => setSelectedSkillForLearning(skillId)}
-                      style={{ backgroundColor: isDarkMode ? '#1e293b' : '#f8fafc' }}
+                      style={{
+                        backgroundColor: isDarkMode ? "#1e293b" : "#f8fafc",
+                      }}
                     >
                       <Typography variant="h6" className="font-bold mb-2">
                         {skill?.name || skillId}
                       </Typography>
                       <Typography variant="body2" className="opacity-70 mb-3">
-                        High demand: {skill?.growth || '+20%'} growth
+                        High demand: {skill?.growth || "+20%"} growth
                       </Typography>
-                      <Button
-                        size="small"
-                        startIcon={<PlayArrow />}
-                        fullWidth
-                      >
+                      <Button size="small" startIcon={<PlayArrow />} fullWidth>
                         Start Learning
                       </Button>
                     </Paper>
@@ -590,48 +666,63 @@ const SkillsAnalysis = () => {
 
         {/* Popular Learning Resources */}
         <Grid container spacing={4}>
-          {Object.entries(learningResources).slice(0, 3).map(([skillId, resources]) => (
-            <Grid item xs={12} md={4} key={skillId}>
-              <Card className={componentStyles.card}>
-                <CardContent className="p-6">
-                  <Typography variant="h6" className="font-bold mb-4 capitalize">
-                    {skillId.replace('_', ' ')} Resources
-                  </Typography>
-                  
-                  {resources.map((resource, index) => (
-                    <Paper 
-                      key={index}
-                      className="p-3 mb-3 cursor-pointer transition-all duration-300 hover:shadow-md"
-                      style={{ backgroundColor: isDarkMode ? '#1e293b' : '#f8fafc' }}
+          {Object.entries(learningResources)
+            .slice(0, 3)
+            .map(([skillId, resources]) => (
+              <Grid item xs={12} md={4} key={skillId}>
+                <Card className={componentStyles.card}>
+                  <CardContent className="p-6">
+                    <Typography
+                      variant="h6"
+                      className="font-bold mb-4 capitalize"
                     >
-                      <Box className="flex justify-between items-start mb-2">
-                        <Typography variant="subtitle1" className="font-medium">
-                          {resource.name}
+                      {skillId.replace("_", " ")} Resources
+                    </Typography>
+
+                    {resources.map((resource, index) => (
+                      <Paper
+                        key={index}
+                        className="p-3 mb-3 cursor-pointer transition-all duration-300 hover:shadow-md"
+                        style={{
+                          backgroundColor: isDarkMode ? "#1e293b" : "#f8fafc",
+                        }}
+                      >
+                        <Box className="flex justify-between items-start mb-2">
+                          <Typography
+                            variant="subtitle1"
+                            className="font-medium"
+                          >
+                            {resource.name}
+                          </Typography>
+                          <Chip
+                            label={resource.type}
+                            size="small"
+                            color="primary"
+                            variant="outlined"
+                          />
+                        </Box>
+
+                        <Typography variant="body2" className="opacity-70 mb-2">
+                          {resource.platform} • {resource.duration}
                         </Typography>
-                        <Chip 
-                          label={resource.type}
-                          size="small"
-                          color="primary"
-                          variant="outlined"
-                        />
-                      </Box>
-                      
-                      <Typography variant="body2" className="opacity-70 mb-2">
-                        {resource.platform} • {resource.duration}
-                      </Typography>
-                      
-                      <Box className="flex justify-between items-center">
-                        <Rating value={resource.rating} precision={0.1} size="small" readOnly />
-                        <Button size="small" startIcon={<PlayArrow />}>
-                          Start
-                        </Button>
-                      </Box>
-                    </Paper>
-                  ))}
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
+
+                        <Box className="flex justify-between items-center">
+                          <Rating
+                            value={resource.rating}
+                            precision={0.1}
+                            size="small"
+                            readOnly
+                          />
+                          <Button size="small" startIcon={<PlayArrow />}>
+                            Start
+                          </Button>
+                        </Box>
+                      </Paper>
+                    ))}
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
         </Grid>
       </Box>
     </Fade>
@@ -646,7 +737,7 @@ const SkillsAnalysis = () => {
             <IconButton
               onClick={() => navigate(-1)}
               className="mr-4"
-              style={{ color: isDarkMode ? '#e2e8f0' : '#2d3748' }}
+              style={{ color: isDarkMode ? "#e2e8f0" : "#2d3748" }}
             >
               <ArrowBack />
             </IconButton>
@@ -657,10 +748,10 @@ const SkillsAnalysis = () => {
               Skills Analysis
             </Typography>
           </Box>
-          
+
           <Button
             variant="contained"
-            onClick={() => navigate('/career-assessment')}
+            onClick={() => navigate("/career-assessment")}
             startIcon={<Assessment />}
             className={componentStyles.button.primary}
           >
@@ -670,8 +761,8 @@ const SkillsAnalysis = () => {
 
         {/* Tabs */}
         <Box className="mb-8">
-          <Tabs 
-            value={currentTab} 
+          <Tabs
+            value={currentTab}
             onChange={(e, newValue) => setCurrentTab(newValue)}
             variant="scrollable"
             scrollButtons="auto"
@@ -693,39 +784,58 @@ const SkillsAnalysis = () => {
         </Box>
 
         {/* Learning Resources Dialog */}
-        <Dialog 
-          open={!!selectedSkillForLearning} 
+        <Dialog
+          open={!!selectedSkillForLearning}
           onClose={() => setSelectedSkillForLearning(null)}
           maxWidth="md"
           fullWidth
         >
           <DialogTitle>
-            Learning Resources for {selectedSkillForLearning && selectedSkillForLearning.replace('_', ' ')}
+            Learning Resources for{" "}
+            {selectedSkillForLearning &&
+              selectedSkillForLearning.replace("_", " ")}
           </DialogTitle>
           <DialogContent>
-            {selectedSkillForLearning && learningResources[selectedSkillForLearning] ? (
+            {selectedSkillForLearning &&
+            learningResources[selectedSkillForLearning] ? (
               <Grid container spacing={2}>
-                {learningResources[selectedSkillForLearning].map((resource, index) => (
-                  <Grid item xs={12} key={index}>
-                    <Paper className="p-4" style={{ backgroundColor: isDarkMode ? '#1e293b' : '#f8fafc' }}>
-                      <Box className="flex justify-between items-start mb-2">
-                        <Typography variant="h6" className="font-medium">
-                          {resource.name}
+                {learningResources[selectedSkillForLearning].map(
+                  (resource, index) => (
+                    <Grid item xs={12} key={index}>
+                      <Paper
+                        className="p-4"
+                        style={{
+                          backgroundColor: isDarkMode ? "#1e293b" : "#f8fafc",
+                        }}
+                      >
+                        <Box className="flex justify-between items-start mb-2">
+                          <Typography variant="h6" className="font-medium">
+                            {resource.name}
+                          </Typography>
+                          <Chip
+                            label={resource.type}
+                            color="primary"
+                            size="small"
+                          />
+                        </Box>
+                        <Typography variant="body2" className="opacity-70 mb-2">
+                          {resource.platform} • {resource.duration}
                         </Typography>
-                        <Chip label={resource.type} color="primary" size="small" />
-                      </Box>
-                      <Typography variant="body2" className="opacity-70 mb-2">
-                        {resource.platform} • {resource.duration}
-                      </Typography>
-                      <Box className="flex justify-between items-center">
-                        <Rating value={resource.rating} precision={0.1} size="small" readOnly />
-                        <Button variant="contained" startIcon={<PlayArrow />}>
-                          Start Learning
-                        </Button>
-                      </Box>
-                    </Paper>
-                  </Grid>
-                ))}
+                        <Box className="flex justify-between items-center">
+                          <Rating
+                            value={resource.rating}
+                            precision={0.1}
+                            size="small"
+                            readOnly
+                          />
+                          <Button variant="contained" startIcon={<PlayArrow />}>
+                            Start Learning
+                          </Button>
+                        </Box>
+                      </Paper>
+                    </Grid>
+                  )
+                )}
               </Grid>
             ) : (
               <Typography variant="body1" className="text-center py-8">

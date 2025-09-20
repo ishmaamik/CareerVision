@@ -91,9 +91,15 @@ const CareerAssessment = () => {
   const getProgress = () => {
     switch (currentStep) {
       case 0:
-        return (Object.keys(personalityAnswers).length / personalityQuestions.length) * 20;
+        return (
+          (Object.keys(personalityAnswers).length /
+            personalityQuestions.length) *
+          20
+        );
       case 1:
-        return 20 + (Object.keys(skillsAnswers).length / skillsQuestions.length) * 20;
+        return (
+          20 + (Object.keys(skillsAnswers).length / skillsQuestions.length) * 20
+        );
       case 2:
         return 40 + (industryAnswers.length / 3) * 20; // Assume minimum 3 selections
       case 3:
@@ -107,25 +113,25 @@ const CareerAssessment = () => {
 
   // Handle personality answer
   const handlePersonalityAnswer = (questionId, value) => {
-    setPersonalityAnswers(prev => ({
+    setPersonalityAnswers((prev) => ({
       ...prev,
-      [questionId]: parseInt(value)
+      [questionId]: parseInt(value),
     }));
   };
 
   // Handle skills answer
   const handleSkillsAnswer = (skillId, value) => {
-    setSkillsAnswers(prev => ({
+    setSkillsAnswers((prev) => ({
       ...prev,
-      [skillId]: value
+      [skillId]: value,
     }));
   };
 
   // Handle industry selection
   const handleIndustryToggle = (industryId) => {
-    setIndustryAnswers(prev => {
+    setIndustryAnswers((prev) => {
       if (prev.includes(industryId)) {
-        return prev.filter(id => id !== industryId);
+        return prev.filter((id) => id !== industryId);
       } else {
         return [...prev, industryId];
       }
@@ -134,9 +140,9 @@ const CareerAssessment = () => {
 
   // Handle environment selection
   const handleEnvironmentToggle = (envId) => {
-    setEnvironmentAnswers(prev => {
+    setEnvironmentAnswers((prev) => {
       if (prev.includes(envId)) {
-        return prev.filter(id => id !== envId);
+        return prev.filter((id) => id !== envId);
       } else {
         return [...prev, envId];
       }
@@ -147,33 +153,38 @@ const CareerAssessment = () => {
   const calculateResults = () => {
     // Analyze personality traits
     const personalityScores = {};
-    personalityQuestions.forEach(q => {
+    personalityQuestions.forEach((q) => {
       const answer = personalityAnswers[q.id] || 0;
-      personalityScores[q.category] = (personalityScores[q.category] || 0) + answer;
+      personalityScores[q.category] =
+        (personalityScores[q.category] || 0) + answer;
     });
 
     // Determine dominant personality type
-    const dominantTrait = Object.keys(personalityScores).reduce((a, b) => 
+    const dominantTrait = Object.keys(personalityScores).reduce((a, b) =>
       personalityScores[a] > personalityScores[b] ? a : b
     );
 
-    const personalityType = personalityTypes.find(type => 
-      type.traits.some(trait => trait.toLowerCase().includes(dominantTrait))
-    ) || personalityTypes[0];
+    const personalityType =
+      personalityTypes.find((type) =>
+        type.traits.some((trait) => trait.toLowerCase().includes(dominantTrait))
+      ) || personalityTypes[0];
 
     // Analyze skills
     const topSkills = Object.entries(skillsAnswers)
-      .sort(([,a], [,b]) => b - a)
+      .sort(([, a], [, b]) => b - a)
       .slice(0, 5)
       .map(([skillId, score]) => {
-        const skill = skillsQuestions.find(s => s.id.toString() === skillId);
+        const skill = skillsQuestions.find((s) => s.id.toString() === skillId);
         return { skill: skill?.skill || skillId, score };
       });
 
     // Generate career recommendations
     const recommendedCareers = [
       ...personalityType.careers.slice(0, 2),
-      "Software Engineer", "Product Manager", "Data Analyst", "UX Designer"
+      "Software Engineer",
+      "Product Manager",
+      "Data Analyst",
+      "UX Designer",
     ].slice(0, 6);
 
     return {
@@ -183,7 +194,10 @@ const CareerAssessment = () => {
       industryMatches: industryAnswers,
       environmentPreferences: environmentAnswers,
       personalityScores,
-      overallScore: Math.round(Object.values(personalityScores).reduce((a, b) => a + b, 0) / Object.keys(personalityScores).length)
+      overallScore: Math.round(
+        Object.values(personalityScores).reduce((a, b) => a + b, 0) /
+          Object.keys(personalityScores).length
+      ),
     };
   };
 
@@ -195,19 +209,21 @@ const CareerAssessment = () => {
       setAssessmentComplete(true);
       setShowResults(true);
     }
-    setCurrentStep(prev => Math.min(prev + 1, steps.length - 1));
+    setCurrentStep((prev) => Math.min(prev + 1, steps.length - 1));
   };
 
   // Navigate to previous step
   const prevStep = () => {
-    setCurrentStep(prev => Math.max(prev - 1, 0));
+    setCurrentStep((prev) => Math.max(prev - 1, 0));
   };
 
   // Check if current step is complete
   const isStepComplete = () => {
     switch (currentStep) {
       case 0:
-        return Object.keys(personalityAnswers).length === personalityQuestions.length;
+        return (
+          Object.keys(personalityAnswers).length === personalityQuestions.length
+        );
       case 1:
         return Object.keys(skillsAnswers).length === skillsQuestions.length;
       case 2:
@@ -228,7 +244,8 @@ const CareerAssessment = () => {
           Personality Assessment
         </Typography>
         <Typography variant="body1" className="text-center mb-8 opacity-80">
-          Answer these questions to help us understand your personality and work preferences
+          Answer these questions to help us understand your personality and work
+          preferences
         </Typography>
 
         <Grid container spacing={3}>
@@ -241,8 +258,10 @@ const CareerAssessment = () => {
                   </Typography>
                   <FormControl component="fieldset" className="w-full">
                     <RadioGroup
-                      value={personalityAnswers[question.id] || ''}
-                      onChange={(e) => handlePersonalityAnswer(question.id, e.target.value)}
+                      value={personalityAnswers[question.id] || ""}
+                      onChange={(e) =>
+                        handlePersonalityAnswer(question.id, e.target.value)
+                      }
                       className="flex flex-row justify-between"
                     >
                       {[1, 2, 3, 4, 5].map((value) => (
@@ -251,10 +270,15 @@ const CareerAssessment = () => {
                           value={value}
                           control={<Radio color="primary" />}
                           label={
-                            value === 1 ? 'Strongly Disagree' :
-                            value === 2 ? 'Disagree' :
-                            value === 3 ? 'Neutral' :
-                            value === 4 ? 'Agree' : 'Strongly Agree'
+                            value === 1
+                              ? "Strongly Disagree"
+                              : value === 2
+                              ? "Disagree"
+                              : value === 3
+                              ? "Neutral"
+                              : value === 4
+                              ? "Agree"
+                              : "Strongly Agree"
                           }
                           labelPlacement="bottom"
                           className="flex-1 text-center"
@@ -292,7 +316,7 @@ const CareerAssessment = () => {
                     <Typography variant="h6" className="font-medium">
                       {skill.skill}
                     </Typography>
-                    <Chip 
+                    <Chip
                       label={skillsAnswers[skill.id] || 0}
                       color="primary"
                       variant="outlined"
@@ -336,11 +360,13 @@ const CareerAssessment = () => {
         <Grid container spacing={3}>
           {industryPreferences.map((industry) => (
             <Grid item xs={12} sm={6} md={4} key={industry.id}>
-              <Card 
-                className={`${componentStyles.card} cursor-pointer transition-all duration-300 transform hover:scale-105 ${
-                  industryAnswers.includes(industry.id) 
-                    ? 'ring-2 ring-blue-500 shadow-lg' 
-                    : 'hover:shadow-md'
+              <Card
+                className={`${
+                  componentStyles.card
+                } cursor-pointer transition-all duration-300 transform hover:scale-105 ${
+                  industryAnswers.includes(industry.id)
+                    ? "ring-2 ring-blue-500 shadow-lg"
+                    : "hover:shadow-md"
                 }`}
                 onClick={() => handleIndustryToggle(industry.id)}
               >
@@ -381,11 +407,13 @@ const CareerAssessment = () => {
         <Grid container spacing={3}>
           {workEnvironmentPreferences.map((env) => (
             <Grid item xs={12} sm={6} md={4} key={env.id}>
-              <Card 
-                className={`${componentStyles.card} cursor-pointer transition-all duration-300 transform hover:scale-105 ${
-                  environmentAnswers.includes(env.id) 
-                    ? 'ring-2 ring-purple-500 shadow-lg' 
-                    : 'hover:shadow-md'
+              <Card
+                className={`${
+                  componentStyles.card
+                } cursor-pointer transition-all duration-300 transform hover:scale-105 ${
+                  environmentAnswers.includes(env.id)
+                    ? "ring-2 ring-purple-500 shadow-lg"
+                    : "hover:shadow-md"
                 }`}
                 onClick={() => handleEnvironmentToggle(env.id)}
               >
@@ -426,8 +454,14 @@ const CareerAssessment = () => {
             <Grid item xs={12} md={6}>
               <Card className={componentStyles.card}>
                 <CardContent className="p-6">
-                  <Typography variant="h5" className="font-bold mb-4 flex items-center">
-                    <Psychology className="w-6 h-6 mr-2" style={{ color: results.personalityType.color }} />
+                  <Typography
+                    variant="h5"
+                    className="font-bold mb-4 flex items-center"
+                  >
+                    <Psychology
+                      className="w-6 h-6 mr-2"
+                      style={{ color: results.personalityType.color }}
+                    />
                     {results.personalityType.name}
                   </Typography>
                   <Typography variant="body1" className="mb-4 opacity-80">
@@ -435,10 +469,13 @@ const CareerAssessment = () => {
                   </Typography>
                   <Box className="flex flex-wrap gap-2">
                     {results.personalityType.traits.map((trait, index) => (
-                      <Chip 
+                      <Chip
                         key={index}
                         label={trait}
-                        style={{ backgroundColor: results.personalityType.color, color: 'white' }}
+                        style={{
+                          backgroundColor: results.personalityType.color,
+                          color: "white",
+                        }}
                         size="small"
                       />
                     ))}
@@ -451,7 +488,10 @@ const CareerAssessment = () => {
             <Grid item xs={12} md={6}>
               <Card className={componentStyles.card}>
                 <CardContent className="p-6">
-                  <Typography variant="h5" className="font-bold mb-4 flex items-center">
+                  <Typography
+                    variant="h5"
+                    className="font-bold mb-4 flex items-center"
+                  >
                     <TrendingUp className="w-6 h-6 mr-2 text-green-500" />
                     Top Skills
                   </Typography>
@@ -465,9 +505,9 @@ const CareerAssessment = () => {
                           {skill.score}/10
                         </Typography>
                       </Box>
-                      <LinearProgress 
-                        variant="determinate" 
-                        value={(skill.score / 10) * 100} 
+                      <LinearProgress
+                        variant="determinate"
+                        value={(skill.score / 10) * 100}
                         className="rounded-full h-2"
                       />
                     </Box>
@@ -480,16 +520,21 @@ const CareerAssessment = () => {
             <Grid item xs={12}>
               <Card className={componentStyles.card}>
                 <CardContent className="p-6">
-                  <Typography variant="h5" className="font-bold mb-4 flex items-center">
+                  <Typography
+                    variant="h5"
+                    className="font-bold mb-4 flex items-center"
+                  >
                     <WorkOutline className="w-6 h-6 mr-2 text-blue-500" />
                     Recommended Careers
                   </Typography>
                   <Grid container spacing={3}>
                     {results.recommendedCareers.map((career, index) => (
                       <Grid item xs={12} sm={6} md={4} key={index}>
-                        <Paper 
+                        <Paper
                           className="p-4 text-center cursor-pointer transition-all duration-300 hover:shadow-lg hover:scale-105"
-                          style={{ backgroundColor: isDarkMode ? '#1e293b' : '#f8fafc' }}
+                          style={{
+                            backgroundColor: isDarkMode ? "#1e293b" : "#f8fafc",
+                          }}
                         >
                           <Typography variant="h6" className="font-medium">
                             {career}
@@ -524,7 +569,7 @@ const CareerAssessment = () => {
           </Button>
           <Button
             variant="contained"
-            onClick={() => navigate('/career-explorer')}
+            onClick={() => navigate("/career-explorer")}
             startIcon={<ArrowForward />}
             className={componentStyles.button.primary}
           >
@@ -544,7 +589,7 @@ const CareerAssessment = () => {
             <IconButton
               onClick={() => navigate(-1)}
               className="mr-4"
-              style={{ color: isDarkMode ? '#e2e8f0' : '#2d3748' }}
+              style={{ color: isDarkMode ? "#e2e8f0" : "#2d3748" }}
             >
               <ArrowBack />
             </IconButton>
@@ -555,9 +600,9 @@ const CareerAssessment = () => {
               Career Assessment
             </Typography>
           </Box>
-          
+
           {!assessmentComplete && (
-            <Chip 
+            <Chip
               label={`${Math.round(getProgress())}% Complete`}
               color="primary"
               variant="outlined"
@@ -569,9 +614,9 @@ const CareerAssessment = () => {
         {/* Progress Bar */}
         {!assessmentComplete && (
           <Box className="mb-8">
-            <LinearProgress 
-              variant="determinate" 
-              value={getProgress()} 
+            <LinearProgress
+              variant="determinate"
+              value={getProgress()}
               className="rounded-full h-3 mb-4"
             />
             <Typography variant="body2" className="text-center opacity-70">
@@ -612,7 +657,7 @@ const CareerAssessment = () => {
               variant="contained"
               className={componentStyles.button.primary}
             >
-              {currentStep === 3 ? 'Get Results' : 'Next'}
+              {currentStep === 3 ? "Get Results" : "Next"}
             </Button>
           </Box>
         )}

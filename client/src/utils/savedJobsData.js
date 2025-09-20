@@ -12,14 +12,19 @@ export const mockSavedJobs = [
     savedDate: "2024-01-16",
     status: "active",
     tags: ["JavaScript", "React", "Node.js", "AWS"],
-    description: "Join our team to build the next generation of web applications...",
-    requirements: ["5+ years experience", "React expertise", "Computer Science degree"],
+    description:
+      "Join our team to build the next generation of web applications...",
+    requirements: [
+      "5+ years experience",
+      "React expertise",
+      "Computer Science degree",
+    ],
     benefits: ["Health insurance", "401k matching", "Flexible PTO"],
     remote: false,
     experience: "Senior",
     applicationDeadline: "2024-02-15",
     matchScore: 92,
-    category: "technology"
+    category: "technology",
   },
   {
     id: 2,
@@ -34,13 +39,17 @@ export const mockSavedJobs = [
     status: "active",
     tags: ["Product Strategy", "Analytics", "User Research", "Agile"],
     description: "Lead product development for our flagship social platform...",
-    requirements: ["3+ years PM experience", "MBA preferred", "Technical background"],
+    requirements: [
+      "3+ years PM experience",
+      "MBA preferred",
+      "Technical background",
+    ],
     benefits: ["Stock options", "Health insurance", "Learning budget"],
     remote: true,
     experience: "Mid-level",
     applicationDeadline: "2024-02-10",
     matchScore: 88,
-    category: "product"
+    category: "product",
   },
   {
     id: 3,
@@ -55,13 +64,17 @@ export const mockSavedJobs = [
     status: "active",
     tags: ["Figma", "Prototyping", "User Research", "Design Systems"],
     description: "Design intuitive user experiences for millions of users...",
-    requirements: ["4+ years UX experience", "Portfolio required", "Figma expertise"],
+    requirements: [
+      "4+ years UX experience",
+      "Portfolio required",
+      "Figma expertise",
+    ],
     benefits: ["Unlimited PTO", "Health insurance", "Creative bonus"],
     remote: true,
     experience: "Mid-level",
     applicationDeadline: "2024-02-20",
     matchScore: 85,
-    category: "design"
+    category: "design",
   },
   {
     id: 4,
@@ -75,14 +88,19 @@ export const mockSavedJobs = [
     savedDate: "2024-01-09",
     status: "expired",
     tags: ["Python", "Machine Learning", "SQL", "Statistics"],
-    description: "Use data to drive business decisions and improve user experience...",
-    requirements: ["PhD in related field", "5+ years experience", "Python/R expertise"],
+    description:
+      "Use data to drive business decisions and improve user experience...",
+    requirements: [
+      "PhD in related field",
+      "5+ years experience",
+      "Python/R expertise",
+    ],
     benefits: ["Travel credits", "Health insurance", "Research time"],
     remote: false,
     experience: "Senior",
     applicationDeadline: "2024-01-25",
     matchScore: 78,
-    category: "analytics"
+    category: "analytics",
   },
   {
     id: 5,
@@ -95,15 +113,25 @@ export const mockSavedJobs = [
     postedDate: "2024-01-05",
     savedDate: "2024-01-06",
     status: "active",
-    tags: ["Digital Marketing", "Campaign Management", "Analytics", "Social Media"],
-    description: "Drive user acquisition and engagement through innovative marketing...",
-    requirements: ["3+ years marketing experience", "Digital marketing expertise", "Analytics skills"],
+    tags: [
+      "Digital Marketing",
+      "Campaign Management",
+      "Analytics",
+      "Social Media",
+    ],
+    description:
+      "Drive user acquisition and engagement through innovative marketing...",
+    requirements: [
+      "3+ years marketing experience",
+      "Digital marketing expertise",
+      "Analytics skills",
+    ],
     benefits: ["Music perks", "Health insurance", "Growth opportunities"],
     remote: true,
     experience: "Mid-level",
     applicationDeadline: "2024-02-05",
     matchScore: 90,
-    category: "marketing"
+    category: "marketing",
   },
   {
     id: 6,
@@ -117,14 +145,19 @@ export const mockSavedJobs = [
     savedDate: "2024-01-15",
     status: "active",
     tags: ["AWS", "Kubernetes", "Docker", "CI/CD"],
-    description: "Build and maintain scalable infrastructure for our global platform...",
-    requirements: ["4+ years DevOps experience", "AWS certification", "Kubernetes expertise"],
+    description:
+      "Build and maintain scalable infrastructure for our global platform...",
+    requirements: [
+      "4+ years DevOps experience",
+      "AWS certification",
+      "Kubernetes expertise",
+    ],
     benefits: ["Uber credits", "Health insurance", "Tech stipend"],
     remote: true,
     experience: "Mid-level",
     applicationDeadline: "2024-02-28",
     matchScore: 82,
-    category: "technology"
+    category: "technology",
   },
   {
     id: 7,
@@ -138,14 +171,19 @@ export const mockSavedJobs = [
     savedDate: "2024-01-13",
     status: "active",
     tags: ["B2B Sales", "CRM", "Lead Generation", "Customer Relations"],
-    description: "Drive revenue growth by building relationships with enterprise clients...",
-    requirements: ["2+ years sales experience", "CRM experience", "Strong communication"],
+    description:
+      "Drive revenue growth by building relationships with enterprise clients...",
+    requirements: [
+      "2+ years sales experience",
+      "CRM experience",
+      "Strong communication",
+    ],
     benefits: ["Commission structure", "Health insurance", "Training programs"],
     remote: false,
     experience: "Entry-level",
     applicationDeadline: "2024-02-12",
     matchScore: 75,
-    category: "sales"
+    category: "sales",
   },
   {
     id: 8,
@@ -159,15 +197,20 @@ export const mockSavedJobs = [
     savedDate: "2024-01-17",
     status: "active",
     tags: ["React", "TypeScript", "CSS", "Responsive Design"],
-    description: "Create beautiful and functional user interfaces for our e-commerce platform...",
-    requirements: ["3+ years frontend experience", "React expertise", "TypeScript knowledge"],
+    description:
+      "Create beautiful and functional user interfaces for our e-commerce platform...",
+    requirements: [
+      "3+ years frontend experience",
+      "React expertise",
+      "TypeScript knowledge",
+    ],
     benefits: ["Stock options", "Health insurance", "Learning stipend"],
     remote: true,
     experience: "Mid-level",
     applicationDeadline: "2024-02-25",
     matchScore: 87,
-    category: "technology"
-  }
+    category: "technology",
+  },
 ];
 
 export const jobCategories = [
@@ -177,14 +220,14 @@ export const jobCategories = [
   { id: "product", name: "Product", icon: "📱", count: 1 },
   { id: "marketing", name: "Marketing", icon: "📈", count: 1 },
   { id: "analytics", name: "Analytics", icon: "📊", count: 1 },
-  { id: "sales", name: "Sales", icon: "💰", count: 1 }
+  { id: "sales", name: "Sales", icon: "💰", count: 1 },
 ];
 
 export const experienceLevels = [
   { id: "all", name: "All Levels", count: 8 },
   { id: "entry", name: "Entry Level", count: 1 },
   { id: "mid", name: "Mid Level", count: 5 },
-  { id: "senior", name: "Senior Level", count: 2 }
+  { id: "senior", name: "Senior Level", count: 2 },
 ];
 
 export const workTypes = [
@@ -192,14 +235,14 @@ export const workTypes = [
   { id: "full-time", name: "Full-time", count: 8 },
   { id: "part-time", name: "Part-time", count: 0 },
   { id: "contract", name: "Contract", count: 0 },
-  { id: "internship", name: "Internship", count: 0 }
+  { id: "internship", name: "Internship", count: 0 },
 ];
 
 export const remoteOptions = [
   { id: "all", name: "All Options", count: 8 },
   { id: "remote", name: "Remote", count: 5 },
   { id: "onsite", name: "On-site", count: 3 },
-  { id: "hybrid", name: "Hybrid", count: 0 }
+  { id: "hybrid", name: "Hybrid", count: 0 },
 ];
 
 export const salaryRanges = [
@@ -207,12 +250,12 @@ export const salaryRanges = [
   { id: "entry", name: "$50k - $80k", min: 50000, max: 80000, count: 1 },
   { id: "mid", name: "$80k - $120k", min: 80000, max: 120000, count: 3 },
   { id: "senior", name: "$120k - $200k", min: 120000, max: 200000, count: 3 },
-  { id: "executive", name: "$200k+", min: 200000, max: 300000, count: 1 }
+  { id: "executive", name: "$200k+", min: 200000, max: 300000, count: 1 },
 ];
 
 export const jobStatuses = [
   { id: "all", name: "All Status", count: 8 },
   { id: "active", name: "Active", count: 7 },
   { id: "expired", name: "Expired", count: 1 },
-  { id: "applied", name: "Applied", count: 0 }
+  { id: "applied", name: "Applied", count: 0 },
 ];

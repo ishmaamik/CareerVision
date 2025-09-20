@@ -2,31 +2,31 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "../../../context/ThemeContext";
 import { getThemeClasses } from "../../../styles/themes";
-import { 
-  Psychology, 
-  School, 
-  ArrowForward, 
-  TrendingUp, 
+import {
+  Psychology,
+  School,
+  ArrowForward,
+  TrendingUp,
   Timeline,
   Assessment,
   Star,
-  CheckCircle 
+  CheckCircle,
 } from "@mui/icons-material";
-import { 
-  Box, 
-  Container, 
-  Typography, 
-  Paper, 
-  Grid, 
-  Button, 
-  Card, 
+import {
+  Box,
+  Container,
+  Typography,
+  Paper,
+  Grid,
+  Button,
+  Card,
   CardContent,
   Chip,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
-  Fade
+  Fade,
 } from "@mui/material";
 
 // Reusable ChoiceCard Component
@@ -160,18 +160,19 @@ const PreUniversity = () => {
     {
       icon: Assessment,
       title: "Personality Assessment",
-      description: "Discover your strengths and interests through comprehensive assessments"
+      description:
+        "Discover your strengths and interests through comprehensive assessments",
     },
     {
       icon: TrendingUp,
       title: "Market Insights",
-      description: "Get real-time data on career demand and salary trends"
+      description: "Get real-time data on career demand and salary trends",
     },
     {
       icon: Timeline,
       title: "Career Roadmaps",
-      description: "Step-by-step guidance from education to career success"
-    }
+      description: "Step-by-step guidance from education to career success",
+    },
   ];
 
   const benefits = [
@@ -179,7 +180,7 @@ const PreUniversity = () => {
     "Discover hidden talents and interests",
     "Access comprehensive university database",
     "Get personalized recommendations",
-    "Connect with industry professionals"
+    "Connect with industry professionals",
   ];
 
   return (
@@ -224,9 +225,9 @@ const PreUniversity = () => {
                     fontWeight: 500,
                   }}
                 >
-                  Get personalized guidance to make informed decisions about your
-                  career path and university selection before starting your higher
-                  education journey.
+                  Get personalized guidance to make informed decisions about
+                  your career path and university selection before starting your
+                  higher education journey.
                 </Typography>
 
                 {/* Benefits List */}
@@ -235,20 +236,20 @@ const PreUniversity = () => {
                     {benefits.slice(0, 3).map((benefit, index) => (
                       <ListItem key={index} sx={{ py: 0.5, px: 0 }}>
                         <ListItemIcon sx={{ minWidth: 32 }}>
-                          <CheckCircle 
-                            sx={{ 
-                              color: "#10B981", 
-                              fontSize: 20 
-                            }} 
+                          <CheckCircle
+                            sx={{
+                              color: "#10B981",
+                              fontSize: 20,
+                            }}
                           />
                         </ListItemIcon>
-                        <ListItemText 
+                        <ListItemText
                           primary={benefit}
                           sx={{
-                            '& .MuiListItemText-primary': {
-                              fontSize: '0.95rem',
-                              color: themeClasses.text.secondary
-                            }
+                            "& .MuiListItemText-primary": {
+                              fontSize: "0.95rem",
+                              color: themeClasses.text.secondary,
+                            },
                           }}
                         />
                       </ListItem>
@@ -262,7 +263,8 @@ const PreUniversity = () => {
                   size="large"
                   onClick={() => navigate("/pre-university/career-choice")}
                   sx={{
-                    background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                    background:
+                      "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
                     color: "white",
                     px: 4,
                     py: 1.5,
@@ -276,7 +278,7 @@ const PreUniversity = () => {
                       boxShadow: "0 12px 40px rgba(102, 126, 234, 0.4)",
                     },
                     transition: "all 0.3s ease",
-                    display: { xs: "none", md: "inline-flex" }
+                    display: { xs: "none", md: "inline-flex" },
                   }}
                 >
                   Start Your Journey
@@ -321,15 +323,22 @@ const PreUniversity = () => {
                     />
                   </Grid>
                 </Grid>
-                
+
                 {/* Mobile CTA Button */}
-                <Box sx={{ mt: 4, textAlign: "center", display: { xs: "block", md: "none" } }}>
+                <Box
+                  sx={{
+                    mt: 4,
+                    textAlign: "center",
+                    display: { xs: "block", md: "none" },
+                  }}
+                >
                   <Button
                     variant="contained"
                     size="large"
                     onClick={() => navigate("/pre-university/career-choice")}
                     sx={{
-                      background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                      background:
+                        "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
                       color: "white",
                       px: 4,
                       py: 1.5,
@@ -356,12 +365,14 @@ const PreUniversity = () => {
       </Container>
 
       {/* Features Section */}
-      <Box sx={{ 
-        py: 8, 
-        background: isDarkMode 
-          ? "linear-gradient(135deg, rgba(30, 64, 175, 0.1) 0%, rgba(67, 56, 202, 0.1) 100%)"
-          : "linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%)"
-      }}>
+      <Box
+        sx={{
+          py: 8,
+          background: isDarkMode
+            ? "linear-gradient(135deg, rgba(30, 64, 175, 0.1) 0%, rgba(67, 56, 202, 0.1) 100%)"
+            : "linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%)",
+        }}
+      >
         <Container maxWidth="xl">
           <Fade in={isVisible} timeout={1500}>
             <Box sx={{ textAlign: "center", mb: 6 }}>
@@ -378,14 +389,15 @@ const PreUniversity = () => {
                   color: themeClasses.text.secondary,
                   maxWidth: "600px",
                   mx: "auto",
-                  fontSize: { xs: "1rem", md: "1.1rem" }
+                  fontSize: { xs: "1rem", md: "1.1rem" },
                 }}
               >
-                Advanced tools and insights to help you make the best decisions for your future
+                Advanced tools and insights to help you make the best decisions
+                for your future
               </Typography>
             </Box>
           </Fade>
-          
+
           <Grid container spacing={4}>
             {features.map((feature, index) => (
               <Grid item xs={12} md={4} key={index}>
@@ -393,19 +405,21 @@ const PreUniversity = () => {
                   <Card
                     sx={{
                       height: "100%",
-                      background: isDarkMode 
-                        ? "rgba(30, 41, 59, 0.8)" 
+                      background: isDarkMode
+                        ? "rgba(30, 41, 59, 0.8)"
                         : "rgba(255, 255, 255, 0.9)",
                       backdropFilter: "blur(10px)",
-                      border: `1px solid ${isDarkMode ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)"}`,
+                      border: `1px solid ${
+                        isDarkMode ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)"
+                      }`,
                       borderRadius: 3,
                       transition: "all 0.3s ease",
                       "&:hover": {
                         transform: "translateY(-8px)",
-                        boxShadow: isDarkMode 
+                        boxShadow: isDarkMode
                           ? "0 20px 40px rgba(0,0,0,0.3)"
                           : "0 20px 40px rgba(0,0,0,0.1)",
-                      }
+                      },
                     }}
                   >
                     <CardContent sx={{ p: 4, textAlign: "center" }}>
@@ -414,8 +428,9 @@ const PreUniversity = () => {
                           display: "inline-flex",
                           p: 2,
                           borderRadius: 2,
-                          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-                          mb: 3
+                          background:
+                            "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                          mb: 3,
                         }}
                       >
                         <feature.icon sx={{ fontSize: 32, color: "white" }} />
@@ -428,7 +443,10 @@ const PreUniversity = () => {
                       </Typography>
                       <Typography
                         variant="body1"
-                        sx={{ color: themeClasses.text.secondary, lineHeight: 1.6 }}
+                        sx={{
+                          color: themeClasses.text.secondary,
+                          lineHeight: 1.6,
+                        }}
                       >
                         {feature.description}
                       </Typography>
@@ -449,7 +467,7 @@ const PreUniversity = () => {
               { number: "500+", label: "Career Paths" },
               { number: "1000+", label: "Universities" },
               { number: "95%", label: "Success Rate" },
-              { number: "50K+", label: "Students Helped" }
+              { number: "50K+", label: "Students Helped" },
             ].map((stat, index) => (
               <Grid item xs={6} md={3} key={index}>
                 <Box>
@@ -458,7 +476,8 @@ const PreUniversity = () => {
                     className={`font-bold ${themeClasses.text.primary}`}
                     sx={{
                       fontSize: { xs: "2rem", md: "2.5rem" },
-                      background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                      background:
+                        "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
                       backgroundClip: "text",
                       WebkitBackgroundClip: "text",
                       WebkitTextFillColor: "transparent",
@@ -468,9 +487,9 @@ const PreUniversity = () => {
                   </Typography>
                   <Typography
                     variant="h6"
-                    sx={{ 
+                    sx={{
                       color: themeClasses.text.secondary,
-                      fontWeight: 500
+                      fontWeight: 500,
                     }}
                   >
                     {stat.label}

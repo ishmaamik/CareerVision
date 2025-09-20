@@ -103,11 +103,16 @@ const InterviewHistory = () => {
   const [selectedGoal, setSelectedGoal] = useState(null);
 
   // Filter interview history
-  const filteredHistory = interviewHistoryData.filter(interview => {
+  const filteredHistory = interviewHistoryData.filter((interview) => {
     if (selectedType !== "all" && interview.type !== selectedType) return false;
-    if (selectedIndustry !== "all" && interview.industry !== selectedIndustry) return false;
-    if (searchTerm && !interview.title.toLowerCase().includes(searchTerm.toLowerCase()) && 
-        !interview.company.toLowerCase().includes(searchTerm.toLowerCase())) return false;
+    if (selectedIndustry !== "all" && interview.industry !== selectedIndustry)
+      return false;
+    if (
+      searchTerm &&
+      !interview.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
+      !interview.company.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+      return false;
     return true;
   });
 
@@ -133,10 +138,10 @@ const InterviewHistory = () => {
 
   // Format date
   const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric'
+    return new Date(dateString).toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
     });
   };
 
@@ -200,16 +205,17 @@ const InterviewHistory = () => {
 
   // Render interview session card
   const renderInterviewCard = (interview) => {
-    const IconComponent = {
-      technical: Code,
-      behavioral: Psychology,
-      case_study: BusinessCenter,
-      hr_screening: PersonSearch,
-    }[interview.type] || Assessment;
+    const IconComponent =
+      {
+        technical: Code,
+        behavioral: Psychology,
+        case_study: BusinessCenter,
+        hr_screening: PersonSearch,
+      }[interview.type] || Assessment;
 
     return (
-      <Card 
-        key={interview.id} 
+      <Card
+        key={interview.id}
         className={`${componentStyles.card} transition-all duration-300 hover:shadow-lg cursor-pointer`}
         onClick={() => {
           setSelectedSession(interview);
@@ -218,32 +224,32 @@ const InterviewHistory = () => {
       >
         <CardContent className="p-6">
           <Box className="flex items-start gap-4">
-            <Avatar 
+            <Avatar
               src={interview.interviewer.avatar}
               alt={interview.interviewer.name}
               className="w-12 h-12"
             />
-            
+
             <Box className="flex-1">
               <Box className="flex items-center justify-between mb-2">
                 <Typography variant="h6" className="font-bold">
                   {interview.title}
                 </Typography>
-                <Chip 
+                <Chip
                   label={`${interview.score}/100`}
                   color={getScoreColor(interview.score)}
                   size="small"
                 />
               </Box>
-              
+
               <Typography variant="body1" className="font-medium mb-2">
                 {interview.company} • {interview.position}
               </Typography>
-              
+
               <Box className="flex items-center gap-4 mb-3 text-sm opacity-70">
                 <Box className="flex items-center gap-1">
                   <IconComponent className="w-4 h-4" />
-                  {interview.type.replace('_', ' ').toUpperCase()}
+                  {interview.type.replace("_", " ").toUpperCase()}
                 </Box>
                 <Box className="flex items-center gap-1">
                   <Timer className="w-4 h-4" />
@@ -254,7 +260,7 @@ const InterviewHistory = () => {
                   {formatDate(interview.completedAt)}
                 </Box>
               </Box>
-              
+
               <Box className="mb-3">
                 <Typography variant="body2" className="opacity-70 mb-1">
                   Overall Feedback:
@@ -263,10 +269,10 @@ const InterviewHistory = () => {
                   {interview.feedback.overall}
                 </Typography>
               </Box>
-              
+
               <Box className="flex flex-wrap gap-1">
                 {interview.tags.slice(0, 3).map((tag, index) => (
-                  <Chip 
+                  <Chip
                     key={index}
                     label={tag}
                     size="small"
@@ -275,7 +281,7 @@ const InterviewHistory = () => {
                   />
                 ))}
                 {interview.tags.length > 3 && (
-                  <Chip 
+                  <Chip
                     label={`+${interview.tags.length - 3} more`}
                     size="small"
                     variant="outlined"
@@ -293,50 +299,60 @@ const InterviewHistory = () => {
   // Render skills progression
   const renderSkillsProgression = () => (
     <Grid container spacing={4}>
-      {Object.entries(performanceAnalytics.skillsProgression).map(([skill, data]) => (
-        <Grid item xs={12} md={6} key={skill}>
-          <Card className={componentStyles.card}>
-            <CardContent className="p-6">
-              <Box className="flex items-center justify-between mb-4">
-                <Typography variant="h6" className="font-bold">
-                  {skill}
-                </Typography>
-                <Box className="flex items-center gap-2">
-                  {getTrendIcon(data.trend)}
-                  <Chip 
-                    label={data.currentLevel}
-                    color={data.currentLevel === 'Expert' ? 'success' : 
-                           data.currentLevel === 'Advanced' ? 'primary' : 'default'}
-                    size="small"
+      {Object.entries(performanceAnalytics.skillsProgression).map(
+        ([skill, data]) => (
+          <Grid item xs={12} md={6} key={skill}>
+            <Card className={componentStyles.card}>
+              <CardContent className="p-6">
+                <Box className="flex items-center justify-between mb-4">
+                  <Typography variant="h6" className="font-bold">
+                    {skill}
+                  </Typography>
+                  <Box className="flex items-center gap-2">
+                    {getTrendIcon(data.trend)}
+                    <Chip
+                      label={data.currentLevel}
+                      color={
+                        data.currentLevel === "Expert"
+                          ? "success"
+                          : data.currentLevel === "Advanced"
+                          ? "primary"
+                          : "default"
+                      }
+                      size="small"
+                    />
+                  </Box>
+                </Box>
+
+                <Box className="mb-4">
+                  <Box className="flex justify-between items-center mb-2">
+                    <Typography variant="body2" className="opacity-70">
+                      Current Level: {data.currentLevel}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      className="text-green-600 font-medium"
+                    >
+                      +{data.improvement}%
+                    </Typography>
+                  </Box>
+
+                  <LinearProgress
+                    variant="determinate"
+                    value={data.scores[data.scores.length - 1]}
+                    className="rounded-full h-3"
                   />
                 </Box>
-              </Box>
-              
-              <Box className="mb-4">
-                <Box className="flex justify-between items-center mb-2">
-                  <Typography variant="body2" className="opacity-70">
-                    Current Level: {data.currentLevel}
-                  </Typography>
-                  <Typography variant="body2" className="text-green-600 font-medium">
-                    +{data.improvement}%
-                  </Typography>
+
+                <Box className="flex justify-between text-sm opacity-70">
+                  <span>Progress</span>
+                  <span>{data.scores[data.scores.length - 1]}/100</span>
                 </Box>
-                
-                <LinearProgress 
-                  variant="determinate" 
-                  value={data.scores[data.scores.length - 1]}
-                  className="rounded-full h-3"
-                />
-              </Box>
-              
-              <Box className="flex justify-between text-sm opacity-70">
-                <span>Progress</span>
-                <span>{data.scores[data.scores.length - 1]}/100</span>
-              </Box>
-            </CardContent>
-          </Card>
-        </Grid>
-      ))}
+              </CardContent>
+            </Card>
+          </Grid>
+        )
+      )}
     </Grid>
   );
 
@@ -344,12 +360,13 @@ const InterviewHistory = () => {
   const renderPerformanceByType = () => (
     <Grid container spacing={3}>
       {Object.entries(performanceAnalytics.byType).map(([type, data]) => {
-        const IconComponent = {
-          technical: Code,
-          behavioral: Psychology,
-          case_study: BusinessCenter,
-          hr_screening: PersonSearch,
-        }[type] || Assessment;
+        const IconComponent =
+          {
+            technical: Code,
+            behavioral: Psychology,
+            case_study: BusinessCenter,
+            hr_screening: PersonSearch,
+          }[type] || Assessment;
 
         return (
           <Grid item xs={12} sm={6} md={3} key={type}>
@@ -357,7 +374,7 @@ const InterviewHistory = () => {
               <CardContent className="text-center p-4">
                 <IconComponent className="w-8 h-8 mx-auto mb-2 text-blue-500" />
                 <Typography variant="h6" className="font-bold capitalize mb-2">
-                  {type.replace('_', ' ')}
+                  {type.replace("_", " ")}
                 </Typography>
                 <Typography variant="h4" className="font-bold mb-1">
                   {Math.round(data.averageScore)}
@@ -388,10 +405,15 @@ const InterviewHistory = () => {
                   <Typography variant="h6" className="font-bold mb-1">
                     {rec.category}
                   </Typography>
-                  <Chip 
+                  <Chip
                     label={rec.priority.toUpperCase()}
-                    color={rec.priority === 'high' ? 'error' : 
-                           rec.priority === 'medium' ? 'warning' : 'default'}
+                    color={
+                      rec.priority === "high"
+                        ? "error"
+                        : rec.priority === "medium"
+                        ? "warning"
+                        : "default"
+                    }
                     size="small"
                   />
                 </Box>
@@ -399,11 +421,11 @@ const InterviewHistory = () => {
                   <BookmarkBorder />
                 </IconButton>
               </Box>
-              
+
               <Typography variant="body2" className="opacity-70 mb-4">
                 {rec.description}
               </Typography>
-              
+
               <Box className="mb-4">
                 <Typography variant="body2" className="font-medium mb-2">
                   Recommended Resources:
@@ -414,7 +436,7 @@ const InterviewHistory = () => {
                       <ListItemIcon className="min-w-8">
                         <School className="w-4 h-4" />
                       </ListItemIcon>
-                      <ListItemText 
+                      <ListItemText
                         primary={resource.title}
                         secondary={`${resource.type} • ${resource.duration}`}
                         primaryTypographyProps={{ className: "text-sm" }}
@@ -424,7 +446,7 @@ const InterviewHistory = () => {
                   ))}
                 </List>
               </Box>
-              
+
               <Box className="flex justify-between items-center">
                 <Typography variant="body2" className="opacity-70">
                   Est. Time: {rec.estimatedImprovementTime}
@@ -445,7 +467,7 @@ const InterviewHistory = () => {
     <Grid container spacing={3}>
       {interviewGoals.map((goal) => (
         <Grid item xs={12} md={6} key={goal.id}>
-          <Card 
+          <Card
             className={`${componentStyles.card} transition-all duration-300 hover:shadow-lg cursor-pointer`}
             onClick={() => {
               setSelectedGoal(goal);
@@ -461,18 +483,23 @@ const InterviewHistory = () => {
                   <Typography variant="body2" className="opacity-70 mb-2">
                     {goal.description}
                   </Typography>
-                  <Chip 
-                    label={skillCategories.find(c => c.id === goal.category)?.name}
+                  <Chip
+                    label={
+                      skillCategories.find((c) => c.id === goal.category)?.name
+                    }
                     size="small"
-                    style={{ 
-                      backgroundColor: skillCategories.find(c => c.id === goal.category)?.color + "20",
-                      color: skillCategories.find(c => c.id === goal.category)?.color
+                    style={{
+                      backgroundColor:
+                        skillCategories.find((c) => c.id === goal.category)
+                          ?.color + "20",
+                      color: skillCategories.find((c) => c.id === goal.category)
+                        ?.color,
                     }}
                   />
                 </Box>
                 <Assessment className="text-blue-500" />
               </Box>
-              
+
               <Box className="mb-4">
                 <Box className="flex justify-between items-center mb-2">
                   <Typography variant="body2" className="opacity-70">
@@ -482,18 +509,21 @@ const InterviewHistory = () => {
                     {goal.currentScore}/{goal.targetScore}
                   </Typography>
                 </Box>
-                <LinearProgress 
-                  variant="determinate" 
+                <LinearProgress
+                  variant="determinate"
                   value={goal.progress}
                   className="rounded-full h-2"
                 />
               </Box>
-              
+
               <Box className="flex justify-between items-center">
                 <Typography variant="body2" className="opacity-70">
                   Deadline: {new Date(goal.deadline).toLocaleDateString()}
                 </Typography>
-                <Typography variant="body2" className="text-blue-600 font-medium">
+                <Typography
+                  variant="body2"
+                  className="text-blue-600 font-medium"
+                >
                   {goal.progress}% complete
                 </Typography>
               </Box>
@@ -501,10 +531,12 @@ const InterviewHistory = () => {
           </Card>
         </Grid>
       ))}
-      
+
       {/* Add New Goal Card */}
       <Grid item xs={12} md={6}>
-        <Card className={`${componentStyles.card} border-2 border-dashed border-gray-300 hover:border-blue-500 transition-colors cursor-pointer`}>
+        <Card
+          className={`${componentStyles.card} border-2 border-dashed border-gray-300 hover:border-blue-500 transition-colors cursor-pointer`}
+        >
           <CardContent className="p-6 text-center">
             <Assessment className="w-12 h-12 mx-auto mb-4 text-gray-400" />
             <Typography variant="h6" className="font-bold mb-2">
@@ -527,29 +559,39 @@ const InterviewHistory = () => {
     <Grid container spacing={3}>
       {certificationBadges.map((badge) => (
         <Grid item xs={12} sm={6} md={4} key={badge.id}>
-          <Card className={`${componentStyles.card} ${badge.earned ? 'border-2 border-yellow-400' : ''}`}>
+          <Card
+            className={`${componentStyles.card} ${
+              badge.earned ? "border-2 border-yellow-400" : ""
+            }`}
+          >
             <CardContent className="text-center p-6">
-              <div className={`w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center ${
-                badge.earned ? 'bg-yellow-100' : 'bg-gray-100'
-              }`}>
-                <EmojiEvents className={`w-8 h-8 ${badge.earned ? 'text-yellow-600' : 'text-gray-400'}`} />
+              <div
+                className={`w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center ${
+                  badge.earned ? "bg-yellow-100" : "bg-gray-100"
+                }`}
+              >
+                <EmojiEvents
+                  className={`w-8 h-8 ${
+                    badge.earned ? "text-yellow-600" : "text-gray-400"
+                  }`}
+                />
               </div>
-              
+
               <Typography variant="h6" className="font-bold mb-2">
                 {badge.title}
               </Typography>
-              
+
               <Typography variant="body2" className="opacity-70 mb-4">
                 {badge.description}
               </Typography>
-              
+
               {badge.earned ? (
                 <Chip label="EARNED" color="warning" variant="filled" />
               ) : (
                 <Box>
                   <Box className="mb-2">
-                    <CircularProgress 
-                      variant="determinate" 
+                    <CircularProgress
+                      variant="determinate"
                       value={badge.progress}
                       size={40}
                       thickness={4}
@@ -576,7 +618,7 @@ const InterviewHistory = () => {
             <IconButton
               onClick={() => navigate(-1)}
               className="mr-4"
-              style={{ color: isDarkMode ? '#e2e8f0' : '#2d3748' }}
+              style={{ color: isDarkMode ? "#e2e8f0" : "#2d3748" }}
             >
               <ArrowBack />
             </IconButton>
@@ -587,10 +629,10 @@ const InterviewHistory = () => {
               Interview History & Analytics
             </Typography>
           </Box>
-          
+
           <Button
             variant="contained"
-            onClick={() => navigate('/mock-interviews')}
+            onClick={() => navigate("/mock-interviews")}
             className={componentStyles.button.primary}
             startIcon={<PlayArrow />}
           >
@@ -603,8 +645,8 @@ const InterviewHistory = () => {
 
         {/* Tabs */}
         <Box className="mb-6">
-          <Tabs 
-            value={currentTab} 
+          <Tabs
+            value={currentTab}
             onChange={(e, newValue) => setCurrentTab(newValue)}
             variant="scrollable"
             scrollButtons="auto"
@@ -640,7 +682,7 @@ const InterviewHistory = () => {
                       }}
                       className="flex-1 min-w-64"
                     />
-                    
+
                     <FormControl size="small" className="min-w-32">
                       <InputLabel>Type</InputLabel>
                       <Select
@@ -655,7 +697,7 @@ const InterviewHistory = () => {
                         <MenuItem value="hr_screening">HR Screening</MenuItem>
                       </Select>
                     </FormControl>
-                    
+
                     <FormControl size="small" className="min-w-32">
                       <InputLabel>Industry</InputLabel>
                       <Select
@@ -689,7 +731,7 @@ const InterviewHistory = () => {
                         </Typography>
                         <Button
                           variant="contained"
-                          onClick={() => navigate('/mock-interviews')}
+                          onClick={() => navigate("/mock-interviews")}
                           className={componentStyles.button.primary}
                         >
                           Start First Interview
@@ -698,7 +740,7 @@ const InterviewHistory = () => {
                     </Card>
                   </Grid>
                 ) : (
-                  filteredHistory.map(interview => (
+                  filteredHistory.map((interview) => (
                     <Grid item xs={12} lg={6} key={interview.id}>
                       {renderInterviewCard(interview)}
                     </Grid>
@@ -711,47 +753,37 @@ const InterviewHistory = () => {
 
         {currentTab === 1 && (
           <Fade in={currentTab === 1}>
-            <Box>
-              {renderSkillsProgression()}
-            </Box>
+            <Box>{renderSkillsProgression()}</Box>
           </Fade>
         )}
 
         {currentTab === 2 && (
           <Fade in={currentTab === 2}>
-            <Box>
-              {renderPerformanceByType()}
-            </Box>
+            <Box>{renderPerformanceByType()}</Box>
           </Fade>
         )}
 
         {currentTab === 3 && (
           <Fade in={currentTab === 3}>
-            <Box>
-              {renderRecommendations()}
-            </Box>
+            <Box>{renderRecommendations()}</Box>
           </Fade>
         )}
 
         {currentTab === 4 && (
           <Fade in={currentTab === 4}>
-            <Box>
-              {renderGoals()}
-            </Box>
+            <Box>{renderGoals()}</Box>
           </Fade>
         )}
 
         {currentTab === 5 && (
           <Fade in={currentTab === 5}>
-            <Box>
-              {renderBadges()}
-            </Box>
+            <Box>{renderBadges()}</Box>
           </Fade>
         )}
 
         {/* Session Details Dialog */}
-        <Dialog 
-          open={showSessionDetails} 
+        <Dialog
+          open={showSessionDetails}
           onClose={() => setShowSessionDetails(false)}
           maxWidth="lg"
           fullWidth
@@ -760,7 +792,7 @@ const InterviewHistory = () => {
             <>
               <DialogTitle>
                 <Box className="flex items-center gap-3">
-                  <Avatar 
+                  <Avatar
                     src={selectedSession.interviewer.avatar}
                     alt={selectedSession.interviewer.name}
                     className="w-12 h-12"
@@ -778,11 +810,20 @@ const InterviewHistory = () => {
               <DialogContent>
                 <Box className="space-y-6">
                   {/* Overall Score */}
-                  <Box className="text-center p-6 rounded-lg" style={{ backgroundColor: isDarkMode ? '#1e293b' : '#f8fafc' }}>
+                  <Box
+                    className="text-center p-6 rounded-lg"
+                    style={{
+                      backgroundColor: isDarkMode ? "#1e293b" : "#f8fafc",
+                    }}
+                  >
                     <Typography variant="h3" className="font-bold mb-2">
                       {selectedSession.score}/100
                     </Typography>
-                    <Rating value={selectedSession.score / 20} readOnly size="large" />
+                    <Rating
+                      value={selectedSession.score / 20}
+                      readOnly
+                      size="large"
+                    />
                     <Typography variant="body1" className="mt-2">
                       {selectedSession.feedback.overall}
                     </Typography>
@@ -791,34 +832,44 @@ const InterviewHistory = () => {
                   {/* Detailed Feedback */}
                   <Grid container spacing={4}>
                     <Grid item xs={12} md={6}>
-                      <Typography variant="h6" className="font-bold mb-3 text-green-600">
+                      <Typography
+                        variant="h6"
+                        className="font-bold mb-3 text-green-600"
+                      >
                         Strengths
                       </Typography>
                       <List>
-                        {selectedSession.feedback.strengths.map((strength, index) => (
-                          <ListItem key={index}>
-                            <ListItemIcon>
-                              <CheckCircle className="text-green-500" />
-                            </ListItemIcon>
-                            <ListItemText primary={strength} />
-                          </ListItem>
-                        ))}
+                        {selectedSession.feedback.strengths.map(
+                          (strength, index) => (
+                            <ListItem key={index}>
+                              <ListItemIcon>
+                                <CheckCircle className="text-green-500" />
+                              </ListItemIcon>
+                              <ListItemText primary={strength} />
+                            </ListItem>
+                          )
+                        )}
                       </List>
                     </Grid>
-                    
+
                     <Grid item xs={12} md={6}>
-                      <Typography variant="h6" className="font-bold mb-3 text-orange-600">
+                      <Typography
+                        variant="h6"
+                        className="font-bold mb-3 text-orange-600"
+                      >
                         Areas for Improvement
                       </Typography>
                       <List>
-                        {selectedSession.feedback.improvements.map((improvement, index) => (
-                          <ListItem key={index}>
-                            <ListItemIcon>
-                              <Lightbulb className="text-orange-500" />
-                            </ListItemIcon>
-                            <ListItemText primary={improvement} />
-                          </ListItem>
-                        ))}
+                        {selectedSession.feedback.improvements.map(
+                          (improvement, index) => (
+                            <ListItem key={index}>
+                              <ListItemIcon>
+                                <Lightbulb className="text-orange-500" />
+                              </ListItemIcon>
+                              <ListItemText primary={improvement} />
+                            </ListItem>
+                          )
+                        )}
                       </List>
                     </Grid>
                   </Grid>
@@ -830,7 +881,7 @@ const InterviewHistory = () => {
                     </Typography>
                     <Box className="flex flex-wrap gap-2">
                       {selectedSession.skillsAssessed.map((skill, index) => (
-                        <Chip 
+                        <Chip
                           key={index}
                           label={skill}
                           variant="outlined"
@@ -857,8 +908,8 @@ const InterviewHistory = () => {
         </Dialog>
 
         {/* Goal Details Dialog */}
-        <Dialog 
-          open={showGoalDialog} 
+        <Dialog
+          open={showGoalDialog}
           onClose={() => setShowGoalDialog(false)}
           maxWidth="md"
           fullWidth
@@ -875,22 +926,26 @@ const InterviewHistory = () => {
                   <Typography variant="body1">
                     {selectedGoal.description}
                   </Typography>
-                  
+
                   <Box className="grid grid-cols-2 gap-4">
                     <Box>
-                      <Typography variant="body2" className="opacity-70">Current Score</Typography>
+                      <Typography variant="body2" className="opacity-70">
+                        Current Score
+                      </Typography>
                       <Typography variant="h4" className="font-bold">
                         {selectedGoal.currentScore}
                       </Typography>
                     </Box>
                     <Box>
-                      <Typography variant="body2" className="opacity-70">Target Score</Typography>
+                      <Typography variant="body2" className="opacity-70">
+                        Target Score
+                      </Typography>
                       <Typography variant="h4" className="font-bold">
                         {selectedGoal.targetScore}
                       </Typography>
                     </Box>
                   </Box>
-                  
+
                   <Box>
                     <Typography variant="h6" className="font-bold mb-3">
                       Milestones
@@ -905,9 +960,13 @@ const InterviewHistory = () => {
                               <AccessTime className="text-gray-400" />
                             )}
                           </ListItemIcon>
-                          <ListItemText 
+                          <ListItemText
                             primary={milestone.title}
-                            className={milestone.completed ? 'line-through opacity-70' : ''}
+                            className={
+                              milestone.completed
+                                ? "line-through opacity-70"
+                                : ""
+                            }
                           />
                         </ListItem>
                       ))}
@@ -916,12 +975,8 @@ const InterviewHistory = () => {
                 </Box>
               </DialogContent>
               <DialogActions>
-                <Button onClick={() => setShowGoalDialog(false)}>
-                  Close
-                </Button>
-                <Button variant="contained">
-                  Update Goal
-                </Button>
+                <Button onClick={() => setShowGoalDialog(false)}>Close</Button>
+                <Button variant="contained">Update Goal</Button>
               </DialogActions>
             </>
           )}

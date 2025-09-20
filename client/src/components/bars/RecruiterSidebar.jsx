@@ -27,7 +27,7 @@ import {
   Phone,
   Star,
   FilterList,
-  Visibility
+  Visibility,
 } from "@mui/icons-material";
 import { useTheme } from "../../context/ThemeContext";
 import { getThemeClasses } from "../../styles/themes";
@@ -48,7 +48,7 @@ const RecruiterSidebar = ({ isOpen, setIsOpen }) => {
       color: "text-blue-600",
       bgColor: "bg-blue-50",
       path: "/recruiter/dashboard",
-      single: true
+      single: true,
     },
     {
       id: "jobManagement",
@@ -69,7 +69,7 @@ const RecruiterSidebar = ({ isOpen, setIsOpen }) => {
         },
         {
           title: "Job Analytics",
-          path: "/recruiter/jobs/analytics", 
+          path: "/recruiter/jobs/analytics",
           icon: <TrendingUp className="w-4 h-4" />,
         },
       ],
@@ -246,11 +246,15 @@ const RecruiterSidebar = ({ isOpen, setIsOpen }) => {
         >
           {!isCollapsed && (
             <div className="flex items-center gap-3">
-              <div className={`w-10 h-10 rounded-lg ${themeClasses.brand.bg} flex items-center justify-center`}>
+              <div
+                className={`w-10 h-10 rounded-lg ${themeClasses.brand.bg} flex items-center justify-center`}
+              >
                 <Business className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h2 className={`text-lg font-bold ${themeClasses.text.primary}`}>
+                <h2
+                  className={`text-lg font-bold ${themeClasses.text.primary}`}
+                >
                   Recruiter Portal
                 </h2>
                 <p className={`text-xs ${themeClasses.text.muted}`}>

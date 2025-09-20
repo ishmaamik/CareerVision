@@ -61,11 +61,11 @@ const Roadmap = () => {
   const [completedItems, setCompletedItems] = useState({});
   const [selectedPhase, setSelectedPhase] = useState(null);
   const [showProgress, setShowProgress] = useState(true);
-  
+
   // New state for enhanced roadmap experience
-  const [viewMode, setViewMode] = useState('overview'); // 'overview', 'detailed', 'chat'
+  const [viewMode, setViewMode] = useState("overview"); // 'overview', 'detailed', 'chat'
   const [chatMessages, setChatMessages] = useState([]);
-  const [chatInput, setChatInput] = useState('');
+  const [chatInput, setChatInput] = useState("");
   const [chatLoading, setChatLoading] = useState(false);
   const [selectedPhaseForChat, setSelectedPhaseForChat] = useState(null);
 
@@ -109,7 +109,7 @@ const Roadmap = () => {
         // Initialize chatbot
         initializeChatbot();
         // Set initial view mode to overview
-        setViewMode('overview');
+        setViewMode("overview");
       } else {
         setError(result.error || "Failed to load roadmap");
       }
@@ -211,16 +211,17 @@ const Roadmap = () => {
     setChatMessages([
       {
         id: 1,
-        type: 'bot',
+        type: "bot",
         message: `Welcome to your ${careerData.careerTitle} learning journey! I'm here to guide you through your roadmap and answer any questions you might have.`,
         timestamp: new Date(),
       },
       {
         id: 2,
-        type: 'bot',
-        message: 'You can ask me about:\n• Specific phases or subjects\n• Learning recommendations\n• Career progression tips\n• Study schedules\n• Project ideas',
+        type: "bot",
+        message:
+          "You can ask me about:\n• Specific phases or subjects\n• Learning recommendations\n• Career progression tips\n• Study schedules\n• Project ideas",
         timestamp: new Date(),
-      }
+      },
     ]);
   };
 
@@ -229,67 +230,90 @@ const Roadmap = () => {
 
     const userMessage = {
       id: Date.now(),
-      type: 'user',
+      type: "user",
       message: message,
       timestamp: new Date(),
     };
 
-    setChatMessages(prev => [...prev, userMessage]);
-    setChatInput('');
+    setChatMessages((prev) => [...prev, userMessage]);
+    setChatInput("");
     setChatLoading(true);
 
     // Simulate AI response (replace with actual API call)
     setTimeout(() => {
       const botResponse = {
         id: Date.now() + 1,
-        type: 'bot',
+        type: "bot",
         message: generateChatResponse(message),
         timestamp: new Date(),
       };
-      setChatMessages(prev => [...prev, botResponse]);
+      setChatMessages((prev) => [...prev, botResponse]);
       setChatLoading(false);
     }, 1000);
   };
 
   const generateChatResponse = (userMessage) => {
     const lowerMessage = userMessage.toLowerCase();
-    
-    if (lowerMessage.includes('phase') || lowerMessage.includes('step')) {
+
+    if (lowerMessage.includes("phase") || lowerMessage.includes("step")) {
       return `Great question about the learning phases! Your ${careerData.careerTitle} roadmap is structured in progressive phases. Each phase builds upon the previous one, ensuring you develop a solid foundation before moving to advanced topics. Would you like me to explain a specific phase in detail?`;
     }
-    
-    if (lowerMessage.includes('time') || lowerMessage.includes('duration') || lowerMessage.includes('long')) {
-      return `The complete ${careerData.careerTitle} roadmap typically takes ${roadmapData?.totalDuration || '6-12 months'} to complete, depending on your pace and prior experience. You can adjust the timeline based on your availability and learning speed.`;
+
+    if (
+      lowerMessage.includes("time") ||
+      lowerMessage.includes("duration") ||
+      lowerMessage.includes("long")
+    ) {
+      return `The complete ${careerData.careerTitle} roadmap typically takes ${
+        roadmapData?.totalDuration || "6-12 months"
+      } to complete, depending on your pace and prior experience. You can adjust the timeline based on your availability and learning speed.`;
     }
-    
-    if (lowerMessage.includes('project') || lowerMessage.includes('practice')) {
+
+    if (lowerMessage.includes("project") || lowerMessage.includes("practice")) {
       return `Hands-on projects are crucial for your learning! Each phase includes practical projects that help you apply what you've learned. These projects are designed to build your portfolio and give you real-world experience.`;
     }
-    
-    if (lowerMessage.includes('difficult') || lowerMessage.includes('hard') || lowerMessage.includes('challenging')) {
+
+    if (
+      lowerMessage.includes("difficult") ||
+      lowerMessage.includes("hard") ||
+      lowerMessage.includes("challenging")
+    ) {
       return `Don't worry if things seem challenging! Learning ${careerData.careerTitle} is a journey, and it's normal to find some concepts difficult at first. The roadmap is structured to gradually build your skills. Focus on one concept at a time and practice regularly.`;
     }
-    
-    if (lowerMessage.includes('career') || lowerMessage.includes('job') || lowerMessage.includes('salary')) {
+
+    if (
+      lowerMessage.includes("career") ||
+      lowerMessage.includes("job") ||
+      lowerMessage.includes("salary")
+    ) {
       return `${careerData.careerTitle} offers excellent career opportunities! As you progress through the roadmap, you'll develop skills that are in high demand. The career outcomes section shows potential positions and salary ranges for different experience levels.`;
     }
-    
+
     return `That's an interesting question about ${careerData.careerTitle}! Based on your roadmap, I'd recommend focusing on the current phase you're working on. Each step is designed to build your expertise progressively. Is there a specific aspect of your learning journey you'd like to explore further?`;
   };
 
   const askAboutPhase = (phase) => {
     setSelectedPhaseForChat(phase);
-    setViewMode('chat');
+    setViewMode("chat");
     setIsChatExpanded(true);
-    
+
     const phaseMessage = {
       id: Date.now(),
-      type: 'bot',
-      message: `Let's dive into "${phase.title}"! This phase focuses on ${phase.description.toLowerCase()} and typically takes ${phase.duration}. Here's what you'll accomplish:\n\n${phase.subjects?.slice(0, 3).map(s => `• ${s.name}`).join('\n') || 'Key learning objectives'}\n\nWhat specific aspect would you like to know more about?`,
+      type: "bot",
+      message: `Let's dive into "${
+        phase.title
+      }"! This phase focuses on ${phase.description.toLowerCase()} and typically takes ${
+        phase.duration
+      }. Here's what you'll accomplish:\n\n${
+        phase.subjects
+          ?.slice(0, 3)
+          .map((s) => `• ${s.name}`)
+          .join("\n") || "Key learning objectives"
+      }\n\nWhat specific aspect would you like to know more about?`,
       timestamp: new Date(),
     };
-    
-    setChatMessages(prev => [...prev, phaseMessage]);
+
+    setChatMessages((prev) => [...prev, phaseMessage]);
   };
 
   // Loading state
@@ -478,20 +502,22 @@ const Roadmap = () => {
       <div className={componentStyles.card}>
         <div className="p-6">
           <div className="flex items-center justify-between mb-6">
-            <h3 className={`text-xl font-bold ${themeClasses.text.primary} flex items-center`}>
+            <h3
+              className={`text-xl font-bold ${themeClasses.text.primary} flex items-center`}
+            >
               <Map className="w-6 h-6 mr-3" />
               Learning Path Overview
             </h3>
             <div className="flex items-center space-x-2">
               <button
-                onClick={() => setViewMode('detailed')}
+                onClick={() => setViewMode("detailed")}
                 className={componentStyles.button.secondary}
               >
                 <Eye className="w-4 h-4 mr-2" />
                 Detailed View
               </button>
               <button
-                onClick={() => setViewMode('chat')}
+                onClick={() => setViewMode("chat")}
                 className={componentStyles.button.primary}
               >
                 <MessageSquare className="w-4 h-4 mr-2" />
@@ -503,44 +529,64 @@ const Roadmap = () => {
           {/* Timeline Visualization */}
           <div className="relative">
             <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-blue-500 to-purple-500"></div>
-            
+
             {roadmapData?.phases?.map((phase, index) => (
-              <div key={phase.id} className="relative flex items-start mb-8 last:mb-0">
+              <div
+                key={phase.id}
+                className="relative flex items-start mb-8 last:mb-0"
+              >
                 {/* Phase Number Circle */}
-                <div className={`relative z-10 w-16 h-16 rounded-full flex items-center justify-center text-white font-bold text-lg bg-gradient-to-r ${themeClasses.brand.gradient} shadow-lg`}>
+                <div
+                  className={`relative z-10 w-16 h-16 rounded-full flex items-center justify-center text-white font-bold text-lg bg-gradient-to-r ${themeClasses.brand.gradient} shadow-lg`}
+                >
                   {index + 1}
                 </div>
 
                 {/* Phase Content */}
                 <div className="ml-6 flex-1">
-                  <div className={`${componentStyles.card} ${themeClasses.interactive.hover} cursor-pointer transition-all hover:shadow-lg`}
+                  <div
+                    className={`${componentStyles.card} ${themeClasses.interactive.hover} cursor-pointer transition-all hover:shadow-lg`}
                     onClick={() => askAboutPhase(phase)}
                   >
                     <div className="p-4">
                       <div className="flex items-center justify-between mb-2">
-                        <h4 className={`text-lg font-semibold ${themeClasses.text.primary}`}>
+                        <h4
+                          className={`text-lg font-semibold ${themeClasses.text.primary}`}
+                        >
                           {phase.title}
                         </h4>
-                        <span className={`text-sm px-3 py-1 rounded-full ${isDarkMode ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-700'}`}>
+                        <span
+                          className={`text-sm px-3 py-1 rounded-full ${
+                            isDarkMode
+                              ? "bg-gray-700 text-gray-300"
+                              : "bg-gray-100 text-gray-700"
+                          }`}
+                        >
                           {phase.duration}
                         </span>
                       </div>
-                      
+
                       <p className={`${themeClasses.text.secondary} mb-3`}>
                         {phase.description}
                       </p>
 
                       {/* Quick Stats */}
                       <div className="flex items-center space-x-4 text-sm">
-                        <div className={`flex items-center ${themeClasses.text.muted}`}>
+                        <div
+                          className={`flex items-center ${themeClasses.text.muted}`}
+                        >
                           <BookOpen className="w-4 h-4 mr-1" />
                           {phase.subjects?.length || 0} subjects
                         </div>
-                        <div className={`flex items-center ${themeClasses.text.muted}`}>
+                        <div
+                          className={`flex items-center ${themeClasses.text.muted}`}
+                        >
                           <Target className="w-4 h-4 mr-1" />
                           {phase.milestones?.length || 0} milestones
                         </div>
-                        <div className={`flex items-center ${themeClasses.text.muted}`}>
+                        <div
+                          className={`flex items-center ${themeClasses.text.muted}`}
+                        >
                           <Briefcase className="w-4 h-4 mr-1" />
                           {phase.projects?.length || 0} projects
                         </div>
@@ -549,21 +595,31 @@ const Roadmap = () => {
                       {/* Progress Indicator */}
                       <div className="mt-3">
                         <div className="flex justify-between text-xs mb-1">
-                          <span className={themeClasses.text.muted}>Phase Progress</span>
+                          <span className={themeClasses.text.muted}>
+                            Phase Progress
+                          </span>
                           <span className={themeClasses.text.primary}>
                             {calculatePhaseProgress(phase)}%
                           </span>
                         </div>
-                        <div className={`w-full bg-gray-200 rounded-full h-2 ${isDarkMode ? 'bg-gray-700' : ''}`}>
+                        <div
+                          className={`w-full bg-gray-200 rounded-full h-2 ${
+                            isDarkMode ? "bg-gray-700" : ""
+                          }`}
+                        >
                           <div
                             className={`h-2 rounded-full bg-gradient-to-r ${themeClasses.brand.gradient} transition-all duration-500`}
-                            style={{ width: `${calculatePhaseProgress(phase)}%` }}
+                            style={{
+                              width: `${calculatePhaseProgress(phase)}%`,
+                            }}
                           ></div>
                         </div>
                       </div>
 
                       {/* Click to explore hint */}
-                      <div className={`mt-3 flex items-center ${themeClasses.text.muted} text-sm`}>
+                      <div
+                        className={`mt-3 flex items-center ${themeClasses.text.muted} text-sm`}
+                      >
                         <MessageCircle className="w-4 h-4 mr-1" />
                         Click to explore with AI Guide
                         <ArrowRight className="w-4 h-4 ml-1" />
@@ -579,26 +635,48 @@ const Roadmap = () => {
 
       {/* Quick Actions */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className={`${componentStyles.card} p-4 text-center cursor-pointer ${themeClasses.interactive.hover}`}
-          onClick={() => setViewMode('detailed')}
+        <div
+          className={`${componentStyles.card} p-4 text-center cursor-pointer ${themeClasses.interactive.hover}`}
+          onClick={() => setViewMode("detailed")}
         >
-          <Eye className={`w-8 h-8 mx-auto mb-2 ${themeClasses.brand.primary}`} />
-          <h4 className={`font-semibold ${themeClasses.text.primary} mb-1`}>Detailed Study</h4>
-          <p className={`text-sm ${themeClasses.text.secondary}`}>Dive deep into each phase</p>
+          <Eye
+            className={`w-8 h-8 mx-auto mb-2 ${themeClasses.brand.primary}`}
+          />
+          <h4 className={`font-semibold ${themeClasses.text.primary} mb-1`}>
+            Detailed Study
+          </h4>
+          <p className={`text-sm ${themeClasses.text.secondary}`}>
+            Dive deep into each phase
+          </p>
         </div>
-        
-        <div className={`${componentStyles.card} p-4 text-center cursor-pointer ${themeClasses.interactive.hover}`}
-          onClick={() => setViewMode('chat')}
+
+        <div
+          className={`${componentStyles.card} p-4 text-center cursor-pointer ${themeClasses.interactive.hover}`}
+          onClick={() => setViewMode("chat")}
         >
-          <Bot className={`w-8 h-8 mx-auto mb-2 ${themeClasses.brand.primary}`} />
-          <h4 className={`font-semibold ${themeClasses.text.primary} mb-1`}>AI Assistant</h4>
-          <p className={`text-sm ${themeClasses.text.secondary}`}>Get personalized guidance</p>
+          <Bot
+            className={`w-8 h-8 mx-auto mb-2 ${themeClasses.brand.primary}`}
+          />
+          <h4 className={`font-semibold ${themeClasses.text.primary} mb-1`}>
+            AI Assistant
+          </h4>
+          <p className={`text-sm ${themeClasses.text.secondary}`}>
+            Get personalized guidance
+          </p>
         </div>
-        
-        <div className={`${componentStyles.card} p-4 text-center cursor-pointer ${themeClasses.interactive.hover}`}>
-          <Calendar className={`w-8 h-8 mx-auto mb-2 ${themeClasses.brand.primary}`} />
-          <h4 className={`font-semibold ${themeClasses.text.primary} mb-1`}>Study Schedule</h4>
-          <p className={`text-sm ${themeClasses.text.secondary}`}>Plan your learning time</p>
+
+        <div
+          className={`${componentStyles.card} p-4 text-center cursor-pointer ${themeClasses.interactive.hover}`}
+        >
+          <Calendar
+            className={`w-8 h-8 mx-auto mb-2 ${themeClasses.brand.primary}`}
+          />
+          <h4 className={`font-semibold ${themeClasses.text.primary} mb-1`}>
+            Study Schedule
+          </h4>
+          <p className={`text-sm ${themeClasses.text.secondary}`}>
+            Plan your learning time
+          </p>
         </div>
       </div>
     </div>
@@ -645,11 +723,15 @@ const Roadmap = () => {
         <div className="p-4 border-b border-gray-200 dark:border-gray-700">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
-              <div className={`w-10 h-10 rounded-full bg-gradient-to-r ${themeClasses.brand.gradient} flex items-center justify-center mr-3`}>
+              <div
+                className={`w-10 h-10 rounded-full bg-gradient-to-r ${themeClasses.brand.gradient} flex items-center justify-center mr-3`}
+              >
                 <Bot className="w-5 h-5 text-white" />
               </div>
               <div>
-                <h3 className={`font-semibold ${themeClasses.text.primary}`}>AI Learning Guide</h3>
+                <h3 className={`font-semibold ${themeClasses.text.primary}`}>
+                  AI Learning Guide
+                </h3>
                 <p className={`text-sm ${themeClasses.text.secondary}`}>
                   Your personal {careerData.careerTitle} mentor
                 </p>
@@ -657,14 +739,14 @@ const Roadmap = () => {
             </div>
             <div className="flex items-center space-x-2">
               <button
-                onClick={() => setViewMode('overview')}
+                onClick={() => setViewMode("overview")}
                 className={componentStyles.button.ghost}
               >
                 <Map className="w-4 h-4 mr-2" />
                 Overview
               </button>
               <button
-                onClick={() => setViewMode('detailed')}
+                onClick={() => setViewMode("detailed")}
                 className={componentStyles.button.ghost}
               >
                 <BookOpen className="w-4 h-4 mr-2" />
@@ -679,15 +761,19 @@ const Roadmap = () => {
           {chatMessages.map((message) => (
             <div
               key={message.id}
-              className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
+              className={`flex ${
+                message.type === "user" ? "justify-end" : "justify-start"
+              }`}
             >
-              <div className={`max-w-xs lg:max-w-md px-4 py-2 rounded-2xl ${
-                message.type === 'user'
-                  ? `bg-gradient-to-r ${themeClasses.brand.gradient} text-white`
-                  : `${themeClasses.bg.accent} ${themeClasses.text.primary}`
-              }`}>
+              <div
+                className={`max-w-xs lg:max-w-md px-4 py-2 rounded-2xl ${
+                  message.type === "user"
+                    ? `bg-gradient-to-r ${themeClasses.brand.gradient} text-white`
+                    : `${themeClasses.bg.accent} ${themeClasses.text.primary}`
+                }`}
+              >
                 <div className="flex items-start">
-                  {message.type === 'bot' && (
+                  {message.type === "bot" && (
                     <Bot className="w-4 h-4 mr-2 mt-0.5 flex-shrink-0" />
                   )}
                   <div className="whitespace-pre-wrap text-sm">
@@ -700,16 +786,24 @@ const Roadmap = () => {
               </div>
             </div>
           ))}
-          
+
           {chatLoading && (
             <div className="flex justify-start">
-              <div className={`${themeClasses.bg.accent} px-4 py-2 rounded-2xl`}>
+              <div
+                className={`${themeClasses.bg.accent} px-4 py-2 rounded-2xl`}
+              >
                 <div className="flex items-center">
                   <Bot className="w-4 h-4 mr-2" />
                   <div className="flex space-x-1">
                     <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+                    <div
+                      className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                      style={{ animationDelay: "0.1s" }}
+                    ></div>
+                    <div
+                      className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                      style={{ animationDelay: "0.2s" }}
+                    ></div>
                   </div>
                 </div>
               </div>
@@ -725,16 +819,16 @@ const Roadmap = () => {
               value={chatInput}
               onChange={(e) => setChatInput(e.target.value)}
               onKeyPress={(e) => {
-                if (e.key === 'Enter' && !e.shiftKey) {
+                if (e.key === "Enter" && !e.shiftKey) {
                   e.preventDefault();
                   sendChatMessage(chatInput);
                 }
               }}
               placeholder="Ask me about your learning path..."
               className={`flex-1 px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                isDarkMode 
-                  ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400' 
-                  : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'
+                isDarkMode
+                  ? "bg-gray-700 border-gray-600 text-white placeholder-gray-400"
+                  : "bg-white border-gray-300 text-gray-900 placeholder-gray-500"
               }`}
               disabled={chatLoading}
             />
@@ -746,7 +840,7 @@ const Roadmap = () => {
               <Send className="w-4 h-4" />
             </button>
           </div>
-          
+
           {/* Quick Suggestions */}
           <div className="mt-3 flex flex-wrap gap-2">
             {[
@@ -754,15 +848,17 @@ const Roadmap = () => {
               "What should I focus on first?",
               "Show me the projects",
               "Career opportunities",
-              "Study tips"
+              "Study tips",
             ].map((suggestion) => (
               <button
                 key={suggestion}
                 onClick={() => sendChatMessage(suggestion)}
-                className={`text-xs px-3 py-1 rounded-full border ${themeClasses.interactive.hover} transition-colors ${
-                  isDarkMode 
-                    ? 'border-gray-600 text-gray-300 hover:bg-gray-700' 
-                    : 'border-gray-300 text-gray-600 hover:bg-gray-50'
+                className={`text-xs px-3 py-1 rounded-full border ${
+                  themeClasses.interactive.hover
+                } transition-colors ${
+                  isDarkMode
+                    ? "border-gray-600 text-gray-300 hover:bg-gray-700"
+                    : "border-gray-300 text-gray-600 hover:bg-gray-50"
                 }`}
                 disabled={chatLoading}
               >
@@ -777,7 +873,9 @@ const Roadmap = () => {
       {selectedPhaseForChat && (
         <div className={componentStyles.card}>
           <div className="p-4">
-            <h4 className={`font-semibold ${themeClasses.text.primary} mb-2 flex items-center`}>
+            <h4
+              className={`font-semibold ${themeClasses.text.primary} mb-2 flex items-center`}
+            >
               <Zap className="w-4 h-4 mr-2" />
               Currently Discussing: {selectedPhaseForChat.title}
             </h4>
@@ -785,13 +883,20 @@ const Roadmap = () => {
               {selectedPhaseForChat.description}
             </p>
             <div className="flex flex-wrap gap-2">
-              {selectedPhaseForChat.subjects?.slice(0, 3).map((subject, index) => (
-                <span key={index} className={`text-xs px-2 py-1 rounded-full ${
-                  isDarkMode ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-600'
-                }`}>
-                  {subject.name}
-                </span>
-              ))}
+              {selectedPhaseForChat.subjects
+                ?.slice(0, 3)
+                .map((subject, index) => (
+                  <span
+                    key={index}
+                    className={`text-xs px-2 py-1 rounded-full ${
+                      isDarkMode
+                        ? "bg-gray-700 text-gray-300"
+                        : "bg-gray-100 text-gray-600"
+                    }`}
+                  >
+                    {subject.name}
+                  </span>
+                ))}
             </div>
           </div>
         </div>
@@ -943,28 +1048,30 @@ const Roadmap = () => {
       {/* Main Content */}
       <div className="container mx-auto px-6 py-8">
         {/* Render different views based on viewMode */}
-        {viewMode === 'overview' && <RoadmapOverview />}
-        
-        {viewMode === 'chat' && <ChatbotInterface />}
-        
-        {viewMode === 'detailed' && (
+        {viewMode === "overview" && <RoadmapOverview />}
+
+        {viewMode === "chat" && <ChatbotInterface />}
+
+        {viewMode === "detailed" && (
           <div className="grid grid-cols-1 xl:grid-cols-4 gap-8">
             {/* View Mode Selector */}
             <div className="xl:col-span-4 mb-6">
               <div className="flex items-center justify-between">
-                <h2 className={`text-2xl font-bold ${themeClasses.text.primary}`}>
+                <h2
+                  className={`text-2xl font-bold ${themeClasses.text.primary}`}
+                >
                   Detailed Study Plan
                 </h2>
                 <div className="flex items-center space-x-2">
                   <button
-                    onClick={() => setViewMode('overview')}
+                    onClick={() => setViewMode("overview")}
                     className={componentStyles.button.ghost}
                   >
                     <Map className="w-4 h-4 mr-2" />
                     Overview
                   </button>
                   <button
-                    onClick={() => setViewMode('chat')}
+                    onClick={() => setViewMode("chat")}
                     className={componentStyles.button.primary}
                   >
                     <MessageSquare className="w-4 h-4 mr-2" />
@@ -999,7 +1106,9 @@ const Roadmap = () => {
                           >
                             {phase.title}
                           </h3>
-                          <p className={`${themeClasses.text.secondary} text-sm`}>
+                          <p
+                            className={`${themeClasses.text.secondary} text-sm`}
+                          >
                             {phase.duration} • {phase.description}
                           </p>
                         </div>
@@ -1102,29 +1211,32 @@ const Roadmap = () => {
                                   </div>
                                 </div>
 
-                                {subject.skills && subject.skills.length > 0 && (
-                                  <div className="ml-8">
-                                    <p
-                                      className={`text-xs ${themeClasses.text.muted} mb-2`}
-                                    >
-                                      Skills you'll gain:
-                                    </p>
-                                    <div className="flex flex-wrap gap-1">
-                                      {subject.skills.map((skill, skillIndex) => (
-                                        <span
-                                          key={skillIndex}
-                                          className={`text-xs px-2 py-1 rounded-full ${
-                                            isDarkMode
-                                              ? "bg-gray-700 text-gray-300"
-                                              : "bg-gray-100 text-gray-600"
-                                          }`}
-                                        >
-                                          {skill}
-                                        </span>
-                                      ))}
+                                {subject.skills &&
+                                  subject.skills.length > 0 && (
+                                    <div className="ml-8">
+                                      <p
+                                        className={`text-xs ${themeClasses.text.muted} mb-2`}
+                                      >
+                                        Skills you'll gain:
+                                      </p>
+                                      <div className="flex flex-wrap gap-1">
+                                        {subject.skills.map(
+                                          (skill, skillIndex) => (
+                                            <span
+                                              key={skillIndex}
+                                              className={`text-xs px-2 py-1 rounded-full ${
+                                                isDarkMode
+                                                  ? "bg-gray-700 text-gray-300"
+                                                  : "bg-gray-100 text-gray-600"
+                                              }`}
+                                            >
+                                              {skill}
+                                            </span>
+                                          )
+                                        )}
+                                      </div>
                                     </div>
-                                  </div>
-                                )}
+                                  )}
                               </div>
                             ))}
                           </div>
@@ -1145,7 +1257,11 @@ const Roadmap = () => {
                               <div key={index} className="flex items-center">
                                 <button
                                   onClick={() =>
-                                    toggleCompletion(phase.id, "milestone", index)
+                                    toggleCompletion(
+                                      phase.id,
+                                      "milestone",
+                                      index
+                                    )
                                   }
                                   className="mr-3"
                                 >
@@ -1206,7 +1322,9 @@ const Roadmap = () => {
                                 </button>
                                 <span
                                   className={`${themeClasses.text.primary} ${
-                                    completedItems[`${phase.id}_project_${index}`]
+                                    completedItems[
+                                      `${phase.id}_project_${index}`
+                                    ]
                                       ? "line-through opacity-75"
                                       : ""
                                   }`}
@@ -1317,7 +1435,9 @@ const Roadmap = () => {
                           >
                             Future Outlook
                           </h4>
-                          <p className={`text-sm ${themeClasses.text.secondary}`}>
+                          <p
+                            className={`text-sm ${themeClasses.text.secondary}`}
+                          >
                             {roadmapData.industryInsights.futureOutlook}
                           </p>
                         </div>
@@ -1350,15 +1470,17 @@ const Roadmap = () => {
                                 {category}
                               </h4>
                               <ul className="space-y-1">
-                                {resources.slice(0, 3).map((resource, index) => (
-                                  <li
-                                    key={index}
-                                    className={`text-sm ${themeClasses.text.secondary} flex items-center`}
-                                  >
-                                    <ExternalLink className="w-3 h-3 mr-2 flex-shrink-0" />
-                                    {resource}
-                                  </li>
-                                ))}
+                                {resources
+                                  .slice(0, 3)
+                                  .map((resource, index) => (
+                                    <li
+                                      key={index}
+                                      className={`text-sm ${themeClasses.text.secondary} flex items-center`}
+                                    >
+                                      <ExternalLink className="w-3 h-3 mr-2 flex-shrink-0" />
+                                      {resource}
+                                    </li>
+                                  ))}
                               </ul>
                             </div>
                           )

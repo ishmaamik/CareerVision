@@ -121,51 +121,85 @@ const UniversityChoice = () => {
         "Civil Engineering",
         "Mechanical Engineering",
         "Chemical Engineering",
-        "Architecture"
+        "Architecture",
       ],
       highlights: [
         "Bangladesh's premier engineering university",
         "Highest engineering admission standard",
         "Strong industry connections",
-        "Excellent job placement in tech companies"
+        "Excellent job placement in tech companies",
       ],
       requirements: {
         admission: "BUET Admission Test",
         hsc: "GPA 5.00 (Science)",
         subjects: "Physics, Chemistry, Mathematics required",
-        cutoff: "Top 1000 in admission test"
+        cutoff: "Top 1000 in admission test",
       },
       scholarships: [
         "Merit-based scholarships",
         "Need-based financial aid",
-        "Prime Minister's Education Assistance"
+        "Prime Minister's Education Assistance",
       ],
       subjects: [
         {
           name: "Computer Science & Engineering",
           duration: "4 years",
           seats: 120,
-          overview: "Leading CSE program in Bangladesh with focus on software engineering, AI, and data science",
-          facilities: ["Modern computer labs", "High-speed internet", "Project labs", "Research centers"],
-          careerProspects: ["Software Engineer", "Data Scientist", "ML Engineer", "Tech Lead", "CTO"]
+          overview:
+            "Leading CSE program in Bangladesh with focus on software engineering, AI, and data science",
+          facilities: [
+            "Modern computer labs",
+            "High-speed internet",
+            "Project labs",
+            "Research centers",
+          ],
+          careerProspects: [
+            "Software Engineer",
+            "Data Scientist",
+            "ML Engineer",
+            "Tech Lead",
+            "CTO",
+          ],
         },
         {
           name: "Electrical & Electronic Engineering",
-          duration: "4 years", 
+          duration: "4 years",
           seats: 180,
-          overview: "Comprehensive EEE program covering power systems, electronics, telecommunications, and control systems",
-          facilities: ["Advanced labs", "Power system lab", "Electronics lab", "Microprocessor lab"],
-          careerProspects: ["Power Engineer", "Electronics Engineer", "Telecom Engineer", "Control Systems Engineer"]
+          overview:
+            "Comprehensive EEE program covering power systems, electronics, telecommunications, and control systems",
+          facilities: [
+            "Advanced labs",
+            "Power system lab",
+            "Electronics lab",
+            "Microprocessor lab",
+          ],
+          careerProspects: [
+            "Power Engineer",
+            "Electronics Engineer",
+            "Telecom Engineer",
+            "Control Systems Engineer",
+          ],
         },
         {
           name: "Civil Engineering",
           duration: "4 years",
           seats: 180,
-          overview: "Infrastructure and construction engineering with focus on sustainable development",
-          facilities: ["Structural lab", "Concrete lab", "Surveying equipment", "CAD lab"],
-          careerProspects: ["Structural Engineer", "Construction Manager", "Urban Planner", "Project Manager"]
-        }
-      ]
+          overview:
+            "Infrastructure and construction engineering with focus on sustainable development",
+          facilities: [
+            "Structural lab",
+            "Concrete lab",
+            "Surveying equipment",
+            "CAD lab",
+          ],
+          careerProspects: [
+            "Structural Engineer",
+            "Construction Manager",
+            "Urban Planner",
+            "Project Manager",
+          ],
+        },
+      ],
     },
     {
       id: 2,
@@ -187,51 +221,85 @@ const UniversityChoice = () => {
         "English Literature",
         "International Business",
         "Physics",
-        "Chemistry"
+        "Chemistry",
       ],
       highlights: [
         "Oldest modern university in Bangladesh",
         "Strong liberal arts education",
         "Active student life and culture",
-        "Historic Curzon Hall campus"
+        "Historic Curzon Hall campus",
       ],
       requirements: {
         admission: "DU Admission Test",
         hsc: "GPA 4.00+ (varies by faculty)",
         subjects: "Subject-specific requirements",
-        cutoff: "Faculty-wise merit list"
+        cutoff: "Faculty-wise merit list",
       },
       scholarships: [
         "Merit scholarships",
         "Need-based aid",
-        "Research assistantships"
+        "Research assistantships",
       ],
       subjects: [
         {
           name: "Computer Science & Engineering",
           duration: "4 years",
           seats: 60,
-          overview: "Well-established CSE program with strong theoretical foundation and practical skills",
-          facilities: ["Computer labs", "Internet facility", "Programming labs", "Project rooms"],
-          careerProspects: ["Software Developer", "System Analyst", "Database Administrator", "Web Developer"]
+          overview:
+            "Well-established CSE program with strong theoretical foundation and practical skills",
+          facilities: [
+            "Computer labs",
+            "Internet facility",
+            "Programming labs",
+            "Project rooms",
+          ],
+          careerProspects: [
+            "Software Developer",
+            "System Analyst",
+            "Database Administrator",
+            "Web Developer",
+          ],
         },
         {
           name: "International Business",
           duration: "4 years",
           seats: 90,
-          overview: "Modern business education with international perspective and practical case studies",
-          facilities: ["Business lab", "Presentation rooms", "Library", "Seminar halls"],
-          careerProspects: ["Business Analyst", "Marketing Manager", "Export-Import Manager", "Consultant"]
+          overview:
+            "Modern business education with international perspective and practical case studies",
+          facilities: [
+            "Business lab",
+            "Presentation rooms",
+            "Library",
+            "Seminar halls",
+          ],
+          careerProspects: [
+            "Business Analyst",
+            "Marketing Manager",
+            "Export-Import Manager",
+            "Consultant",
+          ],
         },
         {
           name: "English Literature",
           duration: "4 years",
           seats: 120,
-          overview: "Comprehensive literature program covering classical and contemporary works",
-          facilities: ["Library", "Seminar rooms", "Language lab", "Drama hall"],
-          careerProspects: ["Teacher", "Journalist", "Content Writer", "Editor", "Translator"]
-        }
-      ]
+          overview:
+            "Comprehensive literature program covering classical and contemporary works",
+          facilities: [
+            "Library",
+            "Seminar rooms",
+            "Language lab",
+            "Drama hall",
+          ],
+          careerProspects: [
+            "Teacher",
+            "Journalist",
+            "Content Writer",
+            "Editor",
+            "Translator",
+          ],
+        },
+      ],
     },
     {
       id: 3,
@@ -253,43 +321,65 @@ const UniversityChoice = () => {
         "Electrical Engineering",
         "Civil Engineering",
         "Economics",
-        "English"
+        "English",
       ],
       highlights: [
         "Leading private university",
         "American liberal arts model",
         "Strong international partnerships",
-        "Modern campus facilities"
+        "Modern campus facilities",
       ],
       requirements: {
         admission: "NSU Admission Test + Interview",
         hsc: "GPA 3.50+ (O & A Level equivalent)",
         english: "IELTS 6.0 or equivalent",
-        subjects: "Program-specific requirements"
+        subjects: "Program-specific requirements",
       },
       scholarships: [
         "Merit scholarships up to 100%",
         "Need-based financial aid",
-        "Talent scholarships"
+        "Talent scholarships",
       ],
       subjects: [
         {
           name: "Computer Science & Engineering",
           duration: "4 years",
           seats: 200,
-          overview: "Industry-aligned CSE program with emphasis on practical skills and innovation",
-          facilities: ["Modern computer labs", "High-speed internet", "Research labs", "Innovation hub"],
-          careerProspects: ["Software Engineer", "Full-stack Developer", "DevOps Engineer", "Product Manager"]
+          overview:
+            "Industry-aligned CSE program with emphasis on practical skills and innovation",
+          facilities: [
+            "Modern computer labs",
+            "High-speed internet",
+            "Research labs",
+            "Innovation hub",
+          ],
+          careerProspects: [
+            "Software Engineer",
+            "Full-stack Developer",
+            "DevOps Engineer",
+            "Product Manager",
+          ],
         },
         {
           name: "Business Administration",
           duration: "4 years",
           seats: 300,
-          overview: "Comprehensive business program following American curriculum with local context",
-          facilities: ["Case study rooms", "Presentation facilities", "Business simulation lab", "Library"],
-          careerProspects: ["Business Manager", "Financial Analyst", "Marketing Executive", "Entrepreneur"]
-        }
-      ]
+          overview:
+            "Comprehensive business program following American curriculum with local context",
+          facilities: [
+            "Case study rooms",
+            "Presentation facilities",
+            "Business simulation lab",
+            "Library",
+          ],
+          careerProspects: [
+            "Business Manager",
+            "Financial Analyst",
+            "Marketing Executive",
+            "Entrepreneur",
+          ],
+        },
+      ],
     },
     {
       id: 4,
@@ -311,43 +401,65 @@ const UniversityChoice = () => {
         "Economics",
         "Electrical Engineering",
         "Microbiology",
-        "English"
+        "English",
       ],
       highlights: [
         "Strong industry connections",
         "Excellent campus facilities",
         "Active research culture",
-        "International collaborations"
+        "International collaborations",
       ],
       requirements: {
         admission: "BRAC University Admission Test",
         hsc: "GPA 3.50+ (O & A Level equivalent)",
         english: "English proficiency test",
-        interview: "Personal interview required"
+        interview: "Personal interview required",
       },
       scholarships: [
         "Merit scholarships",
         "Need-based aid",
-        "Alumni scholarships"
+        "Alumni scholarships",
       ],
       subjects: [
         {
           name: "Computer Science & Engineering",
           duration: "4 years",
           seats: 180,
-          overview: "Cutting-edge CSE program with focus on emerging technologies and industry readiness",
-          facilities: ["State-of-the-art labs", "Research centers", "Innovation lab", "Collaboration spaces"],
-          careerProspects: ["Software Engineer", "AI/ML Engineer", "Cybersecurity Specialist", "Tech Entrepreneur"]
+          overview:
+            "Cutting-edge CSE program with focus on emerging technologies and industry readiness",
+          facilities: [
+            "State-of-the-art labs",
+            "Research centers",
+            "Innovation lab",
+            "Collaboration spaces",
+          ],
+          careerProspects: [
+            "Software Engineer",
+            "AI/ML Engineer",
+            "Cybersecurity Specialist",
+            "Tech Entrepreneur",
+          ],
         },
         {
           name: "Business Administration",
           duration: "4 years",
           seats: 250,
-          overview: "Dynamic business program with emphasis on leadership and entrepreneurship",
-          facilities: ["Modern classrooms", "Case study rooms", "Business incubator", "Networking events"],
-          careerProspects: ["Business Leader", "Consultant", "Financial Manager", "Startup Founder"]
-        }
-      ]
+          overview:
+            "Dynamic business program with emphasis on leadership and entrepreneurship",
+          facilities: [
+            "Modern classrooms",
+            "Case study rooms",
+            "Business incubator",
+            "Networking events",
+          ],
+          careerProspects: [
+            "Business Leader",
+            "Consultant",
+            "Financial Manager",
+            "Startup Founder",
+          ],
+        },
+      ],
     },
     {
       id: 5,
@@ -368,35 +480,46 @@ const UniversityChoice = () => {
         "Electrical & Electronic Engineering",
         "Mechanical Engineering",
         "Civil Engineering",
-        "Textile Engineering"
+        "Textile Engineering",
       ],
       highlights: [
         "OIC subsidiary university",
         "International faculty",
         "Research-oriented education",
-        "Modern residential campus"
+        "Modern residential campus",
       ],
       requirements: {
         admission: "IUT Admission Test",
         hsc: "GPA 5.00 (Science)",
         subjects: "Physics, Chemistry, Mathematics",
-        international: "Open to OIC member countries"
+        international: "Open to OIC member countries",
       },
       scholarships: [
         "OIC scholarships",
         "Full tuition waivers",
-        "Residential scholarships"
+        "Residential scholarships",
       ],
       subjects: [
         {
           name: "Computer Science & Engineering",
           duration: "4 years",
           seats: 60,
-          overview: "International standard CSE program with research focus and global perspective",
-          facilities: ["Advanced computing labs", "Research facilities", "International library", "Modern dormitories"],
-          careerProspects: ["Research Scientist", "Software Architect", "International Consultant", "Academic"]
-        }
-      ]
+          overview:
+            "International standard CSE program with research focus and global perspective",
+          facilities: [
+            "Advanced computing labs",
+            "Research facilities",
+            "International library",
+            "Modern dormitories",
+          ],
+          careerProspects: [
+            "Research Scientist",
+            "Software Architect",
+            "International Consultant",
+            "Academic",
+          ],
+        },
+      ],
     },
     {
       id: 6,
@@ -418,41 +541,53 @@ const UniversityChoice = () => {
         "Economics",
         "Environmental Science",
         "Media Studies",
-        "Public Health"
+        "Public Health",
       ],
       highlights: [
         "Small class sizes",
         "Personalized attention",
         "Strong alumni network",
-        "Beautiful campus"
+        "Beautiful campus",
       ],
       requirements: {
         admission: "IUB Admission Test",
         hsc: "GPA 3.00+ (O & A Level equivalent)",
         english: "English aptitude test",
-        interview: "Personal interview"
+        interview: "Personal interview",
       },
       scholarships: [
         "Academic excellence scholarships",
         "Financial aid programs",
-        "Sports scholarships"
+        "Sports scholarships",
       ],
       subjects: [
         {
           name: "Computer Science & Engineering",
           duration: "4 years",
           seats: 120,
-          overview: "Comprehensive CSE program with focus on practical application and industry collaboration",
-          facilities: ["Computer labs", "Software development center", "Project labs", "Maker space"],
-          careerProspects: ["Software Developer", "System Designer", "Technical Lead", "IT Consultant"]
-        }
-      ]
-    }
+          overview:
+            "Comprehensive CSE program with focus on practical application and industry collaboration",
+          facilities: [
+            "Computer labs",
+            "Software development center",
+            "Project labs",
+            "Maker space",
+          ],
+          careerProspects: [
+            "Software Developer",
+            "System Designer",
+            "Technical Lead",
+            "IT Consultant",
+          ],
+        },
+      ],
+    },
   ];
 
   // Sample student reviews for subjects
   const studentReviews = {
-    1: { // BUET
+    1: {
+      // BUET
       "Computer Science & Engineering": [
         {
           id: 1,
@@ -460,11 +595,21 @@ const UniversityChoice = () => {
           year: "4th Year",
           rating: 4.5,
           date: "2024-08-15",
-          review: "BUET CSE is incredibly challenging but rewarding. The curriculum is rigorous and covers both theoretical foundations and practical applications. Professors are experts in their fields, though some classes can be overwhelming. The competitive environment pushes you to excel. Job prospects are excellent - most graduates get offers from top tech companies or pursue higher studies abroad.",
-          pros: ["World-class faculty", "Excellent job prospects", "Strong alumni network", "Research opportunities"],
-          cons: ["Extremely competitive", "Heavy workload", "Limited social life during exams"],
+          review:
+            "BUET CSE is incredibly challenging but rewarding. The curriculum is rigorous and covers both theoretical foundations and practical applications. Professors are experts in their fields, though some classes can be overwhelming. The competitive environment pushes you to excel. Job prospects are excellent - most graduates get offers from top tech companies or pursue higher studies abroad.",
+          pros: [
+            "World-class faculty",
+            "Excellent job prospects",
+            "Strong alumni network",
+            "Research opportunities",
+          ],
+          cons: [
+            "Extremely competitive",
+            "Heavy workload",
+            "Limited social life during exams",
+          ],
           wouldRecommend: true,
-          helpfulVotes: 45
+          helpfulVotes: 45,
         },
         {
           id: 2,
@@ -472,11 +617,21 @@ const UniversityChoice = () => {
           year: "Recent Graduate",
           rating: 4.8,
           date: "2024-07-20",
-          review: "Four years at BUET CSE transformed my understanding of computer science. The program is tough but comprehensive. You'll learn everything from algorithms to system design. The final year thesis project is particularly valuable - I worked on machine learning applications which directly helped in landing my current job at a tech startup. The peer learning environment is amazing.",
-          pros: ["Comprehensive curriculum", "Hands-on projects", "Industry connections", "Peer learning"],
-          cons: ["Intense pressure", "Old infrastructure in some labs", "Limited electives"],
+          review:
+            "Four years at BUET CSE transformed my understanding of computer science. The program is tough but comprehensive. You'll learn everything from algorithms to system design. The final year thesis project is particularly valuable - I worked on machine learning applications which directly helped in landing my current job at a tech startup. The peer learning environment is amazing.",
+          pros: [
+            "Comprehensive curriculum",
+            "Hands-on projects",
+            "Industry connections",
+            "Peer learning",
+          ],
+          cons: [
+            "Intense pressure",
+            "Old infrastructure in some labs",
+            "Limited electives",
+          ],
           wouldRecommend: true,
-          helpfulVotes: 38
+          helpfulVotes: 38,
         },
         {
           id: 3,
@@ -484,12 +639,22 @@ const UniversityChoice = () => {
           year: "3rd Year",
           rating: 4.2,
           date: "2024-09-01",
-          review: "BUET CSE is definitely the gold standard for computer science education in Bangladesh. The theoretical foundation you get here is unmatched. However, be prepared for sleepless nights and intense competition. The programming contests and hackathons are great for skill development. Some courses could use more modern examples, but overall it's an excellent program.",
-          pros: ["Strong theoretical foundation", "Programming contests", "Networking opportunities", "Prestige"],
-          cons: ["Outdated some course materials", "High stress environment", "Limited recreational activities"],
+          review:
+            "BUET CSE is definitely the gold standard for computer science education in Bangladesh. The theoretical foundation you get here is unmatched. However, be prepared for sleepless nights and intense competition. The programming contests and hackathons are great for skill development. Some courses could use more modern examples, but overall it's an excellent program.",
+          pros: [
+            "Strong theoretical foundation",
+            "Programming contests",
+            "Networking opportunities",
+            "Prestige",
+          ],
+          cons: [
+            "Outdated some course materials",
+            "High stress environment",
+            "Limited recreational activities",
+          ],
           wouldRecommend: true,
-          helpfulVotes: 29
-        }
+          helpfulVotes: 29,
+        },
       ],
       "Electrical & Electronic Engineering": [
         {
@@ -498,15 +663,26 @@ const UniversityChoice = () => {
           year: "4th Year",
           rating: 4.4,
           date: "2024-08-10",
-          review: "EEE at BUET offers excellent exposure to power systems, electronics, and telecommunications. The labs are well-equipped and professors are knowledgeable. The curriculum balances theory with practical work. Power system courses are particularly strong. Many graduates work in power sector companies or pursue higher studies in prestigious universities abroad.",
-          pros: ["Excellent lab facilities", "Industry-relevant curriculum", "Strong power systems focus", "Good placement"],
-          cons: ["Heavy course load", "Limited flexibility in course selection", "Competitive environment"],
+          review:
+            "EEE at BUET offers excellent exposure to power systems, electronics, and telecommunications. The labs are well-equipped and professors are knowledgeable. The curriculum balances theory with practical work. Power system courses are particularly strong. Many graduates work in power sector companies or pursue higher studies in prestigious universities abroad.",
+          pros: [
+            "Excellent lab facilities",
+            "Industry-relevant curriculum",
+            "Strong power systems focus",
+            "Good placement",
+          ],
+          cons: [
+            "Heavy course load",
+            "Limited flexibility in course selection",
+            "Competitive environment",
+          ],
           wouldRecommend: true,
-          helpfulVotes: 33
-        }
-      ]
+          helpfulVotes: 33,
+        },
+      ],
     },
-    2: { // University of Dhaka
+    2: {
+      // University of Dhaka
       "Computer Science & Engineering": [
         {
           id: 5,
@@ -514,11 +690,21 @@ const UniversityChoice = () => {
           year: "Recent Graduate",
           rating: 4.0,
           date: "2024-07-25",
-          review: "DU CSE provides a solid foundation in computer science with a good balance of theory and practice. The faculty is experienced and supportive. While not as intensive as BUET, the program still prepares you well for industry. The campus life is vibrant with many cultural activities. Job placement is good, especially for software development roles.",
-          pros: ["Balanced curriculum", "Supportive faculty", "Rich campus life", "Good industry connections"],
-          cons: ["Less research focus", "Infrastructure could be better", "Limited advanced courses"],
+          review:
+            "DU CSE provides a solid foundation in computer science with a good balance of theory and practice. The faculty is experienced and supportive. While not as intensive as BUET, the program still prepares you well for industry. The campus life is vibrant with many cultural activities. Job placement is good, especially for software development roles.",
+          pros: [
+            "Balanced curriculum",
+            "Supportive faculty",
+            "Rich campus life",
+            "Good industry connections",
+          ],
+          cons: [
+            "Less research focus",
+            "Infrastructure could be better",
+            "Limited advanced courses",
+          ],
           wouldRecommend: true,
-          helpfulVotes: 22
+          helpfulVotes: 22,
         },
         {
           id: 6,
@@ -526,12 +712,22 @@ const UniversityChoice = () => {
           year: "3rd Year",
           rating: 3.8,
           date: "2024-08-20",
-          review: "DU CSE is a good program with dedicated teachers. The course structure covers all essential topics in computer science. However, some courses need updating to include more recent technologies. The department organizes regular seminars and workshops. Overall, it's a decent choice for those who want quality education without extreme pressure.",
-          pros: ["Dedicated teachers", "Regular seminars", "Less pressure than BUET", "Historic campus"],
-          cons: ["Needs curriculum update", "Limited research opportunities", "Slower adoption of new technologies"],
+          review:
+            "DU CSE is a good program with dedicated teachers. The course structure covers all essential topics in computer science. However, some courses need updating to include more recent technologies. The department organizes regular seminars and workshops. Overall, it's a decent choice for those who want quality education without extreme pressure.",
+          pros: [
+            "Dedicated teachers",
+            "Regular seminars",
+            "Less pressure than BUET",
+            "Historic campus",
+          ],
+          cons: [
+            "Needs curriculum update",
+            "Limited research opportunities",
+            "Slower adoption of new technologies",
+          ],
           wouldRecommend: true,
-          helpfulVotes: 18
-        }
+          helpfulVotes: 18,
+        },
       ],
       "International Business": [
         {
@@ -540,15 +736,26 @@ const UniversityChoice = () => {
           year: "4th Year",
           rating: 4.3,
           date: "2024-08-05",
-          review: "The IB program at DU is excellent for understanding global business dynamics. Case study approach helps in practical learning. Faculty includes both academics and industry professionals. The program has strong connections with international organizations. Many graduates work in multinational companies or start their own businesses.",
-          pros: ["Global perspective", "Case study approach", "Industry connections", "Practical learning"],
-          cons: ["Limited internship opportunities", "Need more tech integration", "High competition for top positions"],
+          review:
+            "The IB program at DU is excellent for understanding global business dynamics. Case study approach helps in practical learning. Faculty includes both academics and industry professionals. The program has strong connections with international organizations. Many graduates work in multinational companies or start their own businesses.",
+          pros: [
+            "Global perspective",
+            "Case study approach",
+            "Industry connections",
+            "Practical learning",
+          ],
+          cons: [
+            "Limited internship opportunities",
+            "Need more tech integration",
+            "High competition for top positions",
+          ],
           wouldRecommend: true,
-          helpfulVotes: 26
-        }
-      ]
+          helpfulVotes: 26,
+        },
+      ],
     },
-    3: { // NSU
+    3: {
+      // NSU
       "Computer Science & Engineering": [
         {
           id: 8,
@@ -556,11 +763,21 @@ const UniversityChoice = () => {
           year: "Recent Graduate",
           rating: 4.6,
           date: "2024-09-05",
-          review: "NSU CSE is fantastic! The American liberal arts model gives you flexibility to explore different areas. Modern facilities, excellent faculty (many with PhD from abroad), and strong industry connections. The curriculum is regularly updated. Internship opportunities are abundant. Though expensive, the ROI is worth it considering the job prospects and skills gained.",
-          pros: ["Modern curriculum", "Flexible course selection", "Industry partnerships", "International faculty"],
-          cons: ["Expensive tuition", "Competitive admission", "Limited financial aid"],
+          review:
+            "NSU CSE is fantastic! The American liberal arts model gives you flexibility to explore different areas. Modern facilities, excellent faculty (many with PhD from abroad), and strong industry connections. The curriculum is regularly updated. Internship opportunities are abundant. Though expensive, the ROI is worth it considering the job prospects and skills gained.",
+          pros: [
+            "Modern curriculum",
+            "Flexible course selection",
+            "Industry partnerships",
+            "International faculty",
+          ],
+          cons: [
+            "Expensive tuition",
+            "Competitive admission",
+            "Limited financial aid",
+          ],
           wouldRecommend: true,
-          helpfulVotes: 41
+          helpfulVotes: 41,
         },
         {
           id: 9,
@@ -568,12 +785,18 @@ const UniversityChoice = () => {
           year: "4th Year",
           rating: 4.4,
           date: "2024-08-12",
-          review: "NSU provides an excellent learning environment with small class sizes and personalized attention. The focus on practical skills through projects and internships is remarkable. Career services department is very helpful in job placement. The campus culture encourages innovation and entrepreneurship. Many successful startups have emerged from NSU.",
-          pros: ["Small class sizes", "Practical focus", "Career support", "Innovation culture"],
+          review:
+            "NSU provides an excellent learning environment with small class sizes and personalized attention. The focus on practical skills through projects and internships is remarkable. Career services department is very helpful in job placement. The campus culture encourages innovation and entrepreneurship. Many successful startups have emerged from NSU.",
+          pros: [
+            "Small class sizes",
+            "Practical focus",
+            "Career support",
+            "Innovation culture",
+          ],
           cons: ["High fees", "Parking issues", "Limited research funding"],
           wouldRecommend: true,
-          helpfulVotes: 35
-        }
+          helpfulVotes: 35,
+        },
       ],
       "Business Administration": [
         {
@@ -582,15 +805,22 @@ const UniversityChoice = () => {
           year: "Recent Graduate",
           rating: 4.5,
           date: "2024-07-30",
-          review: "NSU Business program follows international standards with emphasis on practical application. Guest lectures from industry leaders, case competitions, and internships provide real-world exposure. The program helped me develop leadership and analytical skills. Faculty is approachable and supportive. Currently working at a multinational company thanks to the strong alumni network.",
-          pros: ["International standards", "Industry exposure", "Strong alumni network", "Leadership development"],
+          review:
+            "NSU Business program follows international standards with emphasis on practical application. Guest lectures from industry leaders, case competitions, and internships provide real-world exposure. The program helped me develop leadership and analytical skills. Faculty is approachable and supportive. Currently working at a multinational company thanks to the strong alumni network.",
+          pros: [
+            "International standards",
+            "Industry exposure",
+            "Strong alumni network",
+            "Leadership development",
+          ],
           cons: ["Expensive", "Intense course load", "Limited scholarships"],
           wouldRecommend: true,
-          helpfulVotes: 28
-        }
-      ]
+          helpfulVotes: 28,
+        },
+      ],
     },
-    4: { // BRAC University
+    4: {
+      // BRAC University
       "Computer Science & Engineering": [
         {
           id: 11,
@@ -598,12 +828,18 @@ const UniversityChoice = () => {
           year: "4th Year",
           rating: 4.3,
           date: "2024-08-18",
-          review: "BRACU CSE strikes a perfect balance between academic rigor and practical application. The faculty is a mix of experienced academics and industry professionals. Regular hackathons, coding competitions, and tech talks keep you updated with latest trends. The campus has excellent facilities including modern labs and library. Strong placement support with good industry connections.",
-          pros: ["Balanced approach", "Modern facilities", "Industry professionals as faculty", "Active tech community"],
+          review:
+            "BRACU CSE strikes a perfect balance between academic rigor and practical application. The faculty is a mix of experienced academics and industry professionals. Regular hackathons, coding competitions, and tech talks keep you updated with latest trends. The campus has excellent facilities including modern labs and library. Strong placement support with good industry connections.",
+          pros: [
+            "Balanced approach",
+            "Modern facilities",
+            "Industry professionals as faculty",
+            "Active tech community",
+          ],
           cons: ["Expensive fees", "Limited parking", "Sometimes overcrowded"],
           wouldRecommend: true,
-          helpfulVotes: 32
-        }
+          helpfulVotes: 32,
+        },
       ],
       "Business Administration": [
         {
@@ -612,14 +848,24 @@ const UniversityChoice = () => {
           year: "Recent Graduate",
           rating: 4.2,
           date: "2024-09-02",
-          review: "BRACU Business program is well-structured with emphasis on practical learning through case studies and projects. The faculty brings real industry experience to classroom. Regular corporate visits and guest lectures provide industry insights. The career placement office is very active in arranging internships and job opportunities. Good return on investment.",
-          pros: ["Practical curriculum", "Industry insights", "Active placement support", "Corporate connections"],
-          cons: ["High tuition fees", "Competitive environment", "Limited financial aid options"],
+          review:
+            "BRACU Business program is well-structured with emphasis on practical learning through case studies and projects. The faculty brings real industry experience to classroom. Regular corporate visits and guest lectures provide industry insights. The career placement office is very active in arranging internships and job opportunities. Good return on investment.",
+          pros: [
+            "Practical curriculum",
+            "Industry insights",
+            "Active placement support",
+            "Corporate connections",
+          ],
+          cons: [
+            "High tuition fees",
+            "Competitive environment",
+            "Limited financial aid options",
+          ],
           wouldRecommend: true,
-          helpfulVotes: 24
-        }
-      ]
-    }
+          helpfulVotes: 24,
+        },
+      ],
+    },
   };
 
   const filteredUniversities = universities.filter((uni) => {
@@ -990,21 +1236,23 @@ const UniversityChoice = () => {
                         University Highlights
                       </Typography>
                       <Grid container spacing={2}>
-                        {selectedUniversity.highlights.map((highlight, index) => (
-                          <Grid item xs={12} sm={6} key={index}>
-                            <Box className="flex items-center">
-                              <CheckCircle
-                                sx={{ color: "green", fontSize: 20, mr: 1 }}
-                              />
-                              <Typography
-                                variant="body2"
-                                className={themeClasses.text.primary}
-                              >
-                                {highlight}
-                              </Typography>
-                            </Box>
-                          </Grid>
-                        ))}
+                        {selectedUniversity.highlights.map(
+                          (highlight, index) => (
+                            <Grid item xs={12} sm={6} key={index}>
+                              <Box className="flex items-center">
+                                <CheckCircle
+                                  sx={{ color: "green", fontSize: 20, mr: 1 }}
+                                />
+                                <Typography
+                                  variant="body2"
+                                  className={themeClasses.text.primary}
+                                >
+                                  {highlight}
+                                </Typography>
+                              </Box>
+                            </Grid>
+                          )
+                        )}
                       </Grid>
                     </Grid>
                   </Grid>
@@ -1096,7 +1344,9 @@ const UniversityChoice = () => {
                             variant="body2"
                             className={`font-semibold ${themeClasses.text.primary}`}
                           >
-                            {studentReviews[selectedUniversity.id]?.[subject.name]?.length || 0}
+                            {studentReviews[selectedUniversity.id]?.[
+                              subject.name
+                            ]?.length || 0}
                           </Typography>
                           <Typography
                             variant="caption"
@@ -1117,15 +1367,17 @@ const UniversityChoice = () => {
                         Key Facilities:
                       </Typography>
                       <Box className="flex flex-wrap gap-1">
-                        {subject.facilities?.slice(0, 3).map((facility, fIndex) => (
-                          <Chip
-                            key={fIndex}
-                            label={facility}
-                            size="small"
-                            variant="outlined"
-                            sx={{ fontSize: "0.7rem" }}
-                          />
-                        ))}
+                        {subject.facilities
+                          ?.slice(0, 3)
+                          .map((facility, fIndex) => (
+                            <Chip
+                              key={fIndex}
+                              label={facility}
+                              size="small"
+                              variant="outlined"
+                              sx={{ fontSize: "0.7rem" }}
+                            />
+                          ))}
                       </Box>
                     </Box>
 
@@ -1138,19 +1390,23 @@ const UniversityChoice = () => {
                         Career Opportunities:
                       </Typography>
                       <Box className="flex flex-wrap gap-1">
-                        {subject.careerProspects?.slice(0, 3).map((career, cIndex) => (
-                          <Chip
-                            key={cIndex}
-                            label={career}
-                            size="small"
-                            color="primary"
-                            variant="outlined"
-                            sx={{ fontSize: "0.7rem" }}
-                          />
-                        ))}
+                        {subject.careerProspects
+                          ?.slice(0, 3)
+                          .map((career, cIndex) => (
+                            <Chip
+                              key={cIndex}
+                              label={career}
+                              size="small"
+                              color="primary"
+                              variant="outlined"
+                              sx={{ fontSize: "0.7rem" }}
+                            />
+                          ))}
                         {subject.careerProspects?.length > 3 && (
                           <Chip
-                            label={`+${subject.careerProspects.length - 3} more`}
+                            label={`+${
+                              subject.careerProspects.length - 3
+                            } more`}
                             size="small"
                             variant="outlined"
                             sx={{ fontSize: "0.7rem" }}
@@ -1186,24 +1442,26 @@ const UniversityChoice = () => {
                 Admission Requirements
               </Typography>
               <Grid container spacing={4}>
-                {Object.entries(selectedUniversity.requirements).map(([key, value], index) => (
-                  <Grid item xs={12} sm={6} md={3} key={index}>
-                    <Box>
-                      <Typography
-                        variant="body2"
-                        className={`font-medium ${themeClasses.text.primary} capitalize mb-1`}
-                      >
-                        {key.replace(/([A-Z])/g, ' $1').trim()}:
-                      </Typography>
-                      <Typography
-                        variant="body2"
-                        className={themeClasses.text.secondary}
-                      >
-                        {value}
-                      </Typography>
-                    </Box>
-                  </Grid>
-                ))}
+                {Object.entries(selectedUniversity.requirements).map(
+                  ([key, value], index) => (
+                    <Grid item xs={12} sm={6} md={3} key={index}>
+                      <Box>
+                        <Typography
+                          variant="body2"
+                          className={`font-medium ${themeClasses.text.primary} capitalize mb-1`}
+                        >
+                          {key.replace(/([A-Z])/g, " $1").trim()}:
+                        </Typography>
+                        <Typography
+                          variant="body2"
+                          className={themeClasses.text.secondary}
+                        >
+                          {value}
+                        </Typography>
+                      </Box>
+                    </Grid>
+                  )
+                )}
               </Grid>
             </CardContent>
           </Card>
@@ -1246,7 +1504,8 @@ const UniversityChoice = () => {
   const renderStudentReviews = () => {
     if (!selectedSubject || !showReviews) return null;
 
-    const reviews = studentReviews[selectedUniversity.id]?.[selectedSubject.name] || [];
+    const reviews =
+      studentReviews[selectedUniversity.id]?.[selectedSubject.name] || [];
 
     return (
       <Box className={`min-h-screen ${themeClasses.bg.primary}`}>
@@ -1270,10 +1529,7 @@ const UniversityChoice = () => {
               >
                 {selectedSubject.name}
               </Typography>
-              <Typography
-                variant="h6"
-                className={themeClasses.text.secondary}
-              >
+              <Typography variant="h6" className={themeClasses.text.secondary}>
                 {selectedUniversity.name} - Student Reviews
               </Typography>
             </Box>
@@ -1300,7 +1556,7 @@ const UniversityChoice = () => {
                   >
                     {selectedSubject.overview}
                   </Typography>
-                  
+
                   <Box className="space-y-3">
                     <Box>
                       <Typography
@@ -1320,7 +1576,7 @@ const UniversityChoice = () => {
                         ))}
                       </Box>
                     </Box>
-                    
+
                     <Box>
                       <Typography
                         variant="body2"
@@ -1329,20 +1585,22 @@ const UniversityChoice = () => {
                         Career Prospects:
                       </Typography>
                       <Box className="flex flex-wrap gap-2">
-                        {selectedSubject.careerProspects?.map((career, index) => (
-                          <Chip
-                            key={index}
-                            label={career}
-                            color="primary"
-                            variant="outlined"
-                            size="small"
-                          />
-                        ))}
+                        {selectedSubject.careerProspects?.map(
+                          (career, index) => (
+                            <Chip
+                              key={index}
+                              label={career}
+                              color="primary"
+                              variant="outlined"
+                              size="small"
+                            />
+                          )
+                        )}
                       </Box>
                     </Box>
                   </Box>
                 </Grid>
-                
+
                 <Grid item xs={12} md={4}>
                   <Box className="space-y-4">
                     <Box className="text-center">
@@ -1359,10 +1617,15 @@ const UniversityChoice = () => {
                         Student Reviews
                       </Typography>
                     </Box>
-                    
+
                     <Box className="text-center">
                       <Rating
-                        value={reviews.length > 0 ? reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length : 0}
+                        value={
+                          reviews.length > 0
+                            ? reviews.reduce((sum, r) => sum + r.rating, 0) /
+                              reviews.length
+                            : 0
+                        }
                         precision={0.1}
                         size="large"
                         readOnly
@@ -1371,7 +1634,12 @@ const UniversityChoice = () => {
                         variant="h6"
                         className={`font-bold ${themeClasses.text.primary} mt-1`}
                       >
-                        {reviews.length > 0 ? (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1) : 'N/A'}
+                        {reviews.length > 0
+                          ? (
+                              reviews.reduce((sum, r) => sum + r.rating, 0) /
+                              reviews.length
+                            ).toFixed(1)
+                          : "N/A"}
                       </Typography>
                       <Typography
                         variant="body2"
@@ -1392,18 +1660,30 @@ const UniversityChoice = () => {
                       </Typography>
                       <Box className="space-y-2">
                         <Box className="flex justify-between">
-                          <Typography variant="body2" className={themeClasses.text.secondary}>
+                          <Typography
+                            variant="body2"
+                            className={themeClasses.text.secondary}
+                          >
                             Duration:
                           </Typography>
-                          <Typography variant="body2" className={themeClasses.text.primary}>
+                          <Typography
+                            variant="body2"
+                            className={themeClasses.text.primary}
+                          >
                             {selectedSubject.duration}
                           </Typography>
                         </Box>
                         <Box className="flex justify-between">
-                          <Typography variant="body2" className={themeClasses.text.secondary}>
+                          <Typography
+                            variant="body2"
+                            className={themeClasses.text.secondary}
+                          >
                             Available Seats:
                           </Typography>
-                          <Typography variant="body2" className={themeClasses.text.primary}>
+                          <Typography
+                            variant="body2"
+                            className={themeClasses.text.primary}
+                          >
                             {selectedSubject.seats}
                           </Typography>
                         </Box>
@@ -1474,12 +1754,17 @@ const UniversityChoice = () => {
                             variant="body2"
                             className={themeClasses.text.secondary}
                           >
-                            {review.year} • {new Date(review.date).toLocaleDateString()}
+                            {review.year} •{" "}
+                            {new Date(review.date).toLocaleDateString()}
                           </Typography>
                         </Box>
                       </Box>
                       <Box className="text-right">
-                        <Rating value={review.rating} precision={0.1} readOnly />
+                        <Rating
+                          value={review.rating}
+                          precision={0.1}
+                          readOnly
+                        />
                         <Typography
                           variant="h6"
                           className={`font-bold ${themeClasses.text.primary}`}
@@ -1504,7 +1789,9 @@ const UniversityChoice = () => {
                           variant="body2"
                           className={`font-semibold ${themeClasses.text.primary} mb-2 flex items-center`}
                         >
-                          <ThumbUp sx={{ fontSize: 16, mr: 1, color: "green" }} />
+                          <ThumbUp
+                            sx={{ fontSize: 16, mr: 1, color: "green" }}
+                          />
                           Pros:
                         </Typography>
                         <ul className="space-y-1 ml-4">
@@ -1523,7 +1810,9 @@ const UniversityChoice = () => {
                           variant="body2"
                           className={`font-semibold ${themeClasses.text.primary} mb-2 flex items-center`}
                         >
-                          <ThumbDown sx={{ fontSize: 16, mr: 1, color: "red" }} />
+                          <ThumbDown
+                            sx={{ fontSize: 16, mr: 1, color: "red" }}
+                          />
                           Cons:
                         </Typography>
                         <ul className="space-y-1 ml-4">
@@ -1544,7 +1833,11 @@ const UniversityChoice = () => {
                     <Box className="flex items-center justify-between">
                       <Box className="flex items-center gap-4">
                         <Chip
-                          label={review.wouldRecommend ? "Recommends this program" : "Doesn't recommend"}
+                          label={
+                            review.wouldRecommend
+                              ? "Recommends this program"
+                              : "Doesn't recommend"
+                          }
                           color={review.wouldRecommend ? "success" : "error"}
                           variant="outlined"
                           size="small"

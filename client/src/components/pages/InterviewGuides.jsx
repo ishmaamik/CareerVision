@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Box,
   Typography,
@@ -27,8 +27,8 @@ import {
   ListItemText,
   ListItemIcon,
   Badge,
-  Tooltip
-} from '@mui/material';
+  Tooltip,
+} from "@mui/material";
 import {
   Search as SearchIcon,
   ExpandMore as ExpandMoreIcon,
@@ -51,10 +51,10 @@ import {
   Assignment as AssignmentIcon,
   QuestionAnswer as QuestionAnswerIcon,
   Lightbulb as LightbulbIcon,
-  FilterList as FilterIcon
-} from '@mui/icons-material';
-import { useTheme } from '../../context/ThemeContext';
-import { getThemeClasses, getComponentStyles } from '../../styles/themes';
+  FilterList as FilterIcon,
+} from "@mui/icons-material";
+import { useTheme } from "../../context/ThemeContext";
+import { getThemeClasses, getComponentStyles } from "../../styles/themes";
 import {
   interviewGuideCategories,
   featuredGuides,
@@ -62,15 +62,15 @@ import {
   companySpecificGuides,
   interviewTipsCategories,
   studyPlans,
-  popularResources
-} from '../../utils/interviewGuidesData';
+  popularResources,
+} from "../../utils/interviewGuidesData";
 
 // Custom hook for bookmarks
 const useBookmarks = () => {
   const [bookmarks, setBookmarks] = useState(new Set());
-  
+
   const toggleBookmark = (id) => {
-    setBookmarks(prev => {
+    setBookmarks((prev) => {
       const newBookmarks = new Set(prev);
       if (newBookmarks.has(id)) {
         newBookmarks.delete(id);
@@ -80,7 +80,7 @@ const useBookmarks = () => {
       return newBookmarks;
     });
   };
-  
+
   return { bookmarks, toggleBookmark };
 };
 
@@ -88,44 +88,51 @@ const InterviewGuides = () => {
   const { theme } = useTheme();
   const themeClasses = getThemeClasses(theme);
   const componentStyles = getComponentStyles(theme);
-  
+
   const [activeTab, setActiveTab] = useState(0);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('all');
-  const [selectedDifficulty, setSelectedDifficulty] = useState('all');
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [selectedDifficulty, setSelectedDifficulty] = useState("all");
   const { bookmarks, toggleBookmark } = useBookmarks();
 
   const getCategoryIcon = (iconName) => {
-    const iconProps = { sx: { fontSize: 40, color: 'inherit' } };
+    const iconProps = { sx: { fontSize: 40, color: "inherit" } };
     switch (iconName) {
-      case 'psychology': return <PsychologyIcon {...iconProps} />;
-      case 'code': return <CodeIcon {...iconProps} />;
-      case 'business_center': return <BusinessCenterIcon {...iconProps} />;
-      case 'work': return <WorkIcon {...iconProps} />;
-      case 'group': return <GroupIcon {...iconProps} />;
-      case 'account_circle': return <AccountCircleIcon {...iconProps} />;
-      default: return <SchoolIcon {...iconProps} />;
+      case "psychology":
+        return <PsychologyIcon {...iconProps} />;
+      case "code":
+        return <CodeIcon {...iconProps} />;
+      case "business_center":
+        return <BusinessCenterIcon {...iconProps} />;
+      case "work":
+        return <WorkIcon {...iconProps} />;
+      case "group":
+        return <GroupIcon {...iconProps} />;
+      case "account_circle":
+        return <AccountCircleIcon {...iconProps} />;
+      default:
+        return <SchoolIcon {...iconProps} />;
     }
   };
 
   const CategoryCard = ({ category }) => (
-    <Card 
+    <Card
       className={`${themeClasses.surface} hover:shadow-lg transition-all duration-300 cursor-pointer transform hover:scale-105`}
-      sx={{ 
-        borderLeft: 4, 
+      sx={{
+        borderLeft: 4,
         borderLeftColor: category.color,
-        height: '100%'
+        height: "100%",
       }}
     >
       <CardContent>
         <Box display="flex" alignItems="center" mb={2}>
-          <Box 
-            sx={{ 
-              backgroundColor: category.color + '20',
+          <Box
+            sx={{
+              backgroundColor: category.color + "20",
               borderRadius: 2,
               p: 1,
               mr: 2,
-              color: category.color
+              color: category.color,
             }}
           >
             {getCategoryIcon(category.icon)}
@@ -139,21 +146,25 @@ const InterviewGuides = () => {
             </Typography>
           </Box>
         </Box>
-        
-        <Typography variant="body2" className={themeClasses.textSecondary} mb={2}>
+
+        <Typography
+          variant="body2"
+          className={themeClasses.textSecondary}
+          mb={2}
+        >
           {category.description}
         </Typography>
-        
+
         <Box display="flex" flexWrap="wrap" gap={0.5}>
           {category.topics.slice(0, 4).map((topic, index) => (
-            <Chip 
+            <Chip
               key={index}
               label={topic}
               size="small"
-              sx={{ 
-                backgroundColor: category.color + '10',
+              sx={{
+                backgroundColor: category.color + "10",
                 color: category.color,
-                fontSize: '0.75rem'
+                fontSize: "0.75rem",
               }}
             />
           ))}
@@ -163,26 +174,38 @@ const InterviewGuides = () => {
   );
 
   const GuideCard = ({ guide }) => (
-    <Card className={`${themeClasses.surface} hover:shadow-lg transition-all duration-300`}>
+    <Card
+      className={`${themeClasses.surface} hover:shadow-lg transition-all duration-300`}
+    >
       <CardContent>
-        <Box display="flex" justifyContent="between" alignItems="flex-start" mb={2}>
+        <Box
+          display="flex"
+          justifyContent="between"
+          alignItems="flex-start"
+          mb={2}
+        >
           <Box flex={1}>
             <Typography variant="h6" className={themeClasses.text} mb={1}>
               {guide.title}
             </Typography>
-            <Typography variant="body2" className={themeClasses.textSecondary} mb={1}>
+            <Typography
+              variant="body2"
+              className={themeClasses.textSecondary}
+              mb={1}
+            >
               by {guide.author}
             </Typography>
-            <Typography variant="body2" className={themeClasses.textSecondary} mb={2}>
+            <Typography
+              variant="body2"
+              className={themeClasses.textSecondary}
+              mb={2}
+            >
               {guide.description}
             </Typography>
           </Box>
-          <IconButton
-            onClick={() => toggleBookmark(guide.id)}
-            size="small"
-          >
+          <IconButton onClick={() => toggleBookmark(guide.id)} size="small">
             {bookmarks.has(guide.id) ? (
-              <BookmarkIcon sx={{ color: '#F59E0B' }} />
+              <BookmarkIcon sx={{ color: "#F59E0B" }} />
             ) : (
               <BookmarkBorderIcon className={themeClasses.textSecondary} />
             )}
@@ -191,18 +214,36 @@ const InterviewGuides = () => {
 
         <Box display="flex" alignItems="center" gap={2} mb={2}>
           <Box display="flex" alignItems="center">
-            <Rating value={guide.rating} precision={0.1} size="small" readOnly />
-            <Typography variant="body2" className={themeClasses.textSecondary} ml={0.5}>
+            <Rating
+              value={guide.rating}
+              precision={0.1}
+              size="small"
+              readOnly
+            />
+            <Typography
+              variant="body2"
+              className={themeClasses.textSecondary}
+              ml={0.5}
+            >
               ({guide.reviews})
             </Typography>
           </Box>
-          <Chip 
+          <Chip
             label={guide.difficulty}
             size="small"
-            color={guide.difficulty === 'Advanced' ? 'error' : guide.difficulty === 'Intermediate' ? 'warning' : 'success'}
+            color={
+              guide.difficulty === "Advanced"
+                ? "error"
+                : guide.difficulty === "Intermediate"
+                ? "warning"
+                : "success"
+            }
           />
           <Box display="flex" alignItems="center">
-            <TimeIcon sx={{ fontSize: 16, mr: 0.5 }} className={themeClasses.textSecondary} />
+            <TimeIcon
+              sx={{ fontSize: 16, mr: 0.5 }}
+              className={themeClasses.textSecondary}
+            />
             <Typography variant="body2" className={themeClasses.textSecondary}>
               {guide.readTime}
             </Typography>
@@ -211,19 +252,14 @@ const InterviewGuides = () => {
 
         <Box display="flex" flexWrap="wrap" gap={0.5} mb={2}>
           {guide.topics.map((topic, index) => (
-            <Chip 
-              key={index}
-              label={topic}
-              size="small"
-              variant="outlined"
-            />
+            <Chip key={index} label={topic} size="small" variant="outlined" />
           ))}
         </Box>
       </CardContent>
-      
+
       <CardActions>
-        <Button 
-          variant="contained" 
+        <Button
+          variant="contained"
           startIcon={<PlayIcon />}
           fullWidth
           sx={componentStyles.button}
@@ -235,7 +271,9 @@ const InterviewGuides = () => {
   );
 
   const CompanyGuideCard = ({ company }) => (
-    <Card className={`${themeClasses.surface} hover:shadow-lg transition-all duration-300`}>
+    <Card
+      className={`${themeClasses.surface} hover:shadow-lg transition-all duration-300`}
+    >
       <CardContent>
         <Box display="flex" alignItems="center" mb={2}>
           <Avatar
@@ -260,12 +298,7 @@ const InterviewGuides = () => {
         </Typography>
         <Box display="flex" flexWrap="wrap" gap={0.5} mb={2}>
           {company.values.slice(0, 3).map((value, index) => (
-            <Chip 
-              key={index}
-              label={value}
-              size="small"
-              variant="outlined"
-            />
+            <Chip key={index} label={value} size="small" variant="outlined" />
           ))}
         </Box>
 
@@ -276,28 +309,27 @@ const InterviewGuides = () => {
           {company.interviewProcess.slice(0, 3).map((step, index) => (
             <ListItem key={index} sx={{ py: 0.25 }}>
               <ListItemIcon sx={{ minWidth: 24 }}>
-                <Typography variant="body2" className={themeClasses.textSecondary}>
+                <Typography
+                  variant="body2"
+                  className={themeClasses.textSecondary}
+                >
                   {index + 1}.
                 </Typography>
               </ListItemIcon>
-              <ListItemText 
+              <ListItemText
                 primary={step}
-                primaryTypographyProps={{ 
-                  variant: 'body2',
-                  className: themeClasses.textSecondary
+                primaryTypographyProps={{
+                  variant: "body2",
+                  className: themeClasses.textSecondary,
                 }}
               />
             </ListItem>
           ))}
         </List>
       </CardContent>
-      
+
       <CardActions>
-        <Button 
-          variant="outlined" 
-          fullWidth
-          sx={componentStyles.button}
-        >
+        <Button variant="outlined" fullWidth sx={componentStyles.button}>
           View Full Guide
         </Button>
       </CardActions>
@@ -315,15 +347,17 @@ const InterviewGuides = () => {
                   {q.question}
                 </Typography>
                 <Box display="flex" alignItems="center" gap={1} mt={0.5}>
-                  <Chip 
-                    label={q.category}
-                    size="small"
-                    variant="outlined"
-                  />
-                  <Chip 
+                  <Chip label={q.category} size="small" variant="outlined" />
+                  <Chip
                     label={q.difficulty}
                     size="small"
-                    color={q.difficulty === 'Advanced' ? 'error' : q.difficulty === 'Intermediate' ? 'warning' : 'success'}
+                    color={
+                      q.difficulty === "Advanced"
+                        ? "error"
+                        : q.difficulty === "Intermediate"
+                        ? "warning"
+                        : "success"
+                    }
                   />
                 </Box>
               </Box>
@@ -331,20 +365,26 @@ const InterviewGuides = () => {
           </AccordionSummary>
           <AccordionDetails>
             <Box>
-              <Typography variant="subtitle2" className={themeClasses.text} mb={1}>
+              <Typography
+                variant="subtitle2"
+                className={themeClasses.text}
+                mb={1}
+              >
                 💡 Tips:
               </Typography>
               <List dense>
                 {q.tips.map((tip, tipIndex) => (
                   <ListItem key={tipIndex}>
                     <ListItemIcon sx={{ minWidth: 20 }}>
-                      <CheckCircleIcon sx={{ fontSize: 16, color: '#10B981' }} />
+                      <CheckCircleIcon
+                        sx={{ fontSize: 16, color: "#10B981" }}
+                      />
                     </ListItemIcon>
-                    <ListItemText 
+                    <ListItemText
                       primary={tip}
-                      primaryTypographyProps={{ 
-                        variant: 'body2',
-                        className: themeClasses.textSecondary
+                      primaryTypographyProps={{
+                        variant: "body2",
+                        className: themeClasses.textSecondary,
                       }}
                     />
                   </ListItem>
@@ -353,11 +393,21 @@ const InterviewGuides = () => {
 
               {q.sampleAnswer && (
                 <Box mt={2}>
-                  <Typography variant="subtitle2" className={themeClasses.text} mb={1}>
+                  <Typography
+                    variant="subtitle2"
+                    className={themeClasses.text}
+                    mb={1}
+                  >
                     📝 Sample Answer:
                   </Typography>
-                  <Paper className={themeClasses.background} sx={{ p: 2, borderRadius: 2 }}>
-                    <Typography variant="body2" className={themeClasses.textSecondary}>
+                  <Paper
+                    className={themeClasses.background}
+                    sx={{ p: 2, borderRadius: 2 }}
+                  >
+                    <Typography
+                      variant="body2"
+                      className={themeClasses.textSecondary}
+                    >
                       {q.sampleAnswer}
                     </Typography>
                   </Paper>
@@ -366,20 +416,26 @@ const InterviewGuides = () => {
 
               {q.followUpQuestions && (
                 <Box mt={2}>
-                  <Typography variant="subtitle2" className={themeClasses.text} mb={1}>
+                  <Typography
+                    variant="subtitle2"
+                    className={themeClasses.text}
+                    mb={1}
+                  >
                     🔄 Follow-up Questions:
                   </Typography>
                   <List dense>
                     {q.followUpQuestions.map((followUp, followUpIndex) => (
                       <ListItem key={followUpIndex}>
                         <ListItemIcon sx={{ minWidth: 20 }}>
-                          <QuestionAnswerIcon sx={{ fontSize: 16, color: '#3B82F6' }} />
+                          <QuestionAnswerIcon
+                            sx={{ fontSize: 16, color: "#3B82F6" }}
+                          />
                         </ListItemIcon>
-                        <ListItemText 
+                        <ListItemText
                           primary={followUp}
-                          primaryTypographyProps={{ 
-                            variant: 'body2',
-                            className: themeClasses.textSecondary
+                          primaryTypographyProps={{
+                            variant: "body2",
+                            className: themeClasses.textSecondary,
                           }}
                         />
                       </ListItem>
@@ -395,9 +451,16 @@ const InterviewGuides = () => {
   );
 
   const StudyPlanCard = ({ plan }) => (
-    <Card className={`${themeClasses.surface} hover:shadow-lg transition-all duration-300`}>
+    <Card
+      className={`${themeClasses.surface} hover:shadow-lg transition-all duration-300`}
+    >
       <CardContent>
-        <Box display="flex" justifyContent="between" alignItems="flex-start" mb={2}>
+        <Box
+          display="flex"
+          justifyContent="between"
+          alignItems="flex-start"
+          mb={2}
+        >
           <Box>
             <Typography variant="h6" className={themeClasses.text}>
               {plan.duration}
@@ -406,38 +469,42 @@ const InterviewGuides = () => {
               {plan.description}
             </Typography>
           </Box>
-          <Chip 
+          <Chip
             label={plan.dailyHours}
             icon={<ScheduleIcon />}
-            sx={{ backgroundColor: '#3B82F6', color: 'white' }}
+            sx={{ backgroundColor: "#3B82F6", color: "white" }}
           />
         </Box>
 
         <Typography variant="subtitle2" className={themeClasses.text} mb={1}>
           Study Schedule:
         </Typography>
-        
+
         {plan.schedule.map((item, index) => (
           <Box key={index} mb={1.5}>
             <Box display="flex" alignItems="center" mb={0.5}>
-              <Avatar 
-                sx={{ 
-                  width: 24, 
-                  height: 24, 
-                  fontSize: '0.75rem',
-                  backgroundColor: '#3B82F6',
-                  mr: 1
+              <Avatar
+                sx={{
+                  width: 24,
+                  height: 24,
+                  fontSize: "0.75rem",
+                  backgroundColor: "#3B82F6",
+                  mr: 1,
                 }}
               >
                 {item.day || item.week}
               </Avatar>
-              <Typography variant="body2" fontWeight="bold" className={themeClasses.text}>
+              <Typography
+                variant="body2"
+                fontWeight="bold"
+                className={themeClasses.text}
+              >
                 {item.focus}
               </Typography>
             </Box>
             <Box display="flex" flexWrap="wrap" gap={0.5} ml={4}>
               {item.activities.map((activity, actIndex) => (
-                <Chip 
+                <Chip
                   key={actIndex}
                   label={activity}
                   size="small"
@@ -448,10 +515,10 @@ const InterviewGuides = () => {
           </Box>
         ))}
       </CardContent>
-      
+
       <CardActions>
-        <Button 
-          variant="contained" 
+        <Button
+          variant="contained"
           startIcon={<AssignmentIcon />}
           fullWidth
           sx={componentStyles.button}
@@ -463,25 +530,35 @@ const InterviewGuides = () => {
   );
 
   const tabConfig = [
-    { label: 'Categories', icon: <SchoolIcon /> },
-    { label: 'Featured Guides', icon: <StarIcon /> },
-    { label: 'Question Banks', icon: <QuestionAnswerIcon /> },
-    { label: 'Company Guides', icon: <WorkIcon /> },
-    { label: 'Study Plans', icon: <AssignmentIcon /> },
-    { label: 'Tips & Resources', icon: <LightbulbIcon /> }
+    { label: "Categories", icon: <SchoolIcon /> },
+    { label: "Featured Guides", icon: <StarIcon /> },
+    { label: "Question Banks", icon: <QuestionAnswerIcon /> },
+    { label: "Company Guides", icon: <WorkIcon /> },
+    { label: "Study Plans", icon: <AssignmentIcon /> },
+    { label: "Tips & Resources", icon: <LightbulbIcon /> },
   ];
 
   return (
     <Container maxWidth="xl" sx={{ py: 4 }}>
       {/* Header */}
       <Box mb={4}>
-        <Typography variant="h4" component="h1" className={themeClasses.text} mb={2}>
+        <Typography
+          variant="h4"
+          component="h1"
+          className={themeClasses.text}
+          mb={2}
+        >
           Interview Guides & Preparation
         </Typography>
-        <Typography variant="body1" className={themeClasses.textSecondary} mb={3}>
-          Master every type of interview with our comprehensive guides, question banks, and preparation materials
+        <Typography
+          variant="body1"
+          className={themeClasses.textSecondary}
+          mb={3}
+        >
+          Master every type of interview with our comprehensive guides, question
+          banks, and preparation materials
         </Typography>
-        
+
         {/* Search and Filters */}
         <Grid container spacing={2} alignItems="center">
           <Grid item xs={12} md={6}>
@@ -503,16 +580,18 @@ const InterviewGuides = () => {
           <Grid item xs={12} md={6}>
             <Box display="flex" gap={1}>
               <Button
-                variant={selectedCategory === 'all' ? 'contained' : 'outlined'}
+                variant={selectedCategory === "all" ? "contained" : "outlined"}
                 startIcon={<FilterIcon />}
-                onClick={() => setSelectedCategory('all')}
+                onClick={() => setSelectedCategory("all")}
                 sx={componentStyles.button}
               >
                 All Categories
               </Button>
               <Button
-                variant={selectedDifficulty === 'all' ? 'contained' : 'outlined'}
-                onClick={() => setSelectedDifficulty('all')}
+                variant={
+                  selectedDifficulty === "all" ? "contained" : "outlined"
+                }
+                onClick={() => setSelectedDifficulty("all")}
                 sx={componentStyles.button}
               >
                 All Levels
@@ -524,23 +603,23 @@ const InterviewGuides = () => {
 
       {/* Navigation Tabs */}
       <Box mb={4}>
-        <Tabs 
-          value={activeTab} 
+        <Tabs
+          value={activeTab}
           onChange={(e, newValue) => setActiveTab(newValue)}
           variant="scrollable"
           scrollButtons="auto"
           sx={{
-            '& .MuiTab-root': {
-              minHeight: '64px',
+            "& .MuiTab-root": {
+              minHeight: "64px",
               color: themeClasses.textSecondary,
             },
-            '& .Mui-selected': {
-              color: '#3B82F6 !important',
+            "& .Mui-selected": {
+              color: "#3B82F6 !important",
             },
           }}
         >
           {tabConfig.map((tab, index) => (
-            <Tab 
+            <Tab
               key={index}
               icon={tab.icon}
               label={tab.label}
@@ -581,7 +660,7 @@ const InterviewGuides = () => {
           <Typography variant="h5" className={themeClasses.text} mb={3}>
             Interview Question Banks
           </Typography>
-          
+
           <Grid container spacing={3}>
             <Grid item xs={12} md={4}>
               <Card className={themeClasses.surface}>
@@ -589,23 +668,40 @@ const InterviewGuides = () => {
                   <Typography variant="h6" className={themeClasses.text} mb={2}>
                     📚 Behavioral Questions
                   </Typography>
-                  <Typography variant="body2" className={themeClasses.textSecondary} mb={2}>
-                    {questionBanks.behavioral.length} questions covering leadership, teamwork, and problem-solving
+                  <Typography
+                    variant="body2"
+                    className={themeClasses.textSecondary}
+                    mb={2}
+                  >
+                    {questionBanks.behavioral.length} questions covering
+                    leadership, teamwork, and problem-solving
                   </Typography>
-                  <LinearProgress 
-                    variant="determinate" 
-                    value={75} 
-                    sx={{ mb: 1, backgroundColor: '#E5E7EB', '& .MuiLinearProgress-bar': { backgroundColor: '#10B981' } }}
+                  <LinearProgress
+                    variant="determinate"
+                    value={75}
+                    sx={{
+                      mb: 1,
+                      backgroundColor: "#E5E7EB",
+                      "& .MuiLinearProgress-bar": {
+                        backgroundColor: "#10B981",
+                      },
+                    }}
                   />
-                  <Typography variant="body2" className={themeClasses.textSecondary}>
+                  <Typography
+                    variant="body2"
+                    className={themeClasses.textSecondary}
+                  >
                     75% completed
                   </Typography>
                 </CardContent>
               </Card>
             </Grid>
-            
+
             <Grid item xs={12} md={8}>
-              <QuestionBank category="behavioral" questions={questionBanks.behavioral} />
+              <QuestionBank
+                category="behavioral"
+                questions={questionBanks.behavioral}
+              />
             </Grid>
           </Grid>
         </Box>
@@ -646,30 +742,37 @@ const InterviewGuides = () => {
           <Typography variant="h5" className={themeClasses.text} mb={3}>
             Interview Tips & Resources
           </Typography>
-          
+
           <Grid container spacing={3}>
             <Grid item xs={12} md={8}>
               {interviewTipsCategories.map((category) => (
-                <Card key={category.id} className={`${themeClasses.surface} mb-3`}>
+                <Card
+                  key={category.id}
+                  className={`${themeClasses.surface} mb-3`}
+                >
                   <CardContent>
-                    <Typography variant="h6" className={themeClasses.text} mb={2}>
+                    <Typography
+                      variant="h6"
+                      className={themeClasses.text}
+                      mb={2}
+                    >
                       {category.title}
                     </Typography>
                     <List>
                       {category.tips.map((tip, index) => (
                         <ListItem key={index} alignItems="flex-start">
                           <ListItemIcon>
-                            <LightbulbIcon sx={{ color: '#F59E0B', mt: 0.5 }} />
+                            <LightbulbIcon sx={{ color: "#F59E0B", mt: 0.5 }} />
                           </ListItemIcon>
                           <ListItemText
                             primary={tip.tip}
                             secondary={tip.description}
-                            primaryTypographyProps={{ 
+                            primaryTypographyProps={{
                               className: themeClasses.text,
-                              fontWeight: 'medium'
+                              fontWeight: "medium",
                             }}
-                            secondaryTypographyProps={{ 
-                              className: themeClasses.textSecondary
+                            secondaryTypographyProps={{
+                              className: themeClasses.textSecondary,
                             }}
                           />
                         </ListItem>
@@ -679,7 +782,7 @@ const InterviewGuides = () => {
                 </Card>
               ))}
             </Grid>
-            
+
             <Grid item xs={12} md={4}>
               <Card className={themeClasses.surface}>
                 <CardContent>
@@ -687,20 +790,45 @@ const InterviewGuides = () => {
                     📖 Recommended Resources
                   </Typography>
                   {popularResources.map((resource) => (
-                    <Box key={resource.id} mb={2} p={2} className={themeClasses.background} sx={{ borderRadius: 2 }}>
-                      <Typography variant="subtitle2" className={themeClasses.text}>
+                    <Box
+                      key={resource.id}
+                      mb={2}
+                      p={2}
+                      className={themeClasses.background}
+                      sx={{ borderRadius: 2 }}
+                    >
+                      <Typography
+                        variant="subtitle2"
+                        className={themeClasses.text}
+                      >
                         {resource.title}
                       </Typography>
-                      <Typography variant="body2" className={themeClasses.textSecondary} mb={1}>
+                      <Typography
+                        variant="body2"
+                        className={themeClasses.textSecondary}
+                        mb={1}
+                      >
                         by {resource.author}
                       </Typography>
                       <Box display="flex" alignItems="center" mb={1}>
-                        <Rating value={resource.rating} precision={0.1} size="small" readOnly />
-                        <Typography variant="body2" className={themeClasses.textSecondary} ml={1}>
+                        <Rating
+                          value={resource.rating}
+                          precision={0.1}
+                          size="small"
+                          readOnly
+                        />
+                        <Typography
+                          variant="body2"
+                          className={themeClasses.textSecondary}
+                          ml={1}
+                        >
                           {resource.rating}
                         </Typography>
                       </Box>
-                      <Typography variant="body2" className={themeClasses.textSecondary}>
+                      <Typography
+                        variant="body2"
+                        className={themeClasses.textSecondary}
+                      >
                         {resource.description}
                       </Typography>
                     </Box>

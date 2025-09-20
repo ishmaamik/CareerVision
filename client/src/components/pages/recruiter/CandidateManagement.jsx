@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Box,
   Typography,
@@ -38,8 +38,8 @@ import {
   ListItem,
   ListItemText,
   ListItemAvatar,
-  ListItemSecondaryAction
-} from '@mui/material';
+  ListItemSecondaryAction,
+} from "@mui/material";
 import {
   Search as SearchIcon,
   FilterList as FilterIcon,
@@ -58,20 +58,20 @@ import {
   School as EducationIcon,
   LocationOn as LocationIcon,
   CalendarToday as CalendarIcon,
-  Visibility as ViewIcon
-} from '@mui/icons-material';
-import { useTheme } from '../../../context/ThemeContext';
-import { getThemeClasses, getComponentStyles } from '../../../styles/themes';
+  Visibility as ViewIcon,
+} from "@mui/icons-material";
+import { useTheme } from "../../../context/ThemeContext";
+import { getThemeClasses, getComponentStyles } from "../../../styles/themes";
 
 const CandidateManagement = () => {
   const { theme } = useTheme();
   const themeClasses = getThemeClasses(theme);
   const componentStyles = getComponentStyles(theme);
-  
+
   const [activeTab, setActiveTab] = useState(0);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [filterStatus, setFilterStatus] = useState('all');
-  const [filterJob, setFilterJob] = useState('all');
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filterStatus, setFilterStatus] = useState("all");
+  const [filterJob, setFilterJob] = useState("all");
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedCandidate, setSelectedCandidate] = useState(null);
   const [profileDialog, setProfileDialog] = useState(false);
@@ -98,12 +98,12 @@ const CandidateManagement = () => {
       resumeUrl: "/resumes/john-smith.pdf",
       notes: "Strong technical background, excellent communication skills",
       interviewDate: "2024-01-25T10:00:00Z",
-      stage: "Technical Interview"
+      stage: "Technical Interview",
     },
     {
       id: 2,
       name: "Sarah Johnson",
-      email: "sarah.johnson@email.com", 
+      email: "sarah.johnson@email.com",
       phone: "+1 (555) 234-5678",
       avatar: "/avatars/sarah.jpg",
       position: "Product Manager",
@@ -114,13 +114,19 @@ const CandidateManagement = () => {
       experience: "7 years",
       location: "New York, NY",
       salary: "$155,000",
-      skills: ["Product Strategy", "Analytics", "Agile", "User Research", "Roadmapping"],
+      skills: [
+        "Product Strategy",
+        "Analytics",
+        "Agile",
+        "User Research",
+        "Roadmapping",
+      ],
       education: "MBA - Harvard Business School",
       linkedIn: "linkedin.com/in/sarahjohnson",
       resumeUrl: "/resumes/sarah-johnson.pdf",
       notes: "Excellent product sense, strong leadership experience",
       interviewDate: null,
-      stage: "Application Review"
+      stage: "Application Review",
     },
     {
       id: 3,
@@ -136,19 +142,25 @@ const CandidateManagement = () => {
       experience: "4 years",
       location: "Seattle, WA",
       salary: "$105,000",
-      skills: ["Figma", "User Research", "Prototyping", "Design Systems", "Usability Testing"],
+      skills: [
+        "Figma",
+        "User Research",
+        "Prototyping",
+        "Design Systems",
+        "Usability Testing",
+      ],
       education: "BFA Design - Art Center College",
       linkedIn: "linkedin.com/in/mikechen",
       resumeUrl: "/resumes/mike-chen.pdf",
       notes: "Creative portfolio, user-centered design approach",
       interviewDate: "2024-01-24T14:00:00Z",
-      stage: "Design Challenge"
+      stage: "Design Challenge",
     },
     {
       id: 4,
       name: "Emma Davis",
       email: "emma.davis@email.com",
-      phone: "+1 (555) 456-7890", 
+      phone: "+1 (555) 456-7890",
       avatar: "/avatars/emma.jpg",
       position: "DevOps Engineer",
       jobId: 4,
@@ -164,25 +176,31 @@ const CandidateManagement = () => {
       resumeUrl: "/resumes/emma-davis.pdf",
       notes: "Good technical skills but lacks senior experience",
       interviewDate: null,
-      stage: "Application Review"
-    }
+      stage: "Application Review",
+    },
   ];
 
   const jobs = [
     { id: 1, title: "Senior React Developer" },
     { id: 2, title: "Product Manager" },
     { id: 3, title: "UX Designer" },
-    { id: 4, title: "DevOps Engineer" }
+    { id: 4, title: "DevOps Engineer" },
   ];
 
   const getStatusColor = (status) => {
     switch (status.toLowerCase()) {
-      case 'interview scheduled': return 'info';
-      case 'under review': return 'warning';
-      case 'shortlisted': return 'success';
-      case 'rejected': return 'error';
-      case 'hired': return 'success';
-      default: return 'default';
+      case "interview scheduled":
+        return "info";
+      case "under review":
+        return "warning";
+      case "shortlisted":
+        return "success";
+      case "rejected":
+        return "error";
+      case "hired":
+        return "success";
+      default:
+        return "default";
     }
   };
 
@@ -197,14 +215,16 @@ const CandidateManagement = () => {
   };
 
   const CandidateCard = ({ candidate }) => (
-    <Card className={`${themeClasses.surface} hover:shadow-lg transition-all duration-300`}>
+    <Card
+      className={`${themeClasses.surface} hover:shadow-lg transition-all duration-300`}
+    >
       <CardContent>
         <Box display="flex" alignItems="center" mb={2}>
-          <Avatar
-            src={candidate.avatar}
-            sx={{ width: 56, height: 56, mr: 2 }}
-          >
-            {candidate.name.split(' ').map(n => n[0]).join('')}
+          <Avatar src={candidate.avatar} sx={{ width: 56, height: 56, mr: 2 }}>
+            {candidate.name
+              .split(" ")
+              .map((n) => n[0])
+              .join("")}
           </Avatar>
           <Box flex={1}>
             <Typography variant="h6" className={themeClasses.text}>
@@ -214,8 +234,17 @@ const CandidateManagement = () => {
               Applied for: {candidate.position}
             </Typography>
             <Box display="flex" alignItems="center" mt={0.5}>
-              <Rating value={candidate.rating} precision={0.1} size="small" readOnly />
-              <Typography variant="body2" className={themeClasses.textSecondary} ml={1}>
+              <Rating
+                value={candidate.rating}
+                precision={0.1}
+                size="small"
+                readOnly
+              />
+              <Typography
+                variant="body2"
+                className={themeClasses.textSecondary}
+                ml={1}
+              >
                 ({candidate.rating})
               </Typography>
             </Box>
@@ -239,16 +268,28 @@ const CandidateManagement = () => {
         <Grid container spacing={2} mb={2}>
           <Grid item xs={6}>
             <Box display="flex" alignItems="center">
-              <WorkIcon sx={{ fontSize: 16, mr: 0.5 }} className={themeClasses.textSecondary} />
-              <Typography variant="body2" className={themeClasses.textSecondary}>
+              <WorkIcon
+                sx={{ fontSize: 16, mr: 0.5 }}
+                className={themeClasses.textSecondary}
+              />
+              <Typography
+                variant="body2"
+                className={themeClasses.textSecondary}
+              >
                 {candidate.experience}
               </Typography>
             </Box>
           </Grid>
           <Grid item xs={6}>
             <Box display="flex" alignItems="center">
-              <LocationIcon sx={{ fontSize: 16, mr: 0.5 }} className={themeClasses.textSecondary} />
-              <Typography variant="body2" className={themeClasses.textSecondary}>
+              <LocationIcon
+                sx={{ fontSize: 16, mr: 0.5 }}
+                className={themeClasses.textSecondary}
+              />
+              <Typography
+                variant="body2"
+                className={themeClasses.textSecondary}
+              >
                 {candidate.location}
               </Typography>
             </Box>
@@ -259,7 +300,11 @@ const CandidateManagement = () => {
             </Typography>
           </Grid>
           <Grid item xs={6}>
-            <Typography variant="body2" className={themeClasses.text} fontWeight="medium">
+            <Typography
+              variant="body2"
+              className={themeClasses.text}
+              fontWeight="medium"
+            >
               Expected: {candidate.salary}
             </Typography>
           </Grid>
@@ -271,12 +316,7 @@ const CandidateManagement = () => {
           </Typography>
           <Box display="flex" flexWrap="wrap" gap={0.5}>
             {candidate.skills.slice(0, 4).map((skill, index) => (
-              <Chip
-                key={index}
-                label={skill}
-                size="small"
-                variant="outlined"
-              />
+              <Chip key={index} label={skill} size="small" variant="outlined" />
             ))}
             {candidate.skills.length > 4 && (
               <Chip
@@ -291,14 +331,27 @@ const CandidateManagement = () => {
 
         {candidate.interviewDate && (
           <Box mb={2}>
-            <Typography variant="subtitle2" className={themeClasses.text} mb={1}>
+            <Typography
+              variant="subtitle2"
+              className={themeClasses.text}
+              mb={1}
+            >
               Next Interview:
             </Typography>
             <Box display="flex" alignItems="center">
-              <CalendarIcon sx={{ fontSize: 16, mr: 0.5 }} className={themeClasses.textSecondary} />
-              <Typography variant="body2" className={themeClasses.textSecondary}>
-                {new Date(candidate.interviewDate).toLocaleDateString()} at{' '}
-                {new Date(candidate.interviewDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+              <CalendarIcon
+                sx={{ fontSize: 16, mr: 0.5 }}
+                className={themeClasses.textSecondary}
+              />
+              <Typography
+                variant="body2"
+                className={themeClasses.textSecondary}
+              >
+                {new Date(candidate.interviewDate).toLocaleDateString()} at{" "}
+                {new Date(candidate.interviewDate).toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
               </Typography>
             </Box>
           </Box>
@@ -332,11 +385,11 @@ const CandidateManagement = () => {
     <TableRow hover>
       <TableCell>
         <Box display="flex" alignItems="center">
-          <Avatar
-            src={candidate.avatar}
-            sx={{ mr: 2 }}
-          >
-            {candidate.name.split(' ').map(n => n[0]).join('')}
+          <Avatar src={candidate.avatar} sx={{ mr: 2 }}>
+            {candidate.name
+              .split(" ")
+              .map((n) => n[0])
+              .join("")}
           </Avatar>
           <Box>
             <Typography variant="subtitle2" className={themeClasses.text}>
@@ -351,8 +404,17 @@ const CandidateManagement = () => {
       <TableCell>{candidate.position}</TableCell>
       <TableCell>
         <Box display="flex" alignItems="center">
-          <Rating value={candidate.rating} precision={0.1} size="small" readOnly />
-          <Typography variant="body2" className={themeClasses.textSecondary} ml={1}>
+          <Rating
+            value={candidate.rating}
+            precision={0.1}
+            size="small"
+            readOnly
+          />
+          <Typography
+            variant="body2"
+            className={themeClasses.textSecondary}
+            ml={1}
+          >
             ({candidate.rating})
           </Typography>
         </Box>
@@ -364,7 +426,9 @@ const CandidateManagement = () => {
           size="small"
         />
       </TableCell>
-      <TableCell>{new Date(candidate.appliedDate).toLocaleDateString()}</TableCell>
+      <TableCell>
+        {new Date(candidate.appliedDate).toLocaleDateString()}
+      </TableCell>
       <TableCell>{candidate.stage}</TableCell>
       <TableCell>
         <Box display="flex" gap={0.5}>
@@ -385,12 +449,16 @@ const CandidateManagement = () => {
     </TableRow>
   );
 
-  const filteredCandidates = candidates.filter(candidate => {
-    const matchesSearch = candidate.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         candidate.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         candidate.position.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesStatus = filterStatus === 'all' || candidate.status.toLowerCase().includes(filterStatus.toLowerCase());
-    const matchesJob = filterJob === 'all' || candidate.jobId.toString() === filterJob;
+  const filteredCandidates = candidates.filter((candidate) => {
+    const matchesSearch =
+      candidate.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      candidate.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      candidate.position.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesStatus =
+      filterStatus === "all" ||
+      candidate.status.toLowerCase().includes(filterStatus.toLowerCase());
+    const matchesJob =
+      filterJob === "all" || candidate.jobId.toString() === filterJob;
     return matchesSearch && matchesStatus && matchesJob;
   });
 
@@ -410,18 +478,32 @@ const CandidateManagement = () => {
                 src={selectedCandidate.avatar}
                 sx={{ width: 80, height: 80, mr: 3 }}
               >
-                {selectedCandidate.name.split(' ').map(n => n[0]).join('')}
+                {selectedCandidate.name
+                  .split(" ")
+                  .map((n) => n[0])
+                  .join("")}
               </Avatar>
               <Box>
                 <Typography variant="h5" className={themeClasses.text}>
                   {selectedCandidate.name}
                 </Typography>
-                <Typography variant="body1" className={themeClasses.textSecondary}>
+                <Typography
+                  variant="body1"
+                  className={themeClasses.textSecondary}
+                >
                   {selectedCandidate.position}
                 </Typography>
                 <Box display="flex" alignItems="center" mt={1}>
-                  <Rating value={selectedCandidate.rating} precision={0.1} readOnly />
-                  <Typography variant="body2" className={themeClasses.textSecondary} ml={1}>
+                  <Rating
+                    value={selectedCandidate.rating}
+                    precision={0.1}
+                    readOnly
+                  />
+                  <Typography
+                    variant="body2"
+                    className={themeClasses.textSecondary}
+                    ml={1}
+                  >
                     ({selectedCandidate.rating})
                   </Typography>
                 </Box>
@@ -454,7 +536,7 @@ const CandidateManagement = () => {
                   </ListItem>
                 </List>
               </Grid>
-              
+
               <Grid item xs={12} md={6}>
                 <Typography variant="h6" className={themeClasses.text} mb={2}>
                   Professional Details
@@ -464,7 +546,7 @@ const CandidateManagement = () => {
                     <ListItemAvatar>
                       <WorkIcon />
                     </ListItemAvatar>
-                    <ListItemText 
+                    <ListItemText
                       primary="Experience"
                       secondary={selectedCandidate.experience}
                     />
@@ -473,14 +555,14 @@ const CandidateManagement = () => {
                     <ListItemAvatar>
                       <EducationIcon />
                     </ListItemAvatar>
-                    <ListItemText 
+                    <ListItemText
                       primary="Education"
                       secondary={selectedCandidate.education}
                     />
                   </ListItem>
                 </List>
               </Grid>
-              
+
               <Grid item xs={12}>
                 <Typography variant="h6" className={themeClasses.text} mb={2}>
                   Skills
@@ -496,13 +578,16 @@ const CandidateManagement = () => {
                   ))}
                 </Box>
               </Grid>
-              
+
               <Grid item xs={12}>
                 <Typography variant="h6" className={themeClasses.text} mb={2}>
                   Application Notes
                 </Typography>
                 <Paper className={themeClasses.background} sx={{ p: 2 }}>
-                  <Typography variant="body2" className={themeClasses.textSecondary}>
+                  <Typography
+                    variant="body2"
+                    className={themeClasses.textSecondary}
+                  >
                     {selectedCandidate.notes}
                   </Typography>
                 </Paper>
@@ -521,18 +606,27 @@ const CandidateManagement = () => {
   );
 
   const tabConfig = [
-    { label: 'Card View', icon: <PeopleIcon /> },
-    { label: 'Table View', icon: <AssessmentIcon /> }
+    { label: "Card View", icon: <PeopleIcon /> },
+    { label: "Table View", icon: <AssessmentIcon /> },
   ];
 
   return (
     <Container maxWidth="xl" sx={{ py: 4 }}>
       {/* Header */}
       <Box mb={4}>
-        <Typography variant="h4" component="h1" className={themeClasses.text} mb={1}>
+        <Typography
+          variant="h4"
+          component="h1"
+          className={themeClasses.text}
+          mb={1}
+        >
           Candidate Management
         </Typography>
-        <Typography variant="body1" className={themeClasses.textSecondary} mb={3}>
+        <Typography
+          variant="body1"
+          className={themeClasses.textSecondary}
+          mb={3}
+        >
           Track and manage job applications and candidates
         </Typography>
 
@@ -542,12 +636,15 @@ const CandidateManagement = () => {
             <Card className={themeClasses.surface}>
               <CardContent>
                 <Box display="flex" alignItems="center">
-                  <PeopleIcon sx={{ color: '#3B82F6', mr: 2 }} />
+                  <PeopleIcon sx={{ color: "#3B82F6", mr: 2 }} />
                   <Box>
                     <Typography variant="h6" className={themeClasses.text}>
                       {candidates.length}
                     </Typography>
-                    <Typography variant="body2" className={themeClasses.textSecondary}>
+                    <Typography
+                      variant="body2"
+                      className={themeClasses.textSecondary}
+                    >
                       Total Candidates
                     </Typography>
                   </Box>
@@ -559,12 +656,19 @@ const CandidateManagement = () => {
             <Card className={themeClasses.surface}>
               <CardContent>
                 <Box display="flex" alignItems="center">
-                  <ScheduleIcon sx={{ color: '#F59E0B', mr: 2 }} />
+                  <ScheduleIcon sx={{ color: "#F59E0B", mr: 2 }} />
                   <Box>
                     <Typography variant="h6" className={themeClasses.text}>
-                      {candidates.filter(c => c.status === 'Interview Scheduled').length}
+                      {
+                        candidates.filter(
+                          (c) => c.status === "Interview Scheduled"
+                        ).length
+                      }
                     </Typography>
-                    <Typography variant="body2" className={themeClasses.textSecondary}>
+                    <Typography
+                      variant="body2"
+                      className={themeClasses.textSecondary}
+                    >
                       Interviews Scheduled
                     </Typography>
                   </Box>
@@ -576,12 +680,18 @@ const CandidateManagement = () => {
             <Card className={themeClasses.surface}>
               <CardContent>
                 <Box display="flex" alignItems="center">
-                  <CheckCircleIcon sx={{ color: '#10B981', mr: 2 }} />
+                  <CheckCircleIcon sx={{ color: "#10B981", mr: 2 }} />
                   <Box>
                     <Typography variant="h6" className={themeClasses.text}>
-                      {candidates.filter(c => c.status === 'Shortlisted').length}
+                      {
+                        candidates.filter((c) => c.status === "Shortlisted")
+                          .length
+                      }
                     </Typography>
-                    <Typography variant="body2" className={themeClasses.textSecondary}>
+                    <Typography
+                      variant="body2"
+                      className={themeClasses.textSecondary}
+                    >
                       Shortlisted
                     </Typography>
                   </Box>
@@ -593,12 +703,18 @@ const CandidateManagement = () => {
             <Card className={themeClasses.surface}>
               <CardContent>
                 <Box display="flex" alignItems="center">
-                  <StarIcon sx={{ color: '#8B5CF6', mr: 2 }} />
+                  <StarIcon sx={{ color: "#8B5CF6", mr: 2 }} />
                   <Box>
                     <Typography variant="h6" className={themeClasses.text}>
-                      {(candidates.reduce((sum, c) => sum + c.rating, 0) / candidates.length).toFixed(1)}
+                      {(
+                        candidates.reduce((sum, c) => sum + c.rating, 0) /
+                        candidates.length
+                      ).toFixed(1)}
                     </Typography>
-                    <Typography variant="body2" className={themeClasses.textSecondary}>
+                    <Typography
+                      variant="body2"
+                      className={themeClasses.textSecondary}
+                    >
                       Avg Rating
                     </Typography>
                   </Box>
@@ -635,7 +751,9 @@ const CandidateManagement = () => {
               >
                 <MenuItem value="all">All Status</MenuItem>
                 <MenuItem value="under review">Under Review</MenuItem>
-                <MenuItem value="interview scheduled">Interview Scheduled</MenuItem>
+                <MenuItem value="interview scheduled">
+                  Interview Scheduled
+                </MenuItem>
                 <MenuItem value="shortlisted">Shortlisted</MenuItem>
                 <MenuItem value="rejected">Rejected</MenuItem>
               </Select>
@@ -671,12 +789,12 @@ const CandidateManagement = () => {
           value={activeTab}
           onChange={(e, newValue) => setActiveTab(newValue)}
           sx={{
-            '& .MuiTab-root': {
-              minHeight: '48px',
+            "& .MuiTab-root": {
+              minHeight: "48px",
               color: themeClasses.textSecondary,
             },
-            '& .Mui-selected': {
-              color: '#3B82F6 !important',
+            "& .Mui-selected": {
+              color: "#3B82F6 !important",
             },
           }}
         >
@@ -749,11 +867,11 @@ const CandidateManagement = () => {
         </MenuItem>
         <Divider />
         <MenuItem onClick={handleMenuClose}>
-          <CheckCircleIcon sx={{ mr: 1, color: 'success.main' }} />
+          <CheckCircleIcon sx={{ mr: 1, color: "success.main" }} />
           Shortlist
         </MenuItem>
         <MenuItem onClick={handleMenuClose}>
-          <CancelIcon sx={{ mr: 1, color: 'error.main' }} />
+          <CancelIcon sx={{ mr: 1, color: "error.main" }} />
           Reject
         </MenuItem>
       </Menu>

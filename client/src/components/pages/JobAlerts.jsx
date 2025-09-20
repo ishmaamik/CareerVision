@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Box,
   Typography,
@@ -41,8 +41,8 @@ import {
   StepLabel,
   StepContent,
   LinearProgress,
-  Tooltip
-} from '@mui/material';
+  Tooltip,
+} from "@mui/material";
 import {
   Search as SearchIcon,
   Notifications as NotificationsIcon,
@@ -72,63 +72,75 @@ import {
   FilterList as FilterIcon,
   Analytics as AnalyticsIcon,
   Speed as SpeedIcon,
-  Assignment as AssignmentIcon
-} from '@mui/icons-material';
-import { useTheme } from '../../context/ThemeContext';
-import { getThemeClasses, getComponentStyles } from '../../styles/themes';
+  Assignment as AssignmentIcon,
+} from "@mui/icons-material";
+import { useTheme } from "../../context/ThemeContext";
+import { getThemeClasses, getComponentStyles } from "../../styles/themes";
 import {
   jobAlertPreferences,
   recentAlerts,
   alertStatistics,
   recommendedJobs,
-  alertFilters
-} from '../../utils/jobAlertsData';
+  alertFilters,
+} from "../../utils/jobAlertsData";
 
 const JobAlerts = () => {
   const { theme } = useTheme();
   const themeClasses = getThemeClasses(theme);
   const componentStyles = getComponentStyles(theme);
-  
+
   const [activeTab, setActiveTab] = useState(0);
-  const [alertsEnabled, setAlertsEnabled] = useState(jobAlertPreferences.isActive);
+  const [alertsEnabled, setAlertsEnabled] = useState(
+    jobAlertPreferences.isActive
+  );
   const [newSearchDialog, setNewSearchDialog] = useState(false);
 
   // New search form state
   const [newSearch, setNewSearch] = useState({
-    name: '',
-    query: '',
-    location: '',
-    jobType: '',
-    experience: '',
+    name: "",
+    query: "",
+    location: "",
+    jobType: "",
+    experience: "",
     salaryMin: 50000,
     salaryMax: 200000,
     remote: false,
-    frequency: 'daily'
+    frequency: "daily",
   });
 
   const getTrendIcon = (trend) => {
     switch (trend) {
-      case 'up': return <TrendingUpIcon sx={{ color: '#10B981', fontSize: 16 }} />;
-      case 'down': return <TrendingDownIcon sx={{ color: '#EF4444', fontSize: 16 }} />;
-      default: return <TrendingFlatIcon sx={{ color: '#6B7280', fontSize: 16 }} />;
+      case "up":
+        return <TrendingUpIcon sx={{ color: "#10B981", fontSize: 16 }} />;
+      case "down":
+        return <TrendingDownIcon sx={{ color: "#EF4444", fontSize: 16 }} />;
+      default:
+        return <TrendingFlatIcon sx={{ color: "#6B7280", fontSize: 16 }} />;
     }
   };
 
   const getMatchScoreColor = (score) => {
-    if (score >= 90) return '#10B981';
-    if (score >= 80) return '#F59E0B';
-    if (score >= 70) return '#3B82F6';
-    return '#6B7280';
+    if (score >= 90) return "#10B981";
+    if (score >= 80) return "#F59E0B";
+    if (score >= 70) return "#3B82F6";
+    return "#6B7280";
   };
 
   const AlertCard = ({ alert }) => (
-    <Card className={`${themeClasses.surface} hover:shadow-lg transition-all duration-300`}>
+    <Card
+      className={`${themeClasses.surface} hover:shadow-lg transition-all duration-300`}
+    >
       <CardContent>
-        <Box display="flex" justifyContent="between" alignItems="flex-start" mb={2}>
+        <Box
+          display="flex"
+          justifyContent="between"
+          alignItems="flex-start"
+          mb={2}
+        >
           <Box flex={1}>
             <Box display="flex" alignItems="center" mb={1}>
               <Badge
-                color={alert.status === 'unread' ? 'error' : 'default'}
+                color={alert.status === "unread" ? "error" : "default"}
                 variant="dot"
                 sx={{ mr: 1 }}
               >
@@ -137,7 +149,7 @@ const JobAlerts = () => {
               <Typography variant="h6" className={themeClasses.text}>
                 {alert.searchName}
               </Typography>
-              {alert.priority === 'high' && (
+              {alert.priority === "high" && (
                 <Chip
                   label="High Priority"
                   size="small"
@@ -146,8 +158,13 @@ const JobAlerts = () => {
                 />
               )}
             </Box>
-            <Typography variant="body2" className={themeClasses.textSecondary} mb={1}>
-              {new Date(alert.timestamp).toLocaleDateString()} • {alert.jobCount} new jobs
+            <Typography
+              variant="body2"
+              className={themeClasses.textSecondary}
+              mb={1}
+            >
+              {new Date(alert.timestamp).toLocaleDateString()} •{" "}
+              {alert.jobCount} new jobs
             </Typography>
           </Box>
           <IconButton size="small">
@@ -174,26 +191,41 @@ const JobAlerts = () => {
                   <Typography variant="subtitle2" className={themeClasses.text}>
                     {job.title}
                   </Typography>
-                  <Typography variant="body2" className={themeClasses.textSecondary}>
+                  <Typography
+                    variant="body2"
+                    className={themeClasses.textSecondary}
+                  >
                     {job.company} • {job.location}
                   </Typography>
                 </Box>
                 <Box textAlign="right">
                   <Box display="flex" alignItems="center">
-                    <SpeedIcon sx={{ fontSize: 16, mr: 0.5, color: getMatchScoreColor(job.matchScore) }} />
+                    <SpeedIcon
+                      sx={{
+                        fontSize: 16,
+                        mr: 0.5,
+                        color: getMatchScoreColor(job.matchScore),
+                      }}
+                    />
                     <Typography
                       variant="body2"
-                      sx={{ color: getMatchScoreColor(job.matchScore), fontWeight: 'bold' }}
+                      sx={{
+                        color: getMatchScoreColor(job.matchScore),
+                        fontWeight: "bold",
+                      }}
                     >
                       {job.matchScore}%
                     </Typography>
                   </Box>
-                  <Typography variant="body2" className={themeClasses.textSecondary}>
+                  <Typography
+                    variant="body2"
+                    className={themeClasses.textSecondary}
+                  >
                     {job.salary}
                   </Typography>
                 </Box>
               </Box>
-              
+
               <Box display="flex" alignItems="center" justifyContent="between">
                 <Box display="flex" flexWrap="wrap" gap={0.5}>
                   {job.tags.slice(0, 3).map((tag, index) => (
@@ -202,7 +234,7 @@ const JobAlerts = () => {
                       label={tag}
                       size="small"
                       variant="outlined"
-                      sx={{ fontSize: '0.7rem' }}
+                      sx={{ fontSize: "0.7rem" }}
                     />
                   ))}
                 </Box>
@@ -211,20 +243,24 @@ const JobAlerts = () => {
                     label="New"
                     size="small"
                     color="success"
-                    sx={{ fontSize: '0.7rem' }}
+                    sx={{ fontSize: "0.7rem" }}
                   />
                 )}
               </Box>
             </Paper>
           ))}
           {alert.jobCount > 2 && (
-            <Typography variant="body2" className={themeClasses.textSecondary} textAlign="center">
+            <Typography
+              variant="body2"
+              className={themeClasses.textSecondary}
+              textAlign="center"
+            >
               +{alert.jobCount - 2} more jobs
             </Typography>
           )}
         </Box>
       </CardContent>
-      
+
       <CardActions>
         <Button
           variant="outlined"
@@ -245,21 +281,28 @@ const JobAlerts = () => {
   );
 
   const SavedSearchCard = ({ search }) => (
-    <Card className={`${themeClasses.surface} hover:shadow-lg transition-all duration-300`}>
+    <Card
+      className={`${themeClasses.surface} hover:shadow-lg transition-all duration-300`}
+    >
       <CardContent>
-        <Box display="flex" justifyContent="between" alignItems="flex-start" mb={2}>
+        <Box
+          display="flex"
+          justifyContent="between"
+          alignItems="flex-start"
+          mb={2}
+        >
           <Box flex={1}>
             <Box display="flex" alignItems="center" mb={1}>
               <Typography variant="h6" className={themeClasses.text}>
                 {search.name}
               </Typography>
-              <Switch
-                checked={search.isActive}
-                size="small"
-                sx={{ ml: 1 }}
-              />
+              <Switch checked={search.isActive} size="small" sx={{ ml: 1 }} />
             </Box>
-            <Typography variant="body2" className={themeClasses.textSecondary} mb={1}>
+            <Typography
+              variant="body2"
+              className={themeClasses.textSecondary}
+              mb={1}
+            >
               "{search.query}"
             </Typography>
             <Typography variant="body2" className={themeClasses.textSecondary}>
@@ -278,30 +321,36 @@ const JobAlerts = () => {
 
         <Box display="flex" flexWrap="wrap" gap={0.5} mb={2}>
           {search.filters.skills?.map((skill, index) => (
-            <Chip
-              key={index}
-              label={skill}
-              size="small"
-              variant="outlined"
-            />
+            <Chip key={index} label={skill} size="small" variant="outlined" />
           )) || (
             <>
-              <Chip label={search.filters.jobType} size="small" variant="outlined" />
-              <Chip label={search.filters.experience} size="small" variant="outlined" />
-              {search.filters.remote && <Chip label="Remote" size="small" color="success" />}
+              <Chip
+                label={search.filters.jobType}
+                size="small"
+                variant="outlined"
+              />
+              <Chip
+                label={search.filters.experience}
+                size="small"
+                variant="outlined"
+              />
+              {search.filters.remote && (
+                <Chip label="Remote" size="small" color="success" />
+              )}
             </>
           )}
         </Box>
 
         <Box display="flex" alignItems="center" justifyContent="between">
           <Typography variant="body2" className={themeClasses.textSecondary}>
-            Last triggered: {new Date(search.lastTriggered).toLocaleDateString()}
+            Last triggered:{" "}
+            {new Date(search.lastTriggered).toLocaleDateString()}
           </Typography>
           <Chip
             label={search.alertFrequency}
             size="small"
             icon={<ScheduleIcon />}
-            sx={{ textTransform: 'capitalize' }}
+            sx={{ textTransform: "capitalize" }}
           />
         </Box>
       </CardContent>
@@ -309,7 +358,9 @@ const JobAlerts = () => {
   );
 
   const RecommendedJobCard = ({ job }) => (
-    <Card className={`${themeClasses.surface} hover:shadow-lg transition-all duration-300`}>
+    <Card
+      className={`${themeClasses.surface} hover:shadow-lg transition-all duration-300`}
+    >
       <CardContent>
         <Box display="flex" alignItems="center" mb={2}>
           <Avatar
@@ -342,21 +393,38 @@ const JobAlerts = () => {
           </Box>
           <Box textAlign="right">
             <Box display="flex" alignItems="center" mb={0.5}>
-              <SpeedIcon sx={{ fontSize: 16, mr: 0.5, color: getMatchScoreColor(job.matchScore) }} />
+              <SpeedIcon
+                sx={{
+                  fontSize: 16,
+                  mr: 0.5,
+                  color: getMatchScoreColor(job.matchScore),
+                }}
+              />
               <Typography
                 variant="h6"
-                sx={{ color: getMatchScoreColor(job.matchScore), fontWeight: 'bold' }}
+                sx={{
+                  color: getMatchScoreColor(job.matchScore),
+                  fontWeight: "bold",
+                }}
               >
                 {job.matchScore}%
               </Typography>
             </Box>
-            <Typography variant="body2" fontWeight="bold" className={themeClasses.text}>
+            <Typography
+              variant="body2"
+              fontWeight="bold"
+              className={themeClasses.text}
+            >
               {job.salary}
             </Typography>
           </Box>
         </Box>
 
-        <Typography variant="body2" className={themeClasses.textSecondary} mb={2}>
+        <Typography
+          variant="body2"
+          className={themeClasses.textSecondary}
+          mb={2}
+        >
           {job.description}
         </Typography>
 
@@ -368,13 +436,13 @@ const JobAlerts = () => {
             {job.matchReasons.slice(0, 3).map((reason, index) => (
               <ListItem key={index} sx={{ py: 0, px: 0 }}>
                 <ListItemIcon sx={{ minWidth: 20 }}>
-                  <CheckCircleIcon sx={{ fontSize: 16, color: '#10B981' }} />
+                  <CheckCircleIcon sx={{ fontSize: 16, color: "#10B981" }} />
                 </ListItemIcon>
                 <ListItemText
                   primary={reason}
                   primaryTypographyProps={{
-                    variant: 'body2',
-                    className: themeClasses.textSecondary
+                    variant: "body2",
+                    className: themeClasses.textSecondary,
                   }}
                 />
               </ListItem>
@@ -384,16 +452,11 @@ const JobAlerts = () => {
 
         <Box display="flex" flexWrap="wrap" gap={0.5} mb={2}>
           {job.tags.map((tag, index) => (
-            <Chip
-              key={index}
-              label={tag}
-              size="small"
-              variant="outlined"
-            />
+            <Chip key={index} label={tag} size="small" variant="outlined" />
           ))}
         </Box>
       </CardContent>
-      
+
       <CardActions>
         <Button
           variant="outlined"
@@ -451,7 +514,9 @@ const JobAlerts = () => {
                 fullWidth
                 label="Alert Name"
                 value={newSearch.name}
-                onChange={(e) => setNewSearch({ ...newSearch, name: e.target.value })}
+                onChange={(e) =>
+                  setNewSearch({ ...newSearch, name: e.target.value })
+                }
                 sx={componentStyles.textField}
               />
             </Grid>
@@ -460,7 +525,9 @@ const JobAlerts = () => {
                 fullWidth
                 label="Job Search Query"
                 value={newSearch.query}
-                onChange={(e) => setNewSearch({ ...newSearch, query: e.target.value })}
+                onChange={(e) =>
+                  setNewSearch({ ...newSearch, query: e.target.value })
+                }
                 sx={componentStyles.textField}
               />
             </Grid>
@@ -469,7 +536,11 @@ const JobAlerts = () => {
                 options={alertFilters.locations}
                 getOptionLabel={(option) => option.label}
                 renderInput={(params) => (
-                  <TextField {...params} label="Location" sx={componentStyles.textField} />
+                  <TextField
+                    {...params}
+                    label="Location"
+                    sx={componentStyles.textField}
+                  />
                 )}
               />
             </Grid>
@@ -478,7 +549,9 @@ const JobAlerts = () => {
                 <InputLabel>Job Type</InputLabel>
                 <Select
                   value={newSearch.jobType}
-                  onChange={(e) => setNewSearch({ ...newSearch, jobType: e.target.value })}
+                  onChange={(e) =>
+                    setNewSearch({ ...newSearch, jobType: e.target.value })
+                  }
                 >
                   {alertFilters.jobTypes.map((type) => (
                     <MenuItem key={type.value} value={type.value}>
@@ -490,7 +563,8 @@ const JobAlerts = () => {
             </Grid>
             <Grid item xs={12}>
               <Typography gutterBottom className={themeClasses.text}>
-                Salary Range: ${newSearch.salaryMin.toLocaleString()} - ${newSearch.salaryMax.toLocaleString()}
+                Salary Range: ${newSearch.salaryMin.toLocaleString()} - $
+                {newSearch.salaryMax.toLocaleString()}
               </Typography>
               <Slider
                 value={[newSearch.salaryMin, newSearch.salaryMax]}
@@ -498,7 +572,7 @@ const JobAlerts = () => {
                   setNewSearch({
                     ...newSearch,
                     salaryMin: newValue[0],
-                    salaryMax: newValue[1]
+                    salaryMax: newValue[1],
                   });
                 }}
                 valueLabelDisplay="auto"
@@ -513,7 +587,9 @@ const JobAlerts = () => {
                 control={
                   <Switch
                     checked={newSearch.remote}
-                    onChange={(e) => setNewSearch({ ...newSearch, remote: e.target.checked })}
+                    onChange={(e) =>
+                      setNewSearch({ ...newSearch, remote: e.target.checked })
+                    }
                   />
                 }
                 label="Remote work option"
@@ -524,7 +600,9 @@ const JobAlerts = () => {
                 <InputLabel>Alert Frequency</InputLabel>
                 <Select
                   value={newSearch.frequency}
-                  onChange={(e) => setNewSearch({ ...newSearch, frequency: e.target.value })}
+                  onChange={(e) =>
+                    setNewSearch({ ...newSearch, frequency: e.target.value })
+                  }
                 >
                   <MenuItem value="instant">Instant</MenuItem>
                   <MenuItem value="daily">Daily</MenuItem>
@@ -552,24 +630,35 @@ const JobAlerts = () => {
   );
 
   const tabConfig = [
-    { label: 'Recent Alerts', icon: <NotificationsIcon /> },
-    { label: 'Saved Searches', icon: <BookmarkIcon /> },
-    { label: 'Recommended Jobs', icon: <StarIcon /> },
-    { label: 'Analytics', icon: <AnalyticsIcon /> },
-    { label: 'Settings', icon: <SettingsIcon /> }
+    { label: "Recent Alerts", icon: <NotificationsIcon /> },
+    { label: "Saved Searches", icon: <BookmarkIcon /> },
+    { label: "Recommended Jobs", icon: <StarIcon /> },
+    { label: "Analytics", icon: <AnalyticsIcon /> },
+    { label: "Settings", icon: <SettingsIcon /> },
   ];
 
   return (
     <Container maxWidth="xl" sx={{ py: 4 }}>
       {/* Header */}
       <Box mb={4}>
-        <Box display="flex" justifyContent="between" alignItems="flex-start" mb={2}>
+        <Box
+          display="flex"
+          justifyContent="between"
+          alignItems="flex-start"
+          mb={2}
+        >
           <Box>
-            <Typography variant="h4" component="h1" className={themeClasses.text} mb={1}>
+            <Typography
+              variant="h4"
+              component="h1"
+              className={themeClasses.text}
+              mb={1}
+            >
               Job Alerts & Notifications
             </Typography>
             <Typography variant="body1" className={themeClasses.textSecondary}>
-              Stay updated with personalized job recommendations and never miss the perfect opportunity
+              Stay updated with personalized job recommendations and never miss
+              the perfect opportunity
             </Typography>
           </Box>
           <Box display="flex" gap={2}>
@@ -601,7 +690,7 @@ const JobAlerts = () => {
               title="Active Alerts"
               value={alertStatistics.activeSearches}
               subtitle="Monitoring job market"
-              icon={<NotificationsActiveIcon sx={{ color: '#3B82F6' }} />}
+              icon={<NotificationsActiveIcon sx={{ color: "#3B82F6" }} />}
               trend="up"
             />
           </Grid>
@@ -610,7 +699,7 @@ const JobAlerts = () => {
               title="Unread Alerts"
               value={alertStatistics.unreadAlerts}
               subtitle="New opportunities"
-              icon={<WarningIcon sx={{ color: '#F59E0B' }} />}
+              icon={<WarningIcon sx={{ color: "#F59E0B" }} />}
               trend="stable"
             />
           </Grid>
@@ -619,7 +708,7 @@ const JobAlerts = () => {
               title="Jobs Found"
               value={alertStatistics.thisWeek.jobsFound}
               subtitle="This week"
-              icon={<WorkIcon sx={{ color: '#10B981' }} />}
+              icon={<WorkIcon sx={{ color: "#10B981" }} />}
               trend="up"
             />
           </Grid>
@@ -628,7 +717,7 @@ const JobAlerts = () => {
               title="Avg Match Score"
               value={`${alertStatistics.averageMatchScore}%`}
               subtitle="Job relevance"
-              icon={<SpeedIcon sx={{ color: '#8B5CF6' }} />}
+              icon={<SpeedIcon sx={{ color: "#8B5CF6" }} />}
               trend="up"
             />
           </Grid>
@@ -637,7 +726,8 @@ const JobAlerts = () => {
         {/* Alert Status */}
         {!alertsEnabled && (
           <Alert severity="warning" sx={{ mb: 3 }}>
-            Job alerts are currently disabled. Enable them to receive notifications about new opportunities.
+            Job alerts are currently disabled. Enable them to receive
+            notifications about new opportunities.
           </Alert>
         )}
       </Box>
@@ -650,12 +740,12 @@ const JobAlerts = () => {
           variant="scrollable"
           scrollButtons="auto"
           sx={{
-            '& .MuiTab-root': {
-              minHeight: '64px',
+            "& .MuiTab-root": {
+              minHeight: "64px",
               color: themeClasses.textSecondary,
             },
-            '& .Mui-selected': {
-              color: '#3B82F6 !important',
+            "& .Mui-selected": {
+              color: "#3B82F6 !important",
             },
           }}
         >
@@ -715,7 +805,7 @@ const JobAlerts = () => {
           <Typography variant="h5" className={themeClasses.text} mb={3}>
             Job Alert Analytics
           </Typography>
-          
+
           <Grid container spacing={3}>
             <Grid item xs={12} md={8}>
               <Card className={themeClasses.surface}>
@@ -724,21 +814,37 @@ const JobAlerts = () => {
                     Popular Skills in Demand
                   </Typography>
                   {alertStatistics.topSkillsInDemand.map((skill) => (
-                    <Box key={skill.skill} display="flex" alignItems="center" mb={2}>
+                    <Box
+                      key={skill.skill}
+                      display="flex"
+                      alignItems="center"
+                      mb={2}
+                    >
                       <Box flex={1}>
                         <Box display="flex" alignItems="center" mb={0.5}>
-                          <Typography variant="body1" className={themeClasses.text}>
+                          <Typography
+                            variant="body1"
+                            className={themeClasses.text}
+                          >
                             {skill.skill}
                           </Typography>
                           {getTrendIcon(skill.trend)}
                         </Box>
                         <LinearProgress
                           variant="determinate"
-                          value={(skill.count / alertStatistics.topSkillsInDemand[0].count) * 100}
+                          value={
+                            (skill.count /
+                              alertStatistics.topSkillsInDemand[0].count) *
+                            100
+                          }
                           sx={{ height: 8, borderRadius: 4 }}
                         />
                       </Box>
-                      <Typography variant="body2" className={themeClasses.textSecondary} ml={2}>
+                      <Typography
+                        variant="body2"
+                        className={themeClasses.textSecondary}
+                        ml={2}
+                      >
                         {skill.count} jobs
                       </Typography>
                     </Box>
@@ -746,7 +852,7 @@ const JobAlerts = () => {
                 </CardContent>
               </Card>
             </Grid>
-            
+
             <Grid item xs={12} md={4}>
               <Card className={themeClasses.surface}>
                 <CardContent>
@@ -754,12 +860,25 @@ const JobAlerts = () => {
                     Top Hiring Companies
                   </Typography>
                   {alertStatistics.topCompanies.map((company) => (
-                    <Box key={company.company} mb={2} p={2} className={themeClasses.background} sx={{ borderRadius: 2 }}>
-                      <Typography variant="subtitle2" className={themeClasses.text}>
+                    <Box
+                      key={company.company}
+                      mb={2}
+                      p={2}
+                      className={themeClasses.background}
+                      sx={{ borderRadius: 2 }}
+                    >
+                      <Typography
+                        variant="subtitle2"
+                        className={themeClasses.text}
+                      >
                         {company.company}
                       </Typography>
-                      <Typography variant="body2" className={themeClasses.textSecondary}>
-                        {company.jobCount} jobs • Avg ${company.avgSalary.toLocaleString()}
+                      <Typography
+                        variant="body2"
+                        className={themeClasses.textSecondary}
+                      >
+                        {company.jobCount} jobs • Avg $
+                        {company.avgSalary.toLocaleString()}
                       </Typography>
                     </Box>
                   ))}
@@ -775,7 +894,7 @@ const JobAlerts = () => {
           <Typography variant="h5" className={themeClasses.text} mb={3}>
             Notification Settings
           </Typography>
-          
+
           <Grid container spacing={3}>
             <Grid item xs={12} md={6}>
               <Card className={themeClasses.surface}>
@@ -783,11 +902,11 @@ const JobAlerts = () => {
                   <Typography variant="h6" className={themeClasses.text} mb={3}>
                     Email Notifications
                   </Typography>
-                  
+
                   <List>
                     <ListItem>
                       <ListItemIcon>
-                        <EmailIcon sx={{ color: '#3B82F6' }} />
+                        <EmailIcon sx={{ color: "#3B82F6" }} />
                       </ListItemIcon>
                       <ListItemText
                         primary="Email Alerts"
@@ -795,15 +914,18 @@ const JobAlerts = () => {
                       />
                       <ListItemSecondaryAction>
                         <Switch
-                          checked={jobAlertPreferences.notificationSettings.email.enabled}
+                          checked={
+                            jobAlertPreferences.notificationSettings.email
+                              .enabled
+                          }
                           edge="end"
                         />
                       </ListItemSecondaryAction>
                     </ListItem>
-                    
+
                     <ListItem>
                       <ListItemIcon>
-                        <PhoneIcon sx={{ color: '#10B981' }} />
+                        <PhoneIcon sx={{ color: "#10B981" }} />
                       </ListItemIcon>
                       <ListItemText
                         primary="Push Notifications"
@@ -811,15 +933,18 @@ const JobAlerts = () => {
                       />
                       <ListItemSecondaryAction>
                         <Switch
-                          checked={jobAlertPreferences.notificationSettings.push.enabled}
+                          checked={
+                            jobAlertPreferences.notificationSettings.push
+                              .enabled
+                          }
                           edge="end"
                         />
                       </ListItemSecondaryAction>
                     </ListItem>
-                    
+
                     <ListItem>
                       <ListItemIcon>
-                        <SmsIcon sx={{ color: '#F59E0B' }} />
+                        <SmsIcon sx={{ color: "#F59E0B" }} />
                       </ListItemIcon>
                       <ListItemText
                         primary="SMS Alerts"
@@ -827,7 +952,9 @@ const JobAlerts = () => {
                       />
                       <ListItemSecondaryAction>
                         <Switch
-                          checked={jobAlertPreferences.notificationSettings.sms.enabled}
+                          checked={
+                            jobAlertPreferences.notificationSettings.sms.enabled
+                          }
                           edge="end"
                         />
                       </ListItemSecondaryAction>
@@ -836,26 +963,35 @@ const JobAlerts = () => {
                 </CardContent>
               </Card>
             </Grid>
-            
+
             <Grid item xs={12} md={6}>
               <Card className={themeClasses.surface}>
                 <CardContent>
                   <Typography variant="h6" className={themeClasses.text} mb={3}>
                     Frequency Settings
                   </Typography>
-                  
-                  <FormControl fullWidth sx={{ mb: 3, ...componentStyles.textField }}>
+
+                  <FormControl
+                    fullWidth
+                    sx={{ mb: 3, ...componentStyles.textField }}
+                  >
                     <InputLabel>Default Alert Frequency</InputLabel>
                     <Select
-                      value={jobAlertPreferences.notificationSettings.email.frequency}
+                      value={
+                        jobAlertPreferences.notificationSettings.email.frequency
+                      }
                     >
                       <MenuItem value="instant">Instant</MenuItem>
                       <MenuItem value="daily">Daily Digest</MenuItem>
                       <MenuItem value="weekly">Weekly Summary</MenuItem>
                     </Select>
                   </FormControl>
-                  
-                  <Typography variant="subtitle2" className={themeClasses.text} mb={2}>
+
+                  <Typography
+                    variant="subtitle2"
+                    className={themeClasses.text}
+                    mb={2}
+                  >
                     Email Time Preference
                   </Typography>
                   <TextField

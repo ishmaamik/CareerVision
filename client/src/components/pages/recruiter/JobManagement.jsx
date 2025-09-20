@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Box,
   Typography,
@@ -34,8 +34,8 @@ import {
   Switch,
   FormControlLabel,
   Divider,
-  Alert
-} from '@mui/material';
+  Alert,
+} from "@mui/material";
 import {
   Search as SearchIcon,
   Add as AddIcon,
@@ -52,19 +52,19 @@ import {
   Business as BusinessIcon,
   CalendarToday as CalendarIcon,
   TrendingUp as TrendingUpIcon,
-  Assessment as AssessmentIcon
-} from '@mui/icons-material';
-import { useTheme } from '../../../context/ThemeContext';
-import { getThemeClasses, getComponentStyles } from '../../../styles/themes';
+  Assessment as AssessmentIcon,
+} from "@mui/icons-material";
+import { useTheme } from "../../../context/ThemeContext";
+import { getThemeClasses, getComponentStyles } from "../../../styles/themes";
 
 const JobManagement = () => {
   const { theme } = useTheme();
   const themeClasses = getThemeClasses(theme);
   const componentStyles = getComponentStyles(theme);
-  
+
   const [activeTab, setActiveTab] = useState(0);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [filterStatus, setFilterStatus] = useState('all');
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filterStatus, setFilterStatus] = useState("all");
   const [anchorEl, setAnchorEl] = useState(null);
   const [newJobDialog, setNewJobDialog] = useState(false);
 
@@ -83,9 +83,14 @@ const JobManagement = () => {
       location: "San Francisco, CA",
       type: "Full-time",
       remote: true,
-      description: "We are looking for a Senior React Developer to join our dynamic engineering team...",
-      requirements: ["5+ years React experience", "Strong TypeScript skills", "Experience with Redux"],
-      featured: true
+      description:
+        "We are looking for a Senior React Developer to join our dynamic engineering team...",
+      requirements: [
+        "5+ years React experience",
+        "Strong TypeScript skills",
+        "Experience with Redux",
+      ],
+      featured: true,
     },
     {
       id: 2,
@@ -100,9 +105,14 @@ const JobManagement = () => {
       location: "New York, NY",
       type: "Full-time",
       remote: false,
-      description: "Join our product team to drive innovation and product strategy...",
-      requirements: ["5+ years PM experience", "Technical background", "Analytics skills"],
-      featured: false
+      description:
+        "Join our product team to drive innovation and product strategy...",
+      requirements: [
+        "5+ years PM experience",
+        "Technical background",
+        "Analytics skills",
+      ],
+      featured: false,
     },
     {
       id: 3,
@@ -117,9 +127,14 @@ const JobManagement = () => {
       location: "Remote",
       type: "Full-time",
       remote: true,
-      description: "Design beautiful and intuitive user experiences for our products...",
-      requirements: ["3+ years UX design", "Figma proficiency", "User research experience"],
-      featured: false
+      description:
+        "Design beautiful and intuitive user experiences for our products...",
+      requirements: [
+        "3+ years UX design",
+        "Figma proficiency",
+        "User research experience",
+      ],
+      featured: false,
     },
     {
       id: 4,
@@ -134,19 +149,29 @@ const JobManagement = () => {
       location: "Austin, TX",
       type: "Full-time",
       remote: true,
-      description: "Build and maintain our cloud infrastructure and deployment pipelines...",
-      requirements: ["AWS expertise", "Kubernetes experience", "CI/CD knowledge"],
-      featured: false
-    }
+      description:
+        "Build and maintain our cloud infrastructure and deployment pipelines...",
+      requirements: [
+        "AWS expertise",
+        "Kubernetes experience",
+        "CI/CD knowledge",
+      ],
+      featured: false,
+    },
   ];
 
   const getStatusColor = (status) => {
     switch (status.toLowerCase()) {
-      case 'active': return 'success';
-      case 'draft': return 'warning';
-      case 'closed': return 'error';
-      case 'paused': return 'info';
-      default: return 'default';
+      case "active":
+        return "success";
+      case "draft":
+        return "warning";
+      case "closed":
+        return "error";
+      case "paused":
+        return "info";
+      default:
+        return "default";
     }
   };
 
@@ -159,9 +184,16 @@ const JobManagement = () => {
   };
 
   const JobCard = ({ job }) => (
-    <Card className={`${themeClasses.surface} hover:shadow-lg transition-all duration-300`}>
+    <Card
+      className={`${themeClasses.surface} hover:shadow-lg transition-all duration-300`}
+    >
       <CardContent>
-        <Box display="flex" justifyContent="between" alignItems="flex-start" mb={2}>
+        <Box
+          display="flex"
+          justifyContent="between"
+          alignItems="flex-start"
+          mb={2}
+        >
           <Box flex={1}>
             <Box display="flex" alignItems="center" mb={1}>
               <Typography variant="h6" className={themeClasses.text}>
@@ -176,19 +208,36 @@ const JobManagement = () => {
                 />
               )}
             </Box>
-            <Typography variant="body2" className={themeClasses.textSecondary} mb={1}>
-              {job.department} • Posted {new Date(job.postedDate).toLocaleDateString()}
+            <Typography
+              variant="body2"
+              className={themeClasses.textSecondary}
+              mb={1}
+            >
+              {job.department} • Posted{" "}
+              {new Date(job.postedDate).toLocaleDateString()}
             </Typography>
             <Box display="flex" alignItems="center" gap={2} mb={2}>
               <Box display="flex" alignItems="center">
-                <LocationIcon sx={{ fontSize: 16, mr: 0.5 }} className={themeClasses.textSecondary} />
-                <Typography variant="body2" className={themeClasses.textSecondary}>
+                <LocationIcon
+                  sx={{ fontSize: 16, mr: 0.5 }}
+                  className={themeClasses.textSecondary}
+                />
+                <Typography
+                  variant="body2"
+                  className={themeClasses.textSecondary}
+                >
                   {job.location}
                 </Typography>
               </Box>
               <Box display="flex" alignItems="center">
-                <MoneyIcon sx={{ fontSize: 16, mr: 0.5 }} className={themeClasses.textSecondary} />
-                <Typography variant="body2" className={themeClasses.textSecondary}>
+                <MoneyIcon
+                  sx={{ fontSize: 16, mr: 0.5 }}
+                  className={themeClasses.textSecondary}
+                />
+                <Typography
+                  variant="body2"
+                  className={themeClasses.textSecondary}
+                >
                   {job.salary}
                 </Typography>
               </Box>
@@ -201,16 +250,17 @@ const JobManagement = () => {
               size="small"
               sx={{ mb: 1 }}
             />
-            <IconButton
-              size="small"
-              onClick={handleMenuClick}
-            >
+            <IconButton size="small" onClick={handleMenuClick}>
               <MoreVertIcon />
             </IconButton>
           </Box>
         </Box>
 
-        <Typography variant="body2" className={themeClasses.textSecondary} mb={2}>
+        <Typography
+          variant="body2"
+          className={themeClasses.textSecondary}
+          mb={2}
+        >
           {job.description.substring(0, 100)}...
         </Typography>
 
@@ -220,7 +270,10 @@ const JobManagement = () => {
               <Typography variant="h6" className={themeClasses.text}>
                 {job.applications}
               </Typography>
-              <Typography variant="body2" className={themeClasses.textSecondary}>
+              <Typography
+                variant="body2"
+                className={themeClasses.textSecondary}
+              >
                 Applications
               </Typography>
             </Box>
@@ -230,7 +283,10 @@ const JobManagement = () => {
               <Typography variant="h6" className={themeClasses.text}>
                 {job.views}
               </Typography>
-              <Typography variant="body2" className={themeClasses.textSecondary}>
+              <Typography
+                variant="body2"
+                className={themeClasses.textSecondary}
+              >
                 Views
               </Typography>
             </Box>
@@ -240,14 +296,17 @@ const JobManagement = () => {
               <Typography variant="h6" className={themeClasses.text}>
                 {Math.round((job.applications / (job.views || 1)) * 100)}%
               </Typography>
-              <Typography variant="body2" className={themeClasses.textSecondary}>
+              <Typography
+                variant="body2"
+                className={themeClasses.textSecondary}
+              >
                 Conv. Rate
               </Typography>
             </Box>
           </Grid>
         </Grid>
       </CardContent>
-      
+
       <CardActions>
         <Button
           variant="outlined"
@@ -256,10 +315,7 @@ const JobManagement = () => {
         >
           View Applications
         </Button>
-        <Button
-          variant="text"
-          startIcon={<EditIcon />}
-        >
+        <Button variant="text" startIcon={<EditIcon />}>
           Edit
         </Button>
       </CardActions>
@@ -270,7 +326,7 @@ const JobManagement = () => {
     <TableRow hover>
       <TableCell>
         <Box display="flex" alignItems="center">
-          <Avatar sx={{ mr: 2, bgcolor: '#3B82F6' }}>
+          <Avatar sx={{ mr: 2, bgcolor: "#3B82F6" }}>
             <WorkIcon />
           </Avatar>
           <Box>
@@ -295,20 +351,20 @@ const JobManagement = () => {
       <TableCell>{new Date(job.postedDate).toLocaleDateString()}</TableCell>
       <TableCell>{new Date(job.expiryDate).toLocaleDateString()}</TableCell>
       <TableCell>
-        <IconButton
-          size="small"
-          onClick={handleMenuClick}
-        >
+        <IconButton size="small" onClick={handleMenuClick}>
           <MoreVertIcon />
         </IconButton>
       </TableCell>
     </TableRow>
   );
 
-  const filteredJobs = jobs.filter(job => {
-    const matchesSearch = job.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         job.department.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesStatus = filterStatus === 'all' || job.status.toLowerCase() === filterStatus.toLowerCase();
+  const filteredJobs = jobs.filter((job) => {
+    const matchesSearch =
+      job.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      job.department.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesStatus =
+      filterStatus === "all" ||
+      job.status.toLowerCase() === filterStatus.toLowerCase();
     return matchesSearch && matchesStatus;
   });
 
@@ -396,16 +452,10 @@ const JobManagement = () => {
       </DialogContent>
       <DialogActions>
         <Button onClick={() => setNewJobDialog(false)}>Cancel</Button>
-        <Button
-          variant="contained"
-          sx={componentStyles.button}
-        >
+        <Button variant="contained" sx={componentStyles.button}>
           Save as Draft
         </Button>
-        <Button
-          variant="contained"
-          sx={componentStyles.button}
-        >
+        <Button variant="contained" sx={componentStyles.button}>
           Post Job
         </Button>
       </DialogActions>
@@ -413,8 +463,8 @@ const JobManagement = () => {
   );
 
   const tabConfig = [
-    { label: 'Card View', icon: <WorkIcon /> },
-    { label: 'Table View', icon: <AssessmentIcon /> }
+    { label: "Card View", icon: <WorkIcon /> },
+    { label: "Table View", icon: <AssessmentIcon /> },
   ];
 
   return (
@@ -423,7 +473,12 @@ const JobManagement = () => {
       <Box mb={4}>
         <Box display="flex" justifyContent="between" alignItems="center" mb={3}>
           <Box>
-            <Typography variant="h4" component="h1" className={themeClasses.text} mb={1}>
+            <Typography
+              variant="h4"
+              component="h1"
+              className={themeClasses.text}
+              mb={1}
+            >
               Job Management
             </Typography>
             <Typography variant="body1" className={themeClasses.textSecondary}>
@@ -446,12 +501,15 @@ const JobManagement = () => {
             <Card className={themeClasses.surface}>
               <CardContent>
                 <Box display="flex" alignItems="center">
-                  <WorkIcon sx={{ color: '#3B82F6', mr: 2 }} />
+                  <WorkIcon sx={{ color: "#3B82F6", mr: 2 }} />
                   <Box>
                     <Typography variant="h6" className={themeClasses.text}>
-                      {jobs.filter(j => j.status === 'Active').length}
+                      {jobs.filter((j) => j.status === "Active").length}
                     </Typography>
-                    <Typography variant="body2" className={themeClasses.textSecondary}>
+                    <Typography
+                      variant="body2"
+                      className={themeClasses.textSecondary}
+                    >
                       Active Jobs
                     </Typography>
                   </Box>
@@ -463,12 +521,15 @@ const JobManagement = () => {
             <Card className={themeClasses.surface}>
               <CardContent>
                 <Box display="flex" alignItems="center">
-                  <PeopleIcon sx={{ color: '#10B981', mr: 2 }} />
+                  <PeopleIcon sx={{ color: "#10B981", mr: 2 }} />
                   <Box>
                     <Typography variant="h6" className={themeClasses.text}>
                       {jobs.reduce((sum, job) => sum + job.applications, 0)}
                     </Typography>
-                    <Typography variant="body2" className={themeClasses.textSecondary}>
+                    <Typography
+                      variant="body2"
+                      className={themeClasses.textSecondary}
+                    >
                       Total Applications
                     </Typography>
                   </Box>
@@ -480,12 +541,15 @@ const JobManagement = () => {
             <Card className={themeClasses.surface}>
               <CardContent>
                 <Box display="flex" alignItems="center">
-                  <TrendingUpIcon sx={{ color: '#F59E0B', mr: 2 }} />
+                  <TrendingUpIcon sx={{ color: "#F59E0B", mr: 2 }} />
                   <Box>
                     <Typography variant="h6" className={themeClasses.text}>
                       {jobs.reduce((sum, job) => sum + job.views, 0)}
                     </Typography>
-                    <Typography variant="body2" className={themeClasses.textSecondary}>
+                    <Typography
+                      variant="body2"
+                      className={themeClasses.textSecondary}
+                    >
                       Total Views
                     </Typography>
                   </Box>
@@ -497,12 +561,15 @@ const JobManagement = () => {
             <Card className={themeClasses.surface}>
               <CardContent>
                 <Box display="flex" alignItems="center">
-                  <ScheduleIcon sx={{ color: '#8B5CF6', mr: 2 }} />
+                  <ScheduleIcon sx={{ color: "#8B5CF6", mr: 2 }} />
                   <Box>
                     <Typography variant="h6" className={themeClasses.text}>
-                      {jobs.filter(j => j.status === 'Draft').length}
+                      {jobs.filter((j) => j.status === "Draft").length}
                     </Typography>
-                    <Typography variant="body2" className={themeClasses.textSecondary}>
+                    <Typography
+                      variant="body2"
+                      className={themeClasses.textSecondary}
+                    >
                       Draft Jobs
                     </Typography>
                   </Box>
@@ -547,9 +614,7 @@ const JobManagement = () => {
             </FormControl>
           </Grid>
           <Grid item xs={12} md={3}>
-            <Alert severity="info">
-              {filteredJobs.length} jobs found
-            </Alert>
+            <Alert severity="info">{filteredJobs.length} jobs found</Alert>
           </Grid>
         </Grid>
       </Box>
@@ -560,12 +625,12 @@ const JobManagement = () => {
           value={activeTab}
           onChange={(e, newValue) => setActiveTab(newValue)}
           sx={{
-            '& .MuiTab-root': {
-              minHeight: '48px',
+            "& .MuiTab-root": {
+              minHeight: "48px",
               color: themeClasses.textSecondary,
             },
-            '& .Mui-selected': {
-              color: '#3B82F6 !important',
+            "& .Mui-selected": {
+              color: "#3B82F6 !important",
             },
           }}
         >
@@ -634,7 +699,7 @@ const JobManagement = () => {
         </MenuItem>
         <Divider />
         <MenuItem onClick={handleMenuClose}>
-          <DeleteIcon sx={{ mr: 1, color: 'error.main' }} />
+          <DeleteIcon sx={{ mr: 1, color: "error.main" }} />
           Delete Job
         </MenuItem>
       </Menu>

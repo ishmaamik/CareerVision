@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Box,
   Typography,
@@ -20,8 +20,8 @@ import {
   ListItemAvatar,
   Divider,
   Badge,
-  Alert
-} from '@mui/material';
+  Alert,
+} from "@mui/material";
 import {
   Dashboard as DashboardIcon,
   Work as WorkIcon,
@@ -41,10 +41,10 @@ import {
   Schedule as ClockIcon,
   Star as StarIcon,
   Email as EmailIcon,
-  Phone as PhoneIcon
-} from '@mui/icons-material';
-import { useTheme } from '../../../context/ThemeContext';
-import { getThemeClasses, getComponentStyles } from '../../../styles/themes';
+  Phone as PhoneIcon,
+} from "@mui/icons-material";
+import { useTheme } from "../../../context/ThemeContext";
+import { getThemeClasses, getComponentStyles } from "../../../styles/themes";
 
 const RecruiterDashboard = () => {
   const { theme } = useTheme();
@@ -58,7 +58,7 @@ const RecruiterDashboard = () => {
     interviewsScheduled: 23,
     hiredCandidates: 8,
     responseRate: 78,
-    avgTimeToHire: 18
+    avgTimeToHire: 18,
   };
 
   const recentJobs = [
@@ -71,7 +71,7 @@ const RecruiterDashboard = () => {
       postedDate: "2024-01-15",
       salary: "$120,000 - $150,000",
       location: "San Francisco, CA",
-      type: "Full-time"
+      type: "Full-time",
     },
     {
       id: 2,
@@ -82,7 +82,7 @@ const RecruiterDashboard = () => {
       postedDate: "2024-01-12",
       salary: "$130,000 - $160,000",
       location: "New York, NY",
-      type: "Full-time"
+      type: "Full-time",
     },
     {
       id: 3,
@@ -93,8 +93,8 @@ const RecruiterDashboard = () => {
       postedDate: "2024-01-10",
       salary: "$90,000 - $120,000",
       location: "Remote",
-      type: "Full-time"
-    }
+      type: "Full-time",
+    },
   ];
 
   const recentApplications = [
@@ -107,7 +107,7 @@ const RecruiterDashboard = () => {
       experience: "5 years",
       skills: ["React", "Node.js", "TypeScript"],
       rating: 4.5,
-      avatar: "/avatars/john.jpg"
+      avatar: "/avatars/john.jpg",
     },
     {
       id: 2,
@@ -118,7 +118,7 @@ const RecruiterDashboard = () => {
       experience: "7 years",
       skills: ["Product Strategy", "Analytics", "Agile"],
       rating: 4.8,
-      avatar: "/avatars/sarah.jpg"
+      avatar: "/avatars/sarah.jpg",
     },
     {
       id: 3,
@@ -129,8 +129,8 @@ const RecruiterDashboard = () => {
       experience: "4 years",
       skills: ["Figma", "User Research", "Prototyping"],
       rating: 4.3,
-      avatar: "/avatars/mike.jpg"
-    }
+      avatar: "/avatars/mike.jpg",
+    },
   ];
 
   const upcomingInterviews = [
@@ -142,7 +142,7 @@ const RecruiterDashboard = () => {
       time: "10:00 AM",
       type: "Technical Interview",
       interviewer: "Alex Wilson",
-      status: "Confirmed"
+      status: "Confirmed",
     },
     {
       id: 2,
@@ -152,7 +152,7 @@ const RecruiterDashboard = () => {
       time: "2:00 PM",
       type: "Panel Interview",
       interviewer: "Multiple",
-      status: "Pending"
+      status: "Pending",
     },
     {
       id: 3,
@@ -162,21 +162,30 @@ const RecruiterDashboard = () => {
       time: "11:00 AM",
       type: "Behavioral Interview",
       interviewer: "Lisa Brown",
-      status: "Confirmed"
-    }
+      status: "Confirmed",
+    },
   ];
 
   const getStatusColor = (status) => {
     switch (status.toLowerCase()) {
-      case 'active': return 'success';
-      case 'draft': return 'warning';
-      case 'closed': return 'error';
-      case 'interview scheduled': return 'info';
-      case 'under review': return 'warning';
-      case 'shortlisted': return 'success';
-      case 'confirmed': return 'success';
-      case 'pending': return 'warning';
-      default: return 'default';
+      case "active":
+        return "success";
+      case "draft":
+        return "warning";
+      case "closed":
+        return "error";
+      case "interview scheduled":
+        return "info";
+      case "under review":
+        return "warning";
+      case "shortlisted":
+        return "success";
+      case "confirmed":
+        return "success";
+      case "pending":
+        return "warning";
+      default:
+        return "default";
     }
   };
 
@@ -190,9 +199,7 @@ const RecruiterDashboard = () => {
               {title}
             </Typography>
           </Box>
-          {trend && (
-            <TrendingUpIcon sx={{ color: '#10B981' }} />
-          )}
+          {trend && <TrendingUpIcon sx={{ color: "#10B981" }} />}
         </Box>
         <Typography variant="h4" className={themeClasses.text} mb={0.5}>
           {value}
@@ -210,7 +217,12 @@ const RecruiterDashboard = () => {
       <Box mb={4}>
         <Box display="flex" justifyContent="between" alignItems="center" mb={2}>
           <Box>
-            <Typography variant="h4" component="h1" className={themeClasses.text} mb={1}>
+            <Typography
+              variant="h4"
+              component="h1"
+              className={themeClasses.text}
+              mb={1}
+            >
               Recruiter Dashboard
             </Typography>
             <Typography variant="body1" className={themeClasses.textSecondary}>
@@ -235,7 +247,8 @@ const RecruiterDashboard = () => {
 
         {/* Quick Actions Alert */}
         <Alert severity="info" sx={{ mb: 3 }}>
-          You have 3 pending interview confirmations and 2 new applications that need review.
+          You have 3 pending interview confirmations and 2 new applications that
+          need review.
         </Alert>
       </Box>
 
@@ -246,7 +259,7 @@ const RecruiterDashboard = () => {
             title="Active Jobs"
             value={dashboardStats.activeJobs}
             subtitle="Currently hiring"
-            icon={<WorkIcon sx={{ color: '#3B82F6' }} />}
+            icon={<WorkIcon sx={{ color: "#3B82F6" }} />}
             trend={true}
           />
         </Grid>
@@ -255,7 +268,7 @@ const RecruiterDashboard = () => {
             title="Applications"
             value={dashboardStats.totalApplications}
             subtitle="This month"
-            icon={<PeopleIcon sx={{ color: '#10B981' }} />}
+            icon={<PeopleIcon sx={{ color: "#10B981" }} />}
             trend={true}
           />
         </Grid>
@@ -264,7 +277,7 @@ const RecruiterDashboard = () => {
             title="Interviews"
             value={dashboardStats.interviewsScheduled}
             subtitle="Scheduled"
-            icon={<ScheduleIcon sx={{ color: '#F59E0B' }} />}
+            icon={<ScheduleIcon sx={{ color: "#F59E0B" }} />}
             trend={false}
           />
         </Grid>
@@ -273,7 +286,7 @@ const RecruiterDashboard = () => {
             title="Hired"
             value={dashboardStats.hiredCandidates}
             subtitle="This quarter"
-            icon={<CheckCircleIcon sx={{ color: '#8B5CF6' }} />}
+            icon={<CheckCircleIcon sx={{ color: "#8B5CF6" }} />}
             trend={true}
           />
         </Grid>
@@ -282,7 +295,7 @@ const RecruiterDashboard = () => {
             title="Response Rate"
             value={`${dashboardStats.responseRate}%`}
             subtitle="Application response"
-            icon={<AssessmentIcon sx={{ color: '#EF4444' }} />}
+            icon={<AssessmentIcon sx={{ color: "#EF4444" }} />}
             trend={true}
           />
         </Grid>
@@ -291,7 +304,7 @@ const RecruiterDashboard = () => {
             title="Time to Hire"
             value={`${dashboardStats.avgTimeToHire} days`}
             subtitle="Average"
-            icon={<ClockIcon sx={{ color: '#06B6D4' }} />}
+            icon={<ClockIcon sx={{ color: "#06B6D4" }} />}
             trend={false}
           />
         </Grid>
@@ -303,7 +316,12 @@ const RecruiterDashboard = () => {
         <Grid item xs={12} lg={8}>
           <Card className={themeClasses.surface}>
             <CardContent>
-              <Box display="flex" justifyContent="between" alignItems="center" mb={3}>
+              <Box
+                display="flex"
+                justifyContent="between"
+                alignItems="center"
+                mb={3}
+              >
                 <Typography variant="h6" className={themeClasses.text}>
                   Recent Job Postings
                 </Typography>
@@ -315,31 +333,57 @@ const RecruiterDashboard = () => {
                   View All
                 </Button>
               </Box>
-              
+
               {recentJobs.map((job) => (
                 <Paper
                   key={job.id}
                   className={themeClasses.background}
                   sx={{ p: 3, mb: 2, borderRadius: 2 }}
                 >
-                  <Box display="flex" justifyContent="between" alignItems="flex-start" mb={2}>
+                  <Box
+                    display="flex"
+                    justifyContent="between"
+                    alignItems="flex-start"
+                    mb={2}
+                  >
                     <Box>
-                      <Typography variant="h6" className={themeClasses.text} mb={0.5}>
+                      <Typography
+                        variant="h6"
+                        className={themeClasses.text}
+                        mb={0.5}
+                      >
                         {job.title}
                       </Typography>
-                      <Typography variant="body2" className={themeClasses.textSecondary} mb={1}>
-                        {job.department} • Posted on {new Date(job.postedDate).toLocaleDateString()}
+                      <Typography
+                        variant="body2"
+                        className={themeClasses.textSecondary}
+                        mb={1}
+                      >
+                        {job.department} • Posted on{" "}
+                        {new Date(job.postedDate).toLocaleDateString()}
                       </Typography>
                       <Box display="flex" alignItems="center" gap={2}>
                         <Box display="flex" alignItems="center">
-                          <LocationIcon sx={{ fontSize: 16, mr: 0.5 }} className={themeClasses.textSecondary} />
-                          <Typography variant="body2" className={themeClasses.textSecondary}>
+                          <LocationIcon
+                            sx={{ fontSize: 16, mr: 0.5 }}
+                            className={themeClasses.textSecondary}
+                          />
+                          <Typography
+                            variant="body2"
+                            className={themeClasses.textSecondary}
+                          >
                             {job.location}
                           </Typography>
                         </Box>
                         <Box display="flex" alignItems="center">
-                          <MoneyIcon sx={{ fontSize: 16, mr: 0.5 }} className={themeClasses.textSecondary} />
-                          <Typography variant="body2" className={themeClasses.textSecondary}>
+                          <MoneyIcon
+                            sx={{ fontSize: 16, mr: 0.5 }}
+                            className={themeClasses.textSecondary}
+                          />
+                          <Typography
+                            variant="body2"
+                            className={themeClasses.textSecondary}
+                          >
                             {job.salary}
                           </Typography>
                         </Box>
@@ -355,7 +399,10 @@ const RecruiterDashboard = () => {
                       <Typography variant="h6" className={themeClasses.text}>
                         {job.applications}
                       </Typography>
-                      <Typography variant="body2" className={themeClasses.textSecondary}>
+                      <Typography
+                        variant="body2"
+                        className={themeClasses.textSecondary}
+                      >
                         Applications
                       </Typography>
                     </Box>
@@ -387,7 +434,12 @@ const RecruiterDashboard = () => {
         <Grid item xs={12} lg={4}>
           <Card className={themeClasses.surface}>
             <CardContent>
-              <Box display="flex" justifyContent="between" alignItems="center" mb={3}>
+              <Box
+                display="flex"
+                justifyContent="between"
+                alignItems="center"
+                mb={3}
+              >
                 <Typography variant="h6" className={themeClasses.text}>
                   Upcoming Interviews
                 </Typography>
@@ -400,20 +452,30 @@ const RecruiterDashboard = () => {
                   Schedule
                 </Button>
               </Box>
-              
+
               <List>
                 {upcomingInterviews.map((interview, index) => (
                   <React.Fragment key={interview.id}>
                     <ListItem alignItems="flex-start" sx={{ px: 0 }}>
                       <ListItemAvatar>
                         <Avatar>
-                          {interview.candidateName.split(' ').map(n => n[0]).join('')}
+                          {interview.candidateName
+                            .split(" ")
+                            .map((n) => n[0])
+                            .join("")}
                         </Avatar>
                       </ListItemAvatar>
                       <ListItemText
                         primary={
-                          <Box display="flex" justifyContent="between" alignItems="center">
-                            <Typography variant="subtitle2" className={themeClasses.text}>
+                          <Box
+                            display="flex"
+                            justifyContent="between"
+                            alignItems="center"
+                          >
+                            <Typography
+                              variant="subtitle2"
+                              className={themeClasses.text}
+                            >
                               {interview.candidateName}
                             </Typography>
                             <Chip
@@ -425,10 +487,16 @@ const RecruiterDashboard = () => {
                         }
                         secondary={
                           <Box>
-                            <Typography variant="body2" className={themeClasses.textSecondary}>
+                            <Typography
+                              variant="body2"
+                              className={themeClasses.textSecondary}
+                            >
                               {interview.jobTitle}
                             </Typography>
-                            <Typography variant="body2" className={themeClasses.textSecondary}>
+                            <Typography
+                              variant="body2"
+                              className={themeClasses.textSecondary}
+                            >
                               {interview.date} at {interview.time}
                             </Typography>
                             <Typography variant="body2" color="primary">
@@ -450,7 +518,12 @@ const RecruiterDashboard = () => {
         <Grid item xs={12}>
           <Card className={themeClasses.surface}>
             <CardContent>
-              <Box display="flex" justifyContent="between" alignItems="center" mb={3}>
+              <Box
+                display="flex"
+                justifyContent="between"
+                alignItems="center"
+                mb={3}
+              >
                 <Typography variant="h6" className={themeClasses.text}>
                   Recent Applications
                 </Typography>
@@ -462,41 +535,59 @@ const RecruiterDashboard = () => {
                   View All Applications
                 </Button>
               </Box>
-              
+
               <Grid container spacing={2}>
                 {recentApplications.map((application) => (
                   <Grid item xs={12} md={4} key={application.id}>
                     <Paper
                       className={themeClasses.background}
-                      sx={{ p: 2, borderRadius: 2, height: '100%' }}
+                      sx={{ p: 2, borderRadius: 2, height: "100%" }}
                     >
                       <Box display="flex" alignItems="center" mb={2}>
                         <Avatar
                           src={application.avatar}
                           sx={{ width: 40, height: 40, mr: 2 }}
                         >
-                          {application.candidateName.split(' ').map(n => n[0]).join('')}
+                          {application.candidateName
+                            .split(" ")
+                            .map((n) => n[0])
+                            .join("")}
                         </Avatar>
                         <Box flex={1}>
-                          <Typography variant="subtitle2" className={themeClasses.text}>
+                          <Typography
+                            variant="subtitle2"
+                            className={themeClasses.text}
+                          >
                             {application.candidateName}
                           </Typography>
-                          <Typography variant="body2" className={themeClasses.textSecondary}>
+                          <Typography
+                            variant="body2"
+                            className={themeClasses.textSecondary}
+                          >
                             {application.experience} experience
                           </Typography>
                         </Box>
                         <Box display="flex" alignItems="center">
-                          <StarIcon sx={{ color: '#F59E0B', fontSize: 16, mr: 0.5 }} />
-                          <Typography variant="body2" className={themeClasses.text}>
+                          <StarIcon
+                            sx={{ color: "#F59E0B", fontSize: 16, mr: 0.5 }}
+                          />
+                          <Typography
+                            variant="body2"
+                            className={themeClasses.text}
+                          >
                             {application.rating}
                           </Typography>
                         </Box>
                       </Box>
-                      
-                      <Typography variant="body2" className={themeClasses.textSecondary} mb={1}>
+
+                      <Typography
+                        variant="body2"
+                        className={themeClasses.textSecondary}
+                        mb={1}
+                      >
                         Applied for: {application.jobTitle}
                       </Typography>
-                      
+
                       <Box display="flex" flexWrap="wrap" gap={0.5} mb={2}>
                         {application.skills.slice(0, 3).map((skill, index) => (
                           <Chip
@@ -507,18 +598,28 @@ const RecruiterDashboard = () => {
                           />
                         ))}
                       </Box>
-                      
-                      <Box display="flex" justifyContent="between" alignItems="center" mb={2}>
+
+                      <Box
+                        display="flex"
+                        justifyContent="between"
+                        alignItems="center"
+                        mb={2}
+                      >
                         <Chip
                           label={application.status}
                           color={getStatusColor(application.status)}
                           size="small"
                         />
-                        <Typography variant="body2" className={themeClasses.textSecondary}>
-                          {new Date(application.appliedDate).toLocaleDateString()}
+                        <Typography
+                          variant="body2"
+                          className={themeClasses.textSecondary}
+                        >
+                          {new Date(
+                            application.appliedDate
+                          ).toLocaleDateString()}
                         </Typography>
                       </Box>
-                      
+
                       <Box display="flex" gap={1}>
                         <Button
                           variant="contained"

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Box,
   Typography,
@@ -38,8 +38,8 @@ import {
   Badge,
   Tooltip,
   Stack,
-  Alert
-} from '@mui/material';
+  Alert,
+} from "@mui/material";
 import {
   Search as SearchIcon,
   Add as AddIcon,
@@ -59,30 +59,30 @@ import {
   AccessTime as TimeIcon,
   Event as EventIcon,
   Link as LinkIcon,
-  FileCopy as CopyIcon
-} from '@mui/icons-material';
-import { useTheme } from '../../../context/ThemeContext';
-import { getThemeClasses, getComponentStyles } from '../../../styles/themes';
+  FileCopy as CopyIcon,
+} from "@mui/icons-material";
+import { useTheme } from "../../../context/ThemeContext";
+import { getThemeClasses, getComponentStyles } from "../../../styles/themes";
 
 const InterviewScheduling = () => {
   const { theme } = useTheme();
   const themeClasses = getThemeClasses(theme);
   const componentStyles = getComponentStyles(theme);
-  
+
   const [activeTab, setActiveTab] = useState(0);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [filterStatus, setFilterStatus] = useState('all');
-  const [filterType, setFilterType] = useState('all');
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filterStatus, setFilterStatus] = useState("all");
+  const [filterType, setFilterType] = useState("all");
   const [scheduleDialog, setScheduleDialog] = useState(false);
 
   const [newInterview, setNewInterview] = useState({
-    candidateId: '',
-    type: 'video',
+    candidateId: "",
+    type: "video",
     date: new Date(),
     duration: 60,
     interviewers: [],
-    location: '',
-    notes: ''
+    location: "",
+    notes: "",
   });
 
   // Mock data
@@ -99,13 +99,13 @@ const InterviewScheduling = () => {
       status: "scheduled",
       interviewers: [
         { id: 1, name: "Alice Johnson", role: "Tech Lead" },
-        { id: 2, name: "Bob Wilson", role: "Senior Developer" }
+        { id: 2, name: "Bob Wilson", role: "Senior Developer" },
       ],
       meetingLink: "https://meet.google.com/abc-defg-hij",
       location: "Online",
       stage: "Technical Interview",
       notes: "Focus on React, TypeScript, and system design",
-      feedback: null
+      feedback: null,
     },
     {
       id: 2,
@@ -117,9 +117,7 @@ const InterviewScheduling = () => {
       duration: 45,
       type: "phone",
       status: "completed",
-      interviewers: [
-        { id: 3, name: "Carol Davis", role: "PM Director" }
-      ],
+      interviewers: [{ id: 3, name: "Carol Davis", role: "PM Director" }],
       meetingLink: null,
       location: "Phone Call",
       stage: "Initial Screening",
@@ -127,8 +125,8 @@ const InterviewScheduling = () => {
       feedback: {
         rating: 4.5,
         summary: "Strong product sense and leadership experience",
-        decision: "proceed"
-      }
+        decision: "proceed",
+      },
     },
     {
       id: 3,
@@ -142,13 +140,13 @@ const InterviewScheduling = () => {
       status: "scheduled",
       interviewers: [
         { id: 4, name: "Diana Lee", role: "Design Lead" },
-        { id: 5, name: "Eric Brown", role: "Product Designer" }
+        { id: 5, name: "Eric Brown", role: "Product Designer" },
       ],
       meetingLink: null,
       location: "Conference Room A",
       stage: "Design Challenge",
       notes: "Portfolio review and design exercise",
-      feedback: null
+      feedback: null,
     },
     {
       id: 4,
@@ -160,22 +158,20 @@ const InterviewScheduling = () => {
       duration: 60,
       type: "video",
       status: "cancelled",
-      interviewers: [
-        { id: 6, name: "Frank Miller", role: "DevOps Lead" }
-      ],
+      interviewers: [{ id: 6, name: "Frank Miller", role: "DevOps Lead" }],
       meetingLink: "https://meet.google.com/xyz-uvwx-rst",
       location: "Online",
       stage: "Technical Interview",
       notes: "Infrastructure and automation focus",
-      feedback: null
-    }
+      feedback: null,
+    },
   ];
 
   const candidates = [
     { id: 1, name: "John Smith", jobTitle: "Senior React Developer" },
     { id: 2, name: "Sarah Johnson", jobTitle: "Product Manager" },
     { id: 3, name: "Mike Chen", jobTitle: "UX Designer" },
-    { id: 4, name: "Emma Davis", jobTitle: "DevOps Engineer" }
+    { id: 4, name: "Emma Davis", jobTitle: "DevOps Engineer" },
   ];
 
   const interviewers = [
@@ -184,25 +180,34 @@ const InterviewScheduling = () => {
     { id: 3, name: "Carol Davis", role: "PM Director" },
     { id: 4, name: "Diana Lee", role: "Design Lead" },
     { id: 5, name: "Eric Brown", role: "Product Designer" },
-    { id: 6, name: "Frank Miller", role: "DevOps Lead" }
+    { id: 6, name: "Frank Miller", role: "DevOps Lead" },
   ];
 
   const getStatusColor = (status) => {
     switch (status.toLowerCase()) {
-      case 'scheduled': return 'info';
-      case 'completed': return 'success';
-      case 'cancelled': return 'error';
-      case 'rescheduled': return 'warning';
-      default: return 'default';
+      case "scheduled":
+        return "info";
+      case "completed":
+        return "success";
+      case "cancelled":
+        return "error";
+      case "rescheduled":
+        return "warning";
+      default:
+        return "default";
     }
   };
 
   const getTypeIcon = (type) => {
     switch (type) {
-      case 'video': return <VideoCallIcon />;
-      case 'phone': return <PhoneIcon />;
-      case 'in-person': return <PersonIcon />;
-      default: return <ScheduleIcon />;
+      case "video":
+        return <VideoCallIcon />;
+      case "phone":
+        return <PhoneIcon />;
+      case "in-person":
+        return <PersonIcon />;
+      default:
+        return <ScheduleIcon />;
     }
   };
 
@@ -211,11 +216,16 @@ const InterviewScheduling = () => {
   };
 
   const formatTime = (dateString) => {
-    return new Date(dateString).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    return new Date(dateString).toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
   };
 
   const InterviewCard = ({ interview }) => (
-    <Card className={`${themeClasses.surface} hover:shadow-lg transition-all duration-300`}>
+    <Card
+      className={`${themeClasses.surface} hover:shadow-lg transition-all duration-300`}
+    >
       <CardContent>
         <Box display="flex" justifyContent="between" alignItems="start" mb={2}>
           <Box display="flex" alignItems="center" flex={1}>
@@ -223,16 +233,25 @@ const InterviewScheduling = () => {
               src={interview.candidateAvatar}
               sx={{ width: 48, height: 48, mr: 2 }}
             >
-              {interview.candidateName.split(' ').map(n => n[0]).join('')}
+              {interview.candidateName
+                .split(" ")
+                .map((n) => n[0])
+                .join("")}
             </Avatar>
             <Box>
               <Typography variant="h6" className={themeClasses.text}>
                 {interview.candidateName}
               </Typography>
-              <Typography variant="body2" className={themeClasses.textSecondary}>
+              <Typography
+                variant="body2"
+                className={themeClasses.textSecondary}
+              >
                 {interview.jobTitle}
               </Typography>
-              <Typography variant="body2" className={themeClasses.textSecondary}>
+              <Typography
+                variant="body2"
+                className={themeClasses.textSecondary}
+              >
                 {interview.stage}
               </Typography>
             </Box>
@@ -258,20 +277,33 @@ const InterviewScheduling = () => {
         <Grid container spacing={2} mb={2}>
           <Grid item xs={12}>
             <Box display="flex" alignItems="center" mb={1}>
-              <CalendarIcon sx={{ fontSize: 16, mr: 1 }} className={themeClasses.textSecondary} />
+              <CalendarIcon
+                sx={{ fontSize: 16, mr: 1 }}
+                className={themeClasses.textSecondary}
+              />
               <Typography variant="body2" className={themeClasses.text}>
                 {formatDate(interview.date)} at {formatTime(interview.date)}
               </Typography>
             </Box>
             <Box display="flex" alignItems="center" mb={1}>
-              <TimeIcon sx={{ fontSize: 16, mr: 1 }} className={themeClasses.textSecondary} />
-              <Typography variant="body2" className={themeClasses.textSecondary}>
+              <TimeIcon
+                sx={{ fontSize: 16, mr: 1 }}
+                className={themeClasses.textSecondary}
+              />
+              <Typography
+                variant="body2"
+                className={themeClasses.textSecondary}
+              >
                 Duration: {interview.duration} minutes
               </Typography>
             </Box>
             <Box display="flex" alignItems="center" mb={1}>
               {getTypeIcon(interview.type)}
-              <Typography variant="body2" className={themeClasses.textSecondary} ml={1}>
+              <Typography
+                variant="body2"
+                className={themeClasses.textSecondary}
+                ml={1}
+              >
                 {interview.location}
               </Typography>
             </Box>
@@ -296,7 +328,11 @@ const InterviewScheduling = () => {
 
         {interview.notes && (
           <Box mb={2}>
-            <Typography variant="subtitle2" className={themeClasses.text} mb={1}>
+            <Typography
+              variant="subtitle2"
+              className={themeClasses.text}
+              mb={1}
+            >
               Notes:
             </Typography>
             <Typography variant="body2" className={themeClasses.textSecondary}>
@@ -310,14 +346,15 @@ const InterviewScheduling = () => {
             <Alert severity="success" sx={{ mb: 1 }}>
               <Typography variant="subtitle2">Feedback Available</Typography>
               <Typography variant="body2">
-                Rating: {interview.feedback.rating}/5 - {interview.feedback.summary}
+                Rating: {interview.feedback.rating}/5 -{" "}
+                {interview.feedback.summary}
               </Typography>
             </Alert>
           </Box>
         )}
 
         <Box display="flex" gap={1} flexWrap="wrap">
-          {interview.status === 'scheduled' && (
+          {interview.status === "scheduled" && (
             <>
               {interview.meetingLink && (
                 <Button
@@ -325,21 +362,17 @@ const InterviewScheduling = () => {
                   size="small"
                   startIcon={<LinkIcon />}
                   sx={componentStyles.button}
-                  onClick={() => window.open(interview.meetingLink, '_blank')}
+                  onClick={() => window.open(interview.meetingLink, "_blank")}
                 >
                   Join Meeting
                 </Button>
               )}
-              <Button
-                variant="outlined"
-                size="small"
-                startIcon={<EmailIcon />}
-              >
+              <Button variant="outlined" size="small" startIcon={<EmailIcon />}>
                 Send Reminder
               </Button>
             </>
           )}
-          {interview.status === 'completed' && !interview.feedback && (
+          {interview.status === "completed" && !interview.feedback && (
             <Button
               variant="contained"
               size="small"
@@ -349,11 +382,7 @@ const InterviewScheduling = () => {
               Add Feedback
             </Button>
           )}
-          <Button
-            variant="outlined"
-            size="small"
-            startIcon={<CopyIcon />}
-          >
+          <Button variant="outlined" size="small" startIcon={<CopyIcon />}>
             Copy Details
           </Button>
         </Box>
@@ -365,11 +394,11 @@ const InterviewScheduling = () => {
     <TableRow hover>
       <TableCell>
         <Box display="flex" alignItems="center">
-          <Avatar
-            src={interview.candidateAvatar}
-            sx={{ mr: 2 }}
-          >
-            {interview.candidateName.split(' ').map(n => n[0]).join('')}
+          <Avatar src={interview.candidateAvatar} sx={{ mr: 2 }}>
+            {interview.candidateName
+              .split(" ")
+              .map((n) => n[0])
+              .join("")}
           </Avatar>
           <Box>
             <Typography variant="subtitle2" className={themeClasses.text}>
@@ -394,7 +423,11 @@ const InterviewScheduling = () => {
       <TableCell>
         <Box display="flex" alignItems="center">
           {getTypeIcon(interview.type)}
-          <Typography variant="body2" className={themeClasses.textSecondary} ml={1}>
+          <Typography
+            variant="body2"
+            className={themeClasses.textSecondary}
+            ml={1}
+          >
             {interview.type}
           </Typography>
         </Box>
@@ -410,14 +443,20 @@ const InterviewScheduling = () => {
       <TableCell>
         <Stack direction="row" spacing={0.5}>
           {interview.interviewers.slice(0, 2).map((interviewer) => (
-            <Tooltip key={interviewer.id} title={`${interviewer.name} (${interviewer.role})`}>
+            <Tooltip
+              key={interviewer.id}
+              title={`${interviewer.name} (${interviewer.role})`}
+            >
               <Avatar sx={{ width: 24, height: 24 }}>
-                {interviewer.name.split(' ').map(n => n[0]).join('')}
+                {interviewer.name
+                  .split(" ")
+                  .map((n) => n[0])
+                  .join("")}
               </Avatar>
             </Tooltip>
           ))}
           {interview.interviewers.length > 2 && (
-            <Avatar sx={{ width: 24, height: 24, bgcolor: 'grey.400' }}>
+            <Avatar sx={{ width: 24, height: 24, bgcolor: "grey.400" }}>
               +{interview.interviewers.length - 2}
             </Avatar>
           )}
@@ -429,10 +468,10 @@ const InterviewScheduling = () => {
             <EditIcon />
           </IconButton>
           {interview.meetingLink && (
-            <IconButton 
-              size="small" 
+            <IconButton
+              size="small"
               color="primary"
-              onClick={() => window.open(interview.meetingLink, '_blank')}
+              onClick={() => window.open(interview.meetingLink, "_blank")}
             >
               <LinkIcon />
             </IconButton>
@@ -461,7 +500,12 @@ const InterviewScheduling = () => {
                 <InputLabel>Candidate</InputLabel>
                 <Select
                   value={newInterview.candidateId}
-                  onChange={(e) => setNewInterview({ ...newInterview, candidateId: e.target.value })}
+                  onChange={(e) =>
+                    setNewInterview({
+                      ...newInterview,
+                      candidateId: e.target.value,
+                    })
+                  }
                 >
                   {candidates.map((candidate) => (
                     <MenuItem key={candidate.id} value={candidate.id}>
@@ -471,13 +515,15 @@ const InterviewScheduling = () => {
                 </Select>
               </FormControl>
             </Grid>
-            
+
             <Grid item xs={12} md={6}>
               <FormControl fullWidth sx={componentStyles.textField}>
                 <InputLabel>Interview Type</InputLabel>
                 <Select
                   value={newInterview.type}
-                  onChange={(e) => setNewInterview({ ...newInterview, type: e.target.value })}
+                  onChange={(e) =>
+                    setNewInterview({ ...newInterview, type: e.target.value })
+                  }
                 >
                   <MenuItem value="video">Video Call</MenuItem>
                   <MenuItem value="phone">Phone Call</MenuItem>
@@ -485,13 +531,18 @@ const InterviewScheduling = () => {
                 </Select>
               </FormControl>
             </Grid>
-            
+
             <Grid item xs={12} md={6}>
               <FormControl fullWidth sx={componentStyles.textField}>
                 <InputLabel>Duration (minutes)</InputLabel>
                 <Select
                   value={newInterview.duration}
-                  onChange={(e) => setNewInterview({ ...newInterview, duration: e.target.value })}
+                  onChange={(e) =>
+                    setNewInterview({
+                      ...newInterview,
+                      duration: e.target.value,
+                    })
+                  }
                 >
                   <MenuItem value={30}>30 minutes</MenuItem>
                   <MenuItem value={45}>45 minutes</MenuItem>
@@ -501,41 +552,59 @@ const InterviewScheduling = () => {
                 </Select>
               </FormControl>
             </Grid>
-            
+
             <Grid item xs={12}>
               <TextField
                 fullWidth
                 label="Interview Date & Time"
                 type="datetime-local"
-                value={newInterview.date ? newInterview.date.toISOString().slice(0, 16) : ''}
-                onChange={(e) => setNewInterview({ ...newInterview, date: new Date(e.target.value) })}
+                value={
+                  newInterview.date
+                    ? newInterview.date.toISOString().slice(0, 16)
+                    : ""
+                }
+                onChange={(e) =>
+                  setNewInterview({
+                    ...newInterview,
+                    date: new Date(e.target.value),
+                  })
+                }
                 sx={componentStyles.textField}
                 InputLabelProps={{
                   shrink: true,
                 }}
               />
             </Grid>
-            
+
             <Grid item xs={12}>
               <TextField
                 fullWidth
                 label="Location/Meeting Link"
                 value={newInterview.location}
-                onChange={(e) => setNewInterview({ ...newInterview, location: e.target.value })}
+                onChange={(e) =>
+                  setNewInterview({ ...newInterview, location: e.target.value })
+                }
                 placeholder="Conference room or video call link"
                 sx={componentStyles.textField}
               />
             </Grid>
-            
+
             <Grid item xs={12}>
               <FormControl fullWidth sx={componentStyles.textField}>
                 <InputLabel>Interviewers</InputLabel>
                 <Select
                   multiple
                   value={newInterview.interviewers}
-                  onChange={(e) => setNewInterview({ ...newInterview, interviewers: e.target.value })}
-                  renderValue={(selected) => 
-                    selected.map(id => interviewers.find(i => i.id === id)?.name).join(', ')
+                  onChange={(e) =>
+                    setNewInterview({
+                      ...newInterview,
+                      interviewers: e.target.value,
+                    })
+                  }
+                  renderValue={(selected) =>
+                    selected
+                      .map((id) => interviewers.find((i) => i.id === id)?.name)
+                      .join(", ")
                   }
                 >
                   {interviewers.map((interviewer) => (
@@ -546,7 +615,7 @@ const InterviewScheduling = () => {
                 </Select>
               </FormControl>
             </Grid>
-            
+
             <Grid item xs={12}>
               <TextField
                 fullWidth
@@ -554,7 +623,9 @@ const InterviewScheduling = () => {
                 rows={3}
                 label="Notes"
                 value={newInterview.notes}
-                onChange={(e) => setNewInterview({ ...newInterview, notes: e.target.value })}
+                onChange={(e) =>
+                  setNewInterview({ ...newInterview, notes: e.target.value })
+                }
                 placeholder="Interview focus areas, preparation notes..."
                 sx={componentStyles.textField}
               />
@@ -571,18 +642,22 @@ const InterviewScheduling = () => {
     </Dialog>
   );
 
-  const filteredInterviews = interviews.filter(interview => {
-    const matchesSearch = interview.candidateName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         interview.jobTitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         interview.stage.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesStatus = filterStatus === 'all' || interview.status === filterStatus;
-    const matchesType = filterType === 'all' || interview.type === filterType;
+  const filteredInterviews = interviews.filter((interview) => {
+    const matchesSearch =
+      interview.candidateName
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase()) ||
+      interview.jobTitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      interview.stage.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesStatus =
+      filterStatus === "all" || interview.status === filterStatus;
+    const matchesType = filterType === "all" || interview.type === filterType;
     return matchesSearch && matchesStatus && matchesType;
   });
 
   const tabConfig = [
-    { label: 'Card View', icon: <ScheduleIcon /> },
-    { label: 'Table View', icon: <CalendarIcon /> }
+    { label: "Card View", icon: <ScheduleIcon /> },
+    { label: "Table View", icon: <CalendarIcon /> },
   ];
 
   return (
@@ -591,7 +666,12 @@ const InterviewScheduling = () => {
       <Box mb={4}>
         <Box display="flex" justifyContent="between" alignItems="center" mb={2}>
           <Box>
-            <Typography variant="h4" component="h1" className={themeClasses.text} mb={1}>
+            <Typography
+              variant="h4"
+              component="h1"
+              className={themeClasses.text}
+              mb={1}
+            >
               Interview Scheduling
             </Typography>
             <Typography variant="body1" className={themeClasses.textSecondary}>
@@ -614,12 +694,18 @@ const InterviewScheduling = () => {
             <Card className={themeClasses.surface}>
               <CardContent>
                 <Box display="flex" alignItems="center">
-                  <ScheduleIcon sx={{ color: '#3B82F6', mr: 2 }} />
+                  <ScheduleIcon sx={{ color: "#3B82F6", mr: 2 }} />
                   <Box>
                     <Typography variant="h6" className={themeClasses.text}>
-                      {interviews.filter(i => i.status === 'scheduled').length}
+                      {
+                        interviews.filter((i) => i.status === "scheduled")
+                          .length
+                      }
                     </Typography>
-                    <Typography variant="body2" className={themeClasses.textSecondary}>
+                    <Typography
+                      variant="body2"
+                      className={themeClasses.textSecondary}
+                    >
                       Scheduled
                     </Typography>
                   </Box>
@@ -631,12 +717,18 @@ const InterviewScheduling = () => {
             <Card className={themeClasses.surface}>
               <CardContent>
                 <Box display="flex" alignItems="center">
-                  <CheckIcon sx={{ color: '#10B981', mr: 2 }} />
+                  <CheckIcon sx={{ color: "#10B981", mr: 2 }} />
                   <Box>
                     <Typography variant="h6" className={themeClasses.text}>
-                      {interviews.filter(i => i.status === 'completed').length}
+                      {
+                        interviews.filter((i) => i.status === "completed")
+                          .length
+                      }
                     </Typography>
-                    <Typography variant="body2" className={themeClasses.textSecondary}>
+                    <Typography
+                      variant="body2"
+                      className={themeClasses.textSecondary}
+                    >
                       Completed
                     </Typography>
                   </Box>
@@ -648,12 +740,15 @@ const InterviewScheduling = () => {
             <Card className={themeClasses.surface}>
               <CardContent>
                 <Box display="flex" alignItems="center">
-                  <VideoCallIcon sx={{ color: '#8B5CF6', mr: 2 }} />
+                  <VideoCallIcon sx={{ color: "#8B5CF6", mr: 2 }} />
                   <Box>
                     <Typography variant="h6" className={themeClasses.text}>
-                      {interviews.filter(i => i.type === 'video').length}
+                      {interviews.filter((i) => i.type === "video").length}
                     </Typography>
-                    <Typography variant="body2" className={themeClasses.textSecondary}>
+                    <Typography
+                      variant="body2"
+                      className={themeClasses.textSecondary}
+                    >
                       Video Calls
                     </Typography>
                   </Box>
@@ -665,12 +760,22 @@ const InterviewScheduling = () => {
             <Card className={themeClasses.surface}>
               <CardContent>
                 <Box display="flex" alignItems="center">
-                  <CalendarIcon sx={{ color: '#F59E0B', mr: 2 }} />
+                  <CalendarIcon sx={{ color: "#F59E0B", mr: 2 }} />
                   <Box>
                     <Typography variant="h6" className={themeClasses.text}>
-                      {interviews.filter(i => new Date(i.date) > new Date() && new Date(i.date) < new Date(Date.now() + 7*24*60*60*1000)).length}
+                      {
+                        interviews.filter(
+                          (i) =>
+                            new Date(i.date) > new Date() &&
+                            new Date(i.date) <
+                              new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+                        ).length
+                      }
                     </Typography>
-                    <Typography variant="body2" className={themeClasses.textSecondary}>
+                    <Typography
+                      variant="body2"
+                      className={themeClasses.textSecondary}
+                    >
                       This Week
                     </Typography>
                   </Box>
@@ -741,12 +846,12 @@ const InterviewScheduling = () => {
           value={activeTab}
           onChange={(e, newValue) => setActiveTab(newValue)}
           sx={{
-            '& .MuiTab-root': {
-              minHeight: '48px',
+            "& .MuiTab-root": {
+              minHeight: "48px",
               color: themeClasses.textSecondary,
             },
-            '& .Mui-selected': {
-              color: '#3B82F6 !important',
+            "& .Mui-selected": {
+              color: "#3B82F6 !important",
             },
           }}
         >

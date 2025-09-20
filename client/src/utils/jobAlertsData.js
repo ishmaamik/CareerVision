@@ -11,23 +11,23 @@ export const jobAlertPreferences = {
     industries: ["Technology", "Finance", "Healthcare"],
     skills: ["React", "Node.js", "Python", "AWS", "System Design"],
     companyTypes: ["Startup", "Tech Giant", "Scale-up"],
-    companySizes: ["51-200", "201-1000", "1000+"]
+    companySizes: ["51-200", "201-1000", "1000+"],
   },
   notificationSettings: {
     email: {
       enabled: true,
       frequency: "daily", // daily, weekly, instant
-      time: "09:00"
+      time: "09:00",
     },
     push: {
       enabled: true,
       instant: true,
-      summary: true
+      summary: true,
     },
     sms: {
       enabled: false,
-      urgentOnly: true
-    }
+      urgentOnly: true,
+    },
   },
   savedSearches: [
     {
@@ -36,32 +36,32 @@ export const jobAlertPreferences = {
       query: "Senior React Developer",
       filters: {
         jobType: "Full-time",
-        experience: "Senior", 
+        experience: "Senior",
         location: "San Francisco",
         remote: true,
-        salary: { min: 120000, max: 180000 }
+        salary: { min: 120000, max: 180000 },
       },
       alertFrequency: "daily",
       isActive: true,
       createdAt: "2024-01-15T10:00:00Z",
       lastTriggered: "2024-01-20T09:00:00Z",
-      matchCount: 12
+      matchCount: 12,
     },
     {
-      id: "search_002", 
+      id: "search_002",
       name: "Remote Python Jobs",
       query: "Python Developer Remote",
       filters: {
         jobType: "Full-time",
         skills: ["Python", "Django", "FastAPI"],
         remote: true,
-        experience: "Mid-level"
+        experience: "Mid-level",
       },
       alertFrequency: "weekly",
       isActive: true,
       createdAt: "2024-01-10T14:30:00Z",
       lastTriggered: "2024-01-18T09:00:00Z",
-      matchCount: 8
+      matchCount: 8,
     },
     {
       id: "search_003",
@@ -71,15 +71,15 @@ export const jobAlertPreferences = {
         companyType: "Startup",
         location: "New York",
         experience: ["Mid-level", "Senior"],
-        industries: ["Technology", "FinTech"]
+        industries: ["Technology", "FinTech"],
       },
       alertFrequency: "instant",
       isActive: false,
       createdAt: "2024-01-05T16:45:00Z",
       lastTriggered: "2024-01-12T11:30:00Z",
-      matchCount: 5
-    }
-  ]
+      matchCount: 5,
+    },
+  ],
 };
 
 export const recentAlerts = [
@@ -102,10 +102,10 @@ export const recentAlerts = [
         logo: "/company-logos/techcorp.png",
         matchScore: 95,
         isNew: true,
-        tags: ["React", "TypeScript", "Node.js", "AWS"]
+        tags: ["React", "TypeScript", "Node.js", "AWS"],
       },
       {
-        id: "job_102", 
+        id: "job_102",
         title: "Senior Frontend Engineer",
         company: "InnovateLabs",
         location: "San Francisco, CA",
@@ -116,13 +116,13 @@ export const recentAlerts = [
         logo: "/company-logos/innovatelabs.png",
         matchScore: 88,
         isNew: true,
-        tags: ["React", "Vue.js", "JavaScript", "GraphQL"]
+        tags: ["React", "Vue.js", "JavaScript", "GraphQL"],
       },
       {
         id: "job_103",
         title: "Lead React Developer",
         company: "StartupXYZ",
-        location: "San Francisco, CA", 
+        location: "San Francisco, CA",
         salary: "$150,000 - $180,000",
         type: "Full-time",
         remote: false,
@@ -130,11 +130,11 @@ export const recentAlerts = [
         logo: "/company-logos/startupxyz.png",
         matchScore: 92,
         isNew: true,
-        tags: ["React", "Leadership", "Mentoring", "Architecture"]
-      }
+        tags: ["React", "Leadership", "Mentoring", "Architecture"],
+      },
     ],
     status: "unread",
-    priority: "high"
+    priority: "high",
   },
   {
     id: "alert_002",
@@ -145,7 +145,7 @@ export const recentAlerts = [
     jobs: [
       {
         id: "job_201",
-        title: "Python Backend Developer", 
+        title: "Python Backend Developer",
         company: "CloudTech Solutions",
         location: "Remote",
         salary: "$90,000 - $120,000",
@@ -155,25 +155,25 @@ export const recentAlerts = [
         logo: "/company-logos/cloudtech.png",
         matchScore: 85,
         isNew: false,
-        tags: ["Python", "Django", "PostgreSQL", "Docker"]
+        tags: ["Python", "Django", "PostgreSQL", "Docker"],
       },
       {
         id: "job_202",
         title: "Senior Python Engineer",
         company: "DataFlow Inc.",
         location: "Remote",
-        salary: "$110,000 - $140,000", 
+        salary: "$110,000 - $140,000",
         type: "Full-time",
         remote: true,
         posted: "2024-01-17T11:45:00Z",
         logo: "/company-logos/dataflow.png",
         matchScore: 90,
         isNew: false,
-        tags: ["Python", "FastAPI", "Machine Learning", "AWS"]
-      }
+        tags: ["Python", "FastAPI", "Machine Learning", "AWS"],
+      },
     ],
     status: "read",
-    priority: "medium"
+    priority: "medium",
   },
   {
     id: "alert_003",
@@ -188,18 +188,18 @@ export const recentAlerts = [
         company: "FinanceApp Corp",
         location: "New York, NY",
         salary: "$125,000 - $155,000",
-        type: "Full-time", 
+        type: "Full-time",
         remote: true,
         posted: "2024-01-17T13:00:00Z",
         logo: "/company-logos/financeapp.png",
         matchScore: 87,
         isNew: false,
-        tags: ["React", "Redux", "TypeScript", "Testing"]
-      }
+        tags: ["React", "Redux", "TypeScript", "Testing"],
+      },
     ],
     status: "read",
-    priority: "medium"
-  }
+    priority: "medium",
+  },
 ];
 
 export const alertStatistics = {
@@ -212,13 +212,13 @@ export const alertStatistics = {
     alertsSent: 5,
     jobsFound: 18,
     newCompanies: 8,
-    applicationsSent: 3
+    applicationsSent: 3,
   },
   lastMonth: {
     alertsSent: 23,
     jobsFound: 84,
     newCompanies: 32,
-    applicationsSent: 12
+    applicationsSent: 12,
   },
   topSkillsInDemand: [
     { skill: "React", count: 28, trend: "up" },
@@ -226,14 +226,14 @@ export const alertStatistics = {
     { skill: "TypeScript", count: 19, trend: "up" },
     { skill: "Node.js", count: 17, trend: "stable" },
     { skill: "AWS", count: 15, trend: "up" },
-    { skill: "Docker", count: 12, trend: "stable" }
+    { skill: "Docker", count: 12, trend: "stable" },
   ],
   topCompanies: [
     { company: "TechCorp Inc.", jobCount: 5, avgSalary: 155000 },
     { company: "InnovateLabs", jobCount: 4, avgSalary: 145000 },
     { company: "CloudTech Solutions", jobCount: 3, avgSalary: 105000 },
-    { company: "DataFlow Inc.", jobCount: 3, avgSalary: 125000 }
-  ]
+    { company: "DataFlow Inc.", jobCount: 3, avgSalary: 125000 },
+  ],
 };
 
 export const recommendedJobs = [
@@ -252,32 +252,33 @@ export const recommendedJobs = [
       "Strong match for React skills",
       "Salary within your range",
       "Remote work available",
-      "Senior level experience required"
+      "Senior level experience required",
     ],
     tags: ["React", "Node.js", "TypeScript", "MongoDB", "AWS"],
-    description: "Join our team to build cutting-edge web applications using modern technologies. We're looking for a senior developer who can lead frontend development while contributing to backend systems.",
+    description:
+      "Join our team to build cutting-edge web applications using modern technologies. We're looking for a senior developer who can lead frontend development while contributing to backend systems.",
     requirements: [
       "5+ years of React development experience",
-      "Strong TypeScript skills", 
+      "Strong TypeScript skills",
       "Experience with Node.js and Express",
       "Cloud platform experience (AWS preferred)",
-      "Leadership and mentoring experience"
+      "Leadership and mentoring experience",
     ],
     benefits: [
       "Competitive salary and equity",
       "Flexible remote work",
       "Professional development budget",
       "Health, dental, and vision insurance",
-      "401k with company matching"
+      "401k with company matching",
     ],
     recommended: true,
-    urgent: false
+    urgent: false,
   },
   {
     id: "rec_002",
     title: "Principal Software Engineer",
     company: "AI Innovations Lab",
-    location: "San Francisco, CA", 
+    location: "San Francisco, CA",
     salary: "$170,000 - $220,000",
     type: "Full-time",
     remote: true,
@@ -288,26 +289,33 @@ export const recommendedJobs = [
       "Leadership role matches your experience",
       "High salary range",
       "Cutting-edge technology focus",
-      "Remote work option"
+      "Remote work option",
     ],
-    tags: ["Python", "Machine Learning", "React", "System Architecture", "Leadership"],
-    description: "Lead our engineering team in developing next-generation AI-powered applications. This role combines technical leadership with hands-on development.",
+    tags: [
+      "Python",
+      "Machine Learning",
+      "React",
+      "System Architecture",
+      "Leadership",
+    ],
+    description:
+      "Lead our engineering team in developing next-generation AI-powered applications. This role combines technical leadership with hands-on development.",
     requirements: [
       "8+ years of software development experience",
       "Strong background in Python and ML frameworks",
       "Experience leading engineering teams",
       "System design and architecture experience",
-      "Frontend development skills (React preferred)"
+      "Frontend development skills (React preferred)",
     ],
     benefits: [
       "Exceptional compensation package",
       "Stock options with high growth potential",
       "Flexible work arrangements",
       "Learning and development opportunities",
-      "Comprehensive health benefits"
+      "Comprehensive health benefits",
     ],
     recommended: true,
-    urgent: true
+    urgent: true,
   },
   {
     id: "rec_003",
@@ -318,33 +326,34 @@ export const recommendedJobs = [
     type: "Full-time",
     remote: false,
     posted: "2024-01-19T11:15:00Z",
-    logo: "/company-logos/ecommerce.png", 
+    logo: "/company-logos/ecommerce.png",
     matchScore: 82,
     matchReasons: [
       "Perfect React skill match",
       "Good salary range",
       "Growing company",
-      "E-commerce experience valuable"
+      "E-commerce experience valuable",
     ],
     tags: ["React", "Redux", "JavaScript", "CSS", "Testing"],
-    description: "Join our frontend team to create exceptional user experiences for millions of customers. Focus on React development with opportunities to work on mobile apps.",
+    description:
+      "Join our frontend team to create exceptional user experiences for millions of customers. Focus on React development with opportunities to work on mobile apps.",
     requirements: [
       "3+ years of React development",
       "Strong JavaScript and CSS skills",
       "Experience with state management (Redux/Context)",
       "Testing experience (Jest, Cypress)",
-      "E-commerce or consumer-facing app experience"
+      "E-commerce or consumer-facing app experience",
     ],
     benefits: [
       "Competitive salary",
       "Stock options",
       "Health and wellness programs",
       "Career growth opportunities",
-      "Modern office and equipment"
+      "Modern office and equipment",
     ],
     recommended: false,
-    urgent: false
-  }
+    urgent: false,
+  },
 ];
 
 export const notificationTemplates = [
@@ -353,22 +362,22 @@ export const notificationTemplates = [
     name: "Daily Job Digest",
     subject: "Your Daily Job Alert - {{jobCount}} New Opportunities",
     preview: "{{jobCount}} new jobs matching your preferences",
-    frequency: "daily"
+    frequency: "daily",
   },
   {
     id: "instant_match",
     name: "Instant Job Match",
     subject: "Perfect Job Match Found! {{jobTitle}} at {{company}}",
     preview: "{{matchScore}}% match for {{jobTitle}}",
-    frequency: "instant"
+    frequency: "instant",
   },
   {
     id: "weekly_summary",
     name: "Weekly Job Summary",
     subject: "Weekly Job Market Update - {{jobCount}} Opportunities",
     preview: "This week's job market insights and opportunities",
-    frequency: "weekly"
-  }
+    frequency: "weekly",
+  },
 ];
 
 export const alertFilters = {
@@ -377,28 +386,28 @@ export const alertFilters = {
     { value: "part-time", label: "Part-time", count: 45 },
     { value: "contract", label: "Contract", count: 67 },
     { value: "freelance", label: "Freelance", count: 23 },
-    { value: "internship", label: "Internship", count: 12 }
+    { value: "internship", label: "Internship", count: 12 },
   ],
   experienceLevels: [
     { value: "entry", label: "Entry Level", count: 89 },
     { value: "mid", label: "Mid Level", count: 156 },
     { value: "senior", label: "Senior", count: 98 },
     { value: "lead", label: "Lead/Principal", count: 34 },
-    { value: "executive", label: "Executive", count: 8 }
+    { value: "executive", label: "Executive", count: 8 },
   ],
   locations: [
     { value: "san-francisco", label: "San Francisco, CA", count: 145 },
     { value: "new-york", label: "New York, NY", count: 132 },
     { value: "seattle", label: "Seattle, WA", count: 87 },
     { value: "austin", label: "Austin, TX", count: 65 },
-    { value: "remote", label: "Remote", count: 198 }
+    { value: "remote", label: "Remote", count: 198 },
   ],
   industries: [
     { value: "technology", label: "Technology", count: 245 },
     { value: "finance", label: "Finance", count: 89 },
     { value: "healthcare", label: "Healthcare", count: 67 },
     { value: "education", label: "Education", count: 45 },
-    { value: "consulting", label: "Consulting", count: 34 }
+    { value: "consulting", label: "Consulting", count: 34 },
   ],
   skills: [
     { value: "react", label: "React", count: 178 },
@@ -406,8 +415,8 @@ export const alertFilters = {
     { value: "javascript", label: "JavaScript", count: 145 },
     { value: "typescript", label: "TypeScript", count: 123 },
     { value: "node-js", label: "Node.js", count: 98 },
-    { value: "aws", label: "AWS", count: 87 }
-  ]
+    { value: "aws", label: "AWS", count: 87 },
+  ],
 };
 
 export const popularSearches = [
@@ -416,5 +425,5 @@ export const popularSearches = [
   { query: "Data Scientist", count: 765, trend: "stable" },
   { query: "DevOps Engineer", count: 654, trend: "up" },
   { query: "Product Manager", count: 543, trend: "down" },
-  { query: "Full Stack Developer", count: 432, trend: "up" }
+  { query: "Full Stack Developer", count: 432, trend: "up" },
 ];

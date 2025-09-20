@@ -13,11 +13,7 @@ import {
   Skeleton,
   Fade,
 } from "@mui/material";
-import { 
-  ArrowBack, 
-  Search, 
-  FilterList,
-} from "@mui/icons-material";
+import { ArrowBack, Search, FilterList } from "@mui/icons-material";
 import { useTheme } from "../../../context/ThemeContext";
 import { getThemeClasses } from "../../../styles/themes";
 import { mockCareers } from "../../../api/career/mockCareerData";
@@ -102,7 +98,8 @@ const CareerChoice = () => {
                 className={`font-bold ${themeClasses.text.primary}`}
                 sx={{
                   fontSize: { xs: "2rem", md: "2.5rem" },
-                  background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                  background:
+                    "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
                   backgroundClip: "text",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
@@ -122,7 +119,8 @@ const CareerChoice = () => {
                 lineHeight: 1.6,
               }}
             >
-              Discover over 500+ career opportunities that match your interests and skills.
+              Discover over 500+ career opportunities that match your interests
+              and skills.
             </Typography>
 
             {/* Quick Stats */}
@@ -254,7 +252,9 @@ const CareerChoice = () => {
                       key={option}
                       label={option === "all" ? "All" : option}
                       onClick={() => setSelectedFilter(option)}
-                      variant={selectedFilter === option ? "filled" : "outlined"}
+                      variant={
+                        selectedFilter === option ? "filled" : "outlined"
+                      }
                       size="small"
                       sx={{
                         backgroundColor:
@@ -293,13 +293,7 @@ const CareerChoice = () => {
             {loading
               ? // Loading skeletons
                 Array.from(new Array(9)).map((_, index) => (
-                  <Grid
-                    item
-                    xs={12}
-                    sm={6}
-                    md={4}
-                    key={index}
-                  >
+                  <Grid item xs={12} sm={6} md={4} key={index}>
                     <Skeleton
                       variant="rectangular"
                       width="100%"
@@ -309,13 +303,7 @@ const CareerChoice = () => {
                   </Grid>
                 ))
               : filteredCareers.slice(0, 12).map((career) => (
-                  <Grid
-                    item
-                    xs={12}
-                    sm={6}
-                    md={4}
-                    key={career.id}
-                  >
+                  <Grid item xs={12} sm={6} md={4} key={career.id}>
                     <CareerCard career={career} />
                   </Grid>
                 ))}

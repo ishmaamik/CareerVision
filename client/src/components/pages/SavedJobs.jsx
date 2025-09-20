@@ -81,7 +81,7 @@ const SavedJobs = () => {
     workType: "all",
     remote: "all",
     salary: "all",
-    status: "all"
+    status: "all",
   });
   const [sortBy, setSortBy] = useState("saved_date");
   const [selectedJobs, setSelectedJobs] = useState(new Set());
@@ -92,13 +92,13 @@ const SavedJobs = () => {
 
   // Initialize notifications for jobs with deadlines
   useEffect(() => {
-    const jobsWithDeadlines = savedJobs.filter(job => {
+    const jobsWithDeadlines = savedJobs.filter((job) => {
       const deadline = new Date(job.applicationDeadline);
       const now = new Date();
       const diffDays = Math.ceil((deadline - now) / (1000 * 60 * 60 * 24));
-      return diffDays <= 7 && diffDays > 0 && job.status === 'active';
+      return diffDays <= 7 && diffDays > 0 && job.status === "active";
     });
-    setNotifications(new Set(jobsWithDeadlines.map(job => job.id)));
+    setNotifications(new Set(jobsWithDeadlines.map((job) => job.id)));
   }, [savedJobs]);
 
   // Filter and search jobs
@@ -107,52 +107,69 @@ const SavedJobs = () => {
 
     // Apply search filter
     if (searchTerm) {
-      filtered = filtered.filter(job =>
-        job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        job.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        job.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        job.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()))
+      filtered = filtered.filter(
+        (job) =>
+          job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          job.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          job.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          job.tags.some((tag) =>
+            tag.toLowerCase().includes(searchTerm.toLowerCase())
+          )
       );
     }
 
     // Apply category filter
     if (selectedFilters.category !== "all") {
-      filtered = filtered.filter(job => job.category === selectedFilters.category);
+      filtered = filtered.filter(
+        (job) => job.category === selectedFilters.category
+      );
     }
 
     // Apply experience filter
     if (selectedFilters.experience !== "all") {
-      const expMap = { entry: "Entry-level", mid: "Mid-level", senior: "Senior" };
-      filtered = filtered.filter(job => job.experience === expMap[selectedFilters.experience]);
+      const expMap = {
+        entry: "Entry-level",
+        mid: "Mid-level",
+        senior: "Senior",
+      };
+      filtered = filtered.filter(
+        (job) => job.experience === expMap[selectedFilters.experience]
+      );
     }
 
     // Apply work type filter
     if (selectedFilters.workType !== "all") {
-      filtered = filtered.filter(job => job.type.toLowerCase().includes(selectedFilters.workType));
+      filtered = filtered.filter((job) =>
+        job.type.toLowerCase().includes(selectedFilters.workType)
+      );
     }
 
     // Apply remote filter
     if (selectedFilters.remote !== "all") {
       if (selectedFilters.remote === "remote") {
-        filtered = filtered.filter(job => job.remote === true);
+        filtered = filtered.filter((job) => job.remote === true);
       } else if (selectedFilters.remote === "onsite") {
-        filtered = filtered.filter(job => job.remote === false);
+        filtered = filtered.filter((job) => job.remote === false);
       }
     }
 
     // Apply status filter
     if (selectedFilters.status !== "all") {
-      filtered = filtered.filter(job => job.status === selectedFilters.status);
+      filtered = filtered.filter(
+        (job) => job.status === selectedFilters.status
+      );
     }
 
     // Apply salary filter
     if (selectedFilters.salary !== "all") {
-      const salaryRange = salaryRanges.find(range => range.id === selectedFilters.salary);
+      const salaryRange = salaryRanges.find(
+        (range) => range.id === selectedFilters.salary
+      );
       if (salaryRange) {
-        filtered = filtered.filter(job => {
+        filtered = filtered.filter((job) => {
           const salary = job.salary.match(/\$?([\d,]+)/g);
           if (salary && salary[0]) {
-            const minSalary = parseInt(salary[0].replace(/[$,]/g, ''));
+            const minSalary = parseInt(salary[0].replace(/[$,]/g, ""));
             return minSalary >= salaryRange.min && minSalary <= salaryRange.max;
           }
           return true;
@@ -170,12 +187,14 @@ const SavedJobs = () => {
         case "salary": {
           const getSalary = (job) => {
             const salary = job.salary.match(/\$?([\d,]+)/g);
-            return salary ? parseInt(salary[0].replace(/[$,]/g, '')) : 0;
+            return salary ? parseInt(salary[0].replace(/[$,]/g, "")) : 0;
           };
           return getSalary(b) - getSalary(a);
         }
         case "deadline":
-          return new Date(a.applicationDeadline) - new Date(b.applicationDeadline);
+          return (
+            new Date(a.applicationDeadline) - new Date(b.applicationDeadline)
+          );
         case "company":
           return a.company.localeCompare(b.company);
         default:
@@ -188,7 +207,7 @@ const SavedJobs = () => {
 
   // Handle job selection
   const toggleJobSelection = (jobId) => {
-    setSelectedJobs(prev => {
+    setSelectedJobs((prev) => {
       const newSet = new Set(prev);
       if (newSet.has(jobId)) {
         newSet.delete(jobId);
@@ -204,14 +223,14 @@ const SavedJobs = () => {
     if (selectedJobs.size === filteredJobs.length) {
       setSelectedJobs(new Set());
     } else {
-      setSelectedJobs(new Set(filteredJobs.map(job => job.id)));
+      setSelectedJobs(new Set(filteredJobs.map((job) => job.id)));
     }
   };
 
   // Remove job from saved
   const removeJob = (jobId) => {
-    setSavedJobs(prev => prev.filter(job => job.id !== jobId));
-    setSelectedJobs(prev => {
+    setSavedJobs((prev) => prev.filter((job) => job.id !== jobId));
+    setSelectedJobs((prev) => {
       const newSet = new Set(prev);
       newSet.delete(jobId);
       return newSet;
@@ -221,13 +240,13 @@ const SavedJobs = () => {
 
   // Bulk actions
   const bulkRemove = () => {
-    setSavedJobs(prev => prev.filter(job => !selectedJobs.has(job.id)));
+    setSavedJobs((prev) => prev.filter((job) => !selectedJobs.has(job.id)));
     setSelectedJobs(new Set());
   };
 
   // Toggle notification for job
   const toggleNotification = (jobId) => {
-    setNotifications(prev => {
+    setNotifications((prev) => {
       const newSet = new Set(prev);
       if (newSet.has(jobId)) {
         newSet.delete(jobId);
@@ -249,10 +268,10 @@ const SavedJobs = () => {
 
   // Format date
   const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric'
+    return new Date(dateString).toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
     });
   };
 
@@ -260,13 +279,15 @@ const SavedJobs = () => {
   const renderJobCard = (job) => {
     const daysUntilDeadline = getDaysUntilDeadline(job.applicationDeadline);
     const isExpiringSoon = daysUntilDeadline <= 7 && daysUntilDeadline > 0;
-    const isExpired = job.status === 'expired' || daysUntilDeadline <= 0;
+    const isExpired = job.status === "expired" || daysUntilDeadline <= 0;
 
     return (
-      <Card 
-        key={job.id} 
-        className={`${componentStyles.card} transition-all duration-300 hover:shadow-lg ${
-          selectedJobs.has(job.id) ? 'ring-2 ring-blue-500' : ''
+      <Card
+        key={job.id}
+        className={`${
+          componentStyles.card
+        } transition-all duration-300 hover:shadow-lg ${
+          selectedJobs.has(job.id) ? "ring-2 ring-blue-500" : ""
         }`}
       >
         <CardContent className="p-6">
@@ -284,13 +305,9 @@ const SavedJobs = () => {
                 label=""
                 className="m-0"
               />
-              
-              <Avatar 
-                src={job.logo} 
-                alt={job.company}
-                className="w-12 h-12"
-              />
-              
+
+              <Avatar src={job.logo} alt={job.company} className="w-12 h-12" />
+
               <Box className="flex-1">
                 <Box className="flex items-center gap-2 mb-2">
                   <Typography variant="h6" className="font-bold">
@@ -308,11 +325,11 @@ const SavedJobs = () => {
                     <Chip label="Deadline Soon" color="warning" size="small" />
                   )}
                 </Box>
-                
+
                 <Typography variant="body1" className="font-medium mb-1">
                   {job.company}
                 </Typography>
-                
+
                 <Box className="flex items-center gap-4 text-sm opacity-70 mb-3">
                   <Box className="flex items-center gap-1">
                     <LocationOn className="w-4 h-4" />
@@ -327,12 +344,17 @@ const SavedJobs = () => {
                     {job.salary}
                   </Box>
                   {job.remote && (
-                    <Chip label="Remote" color="primary" size="small" variant="outlined" />
+                    <Chip
+                      label="Remote"
+                      color="primary"
+                      size="small"
+                      variant="outlined"
+                    />
                   )}
                 </Box>
               </Box>
             </Box>
-            
+
             <IconButton>
               <MoreVert />
             </IconButton>
@@ -344,7 +366,11 @@ const SavedJobs = () => {
               <Chip key={index} label={tag} size="small" variant="outlined" />
             ))}
             {job.tags.length > 4 && (
-              <Chip label={`+${job.tags.length - 4} more`} size="small" variant="outlined" />
+              <Chip
+                label={`+${job.tags.length - 4} more`}
+                size="small"
+                variant="outlined"
+              />
             )}
           </Box>
 
@@ -355,7 +381,7 @@ const SavedJobs = () => {
             </Typography>
             <Box className="flex items-center gap-2">
               <div className="w-20 h-2 bg-gray-200 rounded-full overflow-hidden">
-                <div 
+                <div
                   className="h-full bg-gradient-to-r from-green-400 to-blue-500 rounded-full"
                   style={{ width: `${job.matchScore}%` }}
                 />
@@ -382,23 +408,23 @@ const SavedJobs = () => {
                 disabled={isExpired}
                 className={componentStyles.button.primary}
               >
-                {isExpired ? 'View Details' : 'Apply Now'}
+                {isExpired ? "View Details" : "Apply Now"}
               </Button>
-              <Button
-                variant="outlined"
-                size="small"
-                startIcon={<Share />}
-              >
+              <Button variant="outlined" size="small" startIcon={<Share />}>
                 Share
               </Button>
             </Box>
-            
+
             <Box className="flex gap-1">
               <IconButton
                 onClick={() => toggleNotification(job.id)}
                 color={notifications.has(job.id) ? "primary" : "default"}
               >
-                {notifications.has(job.id) ? <Notifications /> : <NotificationsOff />}
+                {notifications.has(job.id) ? (
+                  <Notifications />
+                ) : (
+                  <NotificationsOff />
+                )}
               </IconButton>
               <IconButton onClick={() => setJobToDelete(job.id)}>
                 <Delete />
@@ -412,11 +438,15 @@ const SavedJobs = () => {
 
   // Render stats cards
   const renderStatsCards = () => {
-    const activeJobs = savedJobs.filter(job => job.status === 'active').length;
-    const avgMatchScore = savedJobs.reduce((sum, job) => sum + job.matchScore, 0) / savedJobs.length;
-    const urgentJobs = savedJobs.filter(job => {
+    const activeJobs = savedJobs.filter(
+      (job) => job.status === "active"
+    ).length;
+    const avgMatchScore =
+      savedJobs.reduce((sum, job) => sum + job.matchScore, 0) /
+      savedJobs.length;
+    const urgentJobs = savedJobs.filter((job) => {
       const days = getDaysUntilDeadline(job.applicationDeadline);
-      return days <= 7 && days > 0 && job.status === 'active';
+      return days <= 7 && days > 0 && job.status === "active";
     }).length;
 
     return (
@@ -486,7 +516,7 @@ const SavedJobs = () => {
             <IconButton
               onClick={() => navigate(-1)}
               className="mr-4"
-              style={{ color: isDarkMode ? '#e2e8f0' : '#2d3748' }}
+              style={{ color: isDarkMode ? "#e2e8f0" : "#2d3748" }}
             >
               <ArrowBack />
             </IconButton>
@@ -497,7 +527,7 @@ const SavedJobs = () => {
               Saved Jobs
             </Typography>
           </Box>
-          
+
           <Box className="flex gap-2">
             {selectedJobs.size > 0 && (
               <Button
@@ -511,7 +541,7 @@ const SavedJobs = () => {
             )}
             <Button
               variant="contained"
-              onClick={() => navigate('/jobs')}
+              onClick={() => navigate("/jobs")}
               className={componentStyles.button.primary}
             >
               Browse More Jobs
@@ -539,7 +569,7 @@ const SavedJobs = () => {
                 }}
                 className="flex-1 min-w-64"
               />
-              
+
               <Button
                 variant="outlined"
                 startIcon={<FilterList />}
@@ -547,7 +577,7 @@ const SavedJobs = () => {
               >
                 Filters
               </Button>
-              
+
               <Button
                 variant="outlined"
                 startIcon={<Sort />}
@@ -555,12 +585,18 @@ const SavedJobs = () => {
               >
                 Sort
               </Button>
-              
+
               <FormControlLabel
                 control={
                   <Checkbox
-                    checked={selectedJobs.size === filteredJobs.length && filteredJobs.length > 0}
-                    indeterminate={selectedJobs.size > 0 && selectedJobs.size < filteredJobs.length}
+                    checked={
+                      selectedJobs.size === filteredJobs.length &&
+                      filteredJobs.length > 0
+                    }
+                    indeterminate={
+                      selectedJobs.size > 0 &&
+                      selectedJobs.size < filteredJobs.length
+                    }
                     onChange={selectAllJobs}
                   />
                 }
@@ -571,16 +607,20 @@ const SavedJobs = () => {
         </Card>
 
         {/* Urgent Jobs Alert */}
-        {savedJobs.filter(job => {
+        {savedJobs.filter((job) => {
           const days = getDaysUntilDeadline(job.applicationDeadline);
-          return days <= 7 && days > 0 && job.status === 'active';
+          return days <= 7 && days > 0 && job.status === "active";
         }).length > 0 && (
           <Alert severity="warning" className="mb-6">
             <Typography variant="body1" className="font-medium">
-              You have {savedJobs.filter(job => {
-                const days = getDaysUntilDeadline(job.applicationDeadline);
-                return days <= 7 && days > 0 && job.status === 'active';
-              }).length} job(s) with application deadlines in the next 7 days!
+              You have{" "}
+              {
+                savedJobs.filter((job) => {
+                  const days = getDaysUntilDeadline(job.applicationDeadline);
+                  return days <= 7 && days > 0 && job.status === "active";
+                }).length
+              }{" "}
+              job(s) with application deadlines in the next 7 days!
             </Typography>
           </Alert>
         )}
@@ -592,20 +632,20 @@ const SavedJobs = () => {
               <CardContent className="text-center py-16">
                 <Bookmark className="w-16 h-16 mx-auto mb-4 opacity-50" />
                 <Typography variant="h5" className="font-bold mb-2">
-                  {searchTerm || Object.values(selectedFilters).some(f => f !== 'all')
-                    ? 'No jobs match your criteria'
-                    : 'No saved jobs yet'
-                  }
+                  {searchTerm ||
+                  Object.values(selectedFilters).some((f) => f !== "all")
+                    ? "No jobs match your criteria"
+                    : "No saved jobs yet"}
                 </Typography>
                 <Typography variant="body1" className="opacity-70 mb-4">
-                  {searchTerm || Object.values(selectedFilters).some(f => f !== 'all')
-                    ? 'Try adjusting your search or filters'
-                    : 'Start saving jobs you\'re interested in to see them here'
-                  }
+                  {searchTerm ||
+                  Object.values(selectedFilters).some((f) => f !== "all")
+                    ? "Try adjusting your search or filters"
+                    : "Start saving jobs you're interested in to see them here"}
                 </Typography>
                 <Button
                   variant="contained"
-                  onClick={() => navigate('/jobs')}
+                  onClick={() => navigate("/jobs")}
                   className={componentStyles.button.primary}
                 >
                   Browse Jobs
@@ -614,7 +654,7 @@ const SavedJobs = () => {
             </Card>
           ) : (
             <Grid container spacing={3}>
-              {filteredJobs.map(job => (
+              {filteredJobs.map((job) => (
                 <Grid item xs={12} key={job.id}>
                   {renderJobCard(job)}
                 </Grid>
@@ -629,19 +669,44 @@ const SavedJobs = () => {
           open={Boolean(anchorEl)}
           onClose={() => setAnchorEl(null)}
         >
-          <MenuItem onClick={() => { setSortBy("saved_date"); setAnchorEl(null); }}>
+          <MenuItem
+            onClick={() => {
+              setSortBy("saved_date");
+              setAnchorEl(null);
+            }}
+          >
             Most Recently Saved
           </MenuItem>
-          <MenuItem onClick={() => { setSortBy("match_score"); setAnchorEl(null); }}>
+          <MenuItem
+            onClick={() => {
+              setSortBy("match_score");
+              setAnchorEl(null);
+            }}
+          >
             Highest Match Score
           </MenuItem>
-          <MenuItem onClick={() => { setSortBy("salary"); setAnchorEl(null); }}>
+          <MenuItem
+            onClick={() => {
+              setSortBy("salary");
+              setAnchorEl(null);
+            }}
+          >
             Highest Salary
           </MenuItem>
-          <MenuItem onClick={() => { setSortBy("deadline"); setAnchorEl(null); }}>
+          <MenuItem
+            onClick={() => {
+              setSortBy("deadline");
+              setAnchorEl(null);
+            }}
+          >
             Deadline (Urgent First)
           </MenuItem>
-          <MenuItem onClick={() => { setSortBy("company"); setAnchorEl(null); }}>
+          <MenuItem
+            onClick={() => {
+              setSortBy("company");
+              setAnchorEl(null);
+            }}
+          >
             Company Name
           </MenuItem>
         </Menu>
@@ -657,11 +722,14 @@ const SavedJobs = () => {
               Category
             </Typography>
           </MenuItem>
-          {jobCategories.map(category => (
-            <MenuItem 
+          {jobCategories.map((category) => (
+            <MenuItem
               key={category.id}
               onClick={() => {
-                setSelectedFilters(prev => ({ ...prev, category: category.id }));
+                setSelectedFilters((prev) => ({
+                  ...prev,
+                  category: category.id,
+                }));
                 setFilterAnchorEl(null);
               }}
             >
@@ -674,11 +742,11 @@ const SavedJobs = () => {
               Status
             </Typography>
           </MenuItem>
-          {jobStatuses.map(status => (
-            <MenuItem 
+          {jobStatuses.map((status) => (
+            <MenuItem
               key={status.id}
               onClick={() => {
-                setSelectedFilters(prev => ({ ...prev, status: status.id }));
+                setSelectedFilters((prev) => ({ ...prev, status: status.id }));
                 setFilterAnchorEl(null);
               }}
             >
@@ -688,10 +756,7 @@ const SavedJobs = () => {
         </Menu>
 
         {/* Delete Confirmation Dialog */}
-        <Dialog
-          open={!!jobToDelete}
-          onClose={() => setJobToDelete(null)}
-        >
+        <Dialog open={!!jobToDelete} onClose={() => setJobToDelete(null)}>
           <DialogTitle>Remove Saved Job</DialogTitle>
           <DialogContent>
             <Typography>
@@ -699,10 +764,8 @@ const SavedJobs = () => {
             </Typography>
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => setJobToDelete(null)}>
-              Cancel
-            </Button>
-            <Button 
+            <Button onClick={() => setJobToDelete(null)}>Cancel</Button>
+            <Button
               onClick={() => removeJob(jobToDelete)}
               color="error"
               variant="contained"
