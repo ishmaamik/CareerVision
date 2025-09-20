@@ -8,6 +8,7 @@ import { UserProvider } from "./context/UserContext";
 import { ThemeProvider } from "./context/ThemeContext";
 import Login from "./components/pages/Login";
 import Signup from "./components/pages/Signup";
+import Social from "./components/pages/Community/Social";
 import Blogs from "./components/pages/Blogs";
 import NewBlog from "./components/pages/NewBlog";
 import Profile from "./components/pages/Profile/Profile";
@@ -29,6 +30,9 @@ import Conferences from "./components/pages/Conferences";
 import Workshops from "./components/pages/Workshops";
 import CareerChatbot from "./components/pages/CareerChatbot";
 import ChatbotPage from "./components/pages/ChatbotPage";
+import SavedJobs from "./components/pages/SavedJobs";
+import Articles from "./components/pages/Community/Articles";
+import Videos from "./components/pages/Community/Videos";
 
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -66,6 +70,9 @@ function App() {
                 <Route path="/jobs/:id" element={<ApplyJob />} />
                 <Route path="/company/create" element={<CreateCompany />} />
                 <Route path="/community" element={<CommunityForum />} />
+                <Route path="/videos" element={<Videos />} />
+                <Route path="/articles" element={<Articles />} />
+                <Route path="/social" element={<Social />} />
                 <Route path="/roadmap" element={<Roadmap />} />
                 <Route path="/sample" element={<SampleSocial />} />
                 <Route path="/emotion" element={<EmotionCapture />} />
@@ -105,7 +112,7 @@ function App() {
                 <Route path="/roadmaps" element={<Roadmap />} />
                 <Route
                   path="/saved-jobs"
-                  element={<div className="p-8">Saved Jobs Coming Soon</div>}
+                  element={<SavedJobs/>}
                 />
                 <Route
                   path="/applications"

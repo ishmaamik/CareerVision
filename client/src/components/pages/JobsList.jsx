@@ -1,7 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { createJob } from "../../api/job/job";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { User } from "../../context/UserContext";
+import { savedJobsService } from "../../api/savedJobsApi";
+import { Bookmark } from "lucide-react";
 
 const Job = () => {
   const [localJobs, setLocalJobs] = useState([]);
@@ -11,12 +14,12 @@ const Job = () => {
   const [loading, setLoading] = useState(false);
   const [filter, setFilter] = useState("");
   const [activeTab, setActiveTab] = useState("all");
-  const [jobTitle, setJobTitle] = useState('');
-  const [jobName, setJobName] = useState('');
-  const [jobLocation, setJobLocation] = useState('');
-  const [jobDescription, setjobDescription] = useState('');
+  const [savedJobs, setSavedJobs] = useState([]);
   const [pageLoading, setPageLoading] = useState(true);
   const navigate = useNavigate();
+
+  // Get user context
+  const { userDetails: user } = useContext(User);
 
   useEffect(() => {
     setPageLoading(true);
@@ -30,7 +33,33 @@ const Job = () => {
         console.error("Error fetching local jobs:", err);
         setPageLoading(false);
       });
-  }, []);
+
+    // Fetch saved jobs if user is logged in
+    if (user) {
+      savedJobsService.getSavedJobs(user.id)
+        .then(jobs => setSavedJobs(jobs))
+        .catch(err => console.error("Error fetching saved jobs:", err));
+    }
+  }, [user]);
+
+  const handleSaveJob = async (job) => {
+    if (!user) {
+      alert("Please log in to save jobs");
+      return;
+    }
+
+    try {
+      const savedJob = await savedJobsService.saveJob(user.id, job.id);
+      setSavedJobs([...savedJobs, savedJob]);
+    } catch (error) {
+      console.error("Error saving job:", error);
+      alert("Failed to save job");
+    }
+  };
+
+  const isJobSaved = (jobId) => {
+    return savedJobs.some(savedJob => savedJob.id === jobId);
+  };
 
   const handleSearch = async () => {
     if (!keyword || !location) {
@@ -107,7 +136,7 @@ const Job = () => {
                     </span>
                   </div>
                 </div>
-                <div className="ml-4">
+                <div className="ml-4 flex flex-col items-end space-y-2">
                   <div className={`px-3 py-1 rounded-full text-xs font-semibold ${
                     type === "external" 
                       ? "bg-green-100 text-green-700" 
@@ -115,6 +144,23 @@ const Job = () => {
                   }`}>
                     {type === "external" ? "External" : "Local"}
                   </div>
+                  {user && type !== "external" && (
+                    <button 
+                      onClick={() => handleSaveJob(job)}
+                      className={`p-2 rounded-full transition-colors duration-200 ${
+                        isJobSaved(job.id) 
+                          ? "text-yellow-500 hover:text-yellow-600" 
+                          : "text-gray-400 hover:text-blue-500"
+                      }`}
+                      title={isJobSaved(job.id) ? "Job Saved" : "Save Job"}
+                    >
+                      <Bookmark 
+                        className={`w-5 h-5 ${
+                          isJobSaved(job.id) ? "fill-current" : ""
+                        }`} 
+                      />
+                    </button>
+                  )}
                 </div>
               </div>
 

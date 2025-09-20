@@ -5,6 +5,7 @@ import {
   School,
   QuestionAnswer,
   People,
+  VideocamSharp,
   Event,
   Assignment,
   Psychology,
@@ -29,6 +30,7 @@ import {
   KeyboardDoubleArrowLeft,
   KeyboardDoubleArrowRight,
   ExpandMore,
+  ArticleSharp,
 } from "@mui/icons-material";
 import { useTheme } from "../../context/ThemeContext";
 import { getThemeClasses } from "../../styles/themes";
@@ -127,9 +129,19 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
       bgColor: "bg-indigo-50",
       subItems: [
         {
-          title: "Community Forum",
-          path: "/community",
+          title: "Social",
+          path: "/social",
           icon: <PeopleOutline className="w-4 h-4" />,
+        },
+        {
+          title: "Articles",
+          path: "/articles",
+          icon: <ArticleSharp className="w-4 h-4" />,
+        },
+        {
+          title: "Videos",
+          path: "/videos",
+          icon: <VideocamSharp className="w-4 h-4" />,
         },
       ],
     },
