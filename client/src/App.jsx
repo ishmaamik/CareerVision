@@ -19,8 +19,12 @@ import CreateCompany from "./components/pages/CreateCompany";
 import CommunityForum from "./components/pages/Community/CommunityForum";
 import SampleSocial from "./components/pages/SampleSocial";
 import EmotionCapture from "./components/EmotionCapture";
-import Careers from "./components/pages/Careers";
-import Roadmap from "./components/pages/Roadmap";
+import Roadmap from "./components/pages/pre-university/Roadmap";
+import Careers from "./components/pages/pre-university/Careers";
+import PreUniversity from "./components/pages/pre-university/PreUniversity";
+import CareerChoice from "./components/pages/pre-university/CareerChoice";
+import CareerDetails from "./components/pages/pre-university/CareerDetails";
+import UniversityChoice from "./components/pages/pre-university/UniversityChoice";
 import InterviewQuestionBank from "./components/pages/InterviewQuestionBank";
 import CompaniesPage from "./components/pages/CompaniesPage";
 import InterviewRoomForm from "./components/interview/InterviewRoomForm";
@@ -83,10 +87,31 @@ function App() {
                 <Route path="/videos" element={<Videos />} />
                 <Route path="/articles" element={<Articles />} />
                 <Route path="/social" element={<Social />} />
+
+                {/* Pre-University Career Guidance */}
+                <Route path="/pre-university" element={<PreUniversity />} />
+                <Route
+                  path="/pre-university/career-choice"
+                  element={<CareerChoice />}
+                />
+                <Route
+                  path="/pre-university/career/:careerTitle"
+                  element={<CareerDetails />}
+                />
+                <Route
+                  path="/pre-university/roadmap/:careerTitle"
+                  element={<Roadmap />}
+                />
+                <Route
+                  path="/pre-university/university-choice"
+                  element={<UniversityChoice />}
+                />
+
                 <Route path="/roadmap" element={<Roadmap />} />
+                <Route path="/careers" element={<Careers />} />
+
                 <Route path="/sample" element={<SampleSocial />} />
                 <Route path="/emotion" element={<EmotionCapture />} />
-                <Route path="/careers" element={<Careers />} />
                 <Route path="/companies" element={<CompaniesPage />} />
                 <Route
                   path="/interview-questions"
@@ -112,14 +137,12 @@ function App() {
                     <div className="p-8">Career Assessment Coming Soon</div>
                   }
                 />
-                <Route path="/career-paths" element={<Careers />} />
                 <Route
                   path="/skills-analysis"
                   element={
                     <div className="p-8">Skills Analysis Coming Soon</div>
                   }
                 />
-                <Route path="/roadmaps" element={<Roadmap />} />
                 <Route
                   path="/saved-jobs"
                   element={<SavedJobs/>}
@@ -197,8 +220,9 @@ function App() {
           </div>
 
           {/* Career Chatbot - Fixed position, doesn't affect layout */}
-          <CareerChatbot />
+          {/* <CareerChatbot /> */}
         </div>
+        <CareerChatbot />
       </UserProvider>
     </ThemeProvider>
   );

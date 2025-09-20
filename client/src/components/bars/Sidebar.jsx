@@ -45,6 +45,35 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
 
   const menuSections = [
     {
+      id: "preUniversity",
+      title: "Pre-University Guidance",
+      icon: <School className="w-5 h-5" />,
+      color: "text-blue-600",
+      bgColor: "bg-blue-50",
+      subItems: [
+        {
+          title: "Pre-University Guide",
+          path: "/pre-university",
+          icon: <School className="w-4 h-4" />,
+        },
+        {
+          title: "Career Explorer",
+          path: "/career-explorer",
+          icon: <Psychology className="w-4 h-4" />,
+        },
+        {
+          title: "Learning Roadmaps",
+          path: "/roadmap",
+          icon: <Timeline className="w-4 h-4" />,
+        },
+        {
+          title: "Career Paths",
+          path: "/careers",
+          icon: <Map className="w-4 h-4" />,
+        },
+      ],
+    },
+    {
       id: "career",
       title: "Career Discovery",
       icon: <Psychology className="w-5 h-5" />,
@@ -57,14 +86,9 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
           icon: <Assessment className="w-4 h-4" />,
         },
         {
-          title: "Career Paths",
-          path: "/careers",
-          icon: <Map className="w-4 h-4" />,
-        },
-        {
-          title: "Learning Roadmaps",
-          path: "/roadmap",
-          icon: <Timeline className="w-4 h-4" />,
+          title: "Skills Analysis",
+          path: "/skills-analysis",
+          icon: <TrendingUp className="w-4 h-4" />,
         },
       ],
     },
