@@ -2,9 +2,10 @@ import "./App.css";
 import React, { useState } from "react";
 import Topbar from "./components/bars/Topbar";
 import Sidebar from "./components/bars/Sidebar";
+import RecruiterSidebar from "./components/bars/RecruiterSidebar";
 import Home from "./components/pages/Home";
 import { Route, Routes, useLocation } from "react-router-dom";
-import { UserProvider } from "./context/UserContext";
+import { UserProvider, User } from "./context/UserContext";
 import { ThemeProvider } from "./context/ThemeContext";
 import Login from "./components/pages/Login";
 import Signup from "./components/pages/Signup";
@@ -30,31 +31,98 @@ import InterviewRoomForm from "./components/interview/InterviewRoomForm";
 import DynamicEvents from "./components/pages/DynamicEvents";
 import CareerChatbot from "./components/pages/CareerChatbot";
 import ChatbotPage from "./components/pages/ChatbotPage";
+import CareerAssessment from "./components/pages/CareerAssessment";
+import SkillsAnalysis from "./components/pages/SkillsAnalysis";
+import SavedJobs from "./components/pages/SavedJobs";
+import Applications from "./components/pages/Applications";
+import MockInterviews from "./components/pages/MockInterviews";
+import InterviewHistory from "./components/pages/InterviewHistory";
+import InterviewGuides from "./components/pages/InterviewGuides";
+import JobAlerts from "./components/pages/JobAlerts";
 
-function App() {
+// Recruiter Pages
+import RecruiterDashboard from "./components/pages/recruiter/RecruiterDashboard";
+import JobManagement from "./components/pages/recruiter/JobManagement";
+import CandidateManagement from "./components/pages/recruiter/CandidateManagement";
+import InterviewScheduling from "./components/pages/recruiter/InterviewScheduling";
+import AnalyticsDashboard from "./components/pages/recruiter/AnalyticsDashboard";
+import CompanyProfile from "./components/pages/recruiter/CompanyProfile";
+
+// Sidebar Wrapper Component
+const SidebarWrapper = ({ isOpen, setIsOpen }) => {
+  const { userDetails } = React.useContext(User);
+  
+  // Also check localStorage as backup
+  const storedUser = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null;
+  const user = userDetails || storedUser;
+  
+  // Debug logging
+  console.log('SidebarWrapper Debug:', {
+    userDetails,
+    storedUser,
+    finalUser: user,
+    userRole: user?.role
+  });
+  
+  // Determine which sidebar to render based on user role
+  if (!user || !user.role) {
+    console.log('Rendering Student Sidebar - No user or role');
+    return <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />;
+  }
+  
+  switch (user.role.toLowerCase()) {
+    case 'recruiter':
+    case 'hiring_manager':
+      console.log('Rendering Recruiter Sidebar for role:', user.role);
+      return <RecruiterSidebar isOpen={isOpen} setIsOpen={setIsOpen} />;
+    case 'student':
+    case 'job_seeker':
+    case 'user':
+    default:
+      console.log('Rendering Student Sidebar for role:', user.role);
+      return <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />;
+  }
+};
+
+// App component with user initialization
+function AppContent() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
+  const { userDetails, setUserDetails } = React.useContext(User);
+
+  // Initialize user from localStorage on app load
+  React.useEffect(() => {
+    if (!userDetails) {
+      const storedUser = localStorage.getItem('user');
+      if (storedUser) {
+        try {
+          const parsedUser = JSON.parse(storedUser);
+          setUserDetails(parsedUser);
+        } catch (error) {
+          console.error('Error parsing stored user:', error);
+        }
+      }
+    }
+  }, [userDetails, setUserDetails]);
 
   // Routes where sidebar should be hidden (e.g., login, signup, home landing)
   const noSidebarRoutes = ["/", "/login", "/signup"];
   const showSidebar = !noSidebarRoutes.includes(location.pathname);
 
   return (
-    <ThemeProvider>
-      <UserProvider>
-        <div className="h-screen flex flex-col overflow-hidden">
-          {/* Topbar - Fixed height */}
-          <Topbar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+    <div className="h-screen flex flex-col overflow-hidden">
+      {/* Topbar - Fixed height */}
+      <Topbar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
-          {/* Main Layout - Takes remaining viewport height */}
-          <div className="flex flex-1 overflow-hidden">
-            {/* Sidebar - Only show on authenticated pages */}
-            {showSidebar && (
-              <Sidebar isOpen={sidebarOpen} setIsOpen={setSidebarOpen} />
-            )}
+      {/* Main Layout - Takes remaining viewport height */}
+      <div className="flex flex-1 overflow-hidden">
+        {/* Sidebar - Only show on authenticated pages */}
+        {showSidebar && (
+          <SidebarWrapper isOpen={sidebarOpen} setIsOpen={setSidebarOpen} />
+        )}
 
-            {/* Main Content - Takes remaining space with proper scrolling */}
-            <main className="flex-1 overflow-auto">
+        {/* Main Content - Takes remaining space with proper scrolling */}
+        <main className="flex-1 overflow-auto">
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/login" element={<Login />} />
@@ -108,45 +176,35 @@ function App() {
                 />
                 <Route
                   path="/career-assessment"
-                  element={
-                    <div className="p-8">Career Assessment Coming Soon</div>
-                  }
+                  element={<CareerAssessment />}
                 />
                 <Route
                   path="/skills-analysis"
-                  element={
-                    <div className="p-8">Skills Analysis Coming Soon</div>
-                  }
+                  element={<SkillsAnalysis />}
                 />
                 <Route
                   path="/saved-jobs"
-                  element={<div className="p-8">Saved Jobs Coming Soon</div>}
+                  element={<SavedJobs />}
                 />
                 <Route
                   path="/applications"
-                  element={<div className="p-8">Applications Coming Soon</div>}
+                  element={<Applications />}
                 />
                 <Route
                   path="/job-alerts"
-                  element={<div className="p-8">Job Alerts Coming Soon</div>}
+                  element={<JobAlerts />}
                 />
                 <Route
                   path="/mock-interviews"
-                  element={
-                    <div className="p-8">Mock Interviews Coming Soon</div>
-                  }
+                  element={<MockInterviews />}
                 />
                 <Route
                   path="/interview-history"
-                  element={
-                    <div className="p-8">Interview History Coming Soon</div>
-                  }
+                  element={<InterviewHistory />}
                 />
                 <Route
                   path="/interview-guides"
-                  element={
-                    <div className="p-8">Interview Guides Coming Soon</div>
-                  }
+                  element={<InterviewGuides />}
                 />
                 <Route path="/network" element={<CommunityForum />} />
                 <Route
@@ -190,14 +248,91 @@ function App() {
                   path="/settings"
                   element={<div className="p-8">Settings Coming Soon</div>}
                 />
+
+                {/* Recruiter Routes */}
+                <Route
+                  path="/recruiter/dashboard"
+                  element={<RecruiterDashboard />}
+                />
+                <Route
+                  path="/recruiter/jobs"
+                  element={<JobManagement />}
+                />
+                <Route
+                  path="/recruiter/jobs/create"
+                  element={<CreateJob />}
+                />
+                <Route
+                  path="/recruiter/job-templates"
+                  element={<div className="p-8">Job Templates Coming Soon</div>}
+                />
+                <Route
+                  path="/recruiter/candidates"
+                  element={<CandidateManagement />}
+                />
+                <Route
+                  path="/recruiter/candidates/shortlisted"
+                  element={<CandidateManagement />}
+                />
+                <Route
+                  path="/recruiter/pipeline"
+                  element={<div className="p-8">Candidate Pipeline Coming Soon</div>}
+                />
+                <Route
+                  path="/recruiter/interviews"
+                  element={<InterviewScheduling />}
+                />
+                <Route
+                  path="/recruiter/interviews/calendar"
+                  element={<div className="p-8">Interview Calendar Coming Soon</div>}
+                />
+                <Route
+                  path="/recruiter/interviews/feedback"
+                  element={<div className="p-8">Interview Feedback Coming Soon</div>}
+                />
+                <Route
+                  path="/recruiter/analytics"
+                  element={<AnalyticsDashboard />}
+                />
+                <Route
+                  path="/recruiter/reports"
+                  element={<div className="p-8">Reports Coming Soon</div>}
+                />
+                <Route
+                  path="/recruiter/performance"
+                  element={<div className="p-8">Performance Coming Soon</div>}
+                />
+                <Route
+                  path="/recruiter/company-profile"
+                  element={<CompanyProfile />}
+                />
+                <Route
+                  path="/recruiter/team"
+                  element={<div className="p-8">Team Management Coming Soon</div>}
+                />
+                <Route
+                  path="/recruiter/branding"
+                  element={<div className="p-8">Employer Branding Coming Soon</div>}
+                />
+                <Route
+                  path="/recruiter/settings"
+                  element={<div className="p-8">Recruiter Settings Coming Soon</div>}
+                />
               </Routes>
             </main>
           </div>
 
           {/* Career Chatbot - Fixed position, doesn't affect layout */}
-          {/* <CareerChatbot /> */}
+          <CareerChatbot />
         </div>
-        <CareerChatbot />
+      );
+    }
+
+function App() {
+  return (
+    <ThemeProvider>
+      <UserProvider>
+        <AppContent />
       </UserProvider>
     </ThemeProvider>
   );

@@ -23,12 +23,21 @@ const Login = () => {
         const response = await login(credentials)
         if (response?.user) {
             console.log("Logged in:", response.user);
+            // Set user in context
+            setUserDetails(response.user);
+            // Also set in localStorage and Redux for backup
             localStorage.setItem('user', JSON.stringify(response.user))
             dispatch(setUser(response.user))
             localStorage.setItem('name', response.user.name)
             localStorage.setItem('role', response.user.role)
             localStorage.setItem('userId', response.user.id)
-            navigate('/profile'); // or wherever you want to go
+            
+            // Navigate to appropriate dashboard based on role
+            if (response.user.role === 'recruiter') {
+                navigate('/recruiter/dashboard');
+            } else {
+                navigate('/profile');
+            }
         } else {
             alert("Login failed");
         }

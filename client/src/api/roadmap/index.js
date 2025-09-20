@@ -1,6 +1,8 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY || "AIzaSyCGJv0J1q-Vlv9uJs7YzgLYaTHrgDF8YFI";
+const GEMINI_API_KEY =
+  import.meta.env.VITE_GEMINI_API_KEY ||
+  "AIzaSyCGJv0J1q-Vlv9uJs7YzgLYaTHrgDF8YFI";
 
 // Initialize Gemini AI
 const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
@@ -12,9 +14,13 @@ const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
  * @param {Array} recommendedSubjects - Array of recommended subjects
  * @returns {Object} Roadmap data structure
  */
-export const generateCareerRoadmap = async (careerTitle, detailedDescription, recommendedSubjects = []) => {
+export const generateCareerRoadmap = async (
+  careerTitle,
+  detailedDescription,
+  recommendedSubjects = []
+) => {
   try {
-    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
     const prompt = `
     Create a comprehensive educational roadmap for "${careerTitle}" career path. 
@@ -92,25 +98,24 @@ export const generateCareerRoadmap = async (careerTitle, detailedDescription, re
     const result = await model.generateContent(prompt);
     const response = await result.response;
     const text = response.text();
-    
+
     // Extract JSON from the response
     const jsonMatch = text.match(/\{[\s\S]*\}/);
     if (!jsonMatch) {
       throw new Error("Invalid response format from Gemini API");
     }
-    
+
     const roadmapData = JSON.parse(jsonMatch[0]);
-    
+
     return {
       success: true,
-      data: roadmapData
+      data: roadmapData,
     };
-    
   } catch (error) {
     console.error("Error generating career roadmap:", error);
     return {
       success: false,
-      error: error.message || "Failed to generate career roadmap"
+      error: error.message || "Failed to generate career roadmap",
     };
   }
 };
@@ -122,46 +127,55 @@ export const generateCareerRoadmap = async (careerTitle, detailedDescription, re
  * @param {Array} recommendedSubjects - Recommended subjects
  * @returns {Object} Roadmap data
  */
-export const getCareerRoadmap = async (careerTitle, detailedDescription, recommendedSubjects) => {
+export const getCareerRoadmap = async (
+  careerTitle,
+  detailedDescription,
+  recommendedSubjects
+) => {
   try {
     // Check if roadmap is cached in localStorage
-    const cacheKey = `roadmap_${careerTitle.toLowerCase().replace(/\s+/g, '_')}`;
+    const cacheKey = `roadmap_${careerTitle
+      .toLowerCase()
+      .replace(/\s+/g, "_")}`;
     const cachedRoadmap = localStorage.getItem(cacheKey);
-    
+
     if (cachedRoadmap) {
       const parsed = JSON.parse(cachedRoadmap);
       // Check if cache is less than 24 hours old
       const cacheAge = Date.now() - parsed.timestamp;
       const maxAge = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
-      
+
       if (cacheAge < maxAge) {
         return {
           success: true,
           data: parsed.roadmap,
-          cached: true
+          cached: true,
         };
       }
     }
-    
+
     // Generate new roadmap
-    const result = await generateCareerRoadmap(careerTitle, detailedDescription, recommendedSubjects);
-    
+    const result = await generateCareerRoadmap(
+      careerTitle,
+      detailedDescription,
+      recommendedSubjects
+    );
+
     if (result.success) {
       // Cache the result
       const cacheData = {
         roadmap: result.data,
-        timestamp: Date.now()
+        timestamp: Date.now(),
       };
       localStorage.setItem(cacheKey, JSON.stringify(cacheData));
     }
-    
+
     return result;
-    
   } catch (error) {
     console.error("Error getting career roadmap:", error);
     return {
       success: false,
-      error: error.message || "Failed to get career roadmap"
+      error: error.message || "Failed to get career roadmap",
     };
   }
 };
@@ -171,7 +185,7 @@ export const getCareerRoadmap = async (careerTitle, detailedDescription, recomme
  * @param {string} careerTitle - The career title
  */
 export const clearRoadmapCache = (careerTitle) => {
-  const cacheKey = `roadmap_${careerTitle.toLowerCase().replace(/\s+/g, '_')}`;
+  const cacheKey = `roadmap_${careerTitle.toLowerCase().replace(/\s+/g, "_")}`;
   localStorage.removeItem(cacheKey);
 };
 
@@ -180,8 +194,8 @@ export const clearRoadmapCache = (careerTitle) => {
  */
 export const clearAllRoadmapCaches = () => {
   const keys = Object.keys(localStorage);
-  keys.forEach(key => {
-    if (key.startsWith('roadmap_')) {
+  keys.forEach((key) => {
+    if (key.startsWith("roadmap_")) {
       localStorage.removeItem(key);
     }
   });
