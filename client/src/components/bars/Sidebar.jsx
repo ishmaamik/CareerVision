@@ -50,6 +50,11 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
       bgColor: "bg-blue-50",
       subItems: [
         {
+          title: "Pre-University Guide",
+          path: "/pre-university",
+          icon: <School className="w-4 h-4" />,
+        },
+        {
           title: "Career Explorer",
           path: "/career-explorer",
           icon: <Psychology className="w-4 h-4" />,

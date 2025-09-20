@@ -18,9 +18,12 @@ import CreateCompany from "./components/pages/CreateCompany";
 import CommunityForum from "./components/pages/Community/CommunityForum";
 import SampleSocial from "./components/pages/SampleSocial";
 import EmotionCapture from "./components/EmotionCapture";
-import CareerExplorer from "./components/pages/pre-university/CareerExplorer";
 import Roadmap from "./components/pages/pre-university/Roadmap";
 import Careers from "./components/pages/pre-university/Careers";
+import PreUniversity from "./components/pages/pre-university/PreUniversity";
+import CareerChoice from "./components/pages/pre-university/CareerChoice";
+import CareerDetails from "./components/pages/pre-university/CareerDetails";
+import UniversityChoice from "./components/pages/pre-university/UniversityChoice";
 import InterviewQuestionBank from "./components/pages/InterviewQuestionBank";
 import CompaniesPage from "./components/pages/CompaniesPage";
 import InterviewRoomForm from "./components/interview/InterviewRoomForm";
@@ -66,7 +69,24 @@ function App() {
                 <Route path="/community" element={<CommunityForum />} />
 
                 {/* Pre-University Career Guidance */}
-                <Route path="/career-explorer" element={<CareerExplorer />} />
+                <Route path="/pre-university" element={<PreUniversity />} />
+                <Route
+                  path="/pre-university/career-choice"
+                  element={<CareerChoice />}
+                />
+                <Route
+                  path="/pre-university/career/:careerTitle"
+                  element={<CareerDetails />}
+                />
+                <Route
+                  path="/pre-university/roadmap/:careerTitle"
+                  element={<Roadmap />}
+                />
+                <Route
+                  path="/pre-university/university-choice"
+                  element={<UniversityChoice />}
+                />
+
                 <Route path="/roadmap" element={<Roadmap />} />
                 <Route path="/careers" element={<Careers />} />
 
@@ -175,8 +195,9 @@ function App() {
           </div>
 
           {/* Career Chatbot - Fixed position, doesn't affect layout */}
-          <CareerChatbot />
+          {/* <CareerChatbot /> */}
         </div>
+        <CareerChatbot />
       </UserProvider>
     </ThemeProvider>
   );
