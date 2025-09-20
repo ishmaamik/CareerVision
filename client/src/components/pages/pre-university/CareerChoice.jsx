@@ -11,6 +11,7 @@ import {
   InputAdornment,
   Chip,
   Skeleton,
+  Fade,
 } from "@mui/material";
 import { ArrowBack, Search, FilterList } from "@mui/icons-material";
 import { useTheme } from "../../../context/ThemeContext";
@@ -45,10 +46,10 @@ const CareerChoice = () => {
   const filterOptions = useMemo(() => {
     const allTags = careers.flatMap((career) => career.interestTags);
     const uniqueTags = [...new Set(allTags)];
-    return ["all", ...uniqueTags.slice(0, 10)]; // Limit to first 10 unique tags
+    return ["all", ...uniqueTags.slice(0, 8)]; // Limit to first 8 unique tags
   }, [careers]);
 
-  // Filter careers based on search and filter
+  // Simple filter careers based on search and basic filter
   const filteredCareers = useMemo(() => {
     return careers.filter((career) => {
       const matchesSearch =
@@ -74,144 +75,213 @@ const CareerChoice = () => {
         maxWidth="xl"
         sx={{ py: { xs: 3, md: 4 }, px: { xs: 2, sm: 3 } }}
       >
-        {/* Header */}
-        <Box sx={{ mb: { xs: 3, md: 4 } }}>
-          <Box sx={{ display: "flex", alignItems: "center", mb: 3 }}>
-            <IconButton
-              onClick={() => navigate("/pre-university")}
-              sx={{
-                mr: 2,
-                color: isDarkMode ? "#e2e8f0" : "#2d3748",
-                "&:hover": {
-                  backgroundColor: isDarkMode ? "#4a5568" : "#f7fafc",
-                },
-              }}
-            >
-              <ArrowBack />
-            </IconButton>
+        {/* Enhanced Header */}
+        <Fade in timeout={600}>
+          <Box sx={{ mb: { xs: 3, md: 4 } }}>
+            <Box sx={{ display: "flex", alignItems: "center", mb: 3 }}>
+              <IconButton
+                onClick={() => navigate("/pre-university")}
+                sx={{
+                  mr: 2,
+                  color: isDarkMode ? "#e2e8f0" : "#2d3748",
+                  "&:hover": {
+                    backgroundColor: isDarkMode ? "#4a5568" : "#f7fafc",
+                    transform: "scale(1.05)",
+                  },
+                  transition: "all 0.2s ease",
+                }}
+              >
+                <ArrowBack />
+              </IconButton>
+              <Typography
+                variant="h3"
+                className={`font-bold ${themeClasses.text.primary}`}
+                sx={{
+                  fontSize: { xs: "2rem", md: "2.5rem" },
+                  background:
+                    "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                  backgroundClip: "text",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                }}
+              >
+                Explore Career Paths
+              </Typography>
+            </Box>
+
             <Typography
-              variant="h3"
-              className={`font-bold ${themeClasses.text.primary}`}
+              variant="h6"
               sx={{
-                fontSize: { xs: "2rem", md: "2.5rem" },
-                background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-                backgroundClip: "text",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
+                color: isDarkMode ? "#94a3b8" : "#64748b",
+                mb: 3,
+                maxWidth: "600px",
+                fontWeight: 400,
+                lineHeight: 1.6,
               }}
             >
-              Explore Career Paths
+              Discover over 500+ career opportunities that match your interests
+              and skills.
             </Typography>
-          </Box>
 
-          <Typography
-            variant="h6"
-            sx={{
-              color: isDarkMode ? "#94a3b8" : "#64748b",
-              mb: 4,
-              maxWidth: "600px",
-              fontWeight: 400,
-            }}
-          >
-            Find the perfect career that matches your interests and skills.
-          </Typography>
-
-          {/* Search and Filter Section */}
-          <Paper
-            sx={{
-              p: { xs: 2, md: 3 },
-              borderRadius: 3,
-              background: isDarkMode ? "#2d3748" : "#ffffff",
-              border: isDarkMode ? "1px solid #4a5568" : "1px solid #e2e8f0",
-              mb: { xs: 3, md: 4 },
-            }}
-          >
-            <Grid container spacing={{ xs: 2, md: 3 }} alignItems="center">
-              <Grid item xs={12} md={6}>
-                <TextField
-                  fullWidth
-                  placeholder="Search careers, skills, or interests..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <Search
-                          sx={{ color: isDarkMode ? "#94a3b8" : "#64748b" }}
-                        />
-                      </InputAdornment>
-                    ),
-                  }}
-                  sx={{
-                    "& .MuiOutlinedInput-root": {
-                      borderRadius: 2,
-                      backgroundColor: isDarkMode ? "#1e293b" : "#f8fafc",
-                      "& fieldset": {
-                        borderColor: isDarkMode ? "#475569" : "#e2e8f0",
-                      },
-                      "&:hover fieldset": {
-                        borderColor: isDarkMode ? "#5a6578" : "#cbd5e0",
-                      },
-                      "&.Mui-focused fieldset": {
-                        borderColor: "#6366f1",
-                      },
-                    },
-                    "& .MuiInputBase-input": {
-                      color: isDarkMode ? "#f1f5f9" : "#1e293b",
-                    },
-                  }}
-                />
+            {/* Quick Stats */}
+            <Grid container spacing={2} sx={{ mb: 4, maxWidth: "600px" }}>
+              <Grid item xs={4}>
+                <Box sx={{ textAlign: "center" }}>
+                  <Typography
+                    variant="h5"
+                    sx={{
+                      fontWeight: "bold",
+                      color: "#667eea",
+                    }}
+                  >
+                    {careers.length}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    sx={{ color: themeClasses.text.secondary }}
+                  >
+                    Careers
+                  </Typography>
+                </Box>
               </Grid>
-              <Grid item xs={12} md={6}>
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    flexWrap: "wrap",
-                  }}
-                >
-                  <FilterList
-                    sx={{ mr: 2, color: isDarkMode ? "#94a3b8" : "#64748b" }}
-                  />
-                  <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
-                    {filterOptions.slice(0, 5).map((option) => (
-                      <Chip
-                        key={option}
-                        label={option === "all" ? "All" : option}
-                        onClick={() => setSelectedFilter(option)}
-                        variant={
-                          selectedFilter === option ? "filled" : "outlined"
-                        }
-                        size="small"
-                        sx={{
-                          backgroundColor:
-                            selectedFilter === option
-                              ? "#6366f1"
-                              : "transparent",
-                          color:
-                            selectedFilter === option
-                              ? "white"
-                              : isDarkMode
-                              ? "#f1f5f9"
-                              : "#1e293b",
-                          borderColor: isDarkMode ? "#475569" : "#e2e8f0",
-                          "&:hover": {
-                            backgroundColor:
-                              selectedFilter === option
-                                ? "#5b5bd6"
-                                : isDarkMode
-                                ? "#475569"
-                                : "#f8fafc",
-                          },
-                        }}
-                      />
-                    ))}
-                  </Box>
+              <Grid item xs={4}>
+                <Box sx={{ textAlign: "center" }}>
+                  <Typography
+                    variant="h5"
+                    sx={{
+                      fontWeight: "bold",
+                      color: "#667eea",
+                    }}
+                  >
+                    {filteredCareers.length}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    sx={{ color: themeClasses.text.secondary }}
+                  >
+                    Matches
+                  </Typography>
+                </Box>
+              </Grid>
+              <Grid item xs={4}>
+                <Box sx={{ textAlign: "center" }}>
+                  <Typography
+                    variant="h5"
+                    sx={{
+                      fontWeight: "bold",
+                      color: "#667eea",
+                    }}
+                  >
+                    20+
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    sx={{ color: themeClasses.text.secondary }}
+                  >
+                    Industries
+                  </Typography>
                 </Box>
               </Grid>
             </Grid>
-          </Paper>
-        </Box>
+
+            {/* Simple Search and Filter Section */}
+            <Paper
+              sx={{
+                p: { xs: 2, md: 3 },
+                borderRadius: 3,
+                background: isDarkMode ? "#2d3748" : "#ffffff",
+                border: isDarkMode ? "1px solid #4a5568" : "1px solid #e2e8f0",
+                mb: { xs: 3, md: 4 },
+                boxShadow: isDarkMode
+                  ? "0 4px 6px rgba(0, 0, 0, 0.3)"
+                  : "0 4px 6px rgba(0, 0, 0, 0.1)",
+              }}
+            >
+              {/* Search Bar */}
+              <TextField
+                fullWidth
+                placeholder="Search careers, skills, or interests..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <Search
+                        sx={{ color: isDarkMode ? "#94a3b8" : "#64748b" }}
+                      />
+                    </InputAdornment>
+                  ),
+                }}
+                sx={{
+                  mb: 3,
+                  "& .MuiOutlinedInput-root": {
+                    borderRadius: 2,
+                    backgroundColor: isDarkMode ? "#1e293b" : "#f8fafc",
+                    "& fieldset": {
+                      borderColor: isDarkMode ? "#475569" : "#e2e8f0",
+                    },
+                    "&:hover fieldset": {
+                      borderColor: isDarkMode ? "#5a6578" : "#cbd5e0",
+                    },
+                    "&.Mui-focused fieldset": {
+                      borderColor: "#6366f1",
+                    },
+                  },
+                  "& .MuiInputBase-input": {
+                    color: isDarkMode ? "#f1f5f9" : "#1e293b",
+                  },
+                }}
+              />
+
+              {/* Quick Filter Tags */}
+              <Box>
+                <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+                  <FilterList
+                    sx={{ mr: 2, color: isDarkMode ? "#94a3b8" : "#64748b" }}
+                  />
+                  <Typography
+                    variant="body2"
+                    sx={{ color: isDarkMode ? "#94a3b8" : "#64748b", mr: 2 }}
+                  >
+                    Categories:
+                  </Typography>
+                </Box>
+                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
+                  {filterOptions.map((option) => (
+                    <Chip
+                      key={option}
+                      label={option === "all" ? "All" : option}
+                      onClick={() => setSelectedFilter(option)}
+                      variant={
+                        selectedFilter === option ? "filled" : "outlined"
+                      }
+                      size="small"
+                      sx={{
+                        backgroundColor:
+                          selectedFilter === option ? "#6366f1" : "transparent",
+                        color:
+                          selectedFilter === option
+                            ? "white"
+                            : isDarkMode
+                            ? "#f1f5f9"
+                            : "#1e293b",
+                        borderColor: isDarkMode ? "#475569" : "#e2e8f0",
+                        "&:hover": {
+                          backgroundColor:
+                            selectedFilter === option
+                              ? "#5b5bd6"
+                              : isDarkMode
+                              ? "#475569"
+                              : "#f8fafc",
+                        },
+                      }}
+                    />
+                  ))}
+                </Box>
+              </Box>
+            </Paper>
+          </Box>
+        </Fade>
 
         {/* Career Cards Grid */}
         <Box sx={{ maxWidth: "1400px", mx: "auto" }}>
@@ -223,35 +293,41 @@ const CareerChoice = () => {
             {loading
               ? // Loading skeletons
                 Array.from(new Array(9)).map((_, index) => (
-                  <Grid
-                    item
-                    xs={12}
-                    sm={6}
-                    md={4}
-                    key={index}
-                    sx={{ maxWidth: "420px" }}
-                  >
+                  <Grid item xs={12} sm={6} md={4} key={index}>
                     <Skeleton
                       variant="rectangular"
                       width="100%"
                       height={280}
-                      sx={{ borderRadius: 3, aspectRatio: "4/3" }}
+                      sx={{ borderRadius: 3 }}
                     />
                   </Grid>
                 ))
-              : filteredCareers.slice(0, 9).map((career) => (
-                  <Grid
-                    item
-                    xs={12}
-                    sm={6}
-                    md={4}
-                    key={career.id}
-                    sx={{ maxWidth: "420px" }}
-                  >
+              : filteredCareers.slice(0, 12).map((career) => (
+                  <Grid item xs={12} sm={6} md={4} key={career.id}>
                     <CareerCard career={career} />
                   </Grid>
                 ))}
           </Grid>
+
+          {/* Load More Button */}
+          {!loading && filteredCareers.length > 12 && (
+            <Box sx={{ textAlign: "center", mt: 4 }}>
+              <Button
+                variant="outlined"
+                size="large"
+                sx={{
+                  borderColor: "#6366f1",
+                  color: "#6366f1",
+                  "&:hover": {
+                    borderColor: "#5b5bd6",
+                    backgroundColor: isDarkMode ? "#475569" : "#f8fafc",
+                  },
+                }}
+              >
+                Load More Careers
+              </Button>
+            </Box>
+          )}
         </Box>
 
         {/* No Results */}
@@ -275,10 +351,28 @@ const CareerChoice = () => {
               variant="body1"
               sx={{
                 color: isDarkMode ? "#a0aec0" : "#4a5568",
+                mb: 3,
               }}
             >
-              Try adjusting your search terms or filters
+              Try adjusting your search terms or filters to find more options.
             </Typography>
+            <Button
+              variant="outlined"
+              onClick={() => {
+                setSearchTerm("");
+                setSelectedFilter("all");
+              }}
+              sx={{
+                borderColor: "#6366f1",
+                color: "#6366f1",
+                "&:hover": {
+                  borderColor: "#5b5bd6",
+                  backgroundColor: isDarkMode ? "#475569" : "#f8fafc",
+                },
+              }}
+            >
+              Clear All Filters
+            </Button>
           </Box>
         )}
       </Container>

@@ -17,21 +17,27 @@ import {
   TrendingUp,
   Route,
 } from "lucide-react";
+import { useTheme } from "../../../context/ThemeContext";
+import { getTheme, getThemeClasses } from "../../../styles/themes";
 
 const CareerDetails = () => {
   // React Router navigation and params
   const navigate = useNavigate();
   const { careerTitle: careerTitleParam } = useParams();
   
+  // Theme context
+  const { isDarkMode } = useTheme();
+  const theme = getTheme(isDarkMode);
+  const themeClasses = getThemeClasses(isDarkMode);
+
   // Decode the career title from URL and format it properly
-  const careerTitle = careerTitleParam ? 
-    decodeURIComponent(careerTitleParam)
-      .replace(/-/g, ' ')
-      .replace(/\b\w/g, l => l.toUpperCase()) 
+  const careerTitle = careerTitleParam
+    ? decodeURIComponent(careerTitleParam)
+        .replace(/-/g, " ")
+        .replace(/\b\w/g, (l) => l.toUpperCase())
     : "Software Engineering";
-  
+
   // Mock data for demo purposes
-  const isDarkMode = false;
   const [career, setCareer] = useState({
     careerTitle: careerTitle,
     detailedDescription:
@@ -49,9 +55,9 @@ const CareerDetails = () => {
       "Logic",
     ],
   });
-  const [videos, setVideos] = useState([
+  const videos = [
     {
-      id: { videoId: "video1" },
+      id: { videoId: "dQw4w9WgXcQ" }, // Sample YouTube video ID
       snippet: {
         title: "Complete Software Engineering Career Guide 2024",
         channelTitle: "Tech Career Hub",
@@ -63,7 +69,7 @@ const CareerDetails = () => {
       },
     },
     {
-      id: { videoId: "video2" },
+      id: { videoId: "ZSWl0dJ65_E" }, // Sample YouTube video ID  
       snippet: {
         title: "Day in the Life of a Software Engineer",
         channelTitle: "CodeWithMike",
@@ -75,7 +81,7 @@ const CareerDetails = () => {
       },
     },
     {
-      id: { videoId: "video3" },
+      id: { videoId: "kqtD5dpn9C8" }, // Sample YouTube video ID
       snippet: {
         title: "How to Learn Programming from Scratch",
         channelTitle: "Programming Academy",
@@ -86,11 +92,12 @@ const CareerDetails = () => {
         },
       },
     },
-  ]);
+  ];
   const [loading, setLoading] = useState(false);
-  const [videoLoading, setVideoLoading] = useState(false);
+  const [videoLoading] = useState(false);
   const [expandedUniversity, setExpandedUniversity] = useState(null);
-  const [playingVideo, setPlayingVideo] = useState(null);
+  const [videoModalOpen, setVideoModalOpen] = useState(false);
+  const [currentVideo, setCurrentVideo] = useState(null);
 
   // Mock university data for Bangladesh
   const bangladeshiUniversities = [
@@ -149,9 +156,9 @@ const CareerDetails = () => {
 
   useEffect(() => {
     // Update career data when URL parameter changes
-    setCareer(prev => ({
+    setCareer((prev) => ({
       ...prev,
-      careerTitle: careerTitle
+      careerTitle: careerTitle,
     }));
     setLoading(false);
   }, [careerTitle]);
@@ -162,8 +169,14 @@ const CareerDetails = () => {
     );
   };
 
-  const handleVideoPlay = (videoId) => {
-    setPlayingVideo(videoId);
+  const handleVideoPlay = (video) => {
+    setCurrentVideo(video);
+    setVideoModalOpen(true);
+  };
+
+  const handleCloseVideoModal = () => {
+    setVideoModalOpen(false);
+    setCurrentVideo(null);
   };
 
   if (loading) {
@@ -194,15 +207,14 @@ const CareerDetails = () => {
       >
         <div className="container mx-auto px-6 py-16 text-center">
           <h2
-            className={`text-3xl font-bold mb-4 ${
-              isDarkMode ? "text-gray-300" : "text-gray-600"
-            }`}
+            className={themeClasses.text.secondary}
           >
             Career not found
           </h2>
           <button
             onClick={() => navigate("/pre-university/career-choice")}
-            className="bg-indigo-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-indigo-700 transition-colors"
+            className="text-white px-6 py-3 rounded-xl font-semibold hover:opacity-90 transition-opacity"
+            style={{ backgroundColor: theme.colors.brand.primary }}
           >
             Back to Career Choice
           </button>
@@ -213,13 +225,12 @@ const CareerDetails = () => {
 
   return (
     <div
-      className={`min-h-screen ${isDarkMode ? "bg-gray-900" : "bg-gray-50"}`}
+      className={`min-h-screen ${themeClasses.bg.primary}`}
     >
       {/* Header */}
       <div
-        className={`relative overflow-hidden ${
-          isDarkMode ? "bg-gray-800" : "bg-indigo-600"
-        }`}
+        className={`relative overflow-hidden`}
+        style={{ backgroundColor: theme.colors.brand.primary }}
       >
         <div className="absolute inset-0 bg-gradient-to-br from-black/20 to-black/40"></div>
         <div className="relative container mx-auto px-6 py-12">
@@ -281,6 +292,21 @@ const CareerDetails = () => {
               </div>
             </div>
           </div>
+
+          {/* Roadmap Button Section */}
+          <div className="mt-6 text-center">
+            <button
+              onClick={() => navigate(`/pre-university/roadmap/${encodeURIComponent(career.careerTitle.toLowerCase().replace(/\s+/g, '-'))}`)}
+              className="inline-flex items-center px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl text-white"
+              style={{ backgroundColor: theme.colors.brand.secondary }}
+            >
+              <Route className="w-6 h-6 mr-3" />
+              View Career Roadmap
+            </button>
+            <p className="text-white/80 text-sm mt-2">
+              Get a step-by-step guide to build your career in {career.careerTitle}
+            </p>
+          </div>
         </div>
       </div>
 
@@ -295,32 +321,30 @@ const CareerDetails = () => {
           } rounded-2xl shadow-lg border mb-6`}
         >
           <div
-            className={`${
-              isDarkMode ? "bg-gray-700" : "bg-indigo-50"
-            } p-4 rounded-t-2xl`}
+            className={`p-4 rounded-t-2xl ${themeClasses.bg.accent}`}
           >
             <div className="flex items-center justify-between">
               <div className="flex items-center">
                 <BookOpen
-                  className={`w-5 h-5 mr-2 ${
-                    isDarkMode ? "text-indigo-400" : "text-indigo-600"
-                  }`}
+                  className="w-5 h-5 mr-2"
+                  style={{ color: theme.colors.brand.primary }}
                 />
                 <h2
-                  className={`text-lg font-bold ${
-                    isDarkMode ? "text-white" : "text-gray-800"
-                  }`}
+                  className={`text-lg font-bold ${themeClasses.text.primary}`}
                 >
                   Career Overview
                 </h2>
               </div>
               <button
-                onClick={() => navigate(`/pre-university/roadmap/${encodeURIComponent(career.careerTitle)}`)}
-                className={`inline-flex items-center px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300 shadow-sm hover:shadow-md transform hover:scale-105 ${
-                  isDarkMode
-                    ? "bg-indigo-600 hover:bg-indigo-700 text-white"
-                    : "bg-indigo-600 hover:bg-indigo-700 text-white"
-                }`}
+                onClick={() =>
+                  navigate(
+                    `/pre-university/roadmap/${encodeURIComponent(
+                      career.careerTitle
+                    )}`
+                  )
+                }
+                className="inline-flex items-center px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300 shadow-sm hover:shadow-md transform hover:scale-105 text-white hover:opacity-90"
+                style={{ backgroundColor: theme.colors.brand.primary }}
               >
                 <Route className="w-4 h-4 mr-2" />
                 Roadmap
@@ -416,43 +440,45 @@ const CareerDetails = () => {
             isDarkMode
               ? "bg-gray-800 border-gray-700"
               : "bg-white border-gray-200"
-          } rounded-2xl shadow-lg border mb-6`}
+          } rounded-2xl shadow-lg border mb-6 overflow-hidden`}
         >
-          <div
-            className={`${
-              isDarkMode ? "bg-gray-700" : "bg-red-50"
-            } p-4 rounded-t-2xl`}
-          >
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <Play
-                  className={`w-5 h-5 mr-2 ${
-                    isDarkMode ? "text-red-400" : "text-red-600"
-                  }`}
-                />
-                <h2
-                  className={`text-lg font-bold ${
-                    isDarkMode ? "text-white" : "text-gray-800"
-                  }`}
-                >
-                  Learning Resources
-                </h2>
+            <div
+              className={`relative`}
+              style={{ 
+                background: isDarkMode 
+                  ? theme.colors.surface 
+                  : `linear-gradient(to right, ${theme.colors.brand.primary}, ${theme.colors.brand.secondary})`
+              }}
+            >
+              <div className="p-5 rounded-t-2xl relative overflow-hidden">
+                <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+                <div className="relative flex items-center justify-between">
+                  <div className="flex items-center">
+                    <Play
+                      className="w-6 h-6 mr-3 text-white"
+                    />
+                    <h2
+                      className="text-xl font-bold text-white tracking-tight"
+                    >
+                      Learning Resources
+                    </h2>
+                  </div>
+                  <button
+                    className="text-sm px-4 py-2 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-sm hover:shadow-md text-white"
+                    style={{ 
+                      backgroundColor: isDarkMode ? theme.colors.brand.primary : 'rgba(255,255,255,0.2)',
+                      border: isDarkMode ? 'none' : '1px solid rgba(255,255,255,0.3)'
+                    }}
+                  >
+                    View All
+                  </button>
+                </div>
               </div>
-              <button
-                className={`text-sm px-3 py-1 rounded-lg transition-colors ${
-                  isDarkMode
-                    ? "bg-red-600 text-white hover:bg-red-700"
-                    : "bg-red-600 text-white hover:bg-red-700"
-                }`}
-              >
-                View All
-              </button>
             </div>
-          </div>
 
           <div className="p-6">
             {videoLoading ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {Array.from(new Array(3)).map((_, index) => (
                   <div key={index} className="animate-pulse">
                     <div
@@ -464,49 +490,36 @@ const CareerDetails = () => {
                 ))}
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {videos.slice(0, 3).map((video, index) => (
                   <div
                     key={video.id?.videoId || index}
-                    className={`group rounded-xl border transition-all duration-300 overflow-hidden ${
+                    className={`group rounded-xl border transition-all duration-300 overflow-hidden transform hover:-translate-y-1 ${
                       isDarkMode
                         ? "bg-gray-700 border-gray-600 hover:border-gray-500"
-                        : "bg-gray-50 border-gray-200 hover:border-gray-300"
-                    } hover:shadow-md`}
+                        : "bg-white border-gray-200 hover:border-gray-300"
+                    } hover:shadow-lg`}
                   >
-                    {playingVideo === video.id?.videoId ? (
-                      <div className="aspect-video">
-                        <iframe
-                          width="100%"
-                          height="100%"
-                          src={`https://www.youtube.com/embed/${video.id.videoId}?autoplay=1`}
-                          title={video.snippet?.title}
-                          frameBorder="0"
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                          allowFullScreen
-                          className="w-full h-full"
-                        />
+                    <div
+                      className="relative aspect-video cursor-pointer overflow-hidden"
+                    >
+                      <img
+                        src={
+                          video.snippet?.thumbnails?.high?.url ||
+                          `https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&h=300&fit=crop`
+                        }
+                        alt={video.snippet?.title || "Video thumbnail"}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-80 group-hover:opacity-70 transition-opacity">
                       </div>
-                    ) : (
-                      <div
-                        className="relative aspect-video cursor-pointer"
-                        onClick={() => handleVideoPlay(video.id?.videoId)}
+                      <div 
+                        className="absolute top-2 right-2 text-white text-xs px-2 py-1 rounded-md font-medium"
+                        style={{ backgroundColor: theme.colors.brand.primary }}
                       >
-                        <img
-                          src={
-                            video.snippet?.thumbnails?.high?.url ||
-                            `https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&h=300&fit=crop`
-                          }
-                          alt={video.snippet?.title || "Video thumbnail"}
-                          className="w-full h-full object-cover"
-                        />
-                        <div className="absolute inset-0 bg-black/40 flex items-center justify-center group-hover:bg-black/20 transition-all">
-                          <div className="bg-red-600 rounded-full p-3 group-hover:scale-110 transition-transform">
-                            <Play className="w-6 h-6 text-white fill-current" />
-                          </div>
-                        </div>
+                        HD
                       </div>
-                    )}
+                    </div>
 
                     <div className="p-4">
                       <h4
@@ -517,21 +530,31 @@ const CareerDetails = () => {
                         {video.snippet?.title ||
                           `Career Guide Video ${index + 1}`}
                       </h4>
-                      <p
-                        className={`text-xs mb-2 ${
-                          isDarkMode ? "text-gray-400" : "text-gray-500"
-                        }`}
-                      >
-                        {video.snippet?.channelTitle || "Educational Channel"}
-                      </p>
-                      <div
-                        className={`flex items-center text-xs ${
-                          isDarkMode ? "text-gray-500" : "text-gray-400"
-                        }`}
-                      >
-                        <Clock className="w-3 h-3 mr-1" />
-                        <span>12:45</span>
+                      <div className="flex justify-between items-center mb-3">
+                        <p
+                          className={`text-xs ${
+                            isDarkMode ? "text-gray-400" : "text-gray-500"
+                          }`}
+                        >
+                          {video.snippet?.channelTitle || "Educational Channel"}
+                        </p>
+                        <div
+                          className={`flex items-center text-xs ${
+                            isDarkMode ? "text-gray-500" : "text-gray-400"
+                          }`}
+                        >
+                          <Clock className="w-3 h-3 mr-1" />
+                          <span>12:45</span>
+                        </div>
                       </div>
+                      <button
+                        onClick={() => handleVideoPlay(video)}
+                        className="w-full py-2 rounded-lg font-medium text-sm transition-all duration-300 flex items-center justify-center text-white hover:opacity-90"
+                        style={{ backgroundColor: theme.colors.brand.primary }}
+                      >
+                        <Play className="w-4 h-4 mr-2" />
+                        Watch Now
+                      </button>
                     </div>
                   </div>
                 ))}
@@ -549,20 +572,15 @@ const CareerDetails = () => {
           } rounded-2xl shadow-lg border`}
         >
           <div
-            className={`${
-              isDarkMode ? "bg-gray-700" : "bg-green-50"
-            } p-4 rounded-t-2xl`}
+            className={`p-4 rounded-t-2xl ${themeClasses.bg.accent}`}
           >
             <div className="flex items-center">
               <GraduationCap
-                className={`w-5 h-5 mr-2 ${
-                  isDarkMode ? "text-green-400" : "text-green-600"
-                }`}
+                className="w-5 h-5 mr-2"
+                style={{ color: theme.colors.brand.primary }}
               />
               <h2
-                className={`text-lg font-bold ${
-                  isDarkMode ? "text-white" : "text-gray-800"
-                }`}
+                className={`text-lg font-bold ${themeClasses.text.primary}`}
               >
                 Top Universities in Bangladesh
               </h2>
@@ -709,11 +727,8 @@ const CareerDetails = () => {
                         onClick={() =>
                           window.open(university.syllabusLink, "_blank")
                         }
-                        className={`w-full py-3 rounded-xl font-medium text-sm transition-all duration-300 flex items-center justify-center ${
-                          isDarkMode
-                            ? "bg-green-600 text-white hover:bg-green-700"
-                            : "bg-green-600 text-white hover:bg-green-700"
-                        }`}
+                        className="w-full py-3 rounded-xl font-medium text-sm transition-all duration-300 flex items-center justify-center text-white hover:opacity-90"
+                        style={{ backgroundColor: theme.colors.brand.secondary }}
                       >
                         <ExternalLink className="w-4 h-4 mr-2" />
                         View Syllabus
@@ -726,6 +741,72 @@ const CareerDetails = () => {
           </div>
         </div>
       </div>
+
+      {/* Video Modal */}
+      {videoModalOpen && currentVideo && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md">
+          <div className="relative w-full max-w-5xl mx-auto p-2 md:p-4">
+            <button
+              onClick={handleCloseVideoModal}
+              className="absolute -top-14 right-2 text-white/80 hover:text-white p-2 z-10 transition-colors rounded-full"
+              style={{ 
+                ':hover': { backgroundColor: `${theme.colors.brand.primary}30` }
+              }}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-8 w-8"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+
+            <div className="bg-gray-900 rounded-xl overflow-hidden shadow-2xl border border-gray-800">
+              <div className="aspect-video bg-black">
+                <iframe
+                  width="100%"
+                  height="100%"
+                  src={`https://www.youtube.com/embed/${currentVideo.id.videoId}?autoplay=1&rel=0&modestbranding=1&showinfo=0&fs=1`}
+                  title={currentVideo.snippet?.title}
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+                  allowFullScreen
+                  className="w-full h-full"
+                />
+              </div>
+              
+              <div className="p-6 bg-gray-900 text-white border-t border-gray-800">
+                <div className="flex items-start justify-between mb-4">
+                  <div>
+                    <h3 className="text-2xl font-bold mb-2">{currentVideo.snippet?.title}</h3>
+                    <div className="flex items-center gap-3">
+                      <span 
+                        className="text-white text-xs px-2 py-1 rounded font-medium"
+                        style={{ backgroundColor: `${theme.colors.brand.primary}40` }}
+                      >
+                        HD
+                      </span>
+                      <p className="text-sm text-gray-300">{currentVideo.snippet?.channelTitle}</p>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="text-sm text-gray-400 mt-4">
+                  <p>{currentVideo.snippet?.description || "Learn more about this career path through this informative video guide. This video provides valuable insights and practical advice to help you make informed decisions about your future."}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
