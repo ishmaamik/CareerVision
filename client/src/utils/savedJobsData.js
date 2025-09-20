@@ -1,0 +1,218 @@
+// Mock data for saved jobs
+export const mockSavedJobs = [
+  {
+    id: 1,
+    title: "Senior Software Engineer",
+    company: "Google",
+    logo: "https://via.placeholder.com/60x60/4285F4/ffffff?text=G",
+    location: "Mountain View, CA",
+    type: "Full-time",
+    salary: "$160,000 - $250,000",
+    postedDate: "2024-01-15",
+    savedDate: "2024-01-16",
+    status: "active",
+    tags: ["JavaScript", "React", "Node.js", "AWS"],
+    description: "Join our team to build the next generation of web applications...",
+    requirements: ["5+ years experience", "React expertise", "Computer Science degree"],
+    benefits: ["Health insurance", "401k matching", "Flexible PTO"],
+    remote: false,
+    experience: "Senior",
+    applicationDeadline: "2024-02-15",
+    matchScore: 92,
+    category: "technology"
+  },
+  {
+    id: 2,
+    title: "Product Manager",
+    company: "Meta",
+    logo: "https://via.placeholder.com/60x60/1877F2/ffffff?text=M",
+    location: "Menlo Park, CA",
+    type: "Full-time",
+    salary: "$140,000 - $200,000",
+    postedDate: "2024-01-10",
+    savedDate: "2024-01-12",
+    status: "active",
+    tags: ["Product Strategy", "Analytics", "User Research", "Agile"],
+    description: "Lead product development for our flagship social platform...",
+    requirements: ["3+ years PM experience", "MBA preferred", "Technical background"],
+    benefits: ["Stock options", "Health insurance", "Learning budget"],
+    remote: true,
+    experience: "Mid-level",
+    applicationDeadline: "2024-02-10",
+    matchScore: 88,
+    category: "product"
+  },
+  {
+    id: 3,
+    title: "UX Designer",
+    company: "Netflix",
+    logo: "https://via.placeholder.com/60x60/E50914/ffffff?text=N",
+    location: "Los Gatos, CA",
+    type: "Full-time",
+    salary: "$120,000 - $160,000",
+    postedDate: "2024-01-12",
+    savedDate: "2024-01-14",
+    status: "active",
+    tags: ["Figma", "Prototyping", "User Research", "Design Systems"],
+    description: "Design intuitive user experiences for millions of users...",
+    requirements: ["4+ years UX experience", "Portfolio required", "Figma expertise"],
+    benefits: ["Unlimited PTO", "Health insurance", "Creative bonus"],
+    remote: true,
+    experience: "Mid-level",
+    applicationDeadline: "2024-02-20",
+    matchScore: 85,
+    category: "design"
+  },
+  {
+    id: 4,
+    title: "Data Scientist",
+    company: "Airbnb",
+    logo: "https://via.placeholder.com/60x60/FF5A5F/ffffff?text=A",
+    location: "San Francisco, CA",
+    type: "Full-time",
+    salary: "$130,000 - $180,000",
+    postedDate: "2024-01-08",
+    savedDate: "2024-01-09",
+    status: "expired",
+    tags: ["Python", "Machine Learning", "SQL", "Statistics"],
+    description: "Use data to drive business decisions and improve user experience...",
+    requirements: ["PhD in related field", "5+ years experience", "Python/R expertise"],
+    benefits: ["Travel credits", "Health insurance", "Research time"],
+    remote: false,
+    experience: "Senior",
+    applicationDeadline: "2024-01-25",
+    matchScore: 78,
+    category: "analytics"
+  },
+  {
+    id: 5,
+    title: "Marketing Manager",
+    company: "Spotify",
+    logo: "https://via.placeholder.com/60x60/1DB954/ffffff?text=S",
+    location: "New York, NY",
+    type: "Full-time",
+    salary: "$90,000 - $130,000",
+    postedDate: "2024-01-05",
+    savedDate: "2024-01-06",
+    status: "active",
+    tags: ["Digital Marketing", "Campaign Management", "Analytics", "Social Media"],
+    description: "Drive user acquisition and engagement through innovative marketing...",
+    requirements: ["3+ years marketing experience", "Digital marketing expertise", "Analytics skills"],
+    benefits: ["Music perks", "Health insurance", "Growth opportunities"],
+    remote: true,
+    experience: "Mid-level",
+    applicationDeadline: "2024-02-05",
+    matchScore: 90,
+    category: "marketing"
+  },
+  {
+    id: 6,
+    title: "DevOps Engineer",
+    company: "Uber",
+    logo: "https://via.placeholder.com/60x60/000000/ffffff?text=U",
+    location: "Austin, TX",
+    type: "Full-time",
+    salary: "$110,000 - $150,000",
+    postedDate: "2024-01-14",
+    savedDate: "2024-01-15",
+    status: "active",
+    tags: ["AWS", "Kubernetes", "Docker", "CI/CD"],
+    description: "Build and maintain scalable infrastructure for our global platform...",
+    requirements: ["4+ years DevOps experience", "AWS certification", "Kubernetes expertise"],
+    benefits: ["Uber credits", "Health insurance", "Tech stipend"],
+    remote: true,
+    experience: "Mid-level",
+    applicationDeadline: "2024-02-28",
+    matchScore: 82,
+    category: "technology"
+  },
+  {
+    id: 7,
+    title: "Sales Representative",
+    company: "Salesforce",
+    logo: "https://via.placeholder.com/60x60/00A1E0/ffffff?text=SF",
+    location: "Chicago, IL",
+    type: "Full-time",
+    salary: "$70,000 - $120,000",
+    postedDate: "2024-01-11",
+    savedDate: "2024-01-13",
+    status: "active",
+    tags: ["B2B Sales", "CRM", "Lead Generation", "Customer Relations"],
+    description: "Drive revenue growth by building relationships with enterprise clients...",
+    requirements: ["2+ years sales experience", "CRM experience", "Strong communication"],
+    benefits: ["Commission structure", "Health insurance", "Training programs"],
+    remote: false,
+    experience: "Entry-level",
+    applicationDeadline: "2024-02-12",
+    matchScore: 75,
+    category: "sales"
+  },
+  {
+    id: 8,
+    title: "Frontend Developer",
+    company: "Shopify",
+    logo: "https://via.placeholder.com/60x60/96BF48/ffffff?text=S",
+    location: "Ottawa, Canada",
+    type: "Full-time",
+    salary: "$80,000 - $110,000 CAD",
+    postedDate: "2024-01-13",
+    savedDate: "2024-01-17",
+    status: "active",
+    tags: ["React", "TypeScript", "CSS", "Responsive Design"],
+    description: "Create beautiful and functional user interfaces for our e-commerce platform...",
+    requirements: ["3+ years frontend experience", "React expertise", "TypeScript knowledge"],
+    benefits: ["Stock options", "Health insurance", "Learning stipend"],
+    remote: true,
+    experience: "Mid-level",
+    applicationDeadline: "2024-02-25",
+    matchScore: 87,
+    category: "technology"
+  }
+];
+
+export const jobCategories = [
+  { id: "all", name: "All Jobs", icon: "💼", count: 8 },
+  { id: "technology", name: "Technology", icon: "💻", count: 3 },
+  { id: "design", name: "Design", icon: "🎨", count: 1 },
+  { id: "product", name: "Product", icon: "📱", count: 1 },
+  { id: "marketing", name: "Marketing", icon: "📈", count: 1 },
+  { id: "analytics", name: "Analytics", icon: "📊", count: 1 },
+  { id: "sales", name: "Sales", icon: "💰", count: 1 }
+];
+
+export const experienceLevels = [
+  { id: "all", name: "All Levels", count: 8 },
+  { id: "entry", name: "Entry Level", count: 1 },
+  { id: "mid", name: "Mid Level", count: 5 },
+  { id: "senior", name: "Senior Level", count: 2 }
+];
+
+export const workTypes = [
+  { id: "all", name: "All Types", count: 8 },
+  { id: "full-time", name: "Full-time", count: 8 },
+  { id: "part-time", name: "Part-time", count: 0 },
+  { id: "contract", name: "Contract", count: 0 },
+  { id: "internship", name: "Internship", count: 0 }
+];
+
+export const remoteOptions = [
+  { id: "all", name: "All Options", count: 8 },
+  { id: "remote", name: "Remote", count: 5 },
+  { id: "onsite", name: "On-site", count: 3 },
+  { id: "hybrid", name: "Hybrid", count: 0 }
+];
+
+export const salaryRanges = [
+  { id: "all", name: "All Salaries", min: 0, max: 300000, count: 8 },
+  { id: "entry", name: "$50k - $80k", min: 50000, max: 80000, count: 1 },
+  { id: "mid", name: "$80k - $120k", min: 80000, max: 120000, count: 3 },
+  { id: "senior", name: "$120k - $200k", min: 120000, max: 200000, count: 3 },
+  { id: "executive", name: "$200k+", min: 200000, max: 300000, count: 1 }
+];
+
+export const jobStatuses = [
+  { id: "all", name: "All Status", count: 8 },
+  { id: "active", name: "Active", count: 7 },
+  { id: "expired", name: "Expired", count: 1 },
+  { id: "applied", name: "Applied", count: 0 }
+];
